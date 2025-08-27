@@ -1,0 +1,72 @@
+package com.hellogerman.app.ui.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.hellogerman.app.ui.screens.*
+
+sealed class Screen(val route: String) {
+    object Splash : Screen("splash")
+    object Dashboard : Screen("dashboard")
+    object Lesen : Screen("lesen")
+    object Hoeren : Screen("hoeren")
+    object Schreiben : Screen("schreiben")
+    object Sprechen : Screen("sprechen")
+    object LessonDetail : Screen("lesson/{lessonId}") {
+        fun createRoute(lessonId: Int) = "lesson/$lessonId"
+    }
+    object Quiz : Screen("quiz/{lessonId}") {
+        fun createRoute(lessonId: Int) = "quiz/$lessonId"
+    }
+    object Settings : Screen("settings")
+    object Onboarding : Screen("onboarding")
+    object Progress : Screen("progress")
+}
+
+@Composable
+fun NavGraph(
+    navController: NavHostController,
+    startDestination: String = Screen.Splash.route
+) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination
+    ) {
+        composable(Screen.Splash.route) {
+            SplashScreen(navController)
+        }
+        
+        composable(Screen.Dashboard.route) {
+            DashboardScreen(navController)
+        }
+        
+        composable(Screen.Lesen.route) {
+            LesenScreen(navController)
+        }
+        
+        composable(Screen.Hoeren.route) {
+            HoerenScreen(navController)
+        }
+        
+        composable(Screen.Schreiben.route) {
+            SchreibenScreen(navController)
+        }
+        
+        composable(Screen.Sprechen.route) {
+            SprechenScreen(navController)
+        }
+        
+        composable(Screen.Settings.route) {
+            SettingsScreen(navController)
+        }
+        
+        composable(Screen.Progress.route) {
+            ProgressScreen(navController)
+        }
+        
+        composable(Screen.Onboarding.route) {
+            // OnboardingScreen(navController)
+        }
+    }
+}
