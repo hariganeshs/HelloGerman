@@ -8,6 +8,15 @@ plugins {
 android {
     namespace = "com.hellogerman.app"
     compileSdk = 36
+    
+    signingConfigs {
+        create("release") {
+            storeFile = file("hellogerman-release-key.jks")
+            storePassword = "hellogerman123"
+            keyAlias = "hellogerman-key"
+            keyPassword = "hellogerman123"
+        }
+    }
 
     defaultConfig {
         applicationId = "com.hellogerman.app"
@@ -37,7 +46,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug") // For testing, use debug signing
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isMinifyEnabled = false
