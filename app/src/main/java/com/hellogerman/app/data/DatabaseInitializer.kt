@@ -48,7 +48,7 @@ object DatabaseInitializer {
         CoroutineScope(Dispatchers.IO).launch {
             // Get current lesson count before clearing
             val existingLessons = repository.getAllLessons()
-            println("DEBUG: Found ${existingLessons.size} lessons before clearing")
+    
             
             // Clear all lessons and re-insert them to remove duplicates
             repository.clearAllLessons()
@@ -57,7 +57,7 @@ object DatabaseInitializer {
             
             // Get lesson count after re-inserting
             val newLessons = repository.getAllLessons()
-            println("DEBUG: Inserted ${newLessons.size} lessons after clearing")
+    
         }
     }
     
@@ -65,7 +65,7 @@ object DatabaseInitializer {
         val repository = HelloGermanRepository(context)
         
         CoroutineScope(Dispatchers.IO).launch {
-            println("DEBUG: Resetting entire database...")
+    
             
             // Clear all lessons
             repository.clearAllLessons()
@@ -81,7 +81,7 @@ object DatabaseInitializer {
             repository.insertUserProgress(com.hellogerman.app.data.entities.UserProgress())
             
             val finalLessons = repository.getAllLessons()
-            println("DEBUG: Database reset complete. ${finalLessons.size} lessons inserted.")
+    
         }
     }
 }

@@ -87,11 +87,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return repository.shouldAdvanceLevel(skill, level)
     }
     
-    fun forceReloadLessons() {
-        viewModelScope.launch {
-            repository.clearAllLessons()
-            val lessons = com.hellogerman.app.data.LessonContentGenerator.generateAllLessons()
-            repository.insertLessons(lessons)
-        }
-    }
+
 }

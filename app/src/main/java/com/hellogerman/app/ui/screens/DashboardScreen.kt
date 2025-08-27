@@ -116,51 +116,6 @@ fun DashboardScreen(
             QuickActionsSection(navController)
         }
         
-        // Temporary debug buttons - remove in production
-        item {
-            Button(
-                onClick = { mainViewModel.forceReloadLessons() },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                )
-            ) {
-                Text("🔄 Reload Lessons (Debug)")
-            }
-        }
-        
-        item {
-            val context = LocalContext.current
-            Button(
-                onClick = { 
-                    // Clear duplicates
-                    DatabaseInitializer.clearDuplicateLessons(context)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error
-                )
-            ) {
-                Text("🗑️ Clear Duplicate Lessons")
-            }
-        }
-        
-        item {
-            val context = LocalContext.current
-            Button(
-                onClick = { 
-                    // Reset entire database (WARNING: This will clear all user data)
-                    DatabaseInitializer.resetEntireDatabase(context)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = androidx.compose.ui.graphics.Color.Red
-                )
-            ) {
-                Text("⚠️ RESET ENTIRE DATABASE (Clears all data)")
-            }
-        }
-        
         // Banner Ad
         item {
             BannerAd1(
