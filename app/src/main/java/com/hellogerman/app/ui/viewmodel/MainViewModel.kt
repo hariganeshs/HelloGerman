@@ -29,6 +29,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val grammarTotalPoints: StateFlow<Int> = _grammarTotalPoints.asStateFlow()
     private val _grammarBadgesCount = MutableStateFlow(0)
     val grammarBadgesCount: StateFlow<Int> = _grammarBadgesCount.asStateFlow()
+    val weakGrammarTopics = repository.getWeakGrammarTopics()
 
     init {
         loadUserProgress()

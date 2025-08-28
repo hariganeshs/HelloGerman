@@ -21,12 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.hellogerman.app.data.LessonContentGenerator
-import com.hellogerman.app.data.entities.Lesson
 import com.hellogerman.app.ui.navigation.Screen
 import com.hellogerman.app.ui.theme.GrammarColor
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hellogerman.app.ui.viewmodel.GrammarViewModel
+import androidx.compose.runtime.collectAsState
 
 @Composable
 fun GrammarDashboard(navController: NavController, grammarViewModel: GrammarViewModel = viewModel()) {
@@ -63,19 +62,8 @@ fun GrammarDashboard(navController: NavController, grammarViewModel: GrammarView
 }
 
 @Composable
-fun GrammarTopicListScreen(navController: NavController, level: String) {
-	val lessons = remember(level) { LessonContentGenerator.run { 
-		// Generate grammar lessons for level only
-		val field = LessonContentGenerator::class.java.getDeclaredMethod("generateAllLessons")
-		// We will filter by skill and level after generation (reuse existing)
-	} }
-	// Simpler: use generator for grammar-only by level
-	val grammarLessons = remember(level) {
-		LessonContentGenerator.run {
-			// generateAllLessons already includes grammar; filter now
-			generateAllLessons().filter { it.skill == "grammar" && it.level == level }
-		}
-	}
+fun GrammarTopicListScreen(navController: NavController, level: String, grammarViewModel: GrammarViewModel = viewModel()) {
+	val grammarLessons by grammarViewModel.lessonsByLevel(level).collectAsState(initial = emptyList())
 	LazyColumn(
 		modifier = Modifier
 			.fillMaxSize()
@@ -103,7 +91,7 @@ fun GrammarTopicListScreen(navController: NavController, level: String) {
 }
 
 @Composable
-fun GrammarLessonScreen(navController: NavController, lessonId: Int) {
+fun GrammarLessonScreen(navController: NavController, lessonId: Int, grammarViewModel: GrammarViewModel = viewModel()) {
 	// For simplicity, show placeholder and navigate to quiz
 	Column(
 		Modifier
@@ -140,7 +128,9 @@ fun GrammarQuizScreen(navController: NavController, lessonId: Int, grammarViewMo
 				Text("Total: $score")
 				Spacer(Modifier.height(8.dp))
 				Button(onClick = {
-					grammarViewModel.addPoints("lesson_$lessonId", score)
+					val topicKey = grammarViewModel.buildTopicKey("A1", "lesson_$lessonId")
+					grammarViewModel.addPoints(topicKey, score)
+					if (score >= 15) grammarViewModel.awardBadge(topicKey, "fast_starter")
 					navController.popBackStack()
 				}) { Text("Save & Back") }
 			}

@@ -181,6 +181,10 @@ class HelloGermanRepository(context: Context) {
             grammarProgressDao.updateBadges(topicKey, gson.toJson(current))
         }
     }
+
+    fun getWeakGrammarTopics(limit: Int = 5): Flow<List<GrammarProgress>> {
+        return grammarProgressDao.getWeakest(limit)
+    }
     
     // Progress Tracking
     suspend fun getProgressPercentage(skill: String, level: String): Double {

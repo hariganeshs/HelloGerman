@@ -39,6 +39,9 @@ interface GrammarProgressDao {
 
 	@Query("UPDATE grammar_progress SET badgesJson = :badgesJson WHERE topicKey = :topicKey")
 	suspend fun updateBadges(topicKey: String, badgesJson: String)
+
+	@Query("SELECT * FROM grammar_progress ORDER BY points ASC, completedLessons ASC LIMIT :limit")
+	fun getWeakest(limit: Int): Flow<List<GrammarProgress>>
 }
 
 
