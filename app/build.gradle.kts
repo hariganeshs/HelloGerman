@@ -109,6 +109,12 @@ dependencies {
     // Gson for JSON serialization
     implementation(libs.gson)
     
+    // Networking
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    
     // AdMob
     implementation("com.google.android.gms:play-services-ads:22.6.0")
     

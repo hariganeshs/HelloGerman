@@ -28,6 +28,7 @@ import com.hellogerman.app.ui.theme.*
 import com.hellogerman.app.ui.viewmodel.MainViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.ui.res.stringResource
 import com.hellogerman.app.R
 import com.hellogerman.app.ads.BannerAd1
@@ -274,21 +275,41 @@ fun SkillProgressCard(
 @Composable
 fun QuickActionsSection(navController: NavController) {
     val quickActions = listOf(
+        QuickAction("Dictionary", Icons.Default.Translate, "dictionary"),
         QuickAction("Progress Analytics", Icons.Default.Info, "progress"),
         QuickAction("Practice Quiz", Icons.Default.PlayArrow, "lesen"),
         QuickAction("Settings", Icons.Default.Settings, "settings")
     )
     
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        quickActions.forEach { action ->
-            QuickActionCard(
-                action = action,
-                onClick = { navController.navigate(action.route) },
-                modifier = Modifier.weight(1f)
-            )
+        // First row with Dictionary and Progress Analytics
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            quickActions.take(2).forEach { action ->
+                QuickActionCard(
+                    action = action,
+                    onClick = { navController.navigate(action.route) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+        
+        // Second row with Practice Quiz and Settings
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            quickActions.drop(2).forEach { action ->
+                QuickActionCard(
+                    action = action,
+                    onClick = { navController.navigate(action.route) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 }

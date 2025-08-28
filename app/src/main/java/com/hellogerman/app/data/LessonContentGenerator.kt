@@ -29,7 +29,7 @@ object LessonContentGenerator {
             "hoeren" -> generateHoerenLessons(level)
             "schreiben" -> generateSchreibenLessons(level)
             "sprechen" -> generateSprechenLessons(level)
-            "grammar" -> generateGrammarLessons(level)
+            "grammar" -> GrammarContentExpanded.generateExpandedGrammarLessons(level)
             else -> emptyList()
         }
     }
@@ -1943,29 +1943,54 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         val remaining = 20 - lessons.size
         if (remaining > 0) {
             for (i in 1..remaining) {
+                val practiceQuiz = generatePracticeQuiz(level, i)
                 create(
                     title = "${when(level){"A1"->"Artikel";"A2"->"Kasus";"B1"->"Relativsätze";"B2"->"Passiv";"C1"->"Konjunktiv";else->"Nominalstil"}} Praxis ${i}",
                     description = "Übungen und Beispiele ${i}",
                     content = GrammarContent(
                         topicKey = "${level.lowercase()}_practice_${i}",
-                        explanations = listOf("Kurze Erklärung ${i}"),
-                        examples = listOf("Satz ${i}a", "Satz ${i}b"),
+                        explanations = listOf("Übungsreihe $i für $level"),
+                        examples = listOf("Beispielsatz $i a", "Beispielsatz $i b"),
                         miniGames = listOf(
                             GrammarMiniGame.SentenceBuilder(
                                 words = listOf("ich","gehe","in","den","Park"),
                                 correctOrder = listOf("ich","gehe","in","den","Park")
                             )
                         ),
-                        quiz = listOf(
-                            GrammarQuestion("Fülle die Lücke", listOf("in den","im","ins"), "in den", 5),
-                            GrammarQuestion("Wähle korrekt", listOf("A","B","C"), "B", 5)
-                        )
+                        quiz = practiceQuiz
                     )
                 )
             }
         }
 
         return lessons
+    }
+
+    /**
+     * Generate a varied practice quiz so that each practice lesson has its own set of questions rather than the
+     * generic fallback. We create simple sentence–gap or article questions that differ for every iteration.
+     */
+    private fun generatePracticeQuiz(level: String, index: Int): List<GrammarQuestion> {
+        val baseNouns = listOf("Hund" to "der", "Katze" to "die", "Kind" to "das", "Auto" to "das", "Lehrer" to "der")
+        val (noun, article) = baseNouns[(index - 1) % baseNouns.size]
+
+        val articleOptions = listOf("Der", "Die", "Das")
+        val question1 = GrammarQuestion("__ $noun ist hier.", articleOptions, article.capitalize(), 5)
+
+        // sentence order variation
+        val verbs = listOf("gehe", "lerne", "spiele", "esse", "trinke")
+        val verb = verbs[index % verbs.size]
+        val question2 = GrammarQuestion("(ich/$verb/gerne)", listOf("Ich $verb gerne", "$verb ich gerne", "Gerne ich $verb"), "Ich $verb gerne", 5)
+
+        // plural question variation (A1/A2 only)
+        val plurals = listOf("Kind" to "Kinder", "Buch" to "Bücher", "Haus" to "Häuser")
+        val (singular, plural) = plurals[index % plurals.size]
+        val question3 = GrammarQuestion("Plural von '$singular' ist __", listOf(plural, "${plural}n", "${plural}e"), plural, 5)
+
+        // modal verb question
+        val question4 = GrammarQuestion("Ich __ Deutsch sprechen.", listOf("kann","muss","darf"), "kann", 5)
+
+        return listOf(question1, question2, question3, question4)
     }
 
     data class GrammarContent(
@@ -3039,7 +3064,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                     level = level,
                     orderIndex = 1,
                     prompt = "Diskutiere über aktuelle wissenschaftliche Entwicklungen und deren Auswirkungen auf die Gesellschaft. Sprich 4-5 Minuten.",
-                    modelResponse = "Wissenschaft und Forschung sind entscheidend für den Fortschritt. Aktuelle Entwicklungen in [Bereich] haben [Auswirkungen]. Deutschland ist ein führendes Land in der Forschung, besonders in [Bereiche]. Die Zusammenarbeit zwischen Universitäten und Industrie ist [Bedeutung]. Wir müssen [Herausforderungen] bewältigen.",
+                    modelResponse = "Wissenschaft und Forschung sind entscheidend für den Fortschritt. Aktuelle Entwicklungen in [Bereich] haben [Auswirkungen]. Deutschland ist ein führendes Land in der Forschung, besonders in den Bereichen Ingenieurwesen und Medizin. Die Zusammenarbeit zwischen Universitäten und Industrie ist [Bedeutung]. Wir müssen [Herausforderungen] bewältigen.",
                     keywords = listOf("Wissenschaft", "Forschung", "Entwicklungen", "Deutschland", "Zusammenarbeit", "Herausforderungen")
                 ))
                 
@@ -3055,8 +3080,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                 
                 lessons.add(createSprechenLesson(
                     title = "Medien und Kommunikation",
-                    description = "Talk about media and communication",
-                    level = level,
+                    description = "Talk about media and communication",                    level = level,
                     orderIndex = 3,
                     prompt = "Diskutiere über die Entwicklung der Medienlandschaft und deren Einfluss auf die Demokratie. Sprich 4-5 Minuten.",
                     modelResponse = "Die Medienlandschaft hat sich dramatisch verändert. Soziale Medien dominieren [Bereich] und traditionelle Medien kämpfen um [Herausforderung]. Fake News sind ein [Problem] und wir müssen [Maßnahmen] entwickeln. Qualitätsjournalismus ist [Bedeutung] für eine funktionierende Demokratie. Wir brauchen [Lösungen].",
@@ -3201,13 +3225,12 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         questions: List<Question>,
         vocabulary: List<VocabularyItem>
     ): Lesson {
-        val content = LesenContent(text, questions, vocabulary)
         return Lesson(
             title = title,
             description = description,
             level = level,
             skill = "lesen",
-            content = gson.toJson(content),
+            content = gson.toJson(LesenContent(text, questions, vocabulary)),
             orderIndex = orderIndex
         )
     }
@@ -3220,13 +3243,12 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         script: String,
         questions: List<Question>
     ): Lesson {
-        val content = HoerenContent(script, null, questions)
         return Lesson(
             title = title,
             description = description,
             level = level,
             skill = "hoeren",
-            content = gson.toJson(content),
+            content = gson.toJson(HoerenContent(script, questions = questions)),
             orderIndex = orderIndex
         )
     }
@@ -3241,13 +3263,12 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         maxWords: Int,
         tips: List<String>
     ): Lesson {
-        val content = SchreibenContent(prompt, minWords, maxWords, 900, tips)
         return Lesson(
             title = title,
             description = description,
             level = level,
             skill = "schreiben",
-            content = gson.toJson(content),
+            content = gson.toJson(SchreibenContent(prompt, minWords, maxWords, tips = tips)),
             orderIndex = orderIndex
         )
     }
@@ -3261,14 +3282,14 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         modelResponse: String,
         keywords: List<String>
     ): Lesson {
-        val content = SprechenContent(prompt, modelResponse, 120, keywords)
         return Lesson(
             title = title,
             description = description,
             level = level,
             skill = "sprechen",
-            content = gson.toJson(content),
+            content = gson.toJson(SprechenContent(prompt, modelResponse, keywords = keywords)),
             orderIndex = orderIndex
         )
     }
 }
+

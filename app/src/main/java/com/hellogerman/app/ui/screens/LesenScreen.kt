@@ -22,6 +22,11 @@ import com.hellogerman.app.ui.viewmodel.LessonViewModel
 import com.hellogerman.app.ui.viewmodel.MainViewModel
 import com.hellogerman.app.ui.components.LevelSelector
 import com.hellogerman.app.ui.components.ProgressSummary
+import com.hellogerman.app.ui.components.EnhancedCard
+import com.hellogerman.app.ui.components.EnhancedCardStyle
+import com.hellogerman.app.ui.animations.enhancedPressAnimation
+import com.hellogerman.app.ui.animations.entranceAnimation
+import com.hellogerman.app.ui.animations.floatingAnimation
 import com.hellogerman.app.ads.BannerAd2
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -133,19 +138,15 @@ fun LessonCard(
     lesson: com.hellogerman.app.data.entities.Lesson,
     onClick: () -> Unit
 ) {
-    Card(
+    EnhancedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() },
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .then(if (lesson.isCompleted) Modifier.floatingAnimation() else Modifier),
+        onClick = onClick,
+        style = if (lesson.isCompleted) EnhancedCardStyle.Success else EnhancedCardStyle.Default
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(

@@ -19,6 +19,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.hellogerman.app.ui.viewmodel.LessonViewModel
+import com.hellogerman.app.ui.viewmodel.GameViewModel
+import com.hellogerman.app.ui.components.*
+import com.hellogerman.app.ui.animations.enhancedPressAnimation
+import com.hellogerman.app.ui.animations.entranceAnimation
+import com.hellogerman.app.ui.animations.pulseAnimation
 import com.google.gson.Gson
 import com.hellogerman.app.data.entities.*
 import android.util.Log
@@ -30,7 +35,8 @@ import com.hellogerman.app.ads.AdMobManager
 fun LessonDetailScreen(
     navController: NavController,
     lessonId: Int,
-    lessonViewModel: LessonViewModel = viewModel()
+    lessonViewModel: LessonViewModel = viewModel(),
+    gameViewModel: GameViewModel = viewModel()
 ) {
     val currentLesson by lessonViewModel.currentLesson.collectAsState()
     val isLoading by lessonViewModel.isLoading.collectAsState()
@@ -38,9 +44,26 @@ fun LessonDetailScreen(
     var currentStep by remember { mutableStateOf(0) } // 0: content, 1: quiz, 2: results
     var userAnswers by remember { mutableStateOf(mutableMapOf<String, String>()) }
     var quizCompleted by remember { mutableStateOf(false) }
+    var timeSpentInSeconds by remember { mutableStateOf(0) }
+    
+    // Game state
+    val showXPGain by gameViewModel.showXPGain.collectAsState()
+    val showLevelUpDialog by gameViewModel.showLevelUpDialog.collectAsState()
+    val lastXPGain by gameViewModel.lastXPGain.collectAsState()
+    val userLevel by gameViewModel.userLevel.collectAsState()
 
     val gson = remember { Gson() }
     val context = LocalContext.current
+    
+    // Timer for tracking lesson time
+    LaunchedEffect(lessonId) {
+        val startTime = System.currentTimeMillis()
+        
+        while (true) {
+            kotlinx.coroutines.delay(1000) // Update every second
+            timeSpentInSeconds = ((System.currentTimeMillis() - startTime) / 1000).toInt()
+        }
+    }
 
     // Helper function to check if answer is correct for different question types
     fun isAnswerCorrect(question: Question, userAnswer: String?): Boolean {
@@ -262,7 +285,11 @@ fun LessonDetailScreen(
                             item {
                                 Button(
                                     onClick = { currentStep = 1 },
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .enhancedPressAnimation()
+                                        .entranceAnimation(delay = 300)
+                                        .pulseAnimation()
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.PlayArrow,
@@ -401,9 +428,18 @@ fun LessonDetailScreen(
                                                 QuestionType.FILL_BLANK -> {
                                                     OutlinedTextField(
                                                         value = userAnswers[question.id.toString()] ?: "",
-                                                        onValueChange = { userAnswers[question.id.toString()] = it },
+                                                        onValueChange = { newValue ->
+                                                            userAnswers = userAnswers.toMutableMap().apply {
+                                                                put(question.id.toString(), newValue)
+                                                            }
+                                                        },
                                                         label = { Text("Your answer") },
-                                                        modifier = Modifier.fillMaxWidth()
+                                                        placeholder = { Text("Enter your answer here...") },
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        colors = OutlinedTextFieldDefaults.colors(
+                                                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                                                        )
                                                     )
                                                 }
                                                 QuestionType.MULTIPLE_CORRECT_ANSWERS -> {
@@ -562,11 +598,18 @@ fun LessonDetailScreen(
                                                                     val gapIndex = index - 1
                                                                     OutlinedTextField(
                                                                         value = userAnswers["${question.id}_gap_$gapIndex"] ?: "",
-                                                                        onValueChange = { userAnswers = userAnswers.toMutableMap().apply {
-                                                                            put("${question.id}_gap_$gapIndex", it)
-                                                                        }},
+                                                                        onValueChange = { newValue ->
+                                                                            userAnswers = userAnswers.toMutableMap().apply {
+                                                                                put("${question.id}_gap_$gapIndex", newValue)
+                                                                            }
+                                                                        },
                                                                         label = { Text("Lücke ${gapIndex + 1}") },
-                                                                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+                                                                        placeholder = { Text("Fill gap...") },
+                                                                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                                                                        colors = OutlinedTextFieldDefaults.colors(
+                                                                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                                                                        )
                                                                     )
                                                                 }
                                                                 if (part.isNotEmpty()) {
@@ -610,11 +653,18 @@ fun LessonDetailScreen(
                                                                     )
                                                                     OutlinedTextField(
                                                                         value = userAnswers["${question.id}_match_$left"] ?: "",
-                                                                        onValueChange = { userAnswers = userAnswers.toMutableMap().apply {
-                                                                            put("${question.id}_match_$left", it)
-                                                                        }},
+                                                                        onValueChange = { newValue ->
+                                                                            userAnswers = userAnswers.toMutableMap().apply {
+                                                                                put("${question.id}_match_$left", newValue)
+                                                                            }
+                                                                        },
                                                                         label = { Text("Antwort") },
-                                                                        modifier = Modifier.weight(1f)
+                                                                        placeholder = { Text("Enter match...") },
+                                                                        modifier = Modifier.weight(1f),
+                                                                        colors = OutlinedTextFieldDefaults.colors(
+                                                                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                                                                        )
                                                                     )
                                                                 }
                                                                 Spacer(modifier = Modifier.height(8.dp))
@@ -639,7 +689,10 @@ fun LessonDetailScreen(
                                             quizCompleted = true
                                             currentStep = 2
                                         },
-                                        modifier = Modifier.fillMaxWidth(),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .enhancedPressAnimation()
+                                            .entranceAnimation(delay = 100),
                                         enabled = userAnswers.size == questionsList.size
                                     ) {
                                         Icon(
@@ -713,22 +766,35 @@ fun LessonDetailScreen(
                             item {
                                 Button(
                                     onClick = {
-                                        // Update lesson progress
+                                        // Calculate quiz results
                                         val questionsForScore = when (lesson.skill) {
                                             "lesen" -> (lessonContent as? LesenContent)?.questions
                                             "hoeren" -> (lessonContent as? HoerenContent)?.questions
                                             else -> null
                                         }
+                                        
+                                        val correctAnswers = questionsForScore?.count { question ->
+                                            isAnswerCorrect(question, userAnswers[question.id.toString()])
+                                        } ?: 0
+                                        
+                                        val totalQuestions = questionsForScore?.size ?: 0
+                                        val finalScore = if (totalQuestions > 0) (correctAnswers * 100) / totalQuestions else 0
+                                        
+                                        // Update traditional lesson progress
                                         lessonViewModel.updateLessonProgress(
                                             lessonId = lesson.id,
                                             completed = true,
-                                            score = questionsForScore?.let { questions ->
-                                                val correctAnswers = questions.count { question ->
-                                                    isAnswerCorrect(question, userAnswers[question.id.toString()])
-                                                }
-                                                (correctAnswers * 100) / questions.size
-                                            } ?: 0,
-                                            timeSpent = 0 // TODO: Implement timer
+                                            score = finalScore,
+                                            timeSpent = timeSpentInSeconds
+                                        )
+                                        
+                                        // Update gamification system
+                                        gameViewModel.completeQuizWithGamification(
+                                            correctAnswers = correctAnswers,
+                                            totalQuestions = totalQuestions,
+                                            timeSpent = timeSpentInSeconds,
+                                            skill = lesson.skill,
+                                            level = lesson.level
                                         )
                                         
                                         // Show interstitial ad before navigating back
@@ -738,7 +804,10 @@ fun LessonDetailScreen(
                                         
                                         navController.navigateUp()
                                     },
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .enhancedPressAnimation()
+                                        .entranceAnimation(delay = 200)
                                 ) {
                                     Text("Complete Lesson")
                                 }
@@ -748,5 +817,23 @@ fun LessonDetailScreen(
                 }
             }
         }
+    }
+    
+    // Beautiful gamification notifications
+    XPGainNotification(
+        xpAmount = lastXPGain,
+        isVisible = showXPGain,
+        onDismiss = { gameViewModel.dismissXPGain() },
+        modifier = Modifier.fillMaxWidth()
+    )
+    
+    // Level Up Celebration
+    if (showLevelUpDialog && userLevel != null) {
+        LevelUpCelebration(
+            newLevel = userLevel!!.level,
+            newTitle = userLevel!!.title,
+            isVisible = showLevelUpDialog,
+            onDismiss = { gameViewModel.dismissLevelUpDialog() }
+        )
     }
 }

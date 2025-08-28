@@ -103,6 +103,10 @@ class HelloGermanRepository(context: Context) {
         lessonDao.deleteLessonsBySkill(skill)
     }
     
+    suspend fun deleteGrammarLessons() {
+        lessonDao.deleteAllGrammarLessons()
+    }
+    
     suspend fun getAllLessons(): List<Lesson> {
         return lessonDao.getAllLessons()
     }

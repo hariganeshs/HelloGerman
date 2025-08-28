@@ -14,6 +14,9 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     
     private val repository = HelloGermanRepository(application)
     
+    private val _userProgress = MutableStateFlow<UserProgress?>(null)
+    val userProgress: StateFlow<UserProgress?> = _userProgress.asStateFlow()
+    
     private val _isDarkMode = MutableStateFlow(false)
     val isDarkMode: StateFlow<Boolean> = _isDarkMode.asStateFlow()
     
@@ -22,9 +25,6 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     
     private val _dailyGoal = MutableStateFlow(3)
     val dailyGoal: StateFlow<Int> = _dailyGoal.asStateFlow()
-    
-    private val _userProgress = MutableStateFlow<UserProgress?>(null)
-    val userProgress: StateFlow<UserProgress?> = _userProgress.asStateFlow()
     
     init {
         loadUserProgress()

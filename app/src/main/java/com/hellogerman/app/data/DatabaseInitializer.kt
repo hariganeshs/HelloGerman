@@ -31,6 +31,20 @@ object DatabaseInitializer {
                 if (!hasGrammar) {
                     val grammarOnly = LessonContentGenerator.generateAllLessons().filter { it.skill == "grammar" }
                     repository.insertLessons(grammarOnly)
+                } else {
+                    // Check if existing grammar lessons have placeholder content and refresh them
+                    val grammarLessons = existingLessons.filter { it.skill == "grammar" }
+                    val hasPlaceholderContent = grammarLessons.any { lesson ->
+                        lesson.content.contains("\"Wähle richtig\"") || 
+                        lesson.content.contains("\"Wähle korrekt\"") ||
+                        lesson.content.contains("\"A\",\"B\",\"C\"")
+                    }
+                    if (hasPlaceholderContent) {
+                        // Delete old grammar lessons and insert fresh ones
+                        repository.deleteGrammarLessons()
+                        val grammarOnly = LessonContentGenerator.generateAllLessons().filter { it.skill == "grammar" }
+                        repository.insertLessons(grammarOnly)
+                    }
                 }
             }
 

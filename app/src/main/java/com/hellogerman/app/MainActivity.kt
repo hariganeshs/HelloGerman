@@ -3,6 +3,8 @@ package com.hellogerman.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -27,12 +29,16 @@ import com.hellogerman.app.ui.navigation.Screen
 import com.hellogerman.app.ui.screens.*
 import com.hellogerman.app.ui.theme.HelloGermanTheme
 import com.hellogerman.app.ui.viewmodel.MainViewModel
+import com.hellogerman.app.ui.viewmodel.ThemeViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            HelloGermanTheme {
+            val themeViewModel: ThemeViewModel = viewModel()
+            val isDarkMode by themeViewModel.isDarkMode.collectAsState()
+            
+            HelloGermanTheme(darkTheme = isDarkMode) {
                 HelloGermanApp()
             }
         }
@@ -122,31 +128,107 @@ fun HelloGermanApp() {
                 startDestination = if (userProgress?.isOnboarded == true) Screen.Dashboard.route else Screen.Onboarding.route,
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable(Screen.Splash.route) {
+                composable(
+                    route = Screen.Splash.route,
+                    enterTransition = { fadeIn(animationSpec = tween(300)) },
+                    exitTransition = { fadeOut(animationSpec = tween(300)) }
+                ) {
                     SplashScreen(navController)
                 }
                 
-                composable(Screen.Onboarding.route) {
+                composable(
+                    route = Screen.Onboarding.route,
+                    enterTransition = { 
+                        slideInHorizontally(
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) { it } + fadeIn(animationSpec = tween(300))
+                    },
+                    exitTransition = { 
+                        slideOutHorizontally(
+                            animationSpec = tween(300, easing = FastOutLinearInEasing)
+                        ) { -it / 3 } + fadeOut(animationSpec = tween(200))
+                    }
+                ) {
                     OnboardingScreen(navController, mainViewModel)
                 }
                 
-                composable(Screen.Dashboard.route) {
+                composable(
+                    route = Screen.Dashboard.route,
+                    enterTransition = { 
+                        slideInVertically(
+                            animationSpec = tween(500, easing = FastOutSlowInEasing)
+                        ) { it / 2 } + fadeIn(animationSpec = tween(300))
+                    },
+                    exitTransition = { 
+                        slideOutVertically(
+                            animationSpec = tween(300, easing = FastOutLinearInEasing)
+                        ) { -it / 2 } + fadeOut(animationSpec = tween(200))
+                    }
+                ) {
                     DashboardScreen(navController, mainViewModel)
                 }
                 
-                composable(Screen.Lesen.route) {
+                composable(
+                    route = Screen.Lesen.route,
+                    enterTransition = { 
+                        slideInHorizontally(
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) { it / 2 } + fadeIn(animationSpec = tween(300, delayMillis = 100))
+                    },
+                    exitTransition = { 
+                        slideOutHorizontally(
+                            animationSpec = tween(300, easing = FastOutLinearInEasing)
+                        ) { -it / 3 } + fadeOut(animationSpec = tween(200))
+                    }
+                ) {
                     LesenScreen(navController, mainViewModel)
                 }
                 
-                composable(Screen.Hoeren.route) {
+                composable(
+                    route = Screen.Hoeren.route,
+                    enterTransition = { 
+                        slideInHorizontally(
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) { it / 2 } + fadeIn(animationSpec = tween(300, delayMillis = 100))
+                    },
+                    exitTransition = { 
+                        slideOutHorizontally(
+                            animationSpec = tween(300, easing = FastOutLinearInEasing)
+                        ) { -it / 3 } + fadeOut(animationSpec = tween(200))
+                    }
+                ) {
                     HoerenScreen(navController, mainViewModel)
                 }
                 
-                composable(Screen.Schreiben.route) {
+                composable(
+                    route = Screen.Schreiben.route,
+                    enterTransition = { 
+                        slideInHorizontally(
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) { it / 2 } + fadeIn(animationSpec = tween(300, delayMillis = 100))
+                    },
+                    exitTransition = { 
+                        slideOutHorizontally(
+                            animationSpec = tween(300, easing = FastOutLinearInEasing)
+                        ) { -it / 3 } + fadeOut(animationSpec = tween(200))
+                    }
+                ) {
                     SchreibenScreen(navController, mainViewModel)
                 }
                 
-                composable(Screen.Sprechen.route) {
+                composable(
+                    route = Screen.Sprechen.route,
+                    enterTransition = { 
+                        slideInHorizontally(
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) { it / 2 } + fadeIn(animationSpec = tween(300, delayMillis = 100))
+                    },
+                    exitTransition = { 
+                        slideOutHorizontally(
+                            animationSpec = tween(300, easing = FastOutLinearInEasing)
+                        ) { -it / 3 } + fadeOut(animationSpec = tween(200))
+                    }
+                ) {
                     SprechenScreen(navController, mainViewModel)
                 }
                 
@@ -193,6 +275,22 @@ fun HelloGermanApp() {
                 composable(Screen.GrammarQuiz.route) { backStackEntry ->
                     val lessonId = backStackEntry.arguments?.getString("lessonId")?.toIntOrNull() ?: 0
                     GrammarQuizScreen(navController, lessonId)
+                }
+                
+                composable(
+                    route = Screen.Dictionary.route,
+                    enterTransition = { 
+                        slideInHorizontally(
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) { it / 2 } + fadeIn(animationSpec = tween(300))
+                    },
+                    exitTransition = { 
+                        slideOutHorizontally(
+                            animationSpec = tween(300, easing = FastOutLinearInEasing)
+                        ) { -it / 3 } + fadeOut(animationSpec = tween(200))
+                    }
+                ) {
+                    DictionaryScreen(navController)
                 }
             }
         }

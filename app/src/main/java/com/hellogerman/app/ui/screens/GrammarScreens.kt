@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -45,7 +46,8 @@ private data class GrammarQuestionLite(
 	val question: String = "",
 	val options: List<String> = emptyList(),
 	val correct: String = "",
-	val points: Int = 10
+	val points: Int = 10,
+	val questionEn: String? = null
 )
 
 @Composable
@@ -145,26 +147,74 @@ fun GrammarLessonScreen(navController: NavController, lessonId: Int, grammarView
         if (grammarContent == null) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         } else {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("EN", modifier = Modifier.semantics { contentDescription = "English toggle" })
-                Switch(checked = showEnglish, onCheckedChange = { showEnglish = it })
-            }
-            Text("Explanations:")
-            (grammarContent.explanations ?: emptyList()).forEach { expl ->
-                Text("- " + expl)
-            }
-            if (showEnglish && (grammarContent.explanationsEn?.isNotEmpty() == true)) {
-                grammarContent.explanationsEn?.forEach { expl ->
-                    Text("- " + expl, color = Color.Gray)
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                item {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("EN", fontSize = 12.sp, modifier = Modifier.semantics { contentDescription = "English toggle" })
+                        Switch(checked = showEnglish, onCheckedChange = { showEnglish = it })
+                    }
+                }
+                
+                if (!grammarContent.explanations.isNullOrEmpty()) {
+                    item {
+                        Card(
+                            colors = CardDefaults.cardColors(containerColor = GrammarColor.copy(alpha = 0.05f))
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    "Explanations:",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = GrammarColor
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                grammarContent.explanations.forEach { expl ->
+                                    Text("• $expl", modifier = Modifier.padding(vertical = 2.dp))
+                                }
+                                if (showEnglish && !grammarContent.explanationsEn.isNullOrEmpty()) {
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text("English:", fontWeight = FontWeight.Medium, color = Color.Gray)
+                                    grammarContent.explanationsEn.forEach { expl ->
+                                        Text("• $expl", color = Color.Gray, modifier = Modifier.padding(vertical = 2.dp))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if (!grammarContent.examples.isNullOrEmpty()) {
+                    item {
+                        Card(
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    "Examples:",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                grammarContent.examples.forEach { ex ->
+                                    Text("• $ex", modifier = Modifier.padding(vertical = 2.dp))
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                item {
+                    Button(
+                        onClick = { navController.navigate(Screen.GrammarQuiz.createRoute(lessonId)) },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(stringResource(id = R.string.start_quiz))
+                    }
                 }
             }
-            Text("Examples:")
-            (grammarContent.examples ?: emptyList()).forEach { ex ->
-                Text("- " + ex)
-            }
-        }
-        Button(onClick = { navController.navigate(Screen.GrammarQuiz.createRoute(lessonId)) }) {
-            Text(stringResource(id = R.string.start))
         }
     }
 }
@@ -177,13 +227,32 @@ fun GrammarQuizScreen(navController: NavController, lessonId: Int, grammarViewMo
 	}
 	val lesson = lessonState.value
 	val content = remember(lesson?.content) {
-		lesson?.content?.let { gson.fromJson(it, GrammarContentLite::class.java) }
+		lesson?.content?.let { 
+			try {
+				val parsed = gson.fromJson(it, GrammarContentLite::class.java)
+				android.util.Log.d("GrammarQuiz", "Parsed content: topicKey=${parsed.topicKey}, quiz size=${parsed.quiz?.size ?: 0}")
+				if (parsed.quiz?.isNotEmpty() == true) {
+					parsed.quiz.forEach { q ->
+						android.util.Log.d("GrammarQuiz", "Question: ${q.question}, Options: ${q.options}")
+					}
+				}
+				parsed
+			} catch (e: Exception) {
+				android.util.Log.e("GrammarQuiz", "Error parsing lesson content", e)
+				null
+			}
+		}
 	}
 	var score by remember { mutableStateOf(0) }
 	var finished by remember { mutableStateOf(false) }
 	var idx by remember { mutableStateOf(0) }
 	var selected by remember { mutableStateOf<String?>(null) }
+	var showFeedback by remember { mutableStateOf(false) }
+	var isCorrect by remember { mutableStateOf(false) }
+	var correctAnswers by remember { mutableStateOf(0) }
 	val questions = content?.quiz ?: emptyList()
+	
+	android.util.Log.d("GrammarQuiz", "Lesson ID: $lessonId, Questions found: ${questions.size}")
 
 	Column(
 		Modifier
@@ -193,42 +262,162 @@ fun GrammarQuizScreen(navController: NavController, lessonId: Int, grammarViewMo
 	) {
 		Text(stringResource(id = R.string.quiz), fontSize = 22.sp, fontWeight = FontWeight.Bold)
 		if (questions.isEmpty()) {
-			Text("No questions found.")
+			Text("No questions found in this lesson.")
 			Button(onClick = { navController.popBackStack() }) { Text(stringResource(id = R.string.save_and_back)) }
 		} else if (!finished) {
 			val q = questions[idx]
-			Text(q.question)
+			
+			// Progress indicator
+			Text("Question ${idx + 1} of ${questions.size}", fontSize = 14.sp, color = Color.Gray)
+			LinearProgressIndicator(
+				progress = (idx + 1).toFloat() / questions.size.toFloat(),
+				modifier = Modifier.fillMaxWidth()
+			)
+			Spacer(modifier = Modifier.height(8.dp))
+			
+			// English toggle
+			var showEnglish by remember { mutableStateOf(false) }
+			Row(verticalAlignment = Alignment.CenterVertically) {
+				Text("EN", fontSize = 12.sp)
+				Switch(checked = showEnglish, onCheckedChange = { showEnglish = it })
+			}
+			
+			// Question text
+			Text(q.question, fontSize = 18.sp, fontWeight = FontWeight.Medium)
+			if (showEnglish && !q.questionEn.isNullOrBlank()) {
+				Text(q.questionEn, fontSize = 14.sp, color = Color.Gray, style = MaterialTheme.typography.bodyMedium)
+			}
+			Spacer(modifier = Modifier.height(12.dp))
+			
+			// Answer options
 			Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 				q.options.forEach { option ->
 					val selectedThis = selected == option
 					OutlinedButton(
 						onClick = { selected = option },
+						modifier = Modifier.fillMaxWidth(),
 						colors = ButtonDefaults.outlinedButtonColors(
-							containerColor = if (selectedThis) MaterialTheme.colorScheme.primary.copy(alpha = 0.08f) else Color.Transparent
-						)
-					) { Text(option) }
+							containerColor = if (selectedThis) MaterialTheme.colorScheme.primary.copy(alpha = 0.12f) else Color.Transparent,
+							contentColor = if (selectedThis) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+						),
+						border = if (selectedThis) ButtonDefaults.outlinedButtonBorder.copy(
+							width = 2.dp,
+							brush = SolidColor(MaterialTheme.colorScheme.primary)
+						) else ButtonDefaults.outlinedButtonBorder
+					) { 
+						Text(option, modifier = Modifier.fillMaxWidth()) 
+					}
 				}
 			}
-			Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-				Button(onClick = {
-					if (selected != null) {
-						if (selected.equals(q.correct, ignoreCase = true)) score += q.points
-						selected = null
-						if (idx < questions.lastIndex) idx++ else finished = true
+			// Feedback display
+			if (showFeedback) {
+				Card(
+					colors = CardDefaults.cardColors(
+						containerColor = if (isCorrect) Color.Green.copy(alpha = 0.1f) else Color.Red.copy(alpha = 0.1f)
+					)
+				) {
+					Column(modifier = Modifier.padding(16.dp)) {
+						Text(
+							if (isCorrect) "✓ Correct!" else "✗ Incorrect",
+							fontWeight = FontWeight.Bold,
+							color = if (isCorrect) Color.Green else Color.Red
+						)
+						if (!isCorrect) {
+							Text("Correct answer: ${q.correct}", color = Color.Gray)
+						}
+						if (isCorrect) {
+							Text("+${q.points} points", color = Color.Green)
+						}
 					}
-				}) { Text("Submit") }
+				}
+			}
+			
+			Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+				if (!showFeedback) {
+					Button(
+						onClick = {
+							if (selected != null) {
+								isCorrect = selected.equals(q.correct, ignoreCase = true)
+								if (isCorrect) {
+									score += q.points
+									correctAnswers++
+								}
+								showFeedback = true
+							}
+						},
+						enabled = selected != null
+					) { Text("Submit") }
+				} else {
+					Button(onClick = {
+						showFeedback = false
+						selected = null
+						if (idx < questions.lastIndex) {
+							idx++
+						} else {
+							finished = true
+						}
+					}) { 
+						Text(if (idx < questions.lastIndex) "Next" else stringResource(id = R.string.finish))
+					}
+				}
 				Spacer(Modifier.width(8.dp))
-				Button(onClick = { finished = true }) { Text(stringResource(id = R.string.finish)) }
+				Button(
+					onClick = { finished = true },
+					colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+				) { Text("Skip Quiz") }
 			}
 		} else {
 			AnimatedVisibility(finished) {
+				// Calculate percentage once outside the Card scope
+				val percentage = if (questions.isNotEmpty()) (correctAnswers.toFloat() / questions.size * 100).toInt() else 0
+				
 				Column(horizontalAlignment = Alignment.Start) {
-					Text(stringResource(id = R.string.total, score))
-					Spacer(Modifier.height(8.dp))
+					Card(
+						colors = CardDefaults.cardColors(containerColor = GrammarColor.copy(alpha = 0.1f))
+					) {
+						Column(modifier = Modifier.padding(16.dp)) {
+							Text("Quiz Completed!", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+							Spacer(modifier = Modifier.height(8.dp))
+							Text("Final Score: $score points", fontSize = 16.sp)
+							Text("Correct Answers: $correctAnswers/${questions.size}", fontSize = 14.sp, color = Color.Gray)
+							Text("Accuracy: $percentage%", fontSize = 14.sp, color = Color.Gray)
+							
+							Spacer(modifier = Modifier.height(8.dp))
+							
+							// Performance feedback
+							val performanceText = when {
+								percentage >= 90 -> "🌟 Excellent work!"
+								percentage >= 75 -> "✅ Good job!"
+								percentage >= 60 -> "👍 Not bad!"
+								else -> "📚 Keep practicing!"
+							}
+							Text(performanceText, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+						}
+					}
+					
+					Spacer(Modifier.height(16.dp))
+					
 					Button(onClick = {
-						val topicKey = grammarViewModel.buildTopicKey("A1", "lesson_$lessonId")
+						// Use actual lesson level instead of hardcoded "A1"
+						val actualLevel = lesson?.level ?: "A1"
+						val topicKey = content?.topicKey ?: grammarViewModel.buildTopicKey(actualLevel, "lesson_$lessonId")
+						
+						// Save score and progress
 						grammarViewModel.addPoints(topicKey, score)
-						if (score >= 15) grammarViewModel.awardBadge(topicKey, "fast_starter")
+						
+						// Award badges based on performance
+						when {
+							percentage >= 90 -> grammarViewModel.awardBadge(topicKey, "perfectionist")
+							percentage >= 75 -> grammarViewModel.awardBadge(topicKey, "grammar_master")
+							correctAnswers >= 3 -> grammarViewModel.awardBadge(topicKey, "quick_learner")
+						}
+						
+						// Save lesson completion
+						if (lesson != null) {
+							// TODO: Update lesson progress in database
+							android.util.Log.d("GrammarQuiz", "Lesson completed: ${lesson.id}, Score: $score, Accuracy: $percentage%")
+						}
+						
 						navController.popBackStack()
 					}) { Text(stringResource(id = R.string.save_and_back)) }
 				}

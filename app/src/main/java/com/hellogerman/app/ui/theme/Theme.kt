@@ -64,7 +64,7 @@ fun HelloGermanTheme(
             val window = (view.context as Activity).window
             // Use WindowCompat for status bar handling instead of deprecated statusBarColor
             WindowCompat.setDecorFitsSystemWindows(window, false)
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 

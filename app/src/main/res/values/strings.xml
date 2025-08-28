@@ -11,6 +11,7 @@
     <string name="finish">Finish</string>
     <string name="total">Total: %1$d</string>
     <string name="save_and_back">Save &amp; Back</string>
+    <string name="start_quiz">Start Quiz</string>
     <string name="weak_topics">Weak Topics</string>
     <string name="open_grammar">Open Grammar</string>
 </resources>
