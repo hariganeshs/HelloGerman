@@ -67,7 +67,6 @@ fun HelloGermanApp() {
             bottomBar = {
                 if (currentDestination?.route !in listOf(Screen.Splash.route, Screen.Onboarding.route)) {
                     NavigationBar(
-                        modifier = Modifier.height(72.dp),
                         containerColor = MaterialTheme.colorScheme.surface,
                         contentColor = MaterialTheme.colorScheme.onSurface
                     ) {
