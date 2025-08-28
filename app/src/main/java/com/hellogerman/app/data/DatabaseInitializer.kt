@@ -21,25 +21,34 @@ object DatabaseInitializer {
                 repository.insertUserProgress(com.hellogerman.app.data.entities.UserProgress())
             }
             
-            // Check if lessons already exist before inserting
+            // Check existing lessons; if missing grammar lessons, insert only grammar lessons
             val existingLessons = repository.getAllLessons()
             if (existingLessons.isEmpty()) {
-                // Only insert lessons if none exist
                 val lessons = LessonContentGenerator.generateAllLessons()
                 repository.insertLessons(lessons)
+            } else {
+                val hasGrammar = existingLessons.any { it.skill == "grammar" }
+                if (!hasGrammar) {
+                    val grammarOnly = LessonContentGenerator.generateAllLessons().filter { it.skill == "grammar" }
+                    repository.insertLessons(grammarOnly)
+                }
             }
 
-            // Seed grammar progress entries for all grammar lessons (grouped by topicKey)
-            val allLessons = repository.getAllLessons()
-            val grammarLessons = allLessons.filter { it.skill == "grammar" }
-            val topics = grammarLessons.groupBy { it.level }
-            topics.forEach { (level, levelLessons) ->
-                levelLessons.forEachIndexed { index, lesson ->
-                    // topicKey is embedded in GrammarContent JSON; seed per lesson fallback to title-based key
-                    val topicKey = ("${level}_" + lesson.title.lowercase().replace(" ", "_")).take(64)
+            // Seed grammar progress entries based on lessons' topicKey from JSON content
+            val allLessons = repository.getAllLessons().filter { it.skill == "grammar" }
+            val gson = com.google.gson.Gson()
+            allLessons.forEach { lesson ->
+                val topicKey: String = try {
+                    val map: Map<*, *> = gson.fromJson(lesson.content, Map::class.java)
+                    (map["topicKey"] as? String) ?: (lesson.level.lowercase() + "_" + lesson.title.lowercase().replace(" ", "_"))
+                } catch (e: Exception) {
+                    lesson.level.lowercase() + "_" + lesson.title.lowercase().replace(" ", "_")
+                }
+                val existing = repository.getGrammarProgressByTopic(topicKey)
+                if (existing == null) {
                     val progress = com.hellogerman.app.data.entities.GrammarProgress(
                         topicKey = topicKey,
-                        level = level,
+                        level = lesson.level,
                         points = 0,
                         badgesJson = "[]",
                         streak = 0,

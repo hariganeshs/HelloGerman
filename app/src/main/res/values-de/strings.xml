@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Hello German</string>
+    <string name="grammar">Grammatik</string>
+    <string name="daily_challenge">Tägliche Herausforderung</string>
+    <string name="start">Start</string>
+    <string name="level_topics">Level %1$s Themen</string>
+    <string name="no_grammar_lessons">Keine Grammatiklektionen für %1$s gefunden.</string>
+    <string name="load_grammar_lessons">Grammatiklektionen laden</string>
+    <string name="quiz">Quiz</string>
+    <string name="answer_correct_plus">Richtig beantwortet (+10)</string>
+    <string name="finish">Beenden</string>
+    <string name="total">Summe: %1$d</string>
+    <string name="save_and_back">Speichern &amp; Zurück</string>
+    <string name="weak_topics">Schwache Themen</string>
+    <string name="open_grammar">Grammatik öffnen</string>
+</resources>
+

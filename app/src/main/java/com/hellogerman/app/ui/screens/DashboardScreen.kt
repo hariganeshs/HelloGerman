@@ -28,6 +28,8 @@ import com.hellogerman.app.ui.theme.*
 import com.hellogerman.app.ui.viewmodel.MainViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.material.icons.filled.Book
+import androidx.compose.ui.res.stringResource
+import com.hellogerman.app.R
 import com.hellogerman.app.ads.BannerAd1
 import com.hellogerman.app.data.DatabaseInitializer
 
@@ -377,7 +379,7 @@ fun GrammarProgressCard(onClick: () -> Unit, mainViewModel: MainViewModel = view
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Grammar",
+                    text = stringResource(id = R.string.grammar),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface
@@ -400,7 +402,7 @@ fun GrammarProgressCard(onClick: () -> Unit, mainViewModel: MainViewModel = view
 
             Icon(
                 imageVector = Icons.Default.PlayArrow,
-                contentDescription = "Open Grammar",
+                contentDescription = stringResource(id = R.string.open_grammar),
                 tint = GrammarColor
             )
         }

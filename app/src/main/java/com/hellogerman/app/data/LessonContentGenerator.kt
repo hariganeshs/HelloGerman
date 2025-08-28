@@ -1852,17 +1852,90 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         // Create at least 10 core lessons (one per topic, plus variants)
         topics.forEach { (key, pair) ->
             val (title, desc) = pair
+            val englishHint = if (level in listOf("A1","A2")) when (key) {
+                "articles" -> "Definite (der/die/das) and indefinite (ein/eine) articles."
+                "nouns_gender" -> "Gender rules (feminine -ung, neuter -chen/-lein)."
+                "plural" -> "Plural endings patterns in German."
+                "sentence_order" -> "Verb in second position in main clauses."
+                "pronouns" -> "Personal pronouns in nominative."
+                "cases" -> "Accusative/Dative: prepositions and articles."
+                "prepositions" -> "Two-way prepositions (Wechselpräpositionen)."
+                "adjectives_basic" -> "Basic adjective endings after articles."
+                "modal_verbs" -> "Modal verbs: können, müssen, dürfen."
+                "past_perfekt" -> "Present perfect: haben/sein + Participle II."
+                else -> "Core grammar concept explained in English."
+            } else null
+
+            val quizList: List<GrammarQuestion> = when (level) {
+                "A1" -> when (key) {
+                    "articles" -> listOf(
+                        GrammarQuestion("__ Mann ist groß.", listOf("Der","Die","Das"), "Der", 5, questionEn = "Choose the correct definite article for 'Mann'."),
+                        GrammarQuestion("Ich habe __ Apfel.", listOf("ein","eine","der"), "ein", 5, questionEn = "Indefinite article for masculine 'Apfel'."),
+                        GrammarQuestion("__ Haus ist neu.", listOf("Der","Die","Das"), "Das", 5, questionEn = "Neuter 'Haus' takes 'das'."),
+                        GrammarQuestion("Sie hat __ Katze.", listOf("ein","eine","das"), "eine", 5, questionEn = "Feminine 'Katze' takes 'eine'.")
+                    )
+                    "nouns_gender" -> listOf(
+                        GrammarQuestion("__ Zeitung", listOf("der","die","das"), "die", 5, questionEn = "-ung nouns are usually feminine."),
+                        GrammarQuestion("__ Mädchen", listOf("der","die","das"), "das", 5, questionEn = "-chen diminutives are neuter."),
+                        GrammarQuestion("__ Junge", listOf("der","die","das"), "der", 5, questionEn = "Male person is usually masculine."),
+                        GrammarQuestion("__ Blume", listOf("der","die","das"), "die", 5)
+                    )
+                    "plural" -> listOf(
+                        GrammarQuestion("Plural von 'Kind' ist __", listOf("Kinder","Kinds","Kinden"), "Kinder", 5, questionEn = "Common plural pattern."),
+                        GrammarQuestion("Plural von 'Auto' ist __", listOf("Autos","Autoe","Auten"), "Autos", 5),
+                        GrammarQuestion("Plural von 'Frau' ist __", listOf("Fraue","Frauen","Fraus"), "Frauen", 5)
+                    )
+                    "sentence_order" -> listOf(
+                        GrammarQuestion("(ich/ins Kino/gehe)", listOf("Ich gehe ins Kino","Ins Kino gehe ich","Gehe ich ins Kino"), "Ich gehe ins Kino", 5, questionEn = "Main clause: verb in 2nd position."),
+                        GrammarQuestion("(heute/lerne/ich)", listOf("Heute ich lerne","Ich lerne heute","Lerne ich heute"), "Ich lerne heute", 5)
+                    )
+                    "pronouns" -> listOf(
+                        GrammarQuestion("__ bin Anna.", listOf("Ich","Du","Er"), "Ich", 5),
+                        GrammarQuestion("__ bist Max.", listOf("Ich","Du","Sie"), "Du", 5),
+                        GrammarQuestion("__ ist müde.", listOf("Er","Ich","Du"), "Er", 5)
+                    )
+                    else -> listOf(GrammarQuestion("Wähle den korrekten Eintrag.", listOf("A","B","C"), "A", 5))
+                }
+                "A2" -> when (key) {
+                    "cases" -> listOf(
+                        GrammarQuestion("Ich gehe __ Park.", listOf("in den","im","ins"), "in den", 10, questionEn = "Akkusativ after movement"),
+                        GrammarQuestion("Ich bin __ Park.", listOf("im","in den","ins"), "im", 10, questionEn = "Dativ for location"),
+                        GrammarQuestion("Ich fahre mit __ Bus.", listOf("dem","den","der"), "dem", 10)
+                    )
+                    "prepositions" -> listOf(
+                        GrammarQuestion("Das Bild hängt __ Wand.", listOf("an der","an die","auf die"), "an der", 10, questionEn = "Dative with location"),
+                        GrammarQuestion("Ich hänge das Bild __ Wand.", listOf("an die","an der","auf der"), "an die", 10, questionEn = "Accusative with movement")
+                    )
+                    "adjectives_basic" -> listOf(
+                        GrammarQuestion("Das ist ein __ Haus.", listOf("großes","große","großer"), "großes", 10),
+                        GrammarQuestion("Ich sehe den __ Mann.", listOf("großen","großem","großer"), "großen", 10)
+                    )
+                    "modal_verbs" -> listOf(
+                        GrammarQuestion("Ich __ Deutsch sprechen.", listOf("kann","muss","darf"), "kann", 10),
+                        GrammarQuestion("Du __ heute lernen.", listOf("musst","kannst","darfst"), "musst", 10)
+                    )
+                    "past_perfekt" -> listOf(
+                        GrammarQuestion("Ich __ nach Berlin gefahren.", listOf("bin","habe","war"), "bin", 10, questionEn = "'sein' with movement"),
+                        GrammarQuestion("Ich __ Pizza gegessen.", listOf("habe","bin","war"), "habe", 10)
+                    )
+                    else -> listOf(GrammarQuestion("Wähle die richtige Antwort.", listOf("A","B","C"), "A", 10))
+                }
+                else -> listOf(
+                    GrammarQuestion("Wähle richtig", listOf("A","B","C"), "A", 5),
+                    GrammarQuestion("Vervollständige den Satz", listOf("A","B","C"), "B", 5)
+                )
+            }
+
             create(title, desc, GrammarContent(
                 topicKey = "${level.lowercase()}_${key}",
                 explanations = listOf(desc),
+                explanationsEn = if (englishHint != null) listOf(englishHint) else emptyList(),
                 examples = listOf("Beispiel 1", "Beispiel 2"),
                 miniGames = listOf(
                     GrammarMiniGame.FillBlank("___ Haus ist groß.", "Das"),
                     GrammarMiniGame.Match(listOf("obwohl" to "Konjunktion", "trotzdem" to "Adverb"))
                 ),
-                quiz = listOf(
-                    GrammarQuestion("Wähle richtig", listOf("A","B","C"), "A", 5)
-                )
+                quiz = quizList
             ))
         }
 
@@ -1884,7 +1957,8 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                             )
                         ),
                         quiz = listOf(
-                            GrammarQuestion("Fülle die Lücke", listOf("in den","im","ins"), "in den", 5)
+                            GrammarQuestion("Fülle die Lücke", listOf("in den","im","ins"), "in den", 5),
+                            GrammarQuestion("Wähle korrekt", listOf("A","B","C"), "B", 5)
                         )
                     )
                 )
@@ -1897,6 +1971,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
     data class GrammarContent(
         val topicKey: String,
         val explanations: List<String>,
+        val explanationsEn: List<String> = emptyList(),
         val examples: List<String>,
         val miniGames: List<GrammarMiniGame> = emptyList(),
         val quiz: List<GrammarQuestion> = emptyList()
@@ -1906,7 +1981,8 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         val question: String,
         val options: List<String>,
         val correct: String,
-        val points: Int
+        val points: Int,
+        val questionEn: String? = null
     )
 
     sealed class GrammarMiniGame {

@@ -42,4 +42,7 @@ interface LessonDao {
     
     @Query("DELETE FROM lessons")
     suspend fun deleteAllLessons()
+
+    @Query("DELETE FROM lessons WHERE skill = :skill")
+    suspend fun deleteLessonsBySkill(skill: String)
 }

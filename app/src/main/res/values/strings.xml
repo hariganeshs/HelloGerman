@@ -3,4 +3,14 @@
     <string name="grammar">Grammar</string>
     <string name="daily_challenge">Daily Challenge</string>
     <string name="start">Start</string>
+    <string name="level_topics">Level %1$s Topics</string>
+    <string name="no_grammar_lessons">No grammar lessons found for %1$s.</string>
+    <string name="load_grammar_lessons">Load Grammar Lessons</string>
+    <string name="quiz">Quiz</string>
+    <string name="answer_correct_plus">Answer Correct (+10)</string>
+    <string name="finish">Finish</string>
+    <string name="total">Total: %1$d</string>
+    <string name="save_and_back">Save &amp; Back</string>
+    <string name="weak_topics">Weak Topics</string>
+    <string name="open_grammar">Open Grammar</string>
 </resources>
