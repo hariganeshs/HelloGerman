@@ -73,12 +73,14 @@ fun GrammarDashboard(navController: NavController, grammarViewModel: GrammarView
 			elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
 		) {
 			Column(Modifier.padding(16.dp)) {
-				Text(stringResource(id = R.string.daily_challenge), fontWeight = FontWeight.Bold)
+				Text("German Grammar Guide", fontWeight = FontWeight.Bold, fontSize = 18.sp)
 				Spacer(Modifier.height(8.dp))
-				Button(onClick = {
-					// Navigate to a suggested quiz (placeholder lesson id 0)
-					navController.navigate(Screen.GrammarQuiz.createRoute(0))
-				}) { Text(stringResource(id = R.string.start)) }
+				Text(
+					text = "Learn German grammar step-by-step with clear English explanations. Each topic includes examples and practice exercises.",
+					fontSize = 14.sp,
+					color = MaterialTheme.colorScheme.onSurfaceVariant,
+					lineHeight = 20.sp
+				)
 			}
 		}
 	}

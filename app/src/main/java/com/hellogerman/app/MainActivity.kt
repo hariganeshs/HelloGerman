@@ -18,7 +18,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -64,32 +66,36 @@ fun HelloGermanApp() {
         Scaffold(
             bottomBar = {
                 if (currentDestination?.route !in listOf(Screen.Splash.route, Screen.Onboarding.route)) {
-                    NavigationBar {
+                    NavigationBar(
+                        modifier = Modifier.height(72.dp),
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ) {
                         val navItems = listOf(
                             NavigationItem(
                                 route = Screen.Dashboard.route,
                                 icon = Icons.Default.Home,
-                                label = "Dashboard"
+                                label = "Home"
                             ),
                             NavigationItem(
                                 route = Screen.Dictionary.route,
                                 icon = Icons.Default.Translate,
-                                label = "Dictionary"
+                                label = "Dict"
                             ),
                             NavigationItem(
                                 route = Screen.Lesen.route,
                                 icon = Icons.Default.List,
-                                label = "Lesen"
+                                label = "Read"
                             ),
                             NavigationItem(
                                 route = Screen.Hoeren.route,
                                 icon = Icons.Default.PlayArrow,
-                                label = "Hören"
+                                label = "Listen"
                             ),
                             NavigationItem(
                                 route = Screen.Schreiben.route,
                                 icon = Icons.Default.Edit,
-                                label = "Schreiben"
+                                label = "Write"
                             ),
                             NavigationItem(
                                 route = Screen.Grammar.route,
@@ -100,8 +106,21 @@ fun HelloGermanApp() {
                         
                         navItems.forEach { item ->
                             NavigationBarItem(
-                                icon = { Icon(item.icon, contentDescription = item.label) },
-                                label = { Text(item.label) },
+                                icon = { 
+                                    Icon(
+                                        imageVector = item.icon, 
+                                        contentDescription = item.label,
+                                        modifier = Modifier.size(22.dp)
+                                    ) 
+                                },
+                                label = { 
+                                    Text(
+                                        text = item.label,
+                                        fontSize = 10.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        maxLines = 1
+                                    ) 
+                                },
                                 selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                                 onClick = {
                                     navController.navigate(item.route) {
@@ -117,7 +136,14 @@ fun HelloGermanApp() {
                                         // Restore state when reselecting a previously selected item
                                         restoreState = true
                                     }
-                                }
+                                },
+                                colors = NavigationBarItemDefaults.colors(
+                                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    indicatorColor = MaterialTheme.colorScheme.primaryContainer
+                                )
                             )
                         }
                     }
