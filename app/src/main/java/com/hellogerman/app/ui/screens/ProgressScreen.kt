@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +19,8 @@ import androidx.navigation.NavController
 import com.hellogerman.app.ui.viewmodel.MainViewModel
 import com.hellogerman.app.ui.theme.*
 import com.hellogerman.app.ads.BannerAd2
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +42,7 @@ fun ProgressScreen(
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
                     }
@@ -141,6 +143,14 @@ fun ProgressScreen(
                     skill = "Sprechen (Speaking)",
                     score = userProgress?.sprechenScore ?: 0,
                     color = SprechenColor
+                )
+            }
+            
+            item {
+                SkillProgressCard(
+                    skill = "Grammar",
+                    score = userProgress?.grammarScore ?: 0,
+                    color = GrammarColor
                 )
             }
             

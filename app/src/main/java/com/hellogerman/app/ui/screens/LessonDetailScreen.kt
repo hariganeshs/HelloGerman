@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.hellogerman.app.ui.viewmodel.LessonViewModel
-import com.hellogerman.app.ui.viewmodel.GameViewModel
+
 import com.hellogerman.app.ui.components.*
 import com.hellogerman.app.ui.animations.enhancedPressAnimation
 import com.hellogerman.app.ui.animations.entranceAnimation
@@ -36,7 +36,7 @@ fun LessonDetailScreen(
     navController: NavController,
     lessonId: Int,
     lessonViewModel: LessonViewModel = viewModel(),
-    gameViewModel: GameViewModel = viewModel()
+
 ) {
     val currentLesson by lessonViewModel.currentLesson.collectAsState()
     val isLoading by lessonViewModel.isLoading.collectAsState()
@@ -46,11 +46,7 @@ fun LessonDetailScreen(
     var quizCompleted by remember { mutableStateOf(false) }
     var timeSpentInSeconds by remember { mutableStateOf(0) }
     
-    // Game state
-    val showXPGain by gameViewModel.showXPGain.collectAsState()
-    val showLevelUpDialog by gameViewModel.showLevelUpDialog.collectAsState()
-    val lastXPGain by gameViewModel.lastXPGain.collectAsState()
-    val userLevel by gameViewModel.userLevel.collectAsState()
+
 
     val gson = remember { Gson() }
     val context = LocalContext.current
@@ -794,15 +790,7 @@ fun LessonDetailScreen(
                                             score = finalScore,
                                             timeSpent = timeSpentInSeconds
                                         )
-                                        
-                                        // Update gamification system
-                                        gameViewModel.completeQuizWithGamification(
-                                            correctAnswers = correctAnswers,
-                                            totalQuestions = totalQuestions,
-                                            timeSpent = timeSpentInSeconds,
-                                            skill = lesson.skill,
-                                            level = lesson.level
-                                        )
+
                                         
                                         // Show interstitial ad before navigating back
                                         if (context is android.app.Activity) {
@@ -826,21 +814,5 @@ fun LessonDetailScreen(
         }
     }
     
-    // Beautiful gamification notifications
-    XPGainNotification(
-        xpAmount = lastXPGain,
-        isVisible = showXPGain,
-        onDismiss = { gameViewModel.dismissXPGain() },
-        modifier = Modifier.fillMaxWidth()
-    )
-    
-    // Level Up Celebration
-    if (showLevelUpDialog && userLevel != null) {
-        LevelUpCelebration(
-            newLevel = userLevel!!.level,
-            newTitle = userLevel!!.title,
-            isVisible = showLevelUpDialog,
-            onDismiss = { gameViewModel.dismissLevelUpDialog() }
-        )
-    }
+
 }

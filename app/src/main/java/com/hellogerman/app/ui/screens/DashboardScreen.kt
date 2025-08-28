@@ -12,6 +12,18 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import com.hellogerman.app.gamification.*
+import com.hellogerman.app.ui.components.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -66,27 +78,11 @@ fun DashboardScreen(
         }
         
         item {
-            // Stats Cards
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                StatCard(
-                    title = "Streak",
-                    value = "${userProgress?.currentStreak ?: 0}",
-                    icon = Icons.Default.Star,
-                    modifier = Modifier.weight(1f),
-                    color = ProgressRed
-                )
-                StatCard(
-                    title = "Lessons",
-                    value = "${userProgress?.totalLessonsCompleted ?: 0}",
-                    icon = Icons.Default.List,
-                    modifier = Modifier.weight(1f),
-                    color = ProgressGreen
-                )
-                // Grammar mini-summary could go here in future
-            }
+            GamificationStatsSection(mainViewModel, navController)
+        }
+        
+        item {
+            DailyChallengeSection(navController)
         }
         
         item {
@@ -120,6 +116,10 @@ fun DashboardScreen(
         
         item {
             QuickActionsSection(navController)
+        }
+        
+        item {
+            AchievementPreviewSection(mainViewModel, navController)
         }
         
         // Banner Ad
@@ -185,7 +185,7 @@ fun SkillsProgressSection(
         SkillProgress("Hören", "hoeren", HoerenColor, userProgress?.hoerenScore ?: 0),
         SkillProgress("Schreiben", "schreiben", SchreibenColor, userProgress?.schreibenScore ?: 0),
         SkillProgress("Sprechen", "sprechen", SprechenColor, userProgress?.sprechenScore ?: 0),
-        SkillProgress("Grammar", "grammar", GrammarColor, 0)
+        SkillProgress("Grammar", "grammar", GrammarColor, userProgress?.grammarScore ?: 0)
     )
     
     Column(
@@ -271,15 +271,15 @@ fun SkillProgressCard(
 fun QuickActionsSection(navController: NavController) {
     val quickActions = listOf(
         QuickAction("Dictionary", Icons.Default.Translate, "dictionary"),
+        QuickAction("Achievements", Icons.Default.EmojiEvents, "gamification"),
         QuickAction("Progress Analytics", Icons.Default.Info, "progress"),
-        QuickAction("Practice Quiz", Icons.Default.PlayArrow, "lesen"),
         QuickAction("Settings", Icons.Default.Settings, "settings")
     )
     
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // First row with Dictionary and Progress Analytics
+        // First row with Dictionary and Achievements
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -293,7 +293,7 @@ fun QuickActionsSection(navController: NavController) {
             }
         }
         
-        // Second row with Practice Quiz and Settings
+        // Second row with Progress Analytics and Settings
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)

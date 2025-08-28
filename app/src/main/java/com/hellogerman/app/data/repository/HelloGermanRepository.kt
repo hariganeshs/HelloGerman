@@ -40,7 +40,24 @@ class HelloGermanRepository(context: Context) {
             "hoeren" -> userProgressDao.updateHoerenScore(score)
             "schreiben" -> userProgressDao.updateSchreibenScore(score)
             "sprechen" -> userProgressDao.updateSprechenScore(score)
+            "grammar" -> userProgressDao.updateGrammarScore(score)
         }
+    }
+    
+    suspend fun addXP(xp: Int) {
+        userProgressDao.addXP(xp)
+    }
+    
+    suspend fun addCoins(coins: Int) {
+        userProgressDao.addCoins(coins)
+    }
+    
+    suspend fun incrementPerfectLessons() {
+        userProgressDao.incrementPerfectLessons()
+    }
+    
+    suspend fun incrementDictionaryUsage() {
+        userProgressDao.incrementDictionaryUsage()
     }
     
     suspend fun incrementLessonsCompleted() {

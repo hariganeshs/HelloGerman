@@ -31,8 +31,23 @@ interface UserProgressDao {
     @Query("UPDATE user_progress SET sprechenScore = :score WHERE id = 1")
     suspend fun updateSprechenScore(score: Int)
     
+    @Query("UPDATE user_progress SET grammarScore = :score WHERE id = 1")
+    suspend fun updateGrammarScore(score: Int)
+    
     @Query("UPDATE user_progress SET totalLessonsCompleted = totalLessonsCompleted + 1 WHERE id = 1")
     suspend fun incrementLessonsCompleted()
+    
+    @Query("UPDATE user_progress SET totalXP = totalXP + :xp WHERE id = 1")
+    suspend fun addXP(xp: Int)
+    
+    @Query("UPDATE user_progress SET coins = coins + :coins WHERE id = 1")
+    suspend fun addCoins(coins: Int)
+    
+    @Query("UPDATE user_progress SET perfectLessons = perfectLessons + 1 WHERE id = 1")
+    suspend fun incrementPerfectLessons()
+    
+    @Query("UPDATE user_progress SET dictionaryUsage = dictionaryUsage + 1 WHERE id = 1")
+    suspend fun incrementDictionaryUsage()
     
     @Query("UPDATE user_progress SET currentStreak = :streak, longestStreak = CASE WHEN :streak > longestStreak THEN :streak ELSE longestStreak END WHERE id = 1")
     suspend fun updateStreak(streak: Int)

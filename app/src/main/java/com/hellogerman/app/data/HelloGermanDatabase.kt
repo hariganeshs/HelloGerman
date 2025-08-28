@@ -15,12 +15,9 @@ import com.hellogerman.app.data.entities.*
         Lesson::class,
         UserSubmission::class,
         GrammarProgress::class,
-        Achievement::class,
-        UserLevel::class,
-        DailyChallenge::class,
-        UserStats::class
+        Achievement::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class HelloGermanDatabase : RoomDatabase() {
@@ -30,9 +27,6 @@ abstract class HelloGermanDatabase : RoomDatabase() {
     abstract fun userSubmissionDao(): UserSubmissionDao
     abstract fun grammarProgressDao(): GrammarProgressDao
     abstract fun achievementDao(): AchievementDao
-    abstract fun userLevelDao(): UserLevelDao
-    abstract fun dailyChallengeDao(): DailyChallengeDao
-    abstract fun userStatsDao(): UserStatsDao
     
     companion object {
         @Volatile
@@ -45,7 +39,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                     HelloGermanDatabase::class.java,
                     "hello_german_database"
                 )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
@@ -95,50 +89,19 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                         `maxProgress` INTEGER NOT NULL
                     )
                 """)
-                
-                // Create user_level table
-                database.execSQL("""
-                    CREATE TABLE IF NOT EXISTS `user_level` (
-                        `id` INTEGER NOT NULL PRIMARY KEY,
-                        `level` INTEGER NOT NULL,
-                        `totalXP` INTEGER NOT NULL,
-                        `currentLevelXP` INTEGER NOT NULL,
-                        `nextLevelXP` INTEGER NOT NULL,
-                        `title` TEXT NOT NULL,
-                        `prestige` INTEGER NOT NULL
-                    )
-                """)
-                
-                // Create daily_challenges table
-                database.execSQL("""
-                    CREATE TABLE IF NOT EXISTS `daily_challenges` (
-                        `date` TEXT NOT NULL PRIMARY KEY,
-                        `challengeType` TEXT NOT NULL,
-                        `targetValue` INTEGER NOT NULL,
-                        `currentProgress` INTEGER NOT NULL,
-                        `isCompleted` INTEGER NOT NULL,
-                        `rewardXP` INTEGER NOT NULL,
-                        `rewardCoins` INTEGER NOT NULL
-                    )
-                """)
-                
-                // Create user_stats table
-                database.execSQL("""
-                    CREATE TABLE IF NOT EXISTS `user_stats` (
-                        `id` INTEGER NOT NULL PRIMARY KEY,
-                        `totalLessonsCompleted` INTEGER NOT NULL,
-                        `totalQuizzesCompleted` INTEGER NOT NULL,
-                        `totalTimeSpent` INTEGER NOT NULL,
-                        `averageAccuracy` REAL NOT NULL,
-                        `currentStreak` INTEGER NOT NULL,
-                        `longestStreak` INTEGER NOT NULL,
-                        `totalCoins` INTEGER NOT NULL,
-                        `totalPoints` INTEGER NOT NULL,
-                        `perfectQuizzes` INTEGER NOT NULL,
-                        `fastCompletions` INTEGER NOT NULL,
-                        `lastActiveDate` INTEGER NOT NULL
-                    )
-                """)
+            }
+        }
+
+        private val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add new gamification fields to user_progress table
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN grammarScore INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN totalXP INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN coins INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN perfectLessons INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN dictionaryUsage INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN weeklyGoalProgress INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN monthlyGoalProgress INTEGER NOT NULL DEFAULT 0")
             }
         }
     }

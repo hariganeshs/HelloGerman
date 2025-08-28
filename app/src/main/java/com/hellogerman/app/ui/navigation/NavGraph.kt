@@ -33,6 +33,7 @@ sealed class Screen(val route: String) {
     object Onboarding : Screen("onboarding")
     object Progress : Screen("progress")
     object Dictionary : Screen("dictionary")
+    object Gamification : Screen("gamification")
 }
 
 @Composable
@@ -97,6 +98,10 @@ fun NavGraph(
         
         composable(Screen.Dictionary.route) {
             DictionaryScreen(navController)
+        }
+        
+        composable(Screen.Gamification.route) {
+            GamificationScreen(navController)
         }
     }
 }
