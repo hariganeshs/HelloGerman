@@ -107,11 +107,6 @@ fun DashboardScreen(
                 }
             )
         }
-
-        item {
-            // Grammar Progress Card
-            GrammarProgressCard(onClick = { navController.navigate("grammar") })
-        }
         
         item {
             // Quick Actions
@@ -362,70 +357,4 @@ data class QuickAction(
     val route: String
 )
 
-@Composable
-fun GrammarProgressCard(onClick: () -> Unit, mainViewModel: MainViewModel = viewModel()) {
-    val points by mainViewModel.grammarTotalPoints.collectAsState()
-    val badges by mainViewModel.grammarBadgesCount.collectAsState()
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(GrammarColor.copy(alpha = 0.1f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "G",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = GrammarColor
-                )
-            }
 
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(id = R.string.grammar),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "Points: $points",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    Text(
-                        text = "Badges: $badges",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            Icon(
-                imageVector = Icons.Default.PlayArrow,
-                contentDescription = stringResource(id = R.string.open_grammar),
-                tint = GrammarColor
-            )
-        }
-    }
-}
