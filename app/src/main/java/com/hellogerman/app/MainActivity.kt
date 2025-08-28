@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -82,6 +83,11 @@ fun HelloGermanApp() {
                                 route = Screen.Sprechen.route,
                                 icon = Icons.Default.MoreVert,
                                 label = "Sprechen"
+                            ),
+                            NavigationItem(
+                                route = Screen.Grammar.route,
+                                icon = Icons.AutoMirrored.Filled.MenuBook,
+                                label = "Grammar"
                             )
                         )
                         
@@ -170,6 +176,23 @@ fun HelloGermanApp() {
                 composable("sprechen_lesson/{lessonId}") { backStackEntry ->
                     val lessonId = backStackEntry.arguments?.getString("lessonId")?.toIntOrNull() ?: 0
                     SprechenLessonDetailScreen(navController, lessonId)
+                }
+
+                // Grammar routes
+                composable(Screen.Grammar.route) {
+                    GrammarDashboard(navController)
+                }
+                composable(Screen.GrammarTopicList.route) { backStackEntry ->
+                    val level = backStackEntry.arguments?.getString("level") ?: "A1"
+                    GrammarTopicListScreen(navController, level)
+                }
+                composable(Screen.GrammarLesson.route) { backStackEntry ->
+                    val lessonId = backStackEntry.arguments?.getString("lessonId")?.toIntOrNull() ?: 0
+                    GrammarLessonScreen(navController, lessonId)
+                }
+                composable(Screen.GrammarQuiz.route) { backStackEntry ->
+                    val lessonId = backStackEntry.arguments?.getString("lessonId")?.toIntOrNull() ?: 0
+                    GrammarQuizScreen(navController, lessonId)
                 }
             }
         }

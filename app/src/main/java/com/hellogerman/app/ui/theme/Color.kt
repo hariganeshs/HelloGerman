@@ -34,6 +34,7 @@ val LesenColor = Color(0xFF2196F3) // Blue
 val HoerenColor = Color(0xFF4CAF50) // Green
 val SchreibenColor = Color(0xFFFF9800) // Orange
 val SprechenColor = Color(0xFFE91E63) // Pink
+val GrammarColor = Color(0xFF6A1B9A) // Deep Purple
 
 // Progress colors
 val ProgressGreen = Color(0xFF4CAF50)

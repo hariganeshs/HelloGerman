@@ -3,6 +3,7 @@ package com.hellogerman.app.data.repository
 import android.content.Context
 import com.hellogerman.app.data.HelloGermanDatabase
 import com.hellogerman.app.data.dao.LessonDao
+import com.hellogerman.app.data.dao.GrammarProgressDao
 import com.hellogerman.app.data.dao.UserProgressDao
 import com.hellogerman.app.data.dao.UserSubmissionDao
 import com.hellogerman.app.data.entities.*
@@ -16,6 +17,7 @@ class HelloGermanRepository(context: Context) {
     private val userProgressDao = database.userProgressDao()
     private val lessonDao = database.lessonDao()
     private val userSubmissionDao = database.userSubmissionDao()
+    private val grammarProgressDao: GrammarProgressDao = database.grammarProgressDao()
     
     // User Progress Operations
     fun getUserProgress(): Flow<UserProgress?> = userProgressDao.getUserProgress()
@@ -133,6 +135,51 @@ class HelloGermanRepository(context: Context) {
     
     suspend fun getSubmissionCountBySkill(skill: String): Int {
         return userSubmissionDao.getSubmissionCountBySkill(skill)
+    }
+    
+    // Grammar Progress Operations
+    fun getAllGrammarProgress(): Flow<List<GrammarProgress>> {
+        return grammarProgressDao.getAll()
+    }
+    
+    fun getGrammarProgressByLevel(level: String): Flow<List<GrammarProgress>> {
+        return grammarProgressDao.getByLevel(level)
+    }
+    
+    suspend fun getGrammarProgressByTopic(topicKey: String): GrammarProgress? {
+        return grammarProgressDao.getByTopic(topicKey)
+    }
+    
+    suspend fun insertGrammarProgress(progress: GrammarProgress) {
+        grammarProgressDao.insert(progress)
+    }
+    
+    suspend fun addGrammarPoints(topicKey: String, delta: Int) {
+        grammarProgressDao.addPoints(topicKey, delta, System.currentTimeMillis())
+    }
+    
+    suspend fun incrementGrammarCompleted(topicKey: String) {
+        grammarProgressDao.incrementCompletedLessons(topicKey)
+    }
+    
+    suspend fun updateGrammarStreak(topicKey: String, streak: Int) {
+        grammarProgressDao.updateStreak(topicKey, streak)
+    }
+    
+    fun getTotalGrammarPoints(): Flow<Int> {
+        return grammarProgressDao.totalPoints()
+    }
+
+    suspend fun awardBadge(topicKey: String, badgeId: String) {
+        val existing = getGrammarProgressByTopic(topicKey)
+        val gson = com.google.gson.Gson()
+        val current = try {
+            gson.fromJson(existing?.badgesJson ?: "[]", Array<String>::class.java).toMutableList()
+        } catch (e: Exception) { mutableListOf<String>() }
+        if (!current.contains(badgeId)) {
+            current.add(badgeId)
+            grammarProgressDao.updateBadges(topicKey, gson.toJson(current))
+        }
     }
     
     // Progress Tracking

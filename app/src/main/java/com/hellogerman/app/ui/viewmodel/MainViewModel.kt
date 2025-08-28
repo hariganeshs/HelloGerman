@@ -8,6 +8,8 @@ import com.hellogerman.app.data.repository.HelloGermanRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -23,8 +25,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _currentLevel = MutableStateFlow("A1")
     val currentLevel: StateFlow<String> = _currentLevel.asStateFlow()
     
+    private val _grammarTotalPoints = MutableStateFlow(0)
+    val grammarTotalPoints: StateFlow<Int> = _grammarTotalPoints.asStateFlow()
+    private val _grammarBadgesCount = MutableStateFlow(0)
+    val grammarBadgesCount: StateFlow<Int> = _grammarBadgesCount.asStateFlow()
+
     init {
         loadUserProgress()
+        observeGrammarStats()
     }
     
     private fun loadUserProgress() {
@@ -42,6 +50,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     
+    private fun observeGrammarStats() {
+        viewModelScope.launch {
+            repository.getTotalGrammarPoints().collectLatest { points ->
+                _grammarTotalPoints.value = points
+            }
+        }
+        viewModelScope.launch {
+            repository.getAllGrammarProgress().collectLatest { list ->
+                var count = 0
+                list.forEach { gp ->
+                    val badgesJson = gp.badgesJson
+                    if (badgesJson.isNotBlank() && badgesJson != "[]") count += 1
+                }
+                _grammarBadgesCount.value = count
+            }
+        }
+    }
+
     private suspend fun initializeUserProgress() {
         val initialProgress = UserProgress()
         repository.insertUserProgress(initialProgress)

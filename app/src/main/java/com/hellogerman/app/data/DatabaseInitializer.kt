@@ -28,6 +28,28 @@ object DatabaseInitializer {
                 val lessons = LessonContentGenerator.generateAllLessons()
                 repository.insertLessons(lessons)
             }
+
+            // Seed grammar progress entries for all grammar lessons (grouped by topicKey)
+            val allLessons = repository.getAllLessons()
+            val grammarLessons = allLessons.filter { it.skill == "grammar" }
+            val topics = grammarLessons.groupBy { it.level }
+            topics.forEach { (level, levelLessons) ->
+                levelLessons.forEachIndexed { index, lesson ->
+                    // topicKey is embedded in GrammarContent JSON; seed per lesson fallback to title-based key
+                    val topicKey = ("${level}_" + lesson.title.lowercase().replace(" ", "_")).take(64)
+                    val progress = com.hellogerman.app.data.entities.GrammarProgress(
+                        topicKey = topicKey,
+                        level = level,
+                        points = 0,
+                        badgesJson = "[]",
+                        streak = 0,
+                        lastCompleted = 0L,
+                        completedLessons = 0,
+                        totalLessons = 1
+                    )
+                    repository.insertGrammarProgress(progress)
+                }
+            }
         }
     }
     

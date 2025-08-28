@@ -80,6 +80,7 @@ fun DashboardScreen(
                     modifier = Modifier.weight(1f),
                     color = ProgressGreen
                 )
+                // Grammar mini-summary could go here in future
             }
         }
         
@@ -178,7 +179,8 @@ fun SkillsProgressSection(
         SkillProgress("Lesen", "lesen", LesenColor, userProgress?.lesenScore ?: 0),
         SkillProgress("Hören", "hoeren", HoerenColor, userProgress?.hoerenScore ?: 0),
         SkillProgress("Schreiben", "schreiben", SchreibenColor, userProgress?.schreibenScore ?: 0),
-        SkillProgress("Sprechen", "sprechen", SprechenColor, userProgress?.sprechenScore ?: 0)
+        SkillProgress("Sprechen", "sprechen", SprechenColor, userProgress?.sprechenScore ?: 0),
+        SkillProgress("Grammar", "grammar", GrammarColor, 0)
     )
     
     Column(

@@ -12,7 +12,7 @@ object LessonContentGenerator {
         
         // Generate lessons for each level and skill
         val levels = listOf("A1", "A2", "B1", "B2", "C1", "C2")
-        val skills = listOf("lesen", "hoeren", "schreiben", "sprechen")
+        val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
         
         levels.forEach { level ->
             skills.forEach { skill ->
@@ -29,6 +29,7 @@ object LessonContentGenerator {
             "hoeren" -> generateHoerenLessons(level)
             "schreiben" -> generateSchreibenLessons(level)
             "sprechen" -> generateSprechenLessons(level)
+            "grammar" -> generateGrammarLessons(level)
             else -> emptyList()
         }
     }
@@ -1784,6 +1785,186 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         }
         
         return lessons
+    }
+
+    private fun generateGrammarLessons(level: String): List<Lesson> {
+        val lessons = mutableListOf<Lesson>()
+        var order = 1
+        fun create(title: String, description: String, content: GrammarContent) {
+            lessons.add(
+                Lesson(
+                    title = title,
+                    description = description,
+                    level = level,
+                    skill = "grammar",
+                    content = gson.toJson(content),
+                    orderIndex = order++
+                )
+            )
+        }
+        when (level) {
+            "A1" -> {
+                create(
+                    title = "Artikel: Bestimmt/Unbestimmt",
+                    description = "der/die/das und ein/eine/ein",
+                    content = GrammarContent(
+                        topicKey = "a1_articles",
+                        explanations = listOf(
+                            "Der bestimmte Artikel: der (m.), die (f.), das (n.)",
+                            "Der unbestimmte Artikel: ein (m./n.), eine (f.)"
+                        ),
+                        examples = listOf(
+                            "der Mann, die Frau, das Kind",
+                            "ein Mann, eine Frau, ein Kind"
+                        ),
+                        miniGames = listOf(
+                            GrammarMiniGame.Match(listOf("der" to "Mann", "die" to "Blume", "das" to "Haus")),
+                            GrammarMiniGame.FillBlank("___ Apfel ist rot.", "Der")
+                        ),
+                        quiz = listOf(
+                            GrammarQuestion("Der __ Tisch ist groß.", listOf("die","der","das"), "der", 5),
+                            GrammarQuestion("Ich habe __ Auto.", listOf("ein","eine","der"), "ein", 5)
+                        )
+                    )
+                )
+                create(
+                    title = "Nomen: Genus",
+                    description = "Regeln und Ausnahmen",
+                    content = GrammarContent(
+                        topicKey = "a1_nouns_gender",
+                        explanations = listOf(
+                            "Substantive auf -ung sind meistens feminin",
+                            "-chen, -lein sind Neutrum"
+                        ),
+                        examples = listOf("die Zeitung, das Mädchen"),
+                        miniGames = listOf(
+                            GrammarMiniGame.DragDrop(
+                                buckets = listOf("der","die","das"),
+                                items = listOf("Junge" to "der", "Zeitung" to "die", "Mädchen" to "das")
+                            )
+                        ),
+                        quiz = listOf(
+                            GrammarQuestion("__ Zeitung", listOf("der","die","das"), "die", 5)
+                        )
+                    )
+                )
+                // ... add many more A1 topics similarly
+            }
+            "A2" -> {
+                create(
+                    title = "Kasus: Akkusativ/Dativ",
+                    description = "Artikel im Akkusativ und Dativ",
+                    content = GrammarContent(
+                        topicKey = "a2_cases",
+                        explanations = listOf("Akkusativ nach 'für', Dativ nach 'mit'"),
+                        examples = listOf("Ich kaufe den Apfel.", "Ich fahre mit dem Bus."),
+                        miniGames = listOf(
+                            GrammarMiniGame.SentenceBuilder(
+                                words = listOf("mit", "dem", "Bus", "fahre", "ich"),
+                                correctOrder = listOf("ich","fahre","mit","dem","Bus")
+                            )
+                        ),
+                        quiz = listOf(
+                            GrammarQuestion("Ich gehe __ Park.", listOf("in den","im","ins"), "in den", 10)
+                        )
+                    )
+                )
+            }
+            "B1" -> {
+                create(
+                    title = "Relativsätze",
+                    description = "der/die/das, den/dem/deren usw.",
+                    content = GrammarContent(
+                        topicKey = "b1_relative_clauses",
+                        explanations = listOf("Relativpronomen richtet sich nach Genus/Kasus"),
+                        examples = listOf("Der Mann, der dort steht, ist mein Nachbar."),
+                        miniGames = listOf(
+                            GrammarMiniGame.FillBlank("Der Mann, __ dort steht, ...", "der")
+                        ),
+                        quiz = listOf(
+                            GrammarQuestion("Das Buch, __ ich lese, ist spannend.", listOf("das","den","dem"), "das", 15)
+                        )
+                    )
+                )
+            }
+            "B2" -> {
+                create(
+                    title = "Passiv",
+                    description = "Vorgangspassiv/Zustandspassiv",
+                    content = GrammarContent(
+                        topicKey = "b2_passive",
+                        explanations = listOf("werden + Partizip II", "sein + Partizip II"),
+                        examples = listOf("Der Brief wird geschrieben.", "Die Tür ist geschlossen."),
+                        miniGames = listOf(
+                            GrammarMiniGame.Match(listOf("werden" to "Vorgang", "sein" to "Zustand"))
+                        ),
+                        quiz = listOf(
+                            GrammarQuestion("Der Kuchen __ gebacken.", listOf("wird","ist","hat"), "wird", 15)
+                        )
+                    )
+                )
+            }
+            "C1" -> {
+                create(
+                    title = "Konjunktiv I/II",
+                    description = "Indirekte Rede und Irrealis",
+                    content = GrammarContent(
+                        topicKey = "c1_subjunctive",
+                        explanations = listOf("Konjunktiv I in indirekter Rede", "Konjunktiv II für Irreales"),
+                        examples = listOf("Er sagte, er sei krank.", "Wenn ich Zeit hätte, käme ich."),
+                        miniGames = listOf(
+                            GrammarMiniGame.SentenceBuilder(
+                                words = listOf("er", "sei", "krank"),
+                                correctOrder = listOf("er","sei","krank")
+                            )
+                        ),
+                        quiz = listOf(
+                            GrammarQuestion("Er sagte, er __ kommen.", listOf("werde","würde","sei"), "würde", 20)
+                        )
+                    )
+                )
+            }
+            "C2" -> {
+                create(
+                    title = "Nominalstil und Partizipialkonstruktionen",
+                    description = "Gehobene Satzstrukturen",
+                    content = GrammarContent(
+                        topicKey = "c2_nominal_style",
+                        explanations = listOf("Verdichtung durch Nominalisierung"),
+                        examples = listOf("Die Durchführung der Analyse erfolgte gestern."),
+                        miniGames = listOf(
+                            GrammarMiniGame.Match(listOf("Nominalisierung" to "Substantiv", "Verb" to "Handlung"))
+                        ),
+                        quiz = listOf(
+                            GrammarQuestion("Die __ des Projekts ist geplant.", listOf("Durchführung","durchführen","durchgeführt"), "Durchführung", 20)
+                        )
+                    )
+                )
+            }
+        }
+        return lessons
+    }
+
+    data class GrammarContent(
+        val topicKey: String,
+        val explanations: List<String>,
+        val examples: List<String>,
+        val miniGames: List<GrammarMiniGame> = emptyList(),
+        val quiz: List<GrammarQuestion> = emptyList()
+    )
+
+    data class GrammarQuestion(
+        val question: String,
+        val options: List<String>,
+        val correct: String,
+        val points: Int
+    )
+
+    sealed class GrammarMiniGame {
+        data class DragDrop(val buckets: List<String>, val items: List<Pair<String, String>>) : GrammarMiniGame()
+        data class Match(val pairs: List<Pair<String, String>>) : GrammarMiniGame()
+        data class FillBlank(val text: String, val answer: String) : GrammarMiniGame()
+        data class SentenceBuilder(val words: List<String>, val correctOrder: List<String>) : GrammarMiniGame()
     }
     
     private fun generateHoerenLessons(level: String): List<Lesson> {
