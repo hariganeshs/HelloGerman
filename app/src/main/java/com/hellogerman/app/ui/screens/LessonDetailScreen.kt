@@ -68,8 +68,12 @@ fun LessonDetailScreen(
     // Helper function to check if answer is correct for different question types
     fun isAnswerCorrect(question: Question, userAnswer: String?): Boolean {
         return when (question.type) {
-            QuestionType.MULTIPLE_CHOICE, QuestionType.TRUE_FALSE, QuestionType.FILL_BLANK -> {
+            QuestionType.MULTIPLE_CHOICE, QuestionType.TRUE_FALSE -> {
                 userAnswer == question.correctAnswer
+            }
+            QuestionType.FILL_BLANK -> {
+                // Case-insensitive and trimmed comparison for text answers
+                userAnswer?.trim()?.lowercase() == question.correctAnswer.trim().lowercase()
             }
             QuestionType.MULTIPLE_CORRECT_ANSWERS -> {
                 val userSelections = userAnswer?.split(",")?.filter { it.isNotEmpty() }?.toSet() ?: emptySet()
@@ -94,7 +98,10 @@ fun LessonDetailScreen(
                     }
                 } ?: false
             }
-            else -> userAnswer == question.correctAnswer
+                                                                else -> {
+                                                        // Default case-insensitive comparison for open text questions
+                                                        userAnswer?.trim()?.lowercase() == question.correctAnswer.trim().lowercase()
+                                                    }
         }
     }
 

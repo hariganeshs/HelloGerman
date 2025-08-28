@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -71,6 +72,11 @@ fun HelloGermanApp() {
                                 label = "Dashboard"
                             ),
                             NavigationItem(
+                                route = Screen.Dictionary.route,
+                                icon = Icons.Default.Translate,
+                                label = "Dictionary"
+                            ),
+                            NavigationItem(
                                 route = Screen.Lesen.route,
                                 icon = Icons.Default.List,
                                 label = "Lesen"
@@ -84,11 +90,6 @@ fun HelloGermanApp() {
                                 route = Screen.Schreiben.route,
                                 icon = Icons.Default.Edit,
                                 label = "Schreiben"
-                            ),
-                            NavigationItem(
-                                route = Screen.Sprechen.route,
-                                icon = Icons.Default.MoreVert,
-                                label = "Sprechen"
                             ),
                             NavigationItem(
                                 route = Screen.Grammar.route,
