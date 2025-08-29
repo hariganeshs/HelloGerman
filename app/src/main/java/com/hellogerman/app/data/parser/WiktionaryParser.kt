@@ -45,9 +45,31 @@ class WiktionaryParser {
         )
         
         private val GENDER_PATTERNS = listOf(
+            // German template patterns
             Pattern.compile("\\{\\{Deutsch\\s+(Substantiv|Artikel)\\s+(.*)\\}\\}"),
             Pattern.compile("\\{\\{de-noun\\|(.*)\\}\\}"),
-            Pattern.compile("'''(der|die|das)\\s+\\w+'''")
+            Pattern.compile("'''(der|die|das)\\s+\\w+'''"),
+            
+            // Enhanced gender detection patterns
+            Pattern.compile("\\{\\{Wortart\\|Substantiv\\|Deutsch\\}\\}.*?\\{\\{([mfn])\\}\\}", Pattern.DOTALL),
+            Pattern.compile("Genus\\s*=\\s*([mfn])"),
+            Pattern.compile("\\{\\{([mfn])\\}\\}"),
+            Pattern.compile("\\{\\{Genus\\|([mfn])\\}\\}"),
+            Pattern.compile("\\{\\{Gender\\|([mfn])\\}\\}"),
+            
+            // Direct article detection in text
+            Pattern.compile("\\b(der|die|das)\\s+\\w+", Pattern.CASE_INSENSITIVE),
+            Pattern.compile("Nominativ\\s+Singular\\s+(der|die|das)", Pattern.CASE_INSENSITIVE),
+            Pattern.compile("\\|\\s*Nominativ\\s*=\\s*(der|die|das)", Pattern.CASE_INSENSITIVE),
+            
+            // German grammar terminology
+            Pattern.compile("maskulin|männlich", Pattern.CASE_INSENSITIVE),
+            Pattern.compile("feminin|weiblich", Pattern.CASE_INSENSITIVE),
+            Pattern.compile("neutrum|sächlich", Pattern.CASE_INSENSITIVE),
+            
+            // Declension patterns
+            Pattern.compile("\\{\\{Deutsch\\s+Substantiv\\s+Übersicht\\s*\\|.*?Nominativ\\s+Singular\\s*=\\s*(der|die|das)", Pattern.DOTALL),
+            Pattern.compile("\\{\\{Flexion.*?\\|(der|die|das)", Pattern.DOTALL)
         )
         
         // IPA pronunciation patterns
@@ -317,21 +339,55 @@ class WiktionaryParser {
         for (pattern in GENDER_PATTERNS) {
             val matcher = pattern.matcher(wikitext)
             if (matcher.find()) {
-                val genderText = if (matcher.groupCount() >= 2) {
-                    matcher.group(2)?.lowercase() ?: ""
-                } else {
-                    matcher.group(1)?.lowercase() ?: ""
+                // Handle different pattern groups
+                val genderText = when {
+                    matcher.groupCount() >= 2 -> matcher.group(2)?.lowercase() ?: ""
+                    matcher.groupCount() >= 1 -> matcher.group(1)?.lowercase() ?: ""
+                    else -> matcher.group(0)?.lowercase() ?: ""
                 }
                 
-                return when {
-                    genderText.contains("maskulin") || genderText.contains("der") -> "der"
-                    genderText.contains("feminin") || genderText.contains("die") -> "die"
-                    genderText.contains("neutrum") || genderText.contains("das") -> "das"
+                // Enhanced gender detection logic
+                val result = when {
+                    genderText.contains("maskulin") || genderText.contains("männlich") -> "der"
+                    genderText.contains("feminin") || genderText.contains("weiblich") -> "die"
+                    genderText.contains("neutrum") || genderText.contains("sächlich") -> "das"
                     genderText == "der" || genderText == "die" || genderText == "das" -> genderText
-                    else -> null
+                    genderText == "m" || genderText.contains("mask") -> "der"
+                    genderText == "f" || genderText.contains("fem") -> "die"
+                    genderText == "n" || genderText.contains("neut") -> "das"
+                    else -> {
+                        // Try to extract article from the full match
+                        val fullMatch = matcher.group(0)?.lowercase() ?: ""
+                        when {
+                            fullMatch.contains(" der ") || fullMatch.startsWith("der ") -> "der"
+                            fullMatch.contains(" die ") || fullMatch.startsWith("die ") -> "die"
+                            fullMatch.contains(" das ") || fullMatch.startsWith("das ") -> "das"
+                            else -> null
+                        }
+                    }
+                }
+                
+                if (result != null) return result
+            }
+        }
+        
+        // Last resort: try simple article detection in the whole text
+        val simplePatterns = listOf(
+            "\\bder\\s+[A-ZÄÖÜa-zäöüß]+".toRegex(RegexOption.IGNORE_CASE),
+            "\\bdie\\s+[A-ZÄÖÜa-zäöüß]+".toRegex(RegexOption.IGNORE_CASE),
+            "\\bdas\\s+[A-ZÄÖÜa-zäöüß]+".toRegex(RegexOption.IGNORE_CASE)
+        )
+        
+        for (pattern in simplePatterns) {
+            val match = pattern.find(wikitext)
+            match?.let { matchResult ->
+                val article = matchResult.value.split("\\s+".toRegex())[0].lowercase()
+                if (article in listOf("der", "die", "das")) {
+                    return article
                 }
             }
         }
+        
         return null
     }
     

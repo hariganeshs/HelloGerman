@@ -229,18 +229,76 @@ object ComprehensiveGermanData {
             listOf("Ein schnelles Auto.", "Schnell laufen.", "Zu schnell."),
             listOf("A fast car.", "Run quickly.", "Too fast.")),
             
-        // Numbers (essential)
-        GermanWordData("eins", "one", "number", null, 51, "A1", 
-            listOf("Eins plus eins.", "Der erste Tag.", "Nur eins."),
-            listOf("One plus one.", "The first day.", "Only one.")),
+                    // Clothing & Accessories (Kleidung)
+            GermanWordData("handschuh", "glove", "noun", "der", 51, "A2", 
+                listOf("Der warme Handschuh.", "Handschuhe anziehen.", "Ein Handschuh ist verloren."),
+                listOf("The warm glove.", "Put on gloves.", "One glove is lost.")),
             
-        GermanWordData("zwei", "two", "number", null, 52, "A1", 
-            listOf("Zwei Hände.", "Zwei Minuten.", "Nummer zwei."),
-            listOf("Two hands.", "Two minutes.", "Number two.")),
+            GermanWordData("schuh", "shoe", "noun", "der", 52, "A1", 
+                listOf("Der neue Schuh.", "Schuhe kaufen.", "Meine Schuhe sind schmutzig."),
+                listOf("The new shoe.", "Buy shoes.", "My shoes are dirty.")),
             
-        GermanWordData("drei", "three", "number", null, 53, "A1", 
-            listOf("Drei Tage.", "Drei Uhr.", "Alle drei."),
-            listOf("Three days.", "Three o'clock.", "All three.")),
+            GermanWordData("jacke", "jacket", "noun", "die", 53, "A1", 
+                listOf("Die warme Jacke.", "Jacke anziehen.", "Rote Jacke."),
+                listOf("The warm jacket.", "Put on jacket.", "Red jacket.")),
+            
+            GermanWordData("hose", "pants, trousers", "noun", "die", 54, "A1", 
+                listOf("Die blaue Hose.", "Hose waschen.", "Neue Hose kaufen."),
+                listOf("The blue pants.", "Wash pants.", "Buy new pants.")),
+            
+            GermanWordData("hemd", "shirt", "noun", "das", 55, "A1", 
+                listOf("Das weiße Hemd.", "Hemd bügeln.", "Sauberes Hemd."),
+                listOf("The white shirt.", "Iron shirt.", "Clean shirt.")),
+            
+            GermanWordData("rock", "skirt", "noun", "der", 56, "A2", 
+                listOf("Der kurze Rock.", "Rock tragen.", "Schöner Rock."),
+                listOf("The short skirt.", "Wear skirt.", "Beautiful skirt.")),
+            
+            GermanWordData("kleid", "dress", "noun", "das", 57, "A1", 
+                listOf("Das schöne Kleid.", "Kleid anprobieren.", "Elegantes Kleid."),
+                listOf("The beautiful dress.", "Try on dress.", "Elegant dress.")),
+            
+            GermanWordData("hut", "hat", "noun", "der", 58, "A2", 
+                listOf("Der schwarze Hut.", "Hut aufsetzen.", "Alter Hut."),
+                listOf("The black hat.", "Put on hat.", "Old hat.")),
+            
+            // Everyday objects (Alltägliche Gegenstände)
+            GermanWordData("tasche", "bag, pocket", "noun", "die", 59, "A1", 
+                listOf("Die große Tasche.", "In der Tasche.", "Tasche packen."),
+                listOf("The big bag.", "In the pocket.", "Pack bag.")),
+            
+            GermanWordData("schlüssel", "key", "noun", "der", 60, "A1", 
+                listOf("Der kleine Schlüssel.", "Schlüssel verloren.", "Wo ist mein Schlüssel?"),
+                listOf("The small key.", "Lost key.", "Where is my key?")),
+            
+            GermanWordData("geldbörse", "wallet", "noun", "die", 61, "A2", 
+                listOf("Die braune Geldbörse.", "Geldbörse vergessen.", "Geld in der Geldbörse."),
+                listOf("The brown wallet.", "Forgot wallet.", "Money in wallet.")),
+            
+            GermanWordData("handy", "cell phone", "noun", "das", 62, "A1", 
+                listOf("Das neue Handy.", "Handy klingelt.", "Mit dem Handy telefonieren."),
+                listOf("The new cell phone.", "Phone rings.", "Talk on the phone.")),
+            
+            GermanWordData("brille", "glasses", "noun", "die", 63, "A1", 
+                listOf("Die neue Brille.", "Brille putzen.", "Ohne Brille sehe ich schlecht."),
+                listOf("The new glasses.", "Clean glasses.", "Without glasses I see poorly.")),
+            
+            GermanWordData("uhr", "clock, watch", "noun", "die", 64, "A1", 
+                listOf("Die alte Uhr.", "Uhr schauen.", "Wie spät ist es auf der Uhr?"),
+                listOf("The old clock.", "Look at watch.", "What time is it on the clock?")),
+            
+            // Numbers (essential)
+            GermanWordData("eins", "one", "number", null, 65, "A1", 
+                listOf("Eins plus eins.", "Der erste Tag.", "Nur eins."),
+                listOf("One plus one.", "The first day.", "Only one.")),
+            
+            GermanWordData("zwei", "two", "number", null, 66, "A1", 
+                listOf("Zwei Hände.", "Zwei Minuten.", "Nummer zwei."),
+                listOf("Two hands.", "Two minutes.", "Number two.")),
+            
+            GermanWordData("drei", "three", "number", null, 67, "A1", 
+                listOf("Drei Tage.", "Drei Uhr.", "Alle drei."),
+                listOf("Three days.", "Three o'clock.", "All three.")),
             
         // More household items
         GermanWordData("tisch", "table", "noun", "der", 54, "A1", 
@@ -281,9 +339,100 @@ object ComprehensiveGermanData {
             listOf("Ein ganzes Jahr.", "Jedes Jahr.", "Neues Jahr."),
             listOf("A whole year.", "Every year.", "New year.")),
             
-        // More essential words continue...
-        // This represents about 60+ core words that form the foundation
-        // The actual implementation would continue with frequency-ranked German vocabulary
+        // Body parts with gender (continued)
+        GermanWordData("arm", "arm", "noun", "der", 63, "A1", 
+            listOf("Der starke Arm.", "Arm heben.", "Mit dem Arm winken."),
+            listOf("The strong arm.", "Raise arm.", "Wave with arm.")),
+            
+        GermanWordData("bein", "leg", "noun", "das", 64, "A1", 
+            listOf("Das lange Bein.", "Bein verletzen.", "Auf einem Bein stehen."),
+            listOf("The long leg.", "Injure leg.", "Stand on one leg.")),
+            
+        GermanWordData("fuß", "foot", "noun", "der", 65, "A1", 
+            listOf("Der große Fuß.", "Fuß waschen.", "Zu Fuß gehen."),
+            listOf("The big foot.", "Wash foot.", "Go on foot.")),
+            
+        GermanWordData("finger", "finger", "noun", "der", 66, "A1", 
+            listOf("Der kleine Finger.", "Finger zeigen.", "Mit dem Finger deuten."),
+            listOf("The little finger.", "Point finger.", "Point with finger.")),
+            
+        GermanWordData("nase", "nose", "noun", "die", 67, "A1", 
+            listOf("Die kleine Nase.", "Nase putzen.", "Durch die Nase atmen."),
+            listOf("The small nose.", "Blow nose.", "Breathe through nose.")),
+            
+        GermanWordData("ohr", "ear", "noun", "das", 68, "A1", 
+            listOf("Das rechte Ohr.", "Ohr zuhalten.", "Mit dem Ohr hören."),
+            listOf("The right ear.", "Cover ear.", "Hear with ear.")),
+            
+        // Animals with gender (Tiere)
+        GermanWordData("hund", "dog", "noun", "der", 69, "A1", 
+            listOf("Der treue Hund.", "Hund spazieren führen.", "Kleiner Hund."),
+            listOf("The loyal dog.", "Walk the dog.", "Small dog.")),
+            
+        GermanWordData("katze", "cat", "noun", "die", 70, "A1", 
+            listOf("Die schwarze Katze.", "Katze streicheln.", "Süße Katze."),
+            listOf("The black cat.", "Pet the cat.", "Sweet cat.")),
+            
+        GermanWordData("pferd", "horse", "noun", "das", 71, "A1", 
+            listOf("Das schnelle Pferd.", "Pferd reiten.", "Weißes Pferd."),
+            listOf("The fast horse.", "Ride horse.", "White horse.")),
+            
+        GermanWordData("vogel", "bird", "noun", "der", 72, "A1", 
+            listOf("Der kleine Vogel.", "Vogel fliegen.", "Bunter Vogel."),
+            listOf("The small bird.", "Bird flying.", "Colorful bird.")),
+            
+        // School & Office items with gender
+        GermanWordData("schule", "school", "noun", "die", 73, "A1", 
+            listOf("Die neue Schule.", "In die Schule gehen.", "Schule ist wichtig."),
+            listOf("The new school.", "Go to school.", "School is important.")),
+            
+        GermanWordData("lehrer", "teacher (male)", "noun", "der", 74, "A1", 
+            listOf("Der nette Lehrer.", "Lehrer fragen.", "Unser Lehrer erklärt gut."),
+            listOf("The nice teacher.", "Ask teacher.", "Our teacher explains well.")),
+            
+        GermanWordData("lehrerin", "teacher (female)", "noun", "die", 75, "A1", 
+            listOf("Die junge Lehrerin.", "Lehrerin danken.", "Unsere Lehrerin ist klug."),
+            listOf("The young teacher.", "Thank teacher.", "Our teacher is smart.")),
+            
+        GermanWordData("buch", "book", "noun", "das", 76, "A1", 
+            listOf("Das dicke Buch.", "Buch lesen.", "Interessantes Buch."),
+            listOf("The thick book.", "Read book.", "Interesting book.")),
+            
+        GermanWordData("heft", "notebook", "noun", "das", 77, "A1", 
+            listOf("Das blaue Heft.", "Heft schreiben.", "Neues Heft kaufen."),
+            listOf("The blue notebook.", "Write in notebook.", "Buy new notebook.")),
+            
+        GermanWordData("stift", "pen, pencil", "noun", "der", 78, "A1", 
+            listOf("Der rote Stift.", "Mit dem Stift schreiben.", "Stift ist kaputt."),
+            listOf("The red pen.", "Write with pen.", "Pen is broken.")),
+            
+        // Weather & Nature with gender
+        GermanWordData("sonne", "sun", "noun", "die", 79, "A1", 
+            listOf("Die helle Sonne.", "Sonne scheint.", "In der Sonne sitzen."),
+            listOf("The bright sun.", "Sun shines.", "Sit in the sun.")),
+            
+        GermanWordData("mond", "moon", "noun", "der", 80, "A1", 
+            listOf("Der volle Mond.", "Mond am Himmel.", "Bei Mondschein."),
+            listOf("The full moon.", "Moon in sky.", "By moonlight.")),
+            
+        GermanWordData("stern", "star", "noun", "der", 81, "A1", 
+            listOf("Der helle Stern.", "Sterne zählen.", "Stern am Himmel."),
+            listOf("The bright star.", "Count stars.", "Star in sky.")),
+            
+        GermanWordData("baum", "tree", "noun", "der", 82, "A1", 
+            listOf("Der große Baum.", "Baum pflanzen.", "Unter dem Baum."),
+            listOf("The big tree.", "Plant tree.", "Under the tree.")),
+            
+        GermanWordData("blume", "flower", "noun", "die", 83, "A1", 
+            listOf("Die schöne Blume.", "Blume gießen.", "Bunte Blumen."),
+            listOf("The beautiful flower.", "Water flower.", "Colorful flowers.")),
+            
+        GermanWordData("garten", "garden", "noun", "der", 84, "A1", 
+            listOf("Der kleine Garten.", "Im Garten arbeiten.", "Schöner Garten."),
+            listOf("The small garden.", "Work in garden.", "Beautiful garden."))
+            
+        // This represents 85+ core words with comprehensive gender information
+        // All essential German nouns now include proper article (der/die/das)
         
     )
     
