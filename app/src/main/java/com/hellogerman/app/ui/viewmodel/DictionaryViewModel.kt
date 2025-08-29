@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hellogerman.app.data.models.DictionarySearchRequest
 import com.hellogerman.app.data.models.DictionarySearchResult
+import com.hellogerman.app.data.repository.OfflineDictionaryRepository
 import com.hellogerman.app.data.repository.DictionaryRepository
 import com.hellogerman.app.ui.utils.TTSHelper
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,8 +19,21 @@ import kotlinx.coroutines.launch
  */
 class DictionaryViewModel(application: Application) : AndroidViewModel(application) {
     
-    private val repository = DictionaryRepository(application)
+    private val onlineRepository = DictionaryRepository(application)
+    private val repository = OfflineDictionaryRepository(application, onlineRepository)
     private val ttsHelper = TTSHelper(application)
+    
+    init {
+        // Initialize offline dictionary on startup
+        viewModelScope.launch {
+            try {
+                repository.initialize()
+                android.util.Log.d("DictionaryViewModel", "Offline dictionary initialized successfully")
+            } catch (e: Exception) {
+                android.util.Log.e("DictionaryViewModel", "Failed to initialize offline dictionary", e)
+            }
+        }
+    }
     
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
@@ -80,10 +94,8 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
             return
         }
         
-        if (!repository.isInternetAvailable()) {
-            _errorMessage.value = "No internet connection. Please check your network settings."
-            return
-        }
+        // Offline repository works without internet, so no connectivity check needed
+        android.util.Log.d("DictionaryViewModel", "Starting search for: $query")
         
         viewModelScope.launch {
             _isLoading.value = true
@@ -97,6 +109,7 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
             
             repository.searchWord(request).fold(
                 onSuccess = { result ->
+                    android.util.Log.d("DictionaryViewModel", "Search successful for: $query, hasResults: ${result.hasResults}, gender: ${result.gender}")
                     _searchResult.value = result
                     if (result.hasResults) {
                         addToSearchHistory(query)
@@ -183,11 +196,13 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     }
     
     fun clearCache() {
-        repository.clearCache()
+        // Offline repository doesn't use cache, it uses database
+        android.util.Log.d("DictionaryViewModel", "Cache clear requested but offline repository uses database")
     }
     
     fun getCacheSize(): Int {
-        return repository.getCacheSize()
+        // Offline repository doesn't use cache, return 0
+        return 0
     }
     
     fun getLanguageName(code: String): String {

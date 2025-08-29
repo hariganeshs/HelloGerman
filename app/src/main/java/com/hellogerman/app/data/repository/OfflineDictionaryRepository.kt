@@ -27,6 +27,8 @@ class OfflineDictionaryRepository @Inject constructor(
         if (isInitialized) return
         
         withContext(Dispatchers.IO) {
+            android.util.Log.d("OfflineDict", "Initializing offline dictionary database...")
+            
             // Initialize Room database
             database = Room.databaseBuilder(
                 context,
@@ -37,11 +39,18 @@ class OfflineDictionaryRepository @Inject constructor(
             .build()
             
             // Populate database if empty
-            if (database.dictionaryDao().getWordCount() == 0) {
+            val wordCount = database.dictionaryDao().getWordCount()
+            android.util.Log.d("OfflineDict", "Current word count in database: $wordCount")
+            
+            if (wordCount == 0) {
+                android.util.Log.d("OfflineDict", "Database is empty, populating...")
                 populateDatabase()
+                val newWordCount = database.dictionaryDao().getWordCount()
+                android.util.Log.d("OfflineDict", "After population, word count: $newWordCount")
             }
             
             isInitialized = true
+            android.util.Log.d("OfflineDict", "Offline dictionary initialization complete")
         }
     }
     
@@ -54,22 +63,31 @@ class OfflineDictionaryRepository @Inject constructor(
             
             val word = request.word.lowercase().trim()
             
+            // Debug logging
+            android.util.Log.d("OfflineDict", "Searching for word: $word")
+            
             // 1. Try offline database first
             val offlineResult = searchOfflineDatabase(word)
+            android.util.Log.d("OfflineDict", "Offline result hasResults: ${offlineResult.hasResults}, gender: ${offlineResult.gender}")
+            
             if (offlineResult.hasResults) {
+                android.util.Log.d("OfflineDict", "Returning offline result for: $word")
                 return Result.success(offlineResult)
             }
             
             // 2. Try compound word analysis (German specialty)
             val compoundResult = analyzeCompoundWord(word)
             if (compoundResult.hasResults) {
+                android.util.Log.d("OfflineDict", "Returning compound result for: $word")
                 return Result.success(compoundResult)
             }
             
             // 3. Fallback to online APIs only if offline fails
+            android.util.Log.d("OfflineDict", "Falling back to online APIs for: $word")
             return onlineDictionaryRepository.searchWord(request)
             
         } catch (e: Exception) {
+            android.util.Log.e("OfflineDict", "Error searching for ${request.word}", e)
             // Even on error, try to return something useful
             val basicResult = createBasicResult(request.word)
             Result.success(basicResult)
