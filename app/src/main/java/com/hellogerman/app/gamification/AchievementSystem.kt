@@ -248,6 +248,86 @@ object AchievementManager {
             rewardCoins = 20,
             category = AchievementCategory.SPECIAL,
             rarity = AchievementRarity.COMMON
+        ),
+
+        // Certificate-Specific Achievements
+        Achievement(
+            id = "goethe_explorer",
+            title = "Goethe Explorer",
+            description = "Complete 20 Goethe certificate lessons",
+            icon = Icons.Default.Explore,
+            rewardXP = 300,
+            rewardCoins = 75,
+            maxProgress = 20,
+            category = AchievementCategory.LESSONS,
+            rarity = AchievementRarity.RARE
+        ),
+        Achievement(
+            id = "goethe_master",
+            title = "Goethe Master",
+            description = "Complete all Goethe certificate lessons",
+            icon = Icons.Default.Work,
+            rewardXP = 800,
+            rewardCoins = 200,
+            maxProgress = 80,
+            category = AchievementCategory.LESSONS,
+            rarity = AchievementRarity.EPIC
+        ),
+        Achievement(
+            id = "telc_champion",
+            title = "TELC Champion",
+            description = "Complete all TELC certificate lessons",
+            icon = Icons.Default.EmojiEvents,
+            rewardXP = 400,
+            rewardCoins = 100,
+            maxProgress = 12,
+            category = AchievementCategory.LESSONS,
+            rarity = AchievementRarity.RARE
+        ),
+        Achievement(
+            id = "osd_specialist",
+            title = "ÖSD Specialist",
+            description = "Complete all ÖSD certificate lessons",
+            icon = Icons.Default.Star,
+            rewardXP = 400,
+            rewardCoins = 100,
+            maxProgress = 12,
+            category = AchievementCategory.LESSONS,
+            rarity = AchievementRarity.RARE
+        ),
+        Achievement(
+            id = "certificate_collector",
+            title = "Certificate Collector",
+            description = "Complete lessons from all certificate types",
+            icon = Icons.Default.CollectionsBookmark,
+            rewardXP = 600,
+            rewardCoins = 150,
+            category = AchievementCategory.LESSONS,
+            rarity = AchievementRarity.EPIC
+        ),
+
+        // Enhanced Progress Achievements
+        Achievement(
+            id = "a1_completionist",
+            title = "A1 Completionist",
+            description = "Complete all A1 level content",
+            icon = Icons.Default.DoneAll,
+            rewardXP = 1000,
+            rewardCoins = 250,
+            maxProgress = 104, // Updated to match our total A1 lessons
+            category = AchievementCategory.LESSONS,
+            rarity = AchievementRarity.LEGENDARY
+        ),
+        Achievement(
+            id = "knowledge_seeker",
+            title = "Knowledge Seeker",
+            description = "Complete 100 lessons across all skills",
+            icon = Icons.Default.Lightbulb,
+            rewardXP = 750,
+            rewardCoins = 180,
+            maxProgress = 100,
+            category = AchievementCategory.LESSONS,
+            rarity = AchievementRarity.EPIC
         )
     )
     
@@ -281,8 +361,15 @@ object AchievementManager {
             "listening_expert" -> userProgress.hoerenScore >= 80
             "writing_wizard" -> userProgress.schreibenScore >= 80
             "speaking_champion" -> userProgress.sprechenScore >= 80
-            "polyglot" -> userProgress.lesenScore >= 90 && userProgress.hoerenScore >= 90 && 
+            "polyglot" -> userProgress.lesenScore >= 90 && userProgress.hoerenScore >= 90 &&
                          userProgress.schreibenScore >= 90 && userProgress.sprechenScore >= 90
+            "goethe_explorer" -> userProgress.totalLessonsCompleted >= 20 // First milestone
+            "goethe_master" -> userProgress.totalLessonsCompleted >= 80 // All Goethe lessons
+            "telc_champion" -> userProgress.totalLessonsCompleted >= 92 // Goethe + TELC (80 + 12)
+            "osd_specialist" -> userProgress.totalLessonsCompleted >= 104 // All lessons (80 + 12 + 12)
+            "certificate_collector" -> userProgress.totalLessonsCompleted >= 20 // Has completed some lessons from different sources
+            "a1_completionist" -> userProgress.totalLessonsCompleted >= 104 // All A1 content
+            "knowledge_seeker" -> userProgress.totalLessonsCompleted >= 100 // 100 lessons milestone
             else -> false
         }
     }

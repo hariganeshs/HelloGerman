@@ -7,8 +7,181 @@ import com.hellogerman.app.data.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.*
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 import javax.inject.Inject
 import javax.inject.Singleton
+
+/**
+ * Comprehensive Offline Caching Manager
+ * Handles lesson data compression, caching, and offline storage optimization
+ */
+@Singleton
+class OfflineCacheManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
+
+    private val cacheDir = File(context.cacheDir, "lesson_cache")
+    private val compressedCacheDir = File(context.cacheDir, "compressed_cache")
+
+    init {
+        // Ensure cache directories exist
+        cacheDir.mkdirs()
+        compressedCacheDir.mkdirs()
+    }
+
+    /**
+     * Compress and cache lesson data
+     */
+    suspend fun compressAndCacheLessonData(lessonId: Int, data: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val compressedFile = File(compressedCacheDir, "lesson_${lessonId}.gz")
+                val outputStream = GZIPOutputStream(FileOutputStream(compressedFile))
+                outputStream.write(data.toByteArray(Charsets.UTF_8))
+                outputStream.close()
+                true
+            } catch (e: Exception) {
+                android.util.Log.e("OfflineCache", "Failed to compress lesson data: ${e.message}")
+                false
+            }
+        }
+    }
+
+    /**
+     * Decompress and retrieve cached lesson data
+     */
+    suspend fun getCachedLessonData(lessonId: Int): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val compressedFile = File(compressedCacheDir, "lesson_${lessonId}.gz")
+                if (!compressedFile.exists()) return@withContext null
+
+                val inputStream = GZIPInputStream(FileInputStream(compressedFile))
+                val reader = BufferedReader(InputStreamReader(inputStream, Charsets.UTF_8))
+                val data = reader.readText()
+                reader.close()
+                inputStream.close()
+                data
+            } catch (e: Exception) {
+                android.util.Log.e("OfflineCache", "Failed to decompress lesson data: ${e.message}")
+                null
+            }
+        }
+    }
+
+    /**
+     * Cache user progress data
+     */
+    suspend fun cacheUserProgress(progressData: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val progressFile = File(cacheDir, "user_progress.json")
+                progressFile.writeText(progressData, Charsets.UTF_8)
+                true
+            } catch (e: Exception) {
+                android.util.Log.e("OfflineCache", "Failed to cache user progress: ${e.message}")
+                false
+            }
+        }
+    }
+
+    /**
+     * Get cached user progress data
+     */
+    suspend fun getCachedUserProgress(): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val progressFile = File(cacheDir, "user_progress.json")
+                if (!progressFile.exists()) return@withContext null
+                progressFile.readText(Charsets.UTF_8)
+            } catch (e: Exception) {
+                android.util.Log.e("OfflineCache", "Failed to read cached user progress: ${e.message}")
+                null
+            }
+        }
+    }
+
+    /**
+     * Clear old cached data to save space
+     */
+    suspend fun cleanupOldCache(maxAgeDays: Int = 7): Int {
+        return withContext(Dispatchers.IO) {
+            try {
+                val maxAgeMillis = maxAgeDays * 24 * 60 * 60 * 1000L
+                val currentTime = System.currentTimeMillis()
+                var deletedCount = 0
+
+                // Clean compressed cache
+                compressedCacheDir.listFiles()?.forEach { file ->
+                    if (currentTime - file.lastModified() > maxAgeMillis) {
+                        if (file.delete()) deletedCount++
+                    }
+                }
+
+                // Clean regular cache
+                cacheDir.listFiles()?.forEach { file ->
+                    if (currentTime - file.lastModified() > maxAgeMillis) {
+                        if (file.delete()) deletedCount++
+                    }
+                }
+
+                android.util.Log.d("OfflineCache", "Cleaned up $deletedCount old cache files")
+                deletedCount
+            } catch (e: Exception) {
+                android.util.Log.e("OfflineCache", "Failed to cleanup cache: ${e.message}")
+                0
+            }
+        }
+    }
+
+    /**
+     * Get cache statistics
+     */
+    suspend fun getCacheStats(): Map<String, Any> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val compressedFiles = compressedCacheDir.listFiles()?.size ?: 0
+                val cacheFiles = cacheDir.listFiles()?.size ?: 0
+                val compressedSize = compressedCacheDir.listFiles()?.sumOf { it.length() } ?: 0L
+                val cacheSize = cacheDir.listFiles()?.sumOf { it.length() } ?: 0L
+
+                mapOf(
+                    "compressed_files" to compressedFiles,
+                    "cache_files" to cacheFiles,
+                    "compressed_size_kb" to (compressedSize / 1024),
+                    "cache_size_kb" to (cacheSize / 1024),
+                    "total_size_kb" to ((compressedSize + cacheSize) / 1024)
+                )
+            } catch (e: Exception) {
+                android.util.Log.e("OfflineCache", "Failed to get cache stats: ${e.message}")
+                emptyMap()
+            }
+        }
+    }
+
+    /**
+     * Clear all cached data
+     */
+    suspend fun clearAllCache(): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                var success = true
+                compressedCacheDir.listFiles()?.forEach { file ->
+                    if (!file.delete()) success = false
+                }
+                cacheDir.listFiles()?.forEach { file ->
+                    if (!file.delete()) success = false
+                }
+                success
+            } catch (e: Exception) {
+                android.util.Log.e("OfflineCache", "Failed to clear cache: ${e.message}")
+                false
+            }
+        }
+    }
+}
 
 /**
  * Offline-first dictionary repository with comprehensive German coverage

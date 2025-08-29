@@ -11,6 +11,7 @@ data class Lesson(
     val level: String, // A1, A2, B1, B2, C1, C2
     val skill: String, // lesen, hoeren, schreiben, sprechen
     val content: String, // JSON string containing lesson content
+    val source: String = "Goethe", // Goethe, TELC, ÖSD, Mixed
     val isCompleted: Boolean = false,
     val score: Int = 0,
     val timeSpent: Int = 0, // in seconds

@@ -180,8 +180,1103 @@ object LessonContentGenerator {
                         VocabularyItem("Lieblingsfarbe", "favorite color", "Was ist deine Lieblingsfarbe?")
                     )
                 ))
+
+                // Goethe-Zertifikat A1 Lesen - Additional Lessons (6-20)
+                lessons.add(createLesenLesson(
+                    title = "Treffen mit Freunden",
+                    description = "Meeting friends and making plans - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 6,
+                    text = "Hallo Anna! Wie geht es dir? Gut, danke. Was machst du am Wochenende? Ich gehe mit meinen Freunden ins Kino. Wir sehen uns einen Film an. Welchen Film magst du? Ich mag Komödien. Und du? Ich mag Actionfilme. Wann treffen wir uns? Um 19 Uhr vor dem Kino. Okay, bis dann!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo treffen sich die Freunde?",
+                            options = listOf("Im Café", "Im Kino", "Im Park", "Zu Hause"),
+                            correctAnswer = "Im Kino",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where are the friends meeting?",
+                            optionsEnglish = listOf("At the café", "At the cinema", "In the park", "At home")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Welche Filmart mag Anna?",
+                            options = listOf("Komödien", "Actionfilme", "Horrorfilme", "Liebesfilme"),
+                            correctAnswer = "Komödien",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What type of movie does Anna like?",
+                            optionsEnglish = listOf("Comedies", "Action movies", "Horror movies", "Romance movies")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Um wie viel Uhr treffen sie sich?",
+                            options = null,
+                            correctAnswer = "19 Uhr",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "At what time are they meeting?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was machen sie zuerst?",
+                            options = listOf("Essen gehen", "Sich treffen", "Den Film sehen", "Nach Hause gehen"),
+                            correctAnswer = "Sich treffen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What do they do first?",
+                            optionsEnglish = listOf("Go eat", "Meet", "Watch the movie", "Go home")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("treffen", "to meet", "Wir treffen uns um 19 Uhr."),
+                        VocabularyItem("Kino", "cinema", "Wir gehen ins Kino."),
+                        VocabularyItem("Film", "movie", "Welchen Film siehst du?"),
+                        VocabularyItem("Komödie", "comedy", "Eine Komödie ist lustig.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Im Restaurant bestellen",
+                    description = "Ordering food at a restaurant - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 7,
+                    text = "Guten Abend! Ein Tisch für zwei Personen, bitte. Natürlich, hier entlang. Hier ist die Speisekarte. Danke. Was möchten Sie trinken? Ich nehme ein Wasser. Und Sie? Ein Bier, bitte. Als Vorspeise nehme ich die Suppe. Und als Hauptgang? Das Schnitzel mit Pommes. Das klingt gut. Ich nehme den Salat und die Pizza.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Für wie viele Personen ist der Tisch?",
+                            options = listOf("1", "2", "3", "4"),
+                            correctAnswer = "2",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "For how many people is the table?",
+                            optionsEnglish = listOf("1", "2", "3", "4")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was bestellt die erste Person zu trinken?",
+                            options = listOf("Wasser", "Bier", "Wein", "Saft"),
+                            correctAnswer = "Wasser",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the first person order to drink?",
+                            optionsEnglish = listOf("Water", "Beer", "Wine", "Juice")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was nimmt die zweite Person als Hauptgang?",
+                            options = null,
+                            correctAnswer = "Pizza",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What does the second person take as main course?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was ist eine Vorspeise?",
+                            options = listOf("Hauptgang", "Nachspeise", "Erster Gang", "Getränk"),
+                            correctAnswer = "Erster Gang",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is a starter?",
+                            optionsEnglish = listOf("Main course", "Dessert", "First course", "Drink")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("bestellen", "to order", "Ich bestelle das Essen."),
+                        VocabularyItem("Speisekarte", "menu", "Hier ist die Speisekarte."),
+                        VocabularyItem("Vorspeise", "starter", "Die Suppe ist die Vorspeise."),
+                        VocabularyItem("Hauptgang", "main course", "Was nimmst du als Hauptgang?")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Arbeiten im Büro",
+                    description = "Working in an office - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 8,
+                    text = "Herr Müller arbeitet in einem Büro. Sein Schreibtisch ist groß und ordentlich. Er hat einen Computer, einen Telefon und viele Papiere. Morgens kommt er um 8 Uhr. Er trinkt zuerst einen Kaffee. Dann liest er seine E-Mails. Nachmittags hat er Meetings. Er spricht mit Kollegen über Projekte. Abends geht er um 17 Uhr nach Hause. Er arbeitet hart, aber er mag seinen Job.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo arbeitet Herr Müller?",
+                            options = listOf("Zu Hause", "Im Büro", "Im Geschäft", "In der Schule"),
+                            correctAnswer = "Im Büro",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where does Mr. Müller work?",
+                            optionsEnglish = listOf("At home", "In the office", "In the shop", "At school")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wann kommt Herr Müller morgens?",
+                            options = listOf("7 Uhr", "8 Uhr", "9 Uhr", "10 Uhr"),
+                            correctAnswer = "8 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When does Mr. Müller come in the morning?",
+                            optionsEnglish = listOf("7 o'clock", "8 o'clock", "9 o'clock", "10 o'clock")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was macht Herr Müller nachmittags?",
+                            options = null,
+                            correctAnswer = "Meetings",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What does Mr. Müller do in the afternoon?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie findet Herr Müller seine Arbeit?",
+                            options = listOf("Schwierig", "Langweilig", "Gut", "Stressig"),
+                            correctAnswer = "Gut",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How does Mr. Müller find his work?",
+                            optionsEnglish = listOf("Difficult", "Boring", "Good", "Stressful")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("arbeiten", "to work", "Ich arbeite im Büro."),
+                        VocabularyItem("Schreibtisch", "desk", "Mein Schreibtisch ist groß."),
+                        VocabularyItem("Computer", "computer", "Ich arbeite am Computer."),
+                        VocabularyItem("Meeting", "meeting", "Wir haben ein Meeting.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Einkaufen gehen",
+                    description = "Going shopping - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 9,
+                    text = "Lisa geht einkaufen. Sie braucht Milch, Brot und Obst. Zuerst geht sie in den Supermarkt. Dort kauft sie die Milch für 1,50 Euro. Dann geht sie zur Bäckerei und kauft zwei Brötchen für 1 Euro. Im Obstladen kauft sie Äpfel und Bananen. Alles zusammen kostet 8 Euro. Sie bezahlt mit ihrer Karte. Zu Hause packt sie alles in den Kühlschrank.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was braucht Lisa zuerst?",
+                            options = listOf("Milch", "Brot", "Obst", "Fleisch"),
+                            correctAnswer = "Milch",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does Lisa need first?",
+                            optionsEnglish = listOf("Milk", "Bread", "Fruit", "Meat")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wo kauft sie das Brot?",
+                            options = listOf("Supermarkt", "Bäckerei", "Obstladen", "Metzgerei"),
+                            correctAnswer = "Bäckerei",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where does she buy the bread?",
+                            optionsEnglish = listOf("Supermarket", "Bakery", "Fruit shop", "Butcher")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie viel kosten die Brötchen?",
+                            options = null,
+                            correctAnswer = "1 Euro",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How much do the rolls cost?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie bezahlt Lisa?",
+                            options = listOf("Bar", "Karte", "Scheck", "Online"),
+                            correctAnswer = "Karte",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How does Lisa pay?",
+                            optionsEnglish = listOf("Cash", "Card", "Check", "Online")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("einkaufen", "to shop", "Ich gehe einkaufen."),
+                        VocabularyItem("Supermarkt", "supermarket", "Im Supermarkt gibt es alles."),
+                        VocabularyItem("Bäckerei", "bakery", "Die Bäckerei hat frisches Brot."),
+                        VocabularyItem("bezahlen", "to pay", "Ich bezahle mit Karte.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Am Bahnhof",
+                    description = "At the train station - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 10,
+                    text = "Entschuldigung, wo ist der Bahnhof? Gehen Sie geradeaus und dann links. Danke. Wann fährt der nächste Zug nach Berlin? In 15 Minuten von Gleis 3. Wie viel kostet die Fahrkarte? 25 Euro einfach. Hin und zurück? Nein, nur einfach. Hier ist Ihr Ticket. Der Zug hat Verspätung. Wann kommt er? In 10 Minuten. Danke für die Information.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo findet das Gespräch statt?",
+                            options = listOf("Am Flughafen", "Am Bahnhof", "Am Busbahnhof", "Am Hafen"),
+                            correctAnswer = "Am Bahnhof",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where does the conversation take place?",
+                            optionsEnglish = listOf("At the airport", "At the train station", "At the bus station", "At the harbor")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Von welchem Gleis fährt der Zug?",
+                            options = listOf("Gleis 1", "Gleis 2", "Gleis 3", "Gleis 4"),
+                            correctAnswer = "Gleis 3",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "From which platform does the train depart?",
+                            optionsEnglish = listOf("Platform 1", "Platform 2", "Platform 3", "Platform 4")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie viel kostet die Fahrkarte?",
+                            options = null,
+                            correctAnswer = "25 Euro",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How much does the ticket cost?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wann kommt der Zug?",
+                            options = listOf("In 5 Minuten", "In 10 Minuten", "In 15 Minuten", "Jetzt"),
+                            correctAnswer = "In 10 Minuten",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When does the train arrive?",
+                            optionsEnglish = listOf("In 5 minutes", "In 10 minutes", "In 15 minutes", "Now")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Bahnhof", "train station", "Der Bahnhof ist groß."),
+                        VocabularyItem("Gleis", "platform", "Der Zug fährt von Gleis 3."),
+                        VocabularyItem("Fahrkarte", "ticket", "Die Fahrkarte kostet 25 Euro."),
+                        VocabularyItem("Verspätung", "delay", "Der Zug hat Verspätung.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Bei der Arbeit",
+                    description = "At work conversations - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 11,
+                    text = "Guten Morgen, Frau Schmidt. Guten Morgen, Herr Bauer. Wie war Ihr Wochenende? Sehr schön, danke. Ich war im Park mit meiner Familie. Und Sie? Ich habe zu Hause gearbeitet. Haben Sie die Berichte fertig? Ja, sie sind auf Ihrem Schreibtisch. Danke. Können Sie heute länger bleiben? Wir haben ein wichtiges Meeting. Natürlich, kein Problem.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo war Herr Bauer am Wochenende?",
+                            options = listOf("Im Büro", "Im Park", "Zu Hause", "Im Kino"),
+                            correctAnswer = "Im Park",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where was Mr. Bauer on the weekend?",
+                            optionsEnglish = listOf("At the office", "In the park", "At home", "At the cinema")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wo sind die Berichte?",
+                            options = listOf("Auf dem Boden", "Auf dem Schreibtisch", "Im Schrank", "In der Tasche"),
+                            correctAnswer = "Auf dem Schreibtisch",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where are the reports?",
+                            optionsEnglish = listOf("On the floor", "On the desk", "In the cabinet", "In the bag")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was hat Frau Schmidt zu Hause gemacht?",
+                            options = null,
+                            correctAnswer = "gearbeitet",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What did Ms. Schmidt do at home?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was haben sie heute?",
+                            options = listOf("Ein Meeting", "Eine Party", "Ein Picknick", "Ein Konzert"),
+                            correctAnswer = "Ein Meeting",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What do they have today?",
+                            optionsEnglish = listOf("A meeting", "A party", "A picnic", "A concert")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Wochenende", "weekend", "Wie war Ihr Wochenende?"),
+                        VocabularyItem("Bericht", "report", "Der Bericht ist fertig."),
+                        VocabularyItem("arbeiten", "to work", "Ich arbeite zu Hause."),
+                        VocabularyItem("Meeting", "meeting", "Wir haben ein Meeting.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Im Hotel",
+                    description = "Hotel check-in conversation - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 12,
+                    text = "Guten Tag, haben Sie ein Zimmer frei? Für wie viele Nächte? Für drei Nächte. Ja, wir haben ein Doppelzimmer. Wie viel kostet es? 80 Euro pro Nacht. Frühstück inklusive? Ja, Frühstück ist im Preis. Hier ist mein Ausweis. Danke. Ihre Zimmernummer ist 205. Das Frühstück gibt es von 7 bis 10 Uhr. Danke schön. Gute Reise!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wie viele Nächte bleibt der Gast?",
+                            options = listOf("1", "2", "3", "4"),
+                            correctAnswer = "3",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How many nights is the guest staying?",
+                            optionsEnglish = listOf("1", "2", "3", "4")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was für ein Zimmer bekommt der Gast?",
+                            options = listOf("Einzelzimmer", "Doppelzimmer", "Suite", "Appartement"),
+                            correctAnswer = "Doppelzimmer",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What kind of room does the guest get?",
+                            optionsEnglish = listOf("Single room", "Double room", "Suite", "Apartment")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie viel kostet das Zimmer pro Nacht?",
+                            options = null,
+                            correctAnswer = "80 Euro",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How much does the room cost per night?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wann gibt es Frühstück?",
+                            options = listOf("6-9 Uhr", "7-10 Uhr", "8-11 Uhr", "9-12 Uhr"),
+                            correctAnswer = "7-10 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When is breakfast served?",
+                            optionsEnglish = listOf("6-9 o'clock", "7-10 o'clock", "8-11 o'clock", "9-12 o'clock")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Hotel", "hotel", "Ich wohne im Hotel."),
+                        VocabularyItem("Zimmer", "room", "Das Zimmer ist schön."),
+                        VocabularyItem("Ausweis", "ID", "Hier ist mein Ausweis."),
+                        VocabularyItem("Frühstück", "breakfast", "Das Frühstück ist gut.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Beim Arzt",
+                    description = "Doctor visit conversation - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 13,
+                    text = "Guten Tag, was fehlt Ihnen? Ich habe Halsschmerzen und Husten. Seit wann? Seit drei Tagen. Haben Sie Fieber? Ja, ein bisschen. Öffnen Sie den Mund. Sagen Sie 'Aaa'. Ihre Mandeln sind rot. Sie haben eine Erkältung. Ich gebe Ihnen Medikamente. Nehmen Sie diese Tabletten dreimal täglich. Trinken Sie viel Tee. Kommen Sie in einer Woche wieder.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was hat der Patient?",
+                            options = listOf("Halsschmerzen", "Bauchschmerzen", "Kopfschmerzen", "Rückenschmerzen"),
+                            correctAnswer = "Halsschmerzen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the patient have?",
+                            optionsEnglish = listOf("Sore throat", "Stomach ache", "Headache", "Back pain")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie hoch ist das Fieber?",
+                            options = listOf("37,5 Grad", "38,0 Grad", "38,5 Grad", "39,0 Grad"),
+                            correctAnswer = "38,5 Grad",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How high is the fever?",
+                            optionsEnglish = listOf("37.5 degrees", "38.0 degrees", "38.5 degrees", "39.0 degrees")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie oft soll der Patient die Tabletten nehmen?",
+                            options = null,
+                            correctAnswer = "dreimal täglich",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How often should the patient take the tablets?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wann soll der Patient wiederkommen?",
+                            options = listOf("Morgen", "In einer Woche", "In zwei Wochen", "Nächsten Monat"),
+                            correctAnswer = "In einer Woche",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When should the patient come back?",
+                            optionsEnglish = listOf("Tomorrow", "In a week", "In two weeks", "Next month")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Halsschmerzen", "sore throat", "Ich habe Halsschmerzen."),
+                        VocabularyItem("Fieber", "fever", "Ich habe 38 Grad Fieber."),
+                        VocabularyItem("erkältet", "having a cold", "Ich bin erkältet."),
+                        VocabularyItem("Medikamente", "medicine", "Nehmen Sie diese Medikamente.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Im Urlaub",
+                    description = "Holiday conversations - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 14,
+                    text = "Wohin fahren Sie in Urlaub? Nach Spanien, ans Meer. Wie lange bleiben Sie? Zwei Wochen. Fliegen Sie? Nein, wir fahren mit dem Auto. Das dauert länger, aber es ist billiger. Was machen Sie dort? Wir gehen an den Strand, schwimmen und essen Tapas. Klingt schön! Haben Sie schon gebucht? Ja, das Hotel und den Flug. Viel Spaß im Urlaub!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wohin fährt die Person in Urlaub?",
+                            options = listOf("Nach Italien", "Nach Spanien", "Nach Frankreich", "Nach Portugal"),
+                            correctAnswer = "Nach Spanien",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where is the person going on vacation?",
+                            optionsEnglish = listOf("To Italy", "To Spain", "To France", "To Portugal")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie reist die Person?",
+                            options = listOf("Mit dem Flugzeug", "Mit dem Auto", "Mit dem Zug", "Mit dem Bus"),
+                            correctAnswer = "Mit dem Auto",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How is the person traveling?",
+                            optionsEnglish = listOf("By plane", "By car", "By train", "By bus")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie lange bleibt die Person?",
+                            options = null,
+                            correctAnswer = "zwei Wochen",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How long is the person staying?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was macht die Person im Urlaub?",
+                            options = listOf("Wandern", "Schwimmen", "Ski fahren", "Stadt besichtigen"),
+                            correctAnswer = "Schwimmen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the person do on vacation?",
+                            optionsEnglish = listOf("Hiking", "Swimming", "Skiing", "Sightseeing")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Urlaub", "vacation", "Ich fahre in Urlaub."),
+                        VocabularyItem("Meer", "sea", "Ans Meer fahren."),
+                        VocabularyItem("Strand", "beach", "Am Strand liegen."),
+                        VocabularyItem("schwimmen", "to swim", "Ich gehe schwimmen.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Im Fitnessstudio",
+                    description = "Gym conversation - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 15,
+                    text = "Hallo, ich möchte Mitglied werden. Guten Tag! Füllen Sie bitte dieses Formular aus. Name, Adresse, Telefon. Haben Sie einen Ausweis dabei? Ja, hier ist mein Personalausweis. Wie oft kommen Sie? Dreimal pro Woche. Was für Kurse gibt es? Aerobic, Yoga und Krafttraining. Ich interessiere mich für Yoga. Der Kurs ist montags und mittwochs. Die Mitgliedschaft kostet 30 Euro im Monat.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was muss die Person ausfüllen?",
+                            options = listOf("Einen Vertrag", "Ein Formular", "Eine Liste", "Ein Antrag"),
+                            correctAnswer = "Ein Formular",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the person have to fill out?",
+                            optionsEnglish = listOf("A contract", "A form", "A list", "An application")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie oft kommt die Person?",
+                            options = listOf("Einmal pro Woche", "Zweimal pro Woche", "Dreimal pro Woche", "Täglich"),
+                            correctAnswer = "Dreimal pro Woche",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How often does the person come?",
+                            optionsEnglish = listOf("Once a week", "Twice a week", "Three times a week", "Daily")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wann ist der Yoga-Kurs?",
+                            options = null,
+                            correctAnswer = "montags und mittwochs",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "When is the yoga class?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie viel kostet die Mitgliedschaft?",
+                            options = listOf("20 Euro", "25 Euro", "30 Euro", "35 Euro"),
+                            correctAnswer = "30 Euro",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How much does the membership cost?",
+                            optionsEnglish = listOf("20 Euro", "25 Euro", "30 Euro", "35 Euro")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Fitnessstudio", "gym", "Ich gehe ins Fitnessstudio."),
+                        VocabularyItem("Mitglied", "member", "Ich werde Mitglied."),
+                        VocabularyItem("Kurs", "course", "Der Yoga-Kurs ist gut."),
+                        VocabularyItem("trainieren", "to train", "Ich trainiere dreimal pro Woche.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Beim Friseur",
+                    description = "Hair salon conversation - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 16,
+                    text = "Guten Tag, was möchten Sie? Ich möchte die Haare schneiden lassen. Wie kurz? Bis zu den Schultern, bitte. Waschen wir zuerst die Haare. Ja, gerne. Möchten Sie eine Spülung? Nein, danke. Jetzt föhne ich Ihre Haare. Wie gefällt es Ihnen? Sehr gut, danke. Das macht 25 Euro. Hier ist 30 Euro. Danke, 5 Euro zurück. Auf Wiedersehen!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was möchte die Kundin?",
+                            options = listOf("Haare waschen", "Haare schneiden", "Haare färben", "Haare stylen"),
+                            correctAnswer = "Haare schneiden",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the customer want?",
+                            optionsEnglish = listOf("Hair wash", "Hair cut", "Hair color", "Hair styling")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie kurz sollen die Haare sein?",
+                            options = listOf("Sehr kurz", "Bis zum Hals", "Bis zu den Schultern", "Lang"),
+                            correctAnswer = "Bis zu den Schultern",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How short should the hair be?",
+                            optionsEnglish = listOf("Very short", "To the neck", "To the shoulders", "Long")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie viel kostet der Haarschnitt?",
+                            options = null,
+                            correctAnswer = "25 Euro",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How much does the haircut cost?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was gibt die Kundin?",
+                            options = listOf("20 Euro", "25 Euro", "30 Euro", "35 Euro"),
+                            correctAnswer = "30 Euro",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the customer give?",
+                            optionsEnglish = listOf("20 Euro", "25 Euro", "30 Euro", "35 Euro")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Friseur", "hairdresser", "Ich gehe zum Friseur."),
+                        VocabularyItem("Haare schneiden", "to cut hair", "Die Haare schneiden lassen."),
+                        VocabularyItem("föhnen", "to blow dry", "Die Haare föhnen."),
+                        VocabularyItem("Spülung", "rinse", "Eine Spülung machen.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Im Park",
+                    description = "Park activities - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 17,
+                    text = "Es ist schön draußen. Lass uns in den Park gehen. Gute Idee! Was machen wir dort? Wir können spazieren gehen oder picknicken. Ich habe einen Ball dabei. Wir können Fußball spielen. Toll! Dort sind Bänke und Bäume. Die Blumen sind schön. Hörst du die Vögel? Ja, sie singen schön. Es gibt auch einen Spielplatz für Kinder. Sie haben Spaß.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo gehen die Personen hin?",
+                            options = listOf("Ins Kino", "In den Park", "Ins Café", "Nach Hause"),
+                            correctAnswer = "In den Park",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where are the people going?",
+                            optionsEnglish = listOf("To the cinema", "To the park", "To the café", "Home")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was haben sie dabei?",
+                            options = listOf("Einen Ball", "Ein Buch", "Musik", "Essen"),
+                            correctAnswer = "Einen Ball",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What do they have with them?",
+                            optionsEnglish = listOf("A ball", "A book", "Music", "Food")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was können sie im Park machen?",
+                            options = null,
+                            correctAnswer = "Fußball spielen",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What can they do in the park?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was gibt es für Kinder?",
+                            options = listOf("Einen Zoo", "Einen Spielplatz", "Ein Schwimmbad", "Ein Museum"),
+                            correctAnswer = "Einen Spielplatz",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is there for children?",
+                            optionsEnglish = listOf("A zoo", "A playground", "A swimming pool", "A museum")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Park", "park", "Wir gehen in den Park."),
+                        VocabularyItem("spazieren", "to stroll", "Spazieren gehen."),
+                        VocabularyItem("Ball", "ball", "Wir spielen mit dem Ball."),
+                        VocabularyItem("Spielplatz", "playground", "Der Spielplatz ist für Kinder.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Beim Zahnarzt",
+                    description = "Dentist visit - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 18,
+                    text = "Guten Tag, was fehlt Ihnen? Ich habe Zahnschmerzen. Seit wann? Seit gestern Abend. Öffnen Sie bitte den Mund. Welcher Zahn tut weh? Der hier rechts oben. Sie haben ein Loch. Ich muss bohren und füllen. Tut das weh? Nein, Sie bekommen eine Spritze. Danach putzen Sie die Zähne zweimal täglich. In zwei Wochen kommen Sie zur Kontrolle. Danke, auf Wiedersehen!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was hat der Patient?",
+                            options = listOf("Halsschmerzen", "Zahnschmerzen", "Kopfschmerzen", "Bauchschmerzen"),
+                            correctAnswer = "Zahnschmerzen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the patient have?",
+                            optionsEnglish = listOf("Sore throat", "Toothache", "Headache", "Stomach ache")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Seit wann hat er Schmerzen?",
+                            options = listOf("Seit heute Morgen", "Seit gestern Abend", "Seit zwei Tagen", "Seit einer Woche"),
+                            correctAnswer = "Seit gestern Abend",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Since when does he have pain?",
+                            optionsEnglish = listOf("Since this morning", "Since yesterday evening", "For two days", "For a week")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was muss der Zahnarzt machen?",
+                            options = null,
+                            correctAnswer = "bohren und füllen",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What does the dentist have to do?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wann kommt der Patient wieder?",
+                            options = listOf("Morgen", "In einer Woche", "In zwei Wochen", "Nächsten Monat"),
+                            correctAnswer = "In zwei Wochen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When does the patient come back?",
+                            optionsEnglish = listOf("Tomorrow", "In a week", "In two weeks", "Next month")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Zahnarzt", "dentist", "Ich gehe zum Zahnarzt."),
+                        VocabularyItem("Zahnschmerzen", "toothache", "Ich habe Zahnschmerzen."),
+                        VocabularyItem("bohren", "to drill", "Der Zahnarzt bohrt."),
+                        VocabularyItem("füllen", "to fill", "Den Zahn füllen.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Im Schwimmbad",
+                    description = "Swimming pool activities - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 19,
+                    text = "Das Schwimmbad ist heute voll. Lass uns eine Bahn schwimmen. Gute Idee! Das Wasser ist warm. Ich schwimme 20 Bahnen. Danach gehen wir in die Sauna. Die Sauna ist sehr heiß. Wir bleiben nur 10 Minuten. Schau, dort ist ein Sprungturm. Traust du dich zu springen? Nein, ich habe Angst. Ich bleibe im Becken. Die Kinder spielen im Planschbecken. Sie haben Spaß.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo sind die Personen?",
+                            options = listOf("Im Meer", "Im Schwimmbad", "Im See", "Im Fluss"),
+                            correctAnswer = "Im Schwimmbad",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where are the people?",
+                            optionsEnglish = listOf("In the sea", "In the swimming pool", "In the lake", "In the river")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie viele Bahnen schwimmt die Person?",
+                            options = listOf("10", "15", "20", "25"),
+                            correctAnswer = "20",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How many laps does the person swim?",
+                            optionsEnglish = listOf("10", "15", "20", "25")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wohin gehen sie nach dem Schwimmen?",
+                            options = null,
+                            correctAnswer = "Sauna",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "Where do they go after swimming?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was traut sich die Person nicht?",
+                            options = listOf("Schwimmen", "Springen", "Tauchen", "Spielen"),
+                            correctAnswer = "Springen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What doesn't the person dare to do?",
+                            optionsEnglish = listOf("Swimming", "Jumping", "Diving", "Playing")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Schwimmbad", "swimming pool", "Das Schwimmbad ist groß."),
+                        VocabularyItem("schwimmen", "to swim", "Ich schwimme 20 Bahnen."),
+                        VocabularyItem("Sauna", "sauna", "Die Sauna ist heiß."),
+                        VocabularyItem("Sprungturm", "diving tower", "Vom Sprungturm springen.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Telefonieren",
+                    description = "Phone conversations - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 20,
+                    text = "Hallo, hier ist Anna. Wer ist da? Hallo Anna, hier ist Thomas. Wie geht es dir? Danke, gut. Und dir? Auch gut. Was machst du heute Abend? Ich gehe ins Kino mit Freunden. Hast du Lust mitzukommen? Ja, gerne! Wann und wo treffen wir uns? Um 19 Uhr vor dem Kino. Okay, bis dann! Tschüs! Auf Wiederhören!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wer ruft an?",
+                            options = listOf("Anna", "Thomas", "Maria", "Peter"),
+                            correctAnswer = "Thomas",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Who is calling?",
+                            optionsEnglish = listOf("Anna", "Thomas", "Maria", "Peter")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was macht Anna heute Abend?",
+                            options = listOf("Zu Hause bleiben", "Ins Kino gehen", "Essen gehen", "Sport machen"),
+                            correctAnswer = "Ins Kino gehen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is Anna doing tonight?",
+                            optionsEnglish = listOf("Stay at home", "Go to the cinema", "Go out to eat", "Do sports")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Um wie viel Uhr treffen sie sich?",
+                            options = null,
+                            correctAnswer = "19 Uhr",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "At what time are they meeting?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wo treffen sie sich?",
+                            options = listOf("Vor dem Kino", "Im Kino", "Im Café", "Zu Hause"),
+                            correctAnswer = "Vor dem Kino",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where are they meeting?",
+                            optionsEnglish = listOf("In front of the cinema", "In the cinema", "At the café", "At home")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("telefonieren", "to phone", "Ich telefoniere mit Freunden."),
+                        VocabularyItem("anrufen", "to call", "Wer ruft an?"),
+                        VocabularyItem("Lust haben", "to feel like", "Hast du Lust?"),
+                        VocabularyItem("treffen", "to meet", "Wir treffen uns um 19 Uhr.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC Deutsch A1 Lesen - Lessons (21-23)
+                lessons.add(createLesenLesson(
+                    title = "Anzeigen verstehen",
+                    description = "Understanding advertisements - TELC Lesen Teil 1",
+                    level = level,
+                    orderIndex = 21,
+                    text = "GESUCHT: Babysitter für 2 Kinder (3 und 5 Jahre). Zeit: Nachmittags, 14-18 Uhr. Bezahlung: 8 Euro/Stunde. Erfahrung nötig. Tel: 030-1234567\n\nZIMMER ZU VERMIETEN: Zentral gelegen, 25 qm, möbliert. Miete: 350 Euro + Nebenkosten. Ab sofort. Kontakt: wohnung@berlin.de\n\nKURSANGEBOT: Deutsch lernen für Anfänger. 2x pro Woche, 10 Wochen. Kosten: 150 Euro. Beginn: 15. März. Info: sprachschule@deutsch-lernen.de",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was sucht die Anzeige?",
+                            options = listOf("Einen Lehrer", "Einen Babysitter", "Eine Wohnung", "Einen Kurs"),
+                            correctAnswer = "Einen Babysitter",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is the advertisement looking for?",
+                            optionsEnglish = listOf("A teacher", "A babysitter", "An apartment", "A course")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie viel kostet das Zimmer im Monat?",
+                            options = listOf("250 Euro", "350 Euro", "450 Euro", "550 Euro"),
+                            correctAnswer = "350 Euro",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How much does the room cost per month?",
+                            optionsEnglish = listOf("250 Euro", "350 Euro", "450 Euro", "550 Euro")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wann beginnt der Sprachkurs?",
+                            options = null,
+                            correctAnswer = "15. März",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "When does the language course start?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie oft findet der Deutschkurs statt?",
+                            options = listOf("1x pro Woche", "2x pro Woche", "3x pro Woche", "Täglich"),
+                            correctAnswer = "2x pro Woche",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How often does the German course take place?",
+                            optionsEnglish = listOf("Once a week", "Twice a week", "Three times a week", "Daily")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Anzeige", "advertisement", "Die Anzeige steht in der Zeitung."),
+                        VocabularyItem("vermieten", "to rent out", "Das Zimmer wird vermietet."),
+                        VocabularyItem("möbliert", "furnished", "Die Wohnung ist möbliert."),
+                        VocabularyItem("Nebenkosten", "additional costs", "Nebenkosten sind extra.")
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Formulare ausfüllen",
+                    description = "Filling out forms - TELC Lesen Teil 2",
+                    level = level,
+                    orderIndex = 22,
+                    text = "ANMELDUNG BEI DER BIBLIOTHEK\n\nName: ________________________\nVorname: _____________________\nAdresse: ______________________\nTelefon: ______________________\nE-Mail: _______________________\n\nAusweisnummer: ________________\nGeburtsdatum: _________________\nBeruf: ________________________\n\nUnterschrift: __________________\nDatum: _______________________\n\nMitgliedsbeitrag: 20 Euro/Jahr\nÖffnungszeiten: Mo-Fr 9-19 Uhr, Sa 9-14 Uhr",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was muss man für die Anmeldung bezahlen?",
+                            options = listOf("10 Euro", "20 Euro", "30 Euro", "50 Euro"),
+                            correctAnswer = "20 Euro",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What do you have to pay for registration?",
+                            optionsEnglish = listOf("10 Euro", "20 Euro", "30 Euro", "50 Euro")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wann ist die Bibliothek samstags geöffnet?",
+                            options = listOf("9-14 Uhr", "9-17 Uhr", "10-15 Uhr", "10-16 Uhr"),
+                            correctAnswer = "9-14 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When is the library open on Saturdays?",
+                            optionsEnglish = listOf("9-14 o'clock", "9-17 o'clock", "10-15 o'clock", "10-16 o'clock")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was braucht man für die Anmeldung?",
+                            options = null,
+                            correctAnswer = "Ausweisnummer",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What do you need for registration?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wann ist die Bibliothek montags geöffnet?",
+                            options = listOf("8-18 Uhr", "9-19 Uhr", "10-20 Uhr", "11-21 Uhr"),
+                            correctAnswer = "9-19 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When is the library open on Mondays?",
+                            optionsEnglish = listOf("8-18 o'clock", "9-19 o'clock", "10-20 o'clock", "11-21 o'clock")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Anmeldung", "registration", "Die Anmeldung ist einfach."),
+                        VocabularyItem("Bibliothek", "library", "Die Bibliothek hat viele Bücher."),
+                        VocabularyItem("Mitgliedsbeitrag", "membership fee", "Der Mitgliedsbeitrag ist 20 Euro."),
+                        VocabularyItem("Öffnungszeiten", "opening hours", "Die Öffnungszeiten sind von 9-19 Uhr.")
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Kurze Texte verstehen",
+                    description = "Understanding short texts - TELC Lesen Teil 3",
+                    level = level,
+                    orderIndex = 23,
+                    text = "Liebe Anna,\n\nvielen Dank für deine Einladung zur Party! Ich komme gerne. Kann ich etwas mitbringen? Vielleicht einen Salat oder Kuchen?\n\nBeste Grüße\nMaria\n\n---\n\nHallo Herr Müller,\n\nich bin morgen krank und kann nicht zur Arbeit kommen. Ich schicke Ihnen eine Krankmeldung vom Arzt.\n\nMit freundlichen Grüßen\nFrau Schmidt\n\n---\n\nSehr geehrte Damen und Herren,\n\nich interessiere mich für Ihr Zimmerangebot. Kann ich es morgen ansehen? Bitte rufen Sie mich an: 0171-9876543.\n\nMit freundlichen Grüßen\nMax Wagner",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was möchte Maria mitbringen?",
+                            options = listOf("Nichts", "Einen Salat oder Kuchen", "Getränke", "Musik"),
+                            correctAnswer = "Einen Salat oder Kuchen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does Maria want to bring?",
+                            optionsEnglish = listOf("Nothing", "A salad or cake", "Drinks", "Music")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Warum kann Frau Schmidt nicht arbeiten?",
+                            options = listOf("Sie ist im Urlaub", "Sie ist krank", "Sie hat einen Termin", "Sie arbeitet zu Hause"),
+                            correctAnswer = "Sie ist krank",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Why can't Ms. Schmidt work?",
+                            optionsEnglish = listOf("She is on vacation", "She is sick", "She has an appointment", "She works from home")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was möchte Max ansehen?",
+                            options = null,
+                            correctAnswer = "Zimmerangebot",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What does Max want to see?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wann möchte Max das Zimmer ansehen?",
+                            options = listOf("Heute", "Morgen", "Übermorgen", "Nächste Woche"),
+                            correctAnswer = "Morgen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When does Max want to see the room?",
+                            optionsEnglish = listOf("Today", "Tomorrow", "The day after tomorrow", "Next week")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Einladung", "invitation", "Die Einladung kam per E-Mail."),
+                        VocabularyItem("mitbringen", "to bring along", "Ich bringe einen Kuchen mit."),
+                        VocabularyItem("Krankmeldung", "sick note", "Die Krankmeldung ist vom Arzt."),
+                        VocabularyItem("interessieren", "to interest", "Das Zimmer interessiert mich.")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD Zertifikat A1 Lesen - Lessons (33-35)
+                lessons.add(createLesenLesson(
+                    title = "Öffentliche Verkehrsmittel",
+                    description = "Public transportation - ÖSD Lesen Teil 1",
+                    level = level,
+                    orderIndex = 33,
+                    text = "INFORMATION: Ab Montag, 15. März, ändern sich die Fahrpläne der Straßenbahnlinien 1, 2 und 3. Die Straßenbahn 1 fährt ab 6:00 Uhr alle 10 Minuten. Die Linie 2 verkehrt von 5:30 bis 23:00 Uhr alle 15 Minuten. Die Straßenbahn 3 hat abends ab 20:00 Uhr nur noch alle 30 Minuten eine Fahrt. Bitte informieren Sie sich an den Haltestellen über die genauen Abfahrtszeiten.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Ab wann gelten die neuen Fahrpläne?",
+                            options = listOf("Ab Montag, 15. März", "Ab Dienstag, 16. März", "Ab Mittwoch, 17. März", "Ab Donnerstag, 18. März"),
+                            correctAnswer = "Ab Montag, 15. März",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "From when do the new timetables apply?",
+                            optionsEnglish = listOf("From Monday, March 15th", "From Tuesday, March 16th", "From Wednesday, March 17th", "From Thursday, March 18th")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie oft fährt die Straßenbahn 1 ab 6:00 Uhr?",
+                            options = listOf("Alle 5 Minuten", "Alle 10 Minuten", "Alle 15 Minuten", "Alle 20 Minuten"),
+                            correctAnswer = "Alle 10 Minuten",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How often does tram 1 run from 6:00 AM?",
+                            optionsEnglish = listOf("Every 5 minutes", "Every 10 minutes", "Every 15 minutes", "Every 20 minutes")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie oft fährt die Straßenbahn 3 abends ab 20:00 Uhr?",
+                            options = null,
+                            correctAnswer = "alle 30 Minuten",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How often does tram 3 run in the evening from 8:00 PM?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wo kann man sich über die genauen Abfahrtszeiten informieren?",
+                            options = listOf("Am Bahnhof", "An den Haltestellen", "Im Internet", "Beim Fahrer"),
+                            correctAnswer = "An den Haltestellen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where can you get information about the exact departure times?",
+                            optionsEnglish = listOf("At the train station", "At the stops", "On the internet", "From the driver")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("ändern", "to change", "Die Fahrpläne ändern sich."),
+                        VocabularyItem("Fahrplan", "timetable", "Der Fahrplan ist neu."),
+                        VocabularyItem("Straßenbahn", "tram", "Die Straßenbahn fährt pünktlich."),
+                        VocabularyItem("Abfahrtszeit", "departure time", "Die Abfahrtszeit ist wichtig.")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "Wetterbericht verstehen",
+                    description = "Understanding weather reports - ÖSD Lesen Teil 2",
+                    level = level,
+                    orderIndex = 34,
+                    text = "WETTER FÜR WIEN: Morgen wird es sonnig und warm. Die Temperaturen steigen auf 22-25 Grad Celsius. Es gibt nur wenige Wolken und keinen Regen. In der Nacht kühlt es auf 12 Grad ab. Am Donnerstag erwartet uns wechselhaftes Wetter mit Schauern. Die Höchsttemperaturen liegen bei 18 Grad. Freitag bringt wieder Sonnenschein und Temperaturen bis zu 24 Grad.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wie wird das Wetter morgen in Wien?",
+                            options = listOf("Regnerisch", "Sonnig und warm", "Bewölkt", "Stürmisch"),
+                            correctAnswer = "Sonnig und warm",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What will the weather be like tomorrow in Vienna?",
+                            optionsEnglish = listOf("Rainy", "Sunny and warm", "Cloudy", "Stormy")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie hoch sind die Temperaturen morgen?",
+                            options = listOf("15-18 Grad", "18-21 Grad", "22-25 Grad", "25-28 Grad"),
+                            correctAnswer = "22-25 Grad",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What are the temperatures tomorrow?",
+                            optionsEnglish = listOf("15-18 degrees", "18-21 degrees", "22-25 degrees", "25-28 degrees")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie wird das Wetter am Donnerstag?",
+                            options = null,
+                            correctAnswer = "wechselhaft mit Schauern",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What will the weather be like on Thursday?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie hoch sind die Temperaturen am Freitag?",
+                            options = listOf("Bis zu 20 Grad", "Bis zu 22 Grad", "Bis zu 24 Grad", "Bis zu 26 Grad"),
+                            correctAnswer = "Bis zu 24 Grad",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What are the temperatures on Friday?",
+                            optionsEnglish = listOf("Up to 20 degrees", "Up to 22 degrees", "Up to 24 degrees", "Up to 26 degrees")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Wetterbericht", "weather report", "Der Wetterbericht ist gut."),
+                        VocabularyItem("Temperatur", "temperature", "Die Temperatur steigt."),
+                        VocabularyItem("Sonnenschein", "sunshine", "Es gibt viel Sonnenschein."),
+                        VocabularyItem("wechselhaft", "changeable", "Das Wetter ist wechselhaft.")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "E-Mail verstehen",
+                    description = "Understanding emails - ÖSD Lesen Teil 3",
+                    level = level,
+                    orderIndex = 35,
+                    text = "Von: office@company.at\nAn: anna.schmidt@email.com\nBetreff: Bewerbungsgespräch\n\nLiebe Frau Schmidt,\n\nvielen Dank für Ihre Bewerbung. Wir freuen uns, Ihnen mitteilen zu können, dass Sie zum Vorstellungsgespräch eingeladen sind.\n\nTermin: Donnerstag, 20. April, 14:00 Uhr\nOrt: Bürogebäude Wien Mitte, 3. Stock, Raum 301\nAdresse: Mariahilfer Straße 123, 1060 Wien\n\nBitte bringen Sie folgende Unterlagen mit:\n- Lebenslauf\n- Zeugnisse\n- Personalausweis\n\nBei Fragen erreichen Sie uns unter 01-234567.\n\nMit freundlichen Grüßen\nMax Müller\nPersonalabteilung\nCompany GmbH",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Warum schreibt die Firma eine E-Mail?",
+                            options = listOf("Zur Kündigung", "Zur Einladung zum Vorstellungsgespräch", "Zur Gehaltsverhandlung", "Zur Urlaubsplanung"),
+                            correctAnswer = "Zur Einladung zum Vorstellungsgespräch",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Why is the company writing an email?",
+                            optionsEnglish = listOf("For termination", "For invitation to job interview", "For salary negotiation", "For vacation planning")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wann findet das Vorstellungsgespräch statt?",
+                            options = listOf("Donnerstag, 20. April, 14:00 Uhr", "Freitag, 21. April, 15:00 Uhr", "Montag, 24. April, 10:00 Uhr", "Dienstag, 25. April, 16:00 Uhr"),
+                            correctAnswer = "Donnerstag, 20. April, 14:00 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When does the job interview take place?",
+                            optionsEnglish = listOf("Thursday, April 20th, 2:00 PM", "Friday, April 21st, 3:00 PM", "Monday, April 24th, 10:00 AM", "Tuesday, April 25th, 4:00 PM")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wo findet das Gespräch statt?",
+                            options = null,
+                            correctAnswer = "Bürogebäude Wien Mitte, 3. Stock, Raum 301",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "Where does the interview take place?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was soll man zum Gespräch mitbringen?",
+                            options = listOf("Lebenslauf, Zeugnisse, Personalausweis", "Nur Lebenslauf", "Nur Zeugnisse", "Nur Personalausweis"),
+                            correctAnswer = "Lebenslauf, Zeugnisse, Personalausweis",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What should you bring to the interview?",
+                            optionsEnglish = listOf("Resume, certificates, ID card", "Only resume", "Only certificates", "Only ID card")
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Bewerbung", "application", "Die Bewerbung ist eingegangen."),
+                        VocabularyItem("Vorstellungsgespräch", "job interview", "Das Vorstellungsgespräch ist wichtig."),
+                        VocabularyItem("Lebenslauf", "resume/CV", "Der Lebenslauf muss aktuell sein."),
+                        VocabularyItem("Zeugnis", "certificate", "Die Zeugnisse sind wichtig.")
+                    ),
+                    source = "ÖSD"
+                ))
             }
-            
+
             "A2" -> {
                 lessons.add(createLesenLesson(
                     title = "Eine Reise nach München",
@@ -870,98 +1965,8 @@ Die Herausforderung besteht darin, die Vorteile der Globalisierung zu nutzen, oh
                     )
                 ))
             }
-            
-            "B2" -> {
-                lessons.add(createLesenLesson(
-                    title = "Globalisierung und Wirtschaft",
-                    description = "Globalization and economy",
-                    level = level,
-                    orderIndex = 1,
-                    text = "Die Globalisierung hat die Weltwirtschaft grundlegend verändert. Internationale Handelsbeziehungen sind heute komplexer denn je. Unternehmen agieren global und müssen sich an verschiedene Märkte anpassen. Gleichzeitig entstehen neue Herausforderungen durch Protektionismus und Handelskriege. Die Zukunft der globalen Wirtschaft ist ungewiss, aber die Vernetzung wird weiter zunehmen.",
-                    questions = listOf(
-                        Question(id = 1, question = "Was hat die Globalisierung verändert?", options = listOf("Nur lokale Märkte", "Die Weltwirtschaft", "Nur Technologie", "Nur Politik"), correctAnswer = "Die Weltwirtschaft", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 2, question = "Was müssen Unternehmen heute tun?", options = listOf("Nur lokal arbeiten", "Sich an verschiedene Märkte anpassen", "Nur exportieren", "Nur importieren"), correctAnswer = "Sich an verschiedene Märkte anpassen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 3, question = "Was wird weiter zunehmen?", options = null, correctAnswer = "Vernetzung", correctAnswers = null, type = QuestionType.FILL_BLANK)
-                    ),
-                    vocabulary = listOf(
-                        VocabularyItem("Globalisierung", "globalization", "Die Globalisierung verändert alles."),
-                        VocabularyItem("Handelsbeziehungen", "trade relations", "Internationale Handelsbeziehungen."),
-                        VocabularyItem("Protektionismus", "protectionism", "Protektionismus ist ein Problem.")
-                    )
-                ))
 
-                lessons.add(createLesenLesson(
-                    title = "Wissenschaft und Forschung",
-                    description = "Science and research",
-                    level = level,
-                    orderIndex = 2,
-                    text = "Deutschland ist ein führendes Land in der Wissenschaft und Forschung. Deutsche Universitäten und Forschungsinstitute genießen weltweit hohes Ansehen. Besonders in den Bereichen Medizin, Ingenieurwesen und Naturwissenschaften werden wichtige Entdeckungen gemacht. Die Zusammenarbeit zwischen Universitäten und Unternehmen ist sehr eng. Viele internationale Studenten kommen nach Deutschland, um zu studieren und zu forschen.",
-                    questions = listOf(
-                        Question(id = 1, question = "Was ist Deutschland in der Wissenschaft?", options = listOf("Ein führendes Land", "Ein kleines Land", "Ein unbedeutendes Land", "Ein armes Land"), correctAnswer = "Ein führendes Land", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 2, question = "In welchen Bereichen werden Entdeckungen gemacht?", options = listOf("Nur in Kunst", "Nur in Literatur", "Medizin, Ingenieurwesen, Naturwissenschaften", "Nur in Geschichte"), correctAnswer = "Medizin, Ingenieurwesen, Naturwissenschaften", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 3, question = "Warum kommen internationale Studenten nach Deutschland?", options = null, correctAnswer = "um zu studieren und zu forschen", correctAnswers = null, type = QuestionType.FILL_BLANK)
-                    ),
-                    vocabulary = listOf(
-                        VocabularyItem("Forschung", "research", "Deutschland ist führend in der Forschung."),
-                        VocabularyItem("Universität", "university", "Ich studiere an der Universität."),
-                        VocabularyItem("Entdeckung", "discovery", "Wichtige Entdeckungen werden gemacht.")
-                    )
-                ))
 
-                lessons.add(createLesenLesson(
-                    title = "Kunst und Kultur",
-                    description = "Art and culture",
-                    level = level,
-                    orderIndex = 3,
-                    text = "Deutschland hat eine reiche kulturelle Tradition. Berühmte Komponisten wie Beethoven, Bach und Mozart haben hier gelebt und gearbeitet. Die deutsche Literatur ist weltweit bekannt, mit Autoren wie Goethe, Schiller und Kafka. Deutsche Museen beherbergen wertvolle Kunstsammlungen. Das Theater und die Oper haben eine lange Tradition. Moderne deutsche Künstler sind international erfolgreich.",
-                    questions = listOf(
-                        Question(id = 1, question = "Was haben Beethoven, Bach und Mozart gemeinsam?", options = listOf("Sie waren Maler", "Sie waren Komponisten", "Sie waren Schriftsteller", "Sie waren Architekten"), correctAnswer = "Sie waren Komponisten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 2, question = "Welche deutschen Autoren sind bekannt?", options = listOf("Nur moderne Autoren", "Goethe, Schiller, Kafka", "Nur englische Autoren", "Nur französische Autoren"), correctAnswer = "Goethe, Schiller, Kafka", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 3, question = "Was haben deutsche Museen?", options = null, correctAnswer = "wertvolle Kunstsammlungen", correctAnswers = null, type = QuestionType.FILL_BLANK)
-                    ),
-                    vocabulary = listOf(
-                        VocabularyItem("Komponist", "composer", "Beethoven war ein Komponist."),
-                        VocabularyItem("Literatur", "literature", "Die deutsche Literatur ist bekannt."),
-                        VocabularyItem("Kunstsammlung", "art collection", "Das Museum hat eine Kunstsammlung.")
-                    )
-                ))
-
-                lessons.add(createLesenLesson(
-                    title = "Geschichte und Erinnerung",
-                    description = "History and memory",
-                    level = level,
-                    orderIndex = 4,
-                    text = "Die deutsche Geschichte ist komplex und oft schwierig. Das 20. Jahrhundert war geprägt von zwei Weltkriegen und der Teilung des Landes. Nach dem Fall der Mauer 1989 wurde Deutschland wiedervereinigt. Heute ist Deutschland ein demokratisches Land, das sich seiner historischen Verantwortung stellt. Gedenkstätten und Museen erinnern an die dunklen Kapitel der Geschichte. Die Erinnerungskultur ist wichtig für die Zukunft.",
-                    questions = listOf(
-                        Question(id = 1, question = "Wann wurde Deutschland wiedervereinigt?", options = listOf("1985", "1989", "1990", "1995"), correctAnswer = "1989", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 2, question = "Was war das 20. Jahrhundert geprägt von?", options = listOf("Nur Frieden", "Zwei Weltkriegen und Teilung", "Nur Wirtschaftskrisen", "Nur technologischen Fortschritten"), correctAnswer = "Zwei Weltkriegen und Teilung", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 3, question = "Was ist wichtig für die Zukunft?", options = null, correctAnswer = "Erinnerungskultur", correctAnswers = null, type = QuestionType.FILL_BLANK)
-                    ),
-                    vocabulary = listOf(
-                        VocabularyItem("Geschichte", "history", "Die deutsche Geschichte ist komplex."),
-                        VocabularyItem("Wiedervereinigung", "reunification", "Die Wiedervereinigung war 1989."),
-                        VocabularyItem("Gedenkstätte", "memorial", "Gedenkstätten erinnern an die Geschichte.")
-                    )
-                ))
-
-                lessons.add(createLesenLesson(
-                    title = "Sprache und Identität",
-                    description = "Language and identity",
-                    level = level,
-                    orderIndex = 5,
-                    text = "Die deutsche Sprache ist eine wichtige europäische Sprache mit über 100 Millionen Sprechern. Sie ist die Amtssprache in Deutschland, Österreich und der Schweiz. Deutsch hat viele Dialekte und regionale Varianten. Die Sprache ist ein wichtiger Teil der deutschen Identität und Kultur. Viele deutsche Wörter sind in andere Sprachen übernommen worden. Das Erlernen der deutschen Sprache öffnet viele Türen.",
-                    questions = listOf(
-                        Question(id = 1, question = "Wie viele Menschen sprechen Deutsch?", options = listOf("50 Millionen", "100 Millionen", "150 Millionen", "200 Millionen"), correctAnswer = "100 Millionen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 2, question = "In welchen Ländern ist Deutsch Amtssprache?", options = listOf("Nur Deutschland", "Deutschland, Österreich, Schweiz", "Nur Österreich", "Nur Schweiz"), correctAnswer = "Deutschland, Österreich, Schweiz", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                        Question(id = 3, question = "Was ist ein wichtiger Teil der deutschen Identität?", options = null, correctAnswer = "die Sprache", correctAnswers = null, type = QuestionType.FILL_BLANK)
-                    ),
-                    vocabulary = listOf(
-                        VocabularyItem("Amtssprache", "official language", "Deutsch ist Amtssprache in Deutschland."),
-                        VocabularyItem("Dialekt", "dialect", "Deutsch hat viele Dialekte."),
-                        VocabularyItem("Identität", "identity", "Die Sprache ist Teil der Identität.")
-                    )
-                ))
-            }
             
             "C1" -> {
                 lessons.add(createLesenLesson(
@@ -1975,7 +2980,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         val (noun, article) = baseNouns[(index - 1) % baseNouns.size]
 
         val articleOptions = listOf("Der", "Die", "Das")
-        val question1 = GrammarQuestion("__ $noun ist hier.", articleOptions, article.capitalize(), 5)
+        val question1 = GrammarQuestion("__ $noun ist hier.", articleOptions, article.replaceFirstChar { it.uppercase() }, 5)
 
         // sentence order variation
         val verbs = listOf("gehe", "lerne", "spiele", "esse", "trinke")
@@ -2086,8 +3091,977 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         Question(id = 3, question = "Was hat der Passagier?", options = null, correctAnswer = "5-Euro-Schein", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What does the passenger have?")
                     )
                 ))
+
+                // Goethe-Zertifikat A1 Hören - Additional Lessons (6-20)
+                lessons.add(createHoerenLesson(
+                    title = "Familie und Verwandte",
+                    description = "Talking about family and relatives - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 6,
+                    script = "Anna: Hallo Maria! Wie geht es deiner Familie?\nMaria: Danke, gut. Mein Bruder hat Geburtstag nächste Woche.\nAnna: Wie alt wird er?\nMaria: Er wird 25 Jahre alt. Meine Eltern machen eine Party.\nAnna: Das klingt schön. Kommt deine Oma auch?\nMaria: Ja, natürlich. Sie bringt ihren berühmten Kuchen mit.\nAnna: Toll! Ich komme gerne. Wann beginnt die Party?\nMaria: Um 15 Uhr am Samstag.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wessen Geburtstag feiert die Familie?",
+                            options = listOf("Der Bruder", "Die Schwester", "Der Vater", "Die Mutter"),
+                            correctAnswer = "Der Bruder",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Whose birthday is the family celebrating?",
+                            optionsEnglish = listOf("The brother", "The sister", "The father", "The mother")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie alt wird der Bruder?",
+                            options = listOf("20", "25", "30", "35"),
+                            correctAnswer = "25",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How old will the brother be?",
+                            optionsEnglish = listOf("20", "25", "30", "35")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was bringt die Oma mit?",
+                            options = null,
+                            correctAnswer = "Kuchen",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What does grandma bring?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Um wie viel Uhr beginnt die Party?",
+                            options = listOf("Um 14 Uhr", "Um 15 Uhr", "Um 16 Uhr", "Um 17 Uhr"),
+                            correctAnswer = "Um 15 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "At what time does the party start?",
+                            optionsEnglish = listOf("At 2 PM", "At 3 PM", "At 4 PM", "At 5 PM")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Hobby und Freizeit",
+                    description = "Talking about hobbies and free time - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 7,
+                    script = "Thomas: Was machst du in deiner Freizeit?\nLisa: Ich lese gerne Bücher und höre Musik.\nThomas: Welche Musik hörst du?\nLisa: Ich mag Pop und Rock. Und du?\nThomas: Ich spiele Fußball jeden Samstag.\nLisa: Spielst du in einem Verein?\nThomas: Ja, seit zwei Jahren. Wir trainieren zweimal pro Woche.\nLisa: Das klingt toll. Vielleicht komme ich mal zum Zuschauen.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was macht Lisa in ihrer Freizeit?",
+                            options = listOf("Bücher lesen und Musik hören", "Fußball spielen", "Kochen", "Zeichnen"),
+                            correctAnswer = "Bücher lesen und Musik hören",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does Lisa do in her free time?",
+                            optionsEnglish = listOf("Reading books and listening to music", "Playing soccer", "Cooking", "Drawing")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Welche Musik mag Lisa?",
+                            options = listOf("Klassik", "Pop und Rock", "Jazz", "Hip-Hop"),
+                            correctAnswer = "Pop und Rock",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What music does Lisa like?",
+                            optionsEnglish = listOf("Classical", "Pop and rock", "Jazz", "Hip-Hop")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie oft spielt Thomas Fußball?",
+                            options = null,
+                            correctAnswer = "jeden Samstag",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How often does Thomas play soccer?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Seit wann spielt Thomas im Verein?",
+                            options = listOf("Seit einem Jahr", "Seit zwei Jahren", "Seit drei Jahren", "Seit vier Jahren"),
+                            correctAnswer = "Seit zwei Jahren",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Since when has Thomas been playing in the club?",
+                            optionsEnglish = listOf("For one year", "For two years", "For three years", "For four years")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Einkaufen im Supermarkt",
+                    description = "Shopping at the supermarket - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 8,
+                    script = "Verkäuferin: Guten Tag! Was suchen Sie?\nKunde: Ich brauche Milch und Brot.\nVerkäuferin: Die Milch ist im Kühlregal. Welche Größe?\nKunde: Eine Flasche mit 1 Liter, bitte.\nVerkäuferin: Hier ist sie. Kostet 1,20 Euro.\nKunde: Danke. Wo ist das Brot?\nVerkäuferin: Bei den Backwaren, Regal 3.\nKunde: Welches Brot empfehlen Sie?\nVerkäuferin: Das Vollkornbrot ist sehr gut.\nKunde: Gut, das nehme ich. Wie viel kostet es?\nVerkäuferin: 2,50 Euro.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was braucht der Kunde zuerst?",
+                            options = listOf("Milch und Brot", "Käse und Wurst", "Obst und Gemüse", "Schokolade und Kekse"),
+                            correctAnswer = "Milch und Brot",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the customer need first?",
+                            optionsEnglish = listOf("Milk and bread", "Cheese and sausage", "Fruit and vegetables", "Chocolate and cookies")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wo steht die Milch?",
+                            options = listOf("Im Kühlregal", "Bei den Backwaren", "Im Regal 3", "Bei den Süßigkeiten"),
+                            correctAnswer = "Im Kühlregal",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where is the milk?",
+                            optionsEnglish = listOf("In the refrigerated section", "At the bakery", "In shelf 3", "At the sweets")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie viel kostet die Milch?",
+                            options = null,
+                            correctAnswer = "1,20 Euro",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How much does the milk cost?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Welches Brot empfiehlt die Verkäuferin?",
+                            options = listOf("Weißbrot", "Vollkornbrot", "Roggenbrot", "Mischbrot"),
+                            correctAnswer = "Vollkornbrot",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What bread does the saleswoman recommend?",
+                            optionsEnglish = listOf("White bread", "Whole grain bread", "Rye bread", "Mixed bread")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Im Café sitzen",
+                    description = "Sitting at a café - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 9,
+                    script = "Kellner: Guten Abend! Was möchten Sie trinken?\nGast: Ich hätte gerne einen Kaffee, bitte.\nKellner: Mit Milch und Zucker?\nGast: Nein, schwarz bitte. Und ein Stück Kuchen.\nKellner: Welchen Kuchen möchten Sie?\nGast: Den Schokoladenkuchen, bitte.\nKellner: Sehr gerne. Das macht zusammen 6,50 Euro.\nGast: Hier sind 10 Euro.\nKellner: Danke, 3,50 Euro zurück. Guten Appetit!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was bestellt der Gast zu trinken?",
+                            options = listOf("Tee", "Kaffee", "Saft", "Wasser"),
+                            correctAnswer = "Kaffee",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the guest order to drink?",
+                            optionsEnglish = listOf("Tea", "Coffee", "Juice", "Water")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie trinkt der Gast den Kaffee?",
+                            options = listOf("Mit Milch und Zucker", "Schwarz", "Mit Sahne", "Mit Zitrone"),
+                            correctAnswer = "Schwarz",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How does the guest drink the coffee?",
+                            optionsEnglish = listOf("With milk and sugar", "Black", "With cream", "With lemon")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Welchen Kuchen möchte der Gast?",
+                            options = null,
+                            correctAnswer = "Schokoladenkuchen",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What cake does the guest want?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie viel kostet alles zusammen?",
+                            options = listOf("5,50 Euro", "6,50 Euro", "7,50 Euro", "8,50 Euro"),
+                            correctAnswer = "6,50 Euro",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How much does everything cost together?",
+                            optionsEnglish = listOf("5.50 Euro", "6.50 Euro", "7.50 Euro", "8.50 Euro")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Termin beim Arzt",
+                    description = "Doctor's appointment - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 10,
+                    script = "Arzt: Guten Tag, was fehlt Ihnen?\nPatient: Ich habe Bauchschmerzen seit gestern.\nArzt: Haben Sie auch Übelkeit?\nPatient: Ja, ein bisschen. Und ich habe Durchfall.\nArzt: Öffnen Sie bitte den Mund. Ihre Mandeln sind rot.\nPatient: Ist es schlimm?\nArzt: Nein, nur eine Magenverstimmung. Trinken Sie viel Tee.\nPatient: Wie lange dauert das?\nArzt: Zwei oder drei Tage. Kommen Sie wieder, wenn es schlimmer wird.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo hat der Patient Schmerzen?",
+                            options = listOf("Im Bauch", "Im Kopf", "Im Rücken", "In den Beinen"),
+                            correctAnswer = "Im Bauch",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where does the patient have pain?",
+                            optionsEnglish = listOf("In the stomach", "In the head", "In the back", "In the legs")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Seit wann hat er Schmerzen?",
+                            options = listOf("Seit heute", "Seit gestern", "Seit zwei Tagen", "Seit einer Woche"),
+                            correctAnswer = "Seit gestern",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Since when does he have pain?",
+                            optionsEnglish = listOf("Since today", "Since yesterday", "For two days", "For a week")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was hat der Patient auch?",
+                            options = null,
+                            correctAnswer = "Übelkeit",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What else does the patient have?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was hat der Patient?",
+                            options = listOf("Erkältung", "Magenverstimmung", "Grippe", "Allergie"),
+                            correctAnswer = "Magenverstimmung",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the patient have?",
+                            optionsEnglish = listOf("Cold", "Stomach upset", "Flu", "Allergy")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Wetter und Jahreszeiten",
+                    description = "Talking about weather and seasons - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 11,
+                    script = "Anna: Was für Wetter haben wir heute?\nMaria: Es ist sonnig und warm, etwa 25 Grad.\nAnna: Das ist schön! Was machst du bei diesem Wetter?\nMaria: Ich gehe an den See und mache Picknick.\nAnna: Klingt gut. Was ist dein Lieblingswetter?\nMaria: Ich mag den Sommer am liebsten. Und du?\nAnna: Ich liebe den Frühling, wenn alles blüht.\nMaria: Im Winter fahre ich Ski.\nAnna: Das mache ich auch gerne. Wann fährst du wieder?",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wie ist das Wetter heute?",
+                            options = listOf("Regnerisch", "Sonnig und warm", "Bewölkt", "Kalt"),
+                            correctAnswer = "Sonnig und warm",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is the weather like today?",
+                            optionsEnglish = listOf("Rainy", "Sunny and warm", "Cloudy", "Cold")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie viel Grad sind es ungefähr?",
+                            options = listOf("15 Grad", "20 Grad", "25 Grad", "30 Grad"),
+                            correctAnswer = "25 Grad",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "About how many degrees is it?",
+                            optionsEnglish = listOf("15 degrees", "20 degrees", "25 degrees", "30 degrees")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was macht Maria bei diesem Wetter?",
+                            options = null,
+                            correctAnswer = "Picknick",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What does Maria do in this weather?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was macht Maria im Winter?",
+                            options = listOf("Schwimmen", "Ski fahren", "Rad fahren", "Wandern"),
+                            correctAnswer = "Ski fahren",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does Maria do in winter?",
+                            optionsEnglish = listOf("Swimming", "Skiing", "Cycling", "Hiking")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Im Büro arbeiten",
+                    description = "Working in the office - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 12,
+                    script = "Chef: Guten Morgen, Frau Müller!\nMüller: Guten Morgen, Herr Schmidt!\nChef: Haben Sie die Berichte fertig?\nMüller: Ja, sie liegen auf Ihrem Schreibtisch.\nChef: Danke. Können Sie heute länger bleiben?\nMüller: Ja, natürlich. Bis wann?\nChef: Bis 18 Uhr. Wir haben ein Meeting.\nMüller: Kein Problem. Soll ich etwas vorbereiten?\nChef: Ja, bitte machen Sie eine Präsentation.\nMüller: Gut, ich mache das sofort.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo liegen die Berichte?",
+                            options = listOf("Auf dem Boden", "Auf dem Schreibtisch", "Im Schrank", "In der Tasche"),
+                            correctAnswer = "Auf dem Schreibtisch",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where are the reports?",
+                            optionsEnglish = listOf("On the floor", "On the desk", "In the cabinet", "In the bag")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Bis wann soll Frau Müller bleiben?",
+                            options = listOf("17 Uhr", "18 Uhr", "19 Uhr", "20 Uhr"),
+                            correctAnswer = "18 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Until when should Ms. Müller stay?",
+                            optionsEnglish = listOf("5 PM", "6 PM", "7 PM", "8 PM")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was soll Frau Müller machen?",
+                            options = null,
+                            correctAnswer = "Präsentation",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What should Ms. Müller do?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wann findet das Meeting statt?",
+                            options = listOf("Heute", "Morgen", "Übermorgen", "Nächste Woche"),
+                            correctAnswer = "Heute",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When does the meeting take place?",
+                            optionsEnglish = listOf("Today", "Tomorrow", "The day after tomorrow", "Next week")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Freunde treffen",
+                    description = "Meeting friends - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 13,
+                    script = "Max: Hallo Anna! Wie geht es dir?\nAnna: Hallo Max! Gut, danke. Und dir?\nMax: Auch gut. Was machst du heute Abend?\nAnna: Ich gehe ins Kino mit meiner Schwester.\nMax: Welchen Film seht ihr?\nAnna: Einen Komödie. Hast du Lust mitzukommen?\nMax: Ja, gerne! Wann und wo?\nAnna: Um 20 Uhr im City-Kino.\nMax: Perfekt! Treffen wir uns davor?\nAnna: Ja, um 19:30 Uhr am Eingang.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Mit wem geht Anna ins Kino?",
+                            options = listOf("Mit ihrem Bruder", "Mit ihrer Schwester", "Mit ihrem Freund", "Mit ihrer Mutter"),
+                            correctAnswer = "Mit ihrer Schwester",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Who is Anna going to the cinema with?",
+                            optionsEnglish = listOf("With her brother", "With her sister", "With her boyfriend", "With her mother")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Welchen Film sehen sie?",
+                            options = listOf("Eine Komödie", "Einen Actionfilm", "Ein Drama", "Einen Horrorfilm"),
+                            correctAnswer = "Eine Komödie",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What movie are they seeing?",
+                            optionsEnglish = listOf("A comedy", "An action movie", "A drama", "A horror movie")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Um wie viel Uhr ist das Kino?",
+                            options = null,
+                            correctAnswer = "20 Uhr",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "At what time is the cinema?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wo treffen sie sich?",
+                            options = listOf("Im Kino", "Am Eingang", "Im Café", "Zu Hause"),
+                            correctAnswer = "Am Eingang",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where do they meet?",
+                            optionsEnglish = listOf("In the cinema", "At the entrance", "At the café", "At home")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Beim Bäcker",
+                    description = "At the bakery - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 14,
+                    script = "Kunde: Guten Tag! Ich hätte gerne Brot.\nBäcker: Welches Brot möchten Sie?\nKunde: Das Weißbrot, bitte.\nBäcker: Groß oder klein?\nKunde: Groß, bitte. Und zwei Brötchen.\nBäcker: Gerne. Haben Sie auch Kuchen?\nBäcker: Ja, wir haben verschiedene Sorten.\nKunde: Zeigen Sie mir den Erdbeerkuchen.\nBäcker: Sehr gerne. Das macht zusammen 8,50 Euro.\nKunde: Hier sind 10 Euro.\nBäcker: Danke, 1,50 Euro zurück. Einen schönen Tag!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was möchte der Kunde zuerst?",
+                            options = listOf("Kuchen", "Brot", "Brötchen", "Kekse"),
+                            correctAnswer = "Brot",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the customer want first?",
+                            optionsEnglish = listOf("Cake", "Bread", "Rolls", "Cookies")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie groß soll das Brot sein?",
+                            options = listOf("Klein", "Groß", "Mittel", "Extra groß"),
+                            correctAnswer = "Groß",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How big should the bread be?",
+                            optionsEnglish = listOf("Small", "Large", "Medium", "Extra large")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie viele Brötchen möchte der Kunde?",
+                            options = null,
+                            correctAnswer = "zwei",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How many rolls does the customer want?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Welchen Kuchen möchte der Kunde sehen?",
+                            options = listOf("Schokoladenkuchen", "Erdbeerkuchen", "Apfelkuchen", "Zitronenkuchen"),
+                            correctAnswer = "Erdbeerkuchen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What cake does the customer want to see?",
+                            optionsEnglish = listOf("Chocolate cake", "Strawberry cake", "Apple cake", "Lemon cake")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Sport treiben",
+                    description = "Doing sports - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 15,
+                    script = "Trainer: Hallo zusammen! Heute machen wir Gymnastik.\nSportler: Was machen wir zuerst?\nTrainer: Zuerst dehnen wir die Muskeln.\nSportler: Wie lange?\nTrainer: Fünf Minuten. Dann machen wir Übungen.\nSportler: Welche Übungen?\nTrainer: Kniebeugen und Liegestütze.\nSportler: Wie viele?\nTrainer: 15 Kniebeugen und 10 Liegestütze.\nSportler: Okay, fangen wir an!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was machen sie heute?",
+                            options = listOf("Fußball", "Gymnastik", "Schwimmen", "Laufen"),
+                            correctAnswer = "Gymnastik",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What are they doing today?",
+                            optionsEnglish = listOf("Soccer", "Gymnastics", "Swimming", "Running")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was machen sie zuerst?",
+                            options = listOf("Übungen", "Dehnen", "Laufen", "Springen"),
+                            correctAnswer = "Dehnen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What do they do first?",
+                            optionsEnglish = listOf("Exercises", "Stretching", "Running", "Jumping")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie lange dehnen sie?",
+                            options = null,
+                            correctAnswer = "fünf Minuten",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How long do they stretch?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie viele Kniebeugen machen sie?",
+                            options = listOf("10", "15", "20", "25"),
+                            correctAnswer = "15",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How many squats do they do?",
+                            optionsEnglish = listOf("10", "15", "20", "25")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Im Park spazieren",
+                    description = "Walking in the park - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 16,
+                    script = "Maria: Schau, wie schön der Park ist!\nAnna: Ja, die Blumen blühen prächtig.\nMaria: Hörst du die Vögel singen?\nAnna: Ja, und die Luft ist so frisch.\nMaria: Lass uns auf der Bank sitzen.\nAnna: Gute Idee. Was machen die Leute?\nMaria: Manche lesen Bücher, andere joggen.\nAnna: Und dort spielen Kinder.\nMaria: Ja, sie haben Spaß. Das ist erholsam.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo sind die Frauen?",
+                            options = listOf("Im Garten", "Im Park", "Im Wald", "Am See"),
+                            correctAnswer = "Im Park",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where are the women?",
+                            optionsEnglish = listOf("In the garden", "In the park", "In the forest", "At the lake")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was blüht im Park?",
+                            options = listOf("Bäume", "Blumen", "Gras", "Sträucher"),
+                            correctAnswer = "Blumen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is blooming in the park?",
+                            optionsEnglish = listOf("Trees", "Flowers", "Grass", "Bushes")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was machen manche Leute?",
+                            options = null,
+                            correctAnswer = "lesen Bücher",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What are some people doing?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was spielen im Park?",
+                            options = listOf("Hunde", "Kinder", "Vögel", "Erwachsene"),
+                            correctAnswer = "Kinder",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Who is playing in the park?",
+                            optionsEnglish = listOf("Dogs", "Children", "Birds", "Adults")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Kleidung kaufen",
+                    description = "Buying clothes - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 17,
+                    script = "Verkäufer: Kann ich Ihnen helfen?\nKunde: Ja, ich suche eine Jacke.\nVerkäufer: Welche Größe haben Sie?\nKunde: Größe M, bitte.\nVerkäufer: Hier ist eine schöne Lederjacke.\nKunde: Wie viel kostet sie?\nVerkäufer: 120 Euro. Gefällt sie Ihnen?\nKunde: Ja, aber haben Sie auch Jeans?\nVerkäufer: Ja, in verschiedenen Größen.\nKunde: Zeigen Sie mir Größe 32.\nVerkäufer: Hier, die kosten 80 Euro.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was sucht der Kunde?",
+                            options = listOf("Eine Hose", "Eine Jacke", "Ein Hemd", "Ein Kleid"),
+                            correctAnswer = "Eine Jacke",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is the customer looking for?",
+                            optionsEnglish = listOf("Pants", "A jacket", "A shirt", "A dress")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Welche Größe braucht der Kunde?",
+                            options = listOf("S", "M", "L", "XL"),
+                            correctAnswer = "M",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What size does the customer need?",
+                            optionsEnglish = listOf("S", "M", "L", "XL")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie viel kostet die Jacke?",
+                            options = null,
+                            correctAnswer = "120 Euro",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How much does the jacket cost?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Welche Jeansgröße möchte der Kunde?",
+                            options = listOf("30", "32", "34", "36"),
+                            correctAnswer = "32",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What jeans size does the customer want?",
+                            optionsEnglish = listOf("30", "32", "34", "36")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Essen bestellen",
+                    description = "Ordering food - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 18,
+                    script = "Kellner: Guten Abend! Haben Sie reserviert?\nGast: Nein, aber wir brauchen einen Tisch für zwei.\nKellner: Hier ist ein freier Tisch. Die Karte, bitte.\nGast: Danke. Was empfehlen Sie?\nKellner: Die Pasta ist sehr gut heute.\nGast: Gut, ich nehme die Spaghetti.\nKellner: Und als Getränk?\nGast: Ein Glas Rotwein, bitte.\nKellner: Sehr gerne. Und für Sie?\nGast: Ich nehme den Salat und Wasser.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Für wie viele Personen brauchen sie einen Tisch?",
+                            options = listOf("1", "2", "3", "4"),
+                            correctAnswer = "2",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "For how many people do they need a table?",
+                            optionsEnglish = listOf("1", "2", "3", "4")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was empfiehlt der Kellner?",
+                            options = listOf("Pizza", "Pasta", "Steak", "Fisch"),
+                            correctAnswer = "Pasta",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the waiter recommend?",
+                            optionsEnglish = listOf("Pizza", "Pasta", "Steak", "Fish")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was bestellt die erste Person?",
+                            options = null,
+                            correctAnswer = "Spaghetti",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What does the first person order?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was trinkt die zweite Person?",
+                            options = listOf("Rotwein", "Weißwein", "Bier", "Wasser"),
+                            correctAnswer = "Wasser",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the second person drink?",
+                            optionsEnglish = listOf("Red wine", "White wine", "Beer", "Water")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Uhrzeit und Termine",
+                    description = "Time and appointments - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 19,
+                    script = "Sekretärin: Guten Tag! Wann haben Sie einen Termin?\nPatient: Morgen um 10 Uhr.\nSekretärin: Der Arzt kommt um 9:30 Uhr.\nPatient: Kann ich früher kommen?\nSekretärin: Ja, um 9 Uhr ist noch frei.\nPatient: Gut, dann komme ich um 9 Uhr.\nSekretärin: Wie lange dauert die Untersuchung?\nPatient: Etwa 30 Minuten.\nSekretärin: Dann sind Sie um 9:30 Uhr fertig.\nPatient: Danke für die Information!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wann hatte der Patient einen Termin?",
+                            options = listOf("Heute um 10 Uhr", "Morgen um 10 Uhr", "Übermorgen um 10 Uhr", "Nächste Woche"),
+                            correctAnswer = "Morgen um 10 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When did the patient have an appointment?",
+                            optionsEnglish = listOf("Today at 10 AM", "Tomorrow at 10 AM", "The day after tomorrow at 10 AM", "Next week")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Um wie viel Uhr kommt der Arzt?",
+                            options = listOf("8:30 Uhr", "9:00 Uhr", "9:30 Uhr", "10:00 Uhr"),
+                            correctAnswer = "9:30 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "At what time does the doctor arrive?",
+                            optionsEnglish = listOf("8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie lange dauert die Untersuchung?",
+                            options = null,
+                            correctAnswer = "30 Minuten",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How long does the examination take?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Um wie viel Uhr ist der Patient fertig?",
+                            options = listOf("9:00 Uhr", "9:30 Uhr", "10:00 Uhr", "10:30 Uhr"),
+                            correctAnswer = "9:30 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "At what time is the patient finished?",
+                            optionsEnglish = listOf("9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Reisen und Urlaub",
+                    description = "Travel and vacation - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 20,
+                    script = "Reiseberater: Wohin möchten Sie reisen?\nKunde: Nach Italien, ans Meer.\nReiseberater: Für wie viele Personen?\nKunde: Für zwei Erwachsene und ein Kind.\nReiseberater: Wie lange bleiben Sie?\nKunde: Zwei Wochen im Juli.\nReiseberater: Wir haben ein schönes Hotel mit Pool.\nKunde: Wie viel kostet das?\nReiseberater: 1200 Euro für alle zusammen.\nKunde: Das ist günstig. Wann fliegen wir?\nReiseberater: Abflug ist am 15. Juli morgens.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wohin möchte der Kunde reisen?",
+                            options = listOf("Nach Spanien", "Nach Italien", "Nach Frankreich", "Nach Griechenland"),
+                            correctAnswer = "Nach Italien",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where does the customer want to travel?",
+                            optionsEnglish = listOf("To Spain", "To Italy", "To France", "To Greece")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Für wie viele Personen ist die Reise?",
+                            options = listOf("2 Personen", "3 Personen", "4 Personen", "5 Personen"),
+                            correctAnswer = "3 Personen",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "For how many people is the trip?",
+                            optionsEnglish = listOf("2 people", "3 people", "4 people", "5 people")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie lange bleiben sie?",
+                            options = null,
+                            correctAnswer = "zwei Wochen",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How long are they staying?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wann ist der Abflug?",
+                            options = listOf("15. Juni", "15. Juli", "15. August", "15. September"),
+                            correctAnswer = "15. Juli",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When is the departure?",
+                            optionsEnglish = listOf("June 15th", "July 15th", "August 15th", "September 15th")
+                        )
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC Deutsch A1 Hören - Lessons (24-26)
+                lessons.add(createHoerenLesson(
+                    title = "Öffentliche Ansagen",
+                    description = "Public announcements - TELC Hören Teil 1",
+                    level = level,
+                    orderIndex = 24,
+                    script = "Ansage: Achtung! Achtung! Der Zug von Berlin nach München hat 10 Minuten Verspätung. Die Passagiere werden gebeten, am Gleis zu warten. Wir entschuldigen uns für die Unannehmlichkeiten.\n\n---\n\nAnsage: Liebe Fahrgäste, der Bus Linie 42 fährt heute ab 18 Uhr alle 20 Minuten vom Hauptbahnhof ab. Die Fahrt dauert etwa 25 Minuten bis zum Stadtzentrum.\n\n---\n\nAnsage: Aufmerksamkeit bitte! Der Supermarkt schließt heute um 20 Uhr. Bitte erledigen Sie Ihre Einkäufe rechtzeitig. Vielen Dank für Ihren Besuch!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wie viel Verspätung hat der Zug?",
+                            options = listOf("5 Minuten", "10 Minuten", "15 Minuten", "20 Minuten"),
+                            correctAnswer = "10 Minuten",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How much delay does the train have?",
+                            optionsEnglish = listOf("5 minutes", "10 minutes", "15 minutes", "20 minutes")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie oft fährt der Bus abends?",
+                            options = listOf("Alle 10 Minuten", "Alle 15 Minuten", "Alle 20 Minuten", "Alle 30 Minuten"),
+                            correctAnswer = "Alle 20 Minuten",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How often does the bus run in the evening?",
+                            optionsEnglish = listOf("Every 10 minutes", "Every 15 minutes", "Every 20 minutes", "Every 30 minutes")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Um wie viel Uhr schließt der Supermarkt?",
+                            options = null,
+                            correctAnswer = "20 Uhr",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "At what time does the supermarket close?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was sollen die Fahrgäste tun?",
+                            options = listOf("Nach Hause gehen", "Am Gleis warten", "Den Zug verlassen", "Essen kaufen"),
+                            correctAnswer = "Am Gleis warten",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What should the passengers do?",
+                            optionsEnglish = listOf("Go home", "Wait at the platform", "Leave the train", "Buy food")
+                        )
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Alltagsgespräche",
+                    description = "Everyday conversations - TELC Hören Teil 2",
+                    level = level,
+                    orderIndex = 25,
+                    script = "Verkäufer: Guten Tag! Kann ich Ihnen helfen?\nKunde: Ja, ich suche eine Jacke für den Winter.\nVerkäufer: Welche Größe brauchen Sie?\nKunde: Größe 48, bitte.\nVerkäufer: Hier ist eine warme Winterjacke. Sie kostet 89 Euro.\nKunde: Das ist ein bisschen teuer. Haben Sie eine günstigere?\nVerkäufer: Ja, diese hier kostet 65 Euro.\nKunde: Die nehme ich. Kann ich mit Karte bezahlen?\nVerkäufer: Natürlich, hier entlang zur Kasse.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was sucht der Kunde?",
+                            options = listOf("Eine Hose", "Eine Jacke", "Ein Hemd", "Einen Mantel"),
+                            correctAnswer = "Eine Jacke",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is the customer looking for?",
+                            optionsEnglish = listOf("Pants", "A jacket", "A shirt", "A coat")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Welche Größe braucht der Kunde?",
+                            options = listOf("46", "47", "48", "49"),
+                            correctAnswer = "48",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What size does the customer need?",
+                            optionsEnglish = listOf("46", "47", "48", "49")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie viel kostet die günstigere Jacke?",
+                            options = null,
+                            correctAnswer = "65 Euro",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How much does the cheaper jacket cost?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie möchte der Kunde bezahlen?",
+                            options = listOf("Bar", "Mit Karte", "Mit Scheck", "Online"),
+                            correctAnswer = "Mit Karte",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How does the customer want to pay?",
+                            optionsEnglish = listOf("Cash", "With card", "With check", "Online")
+                        )
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Telefonate und Nachrichten",
+                    description = "Phone calls and messages - TELC Hören Teil 3",
+                    level = level,
+                    orderIndex = 26,
+                    script = "Hallo Anna, hier ist Thomas. Ich kann morgen nicht zum Treffen kommen, weil ich krank bin. Ich habe Fieber und muss im Bett bleiben. Können wir das Treffen auf nächste Woche verschieben? Ruf mich bitte zurück. Danke!\n\n---\n\nLiebe Eltern, die Schule ist heute früher aus. Bitte holen Sie Ihre Kinder bis 13 Uhr ab. Vielen Dank für Ihre Aufmerksamkeit.\n\n---\n\nGuten Tag, Sie haben die Nummer von Frau Müller gewählt. Ich bin gerade nicht da. Hinterlassen Sie bitte eine Nachricht nach dem Signalton. Piep!",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Warum kann Thomas nicht kommen?",
+                            options = listOf("Er hat viel Arbeit", "Er ist krank", "Er hat einen Termin", "Er ist verreist"),
+                            correctAnswer = "Er ist krank",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Why can't Thomas come?",
+                            optionsEnglish = listOf("He has a lot of work", "He is sick", "He has an appointment", "He is traveling")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Bis wann müssen die Kinder abgeholt werden?",
+                            options = listOf("12 Uhr", "13 Uhr", "14 Uhr", "15 Uhr"),
+                            correctAnswer = "13 Uhr",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Until what time must the children be picked up?",
+                            optionsEnglish = listOf("12 o'clock", "1 o'clock", "2 o'clock", "3 o'clock")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was soll man hinterlassen?",
+                            options = null,
+                            correctAnswer = "eine Nachricht",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "What should one leave?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wann ist die Schule aus?",
+                            options = listOf("Heute", "Morgen", "Übermorgen", "Nächste Woche"),
+                            correctAnswer = "Heute",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "When does school end?",
+                            optionsEnglish = listOf("Today", "Tomorrow", "The day after tomorrow", "Next week")
+                        )
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD Zertifikat A1 Hören - Lessons (36-38)
+                lessons.add(createHoerenLesson(
+                    title = "Wegbeschreibungen folgen",
+                    description = "Following directions - ÖSD Hören Teil 1",
+                    level = level,
+                    orderIndex = 36,
+                    script = "Passant: Entschuldigung, wie komme ich zur Oper?\nEinheimischer: Geradeaus gehen, dann rechts in die Kärntner Straße. Nach 200 Metern links in die Operngasse. Die Oper ist auf der rechten Seite.\n\n---\n\nPassant: Wo ist das Rathaus?\nEinheimischer: Vom Stephansdom aus immer geradeaus die Stephansplatz entlang. Nach dem Café Central links in die Wipplinger Straße. Das Rathaus ist dann rechts.\n\n---\n\nPassant: Wie komme ich zum Naschmarkt?\nEinheimischer: Nehmen Sie die U-Bahn U1 bis Karlsplatz. Dann mit der U4 bis Kettenbrückengasse. Der Naschmarkt ist direkt bei der Station.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wie kommt man zur Oper?",
+                            options = listOf("Geradeaus, rechts, links", "Links, rechts, geradeaus", "Rechts, links, geradeaus", "Geradeaus, links, rechts"),
+                            correctAnswer = "Geradeaus, rechts, links",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How do you get to the Opera?",
+                            optionsEnglish = listOf("Straight, right, left", "Left, right, straight", "Right, left, straight", "Straight, left, right")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wo ist das Rathaus?",
+                            options = listOf("Links von der Wipplinger Straße", "Rechts von der Wipplinger Straße", "Geradeaus vom Stephansplatz", "Neben dem Café Central"),
+                            correctAnswer = "Rechts von der Wipplinger Straße",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where is the town hall?",
+                            optionsEnglish = listOf("Left of Wipplinger Street", "Right of Wipplinger Street", "Straight from Stephansplatz", "Next to Café Central")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie kommt man zum Naschmarkt?",
+                            options = null,
+                            correctAnswer = "U1 bis Karlsplatz, dann U4 bis Kettenbrückengasse",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How do you get to the Naschmarkt?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was ist direkt bei der Station Kettenbrückengasse?",
+                            options = listOf("Das Rathaus", "Der Naschmarkt", "Die Oper", "Der Stephansdom"),
+                            correctAnswer = "Der Naschmarkt",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is directly at Kettenbrückengasse station?",
+                            optionsEnglish = listOf("The town hall", "The Naschmarkt", "The Opera", "St. Stephen's Cathedral")
+                        )
+                    ),
+                    source = "ÖSD"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Alltägliche Unterhaltungen",
+                    description = "Everyday conversations - ÖSD Hören Teil 2",
+                    level = level,
+                    orderIndex = 37,
+                    script = "Kellner: Guten Abend! Was darf es sein?\nGast: Ich hätte gerne das Wiener Schnitzel mit Kartoffelsalat.\nKellner: Möchten Sie etwas zu trinken?\nGast: Ein Viertel Rotwein, bitte.\n\n---\n\nVerkäuferin: Hallo! Kann ich Ihnen helfen?\nKunde: Ja, ich suche ein Sommerkleid Größe 38.\nVerkäuferin: Wir haben dieses hier in Blau oder Rot.\nKunde: Das blaue gefällt mir. Wie viel kostet es?\nVerkäuferin: 49 Euro.\n\n---\n\nFriseur: Was wünschen Sie?\nKunde: Ich möchte die Haare schneiden lassen.\nFriseur: Wie kurz soll es werden?\nKunde: Etwa 5 cm kürzer, bitte.\nFriseur: Und waschen?\nKunde: Ja, bitte.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was bestellt der Gast zu essen?",
+                            options = listOf("Wiener Schnitzel mit Kartoffeln", "Wiener Schnitzel mit Kartoffelsalat", "Schnitzel mit Salat", "Kartoffeln mit Schnitzel"),
+                            correctAnswer = "Wiener Schnitzel mit Kartoffelsalat",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the guest order to eat?",
+                            optionsEnglish = listOf("Wiener Schnitzel with potatoes", "Wiener Schnitzel with potato salad", "Schnitzel with salad", "Potatoes with schnitzel")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was sucht der Kunde im Geschäft?",
+                            options = listOf("Ein Wintermantel", "Ein Sommerkleid", "Eine Hose", "Ein Hemd"),
+                            correctAnswer = "Ein Sommerkleid",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What is the customer looking for in the shop?",
+                            optionsEnglish = listOf("A winter coat", "A summer dress", "Pants", "A shirt")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie viel kostet das Kleid?",
+                            options = null,
+                            correctAnswer = "49 Euro",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "How much does the dress cost?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was möchte der Kunde beim Friseur?",
+                            options = listOf("Die Haare waschen", "Die Haare schneiden", "Die Haare färben", "Die Haare stylen"),
+                            correctAnswer = "Die Haare schneiden",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What does the customer want at the hairdresser?",
+                            optionsEnglish = listOf("Hair washing", "Hair cutting", "Hair coloring", "Hair styling")
+                        )
+                    ),
+                    source = "ÖSD"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "Radio- und TV-Nachrichten",
+                    description = "Radio and TV news - ÖSD Hören Teil 3",
+                    level = level,
+                    orderIndex = 38,
+                    script = "Nachrichtensprecher: In Wien hat heute der Opernball stattgefunden. Über 5000 Gäste waren dabei. Das Wetter war perfekt für das Event.\n\n---\n\nNachrichtensprecher: Die Wiener Philharmoniker haben gestern ein Konzert im Musikverein gegeben. Das Programm umfasste Werke von Mozart und Beethoven.\n\n---\n\nNachrichtensprecher: Morgen findet in Wien die Buchmesse statt. Über 300 Aussteller präsentieren ihre Neuerscheinungen. Der Eintritt ist frei.",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wo hat der Opernball stattgefunden?",
+                            options = listOf("In Salzburg", "In Wien", "In Graz", "In Innsbruck"),
+                            correctAnswer = "In Wien",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "Where did the Opera Ball take place?",
+                            optionsEnglish = listOf("In Salzburg", "In Vienna", "In Graz", "In Innsbruck")
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was haben die Wiener Philharmoniker gespielt?",
+                            options = listOf("Werke von Mozart", "Werke von Beethoven", "Werke von Mozart und Beethoven", "Werke von Bach"),
+                            correctAnswer = "Werke von Mozart und Beethoven",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "What did the Vienna Philharmonic play?",
+                            optionsEnglish = listOf("Works by Mozart", "Works by Beethoven", "Works by Mozart and Beethoven", "Works by Bach")
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wo findet die Buchmesse statt?",
+                            options = null,
+                            correctAnswer = "in Wien",
+                            type = QuestionType.FILL_BLANK,
+                            questionEnglish = "Where does the book fair take place?"
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie viele Aussteller sind bei der Buchmesse?",
+                            options = listOf("Über 100", "Über 200", "Über 300", "Über 400"),
+                            correctAnswer = "Über 300",
+                            type = QuestionType.MULTIPLE_CHOICE,
+                            questionEnglish = "How many exhibitors are at the book fair?",
+                            optionsEnglish = listOf("Over 100", "Over 200", "Over 300", "Over 400")
+                        )
+                    ),
+                    source = "ÖSD"
+                ))
             }
-            
+
             "A2" -> {
                 lessons.add(createHoerenLesson(
                     title = "Im Restaurant",
@@ -2506,8 +4480,368 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         "Beschreibe die wichtigsten Möbel"
                     )
                 ))
+
+                // Goethe-Zertifikat A1 Schreiben - Additional Lessons (6-20)
+                lessons.add(createSchreibenLesson(
+                    title = "Mein Tagesablauf",
+                    description = "Write about your daily routine - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 6,
+                    prompt = "Beschreibe deinen normalen Tagesablauf. Wann stehst du auf? Was machst du morgens, mittags und abends? Was sind deine Lieblingsaktivitäten? (70-100 Wörter)",
+                    minWords = 70,
+                    maxWords = 100,
+                    tips = listOf(
+                        "Beginne mit dem Aufstehen",
+                        "Beschreibe Mahlzeiten und Arbeit",
+                        "Erwähne Hobbys und Freizeit",
+                        "Beende mit dem Schlafengehen"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Eine Einladung",
+                    description = "Write an invitation - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 7,
+                    prompt = "Du möchtest Freunde zu einer Party einladen. Schreibe eine Einladung. Wann ist die Party? Wo findet sie statt? Was gibt es zu essen und zu trinken? Was sollen die Gäste mitbringen? (60-90 Wörter)",
+                    minWords = 60,
+                    maxWords = 90,
+                    tips = listOf(
+                        "Schreibe eine nette Einleitung",
+                        "Gib alle wichtigen Informationen",
+                        "Erkläre, was du planst",
+                        "Bitte um Bestätigung"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Mein Beruf",
+                    description = "Write about your profession - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 8,
+                    prompt = "Beschreibe deinen Beruf oder den Beruf, den du gerne haben möchtest. Was machst du jeden Tag? Warum gefällt dir der Beruf? Was sind die Vor- und Nachteile? (80-110 Wörter)",
+                    minWords = 80,
+                    maxWords = 110,
+                    tips = listOf(
+                        "Beginne mit der Berufsbezeichnung",
+                        "Beschreibe tägliche Aufgaben",
+                        "Erkläre, warum du ihn magst",
+                        "Nenne Vor- und Nachteile"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Gesunde Ernährung",
+                    description = "Write about healthy eating - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 9,
+                    prompt = "Schreibe über gesunde Ernährung. Was isst du jeden Tag? Warum ist gesunde Ernährung wichtig? Welche Lebensmittel magst du besonders? Was trinkst du? (70-100 Wörter)",
+                    minWords = 70,
+                    maxWords = 100,
+                    tips = listOf(
+                        "Erkläre die Bedeutung der Gesundheit",
+                        "Liste wichtige Lebensmittel auf",
+                        "Beschreibe deine Essgewohnheiten",
+                        "Gib Tipps für andere"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Meine Freizeit",
+                    description = "Write about your free time - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 10,
+                    prompt = "Beschreibe, was du in deiner Freizeit machst. Welche Hobbys hast du? Treibst du Sport? Gehst du aus? Was machst du am Wochenende? (60-90 Wörter)",
+                    minWords = 60,
+                    maxWords = 90,
+                    tips = listOf(
+                        "Beginne mit deinen Hobbys",
+                        "Beschreibe sportliche Aktivitäten",
+                        "Erzähle von sozialen Aktivitäten",
+                        "Erkläre, warum du das magst"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Eine Entschuldigung",
+                    description = "Write an apology - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 11,
+                    prompt = "Du hast einen Termin vergessen oder bist zu spät gekommen. Schreibe eine Entschuldigung. Erkläre, was passiert ist. Sage, dass es dir leid tut. Biete eine Lösung an. (50-80 Wörter)",
+                    minWords = 50,
+                    maxWords = 80,
+                    tips = listOf(
+                        "Beginne mit einer Entschuldigung",
+                        "Erkläre die Situation kurz",
+                        "Zeige Verständnis",
+                        "Biete Wiedergutmachung an"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Mein Haustier",
+                    description = "Write about your pet - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 12,
+                    prompt = "Beschreibe dein Haustier oder ein Tier, das du gerne hättest. Wie sieht es aus? Wie alt ist es? Was frisst es? Was macht es gerne? Wie kümmertst du dich darum? (70-100 Wörter)",
+                    minWords = 70,
+                    maxWords = 100,
+                    tips = listOf(
+                        "Beschreibe das Aussehen",
+                        "Erzähle vom Charakter",
+                        "Beschreibe die Pflege",
+                        "Erkläre deine Beziehung zum Tier"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Ein Ausflug",
+                    description = "Write about an excursion - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 13,
+                    prompt = "Erzähle von einem schönen Ausflug, den du gemacht hast. Wohin bist du gefahren? Mit wem warst du zusammen? Was hast du gesehen und gemacht? Wie war das Wetter? (80-110 Wörter)",
+                    minWords = 80,
+                    maxWords = 110,
+                    tips = listOf(
+                        "Beginne mit dem Reiseziel",
+                        "Beschreibe die Begleitung",
+                        "Erzähle von den Aktivitäten",
+                        "Beschreibe deine Eindrücke"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Meine Familie",
+                    description = "Write about your family - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 14,
+                    prompt = "Beschreibe deine Familie. Wie viele Personen seid ihr? Wie heißen deine Familienmitglieder? Was machen sie beruflich? Was sind ihre Hobbys? Wie verbringt ihr Zeit zusammen? (70-100 Wörter)",
+                    minWords = 70,
+                    maxWords = 100,
+                    tips = listOf(
+                        "Stelle jedes Familienmitglied vor",
+                        "Beschreibe ihre Berufe",
+                        "Erzähle von gemeinsamen Aktivitäten",
+                        "Beschreibe die Beziehungen"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Sport und Gesundheit",
+                    description = "Write about sports and health - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 15,
+                    prompt = "Schreibe über Sport und Gesundheit. Treibst du Sport? Welchen Sport machst du? Wie oft trainierst du? Warum ist Sport wichtig? Was sind die Vorteile? (60-90 Wörter)",
+                    minWords = 60,
+                    maxWords = 90,
+                    tips = listOf(
+                        "Erkläre die Bedeutung von Sport",
+                        "Beschreibe deine sportlichen Aktivitäten",
+                        "Nenne gesundheitliche Vorteile",
+                        "Gib Tipps für andere"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Eine Verabredung",
+                    description = "Write about making plans - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 16,
+                    prompt = "Du möchtest dich mit einem Freund/einer Freundin treffen. Schreibe eine Nachricht. Wann möchtest du dich treffen? Wo? Was möchtest du machen? Frage nach seiner/ihrer Meinung. (50-70 Wörter)",
+                    minWords = 50,
+                    maxWords = 70,
+                    tips = listOf(
+                        "Sei freundlich und direkt",
+                        "Gib konkrete Vorschläge",
+                        "Frage nach der Meinung des anderen",
+                        "Sei offen für Alternativen"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Meine Stadt",
+                    description = "Write about your city - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 17,
+                    prompt = "Beschreibe deine Stadt oder dein Dorf. Wo liegt es? Wie viele Einwohner hat es? Was gibt es dort? Welche Sehenswürdigkeiten gibt es? Warum gefällt es dir dort? (80-110 Wörter)",
+                    minWords = 80,
+                    maxWords = 110,
+                    tips = listOf(
+                        "Beginne mit der Lage",
+                        "Beschreibe die Größe und Einwohner",
+                        "Erwähne wichtige Orte",
+                        "Erkläre, warum du es magst"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Einkaufen",
+                    description = "Write about shopping - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 18,
+                    prompt = "Erzähle vom Einkaufen. Was brauchst du normalerweise? In welchen Geschäften kaufst du ein? Was sind deine Lieblingsläden? Wie bezahlst du normalerweise? (60-90 Wörter)",
+                    minWords = 60,
+                    maxWords = 90,
+                    tips = listOf(
+                        "Liste wichtige Dinge auf",
+                        "Beschreibe verschiedene Geschäfte",
+                        "Erkläre deine Vorlieben",
+                        "Beschreibe Zahlungsmethoden"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Ein Fest",
+                    description = "Write about a celebration - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 19,
+                    prompt = "Beschreibe ein Fest, das du gefeiert hast oder feiern möchtest. Was für ein Fest ist es? Wann findet es statt? Wer kommt? Was esst und trinkt ihr? Was macht ihr? (70-100 Wörter)",
+                    minWords = 70,
+                    maxWords = 100,
+                    tips = listOf(
+                        "Nenne die Art des Festes",
+                        "Beschreibe die Vorbereitungen",
+                        "Erzähle von den Gästen",
+                        "Beschreibe das Essen und die Aktivitäten"
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Die Jahreszeiten",
+                    description = "Write about the seasons - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 20,
+                    prompt = "Beschreibe die vier Jahreszeiten. Was gefällt dir an jeder Jahreszeit? Was machst du im Frühling, Sommer, Herbst und Winter? Welches Wetter magst du am liebsten? (80-110 Wörter)",
+                    minWords = 80,
+                    maxWords = 110,
+                    tips = listOf(
+                        "Beschreibe jede Jahreszeit",
+                        "Erkläre deine Vorlieben",
+                        "Erzähle von saisonalen Aktivitäten",
+                        "Vergleiche die Jahreszeiten"
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC Deutsch A1 Schreiben - Lessons (27-29)
+                lessons.add(createSchreibenLesson(
+                    title = "Formulare ausfüllen",
+                    description = "Filling out forms - TELC Schreiben Teil 1",
+                    level = level,
+                    orderIndex = 27,
+                    prompt = "Sie müssen sich bei einer Bibliothek anmelden. Füllen Sie das Formular aus. Schreiben Sie Ihren Namen, Ihre Adresse, Ihre Telefonnummer und Ihre E-Mail-Adresse. (30-50 Wörter)",
+                    minWords = 30,
+                    maxWords = 50,
+                    tips = listOf(
+                        "Schreiben Sie alle geforderten Informationen",
+                        "Benutzen Sie vollständige Sätze",
+                        "Überprüfen Sie Ihre Rechtschreibung",
+                        "Schreiben Sie leserlich"
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Kurze Mitteilung",
+                    description = "Short message - TELC Schreiben Teil 2",
+                    level = level,
+                    orderIndex = 28,
+                    prompt = "Sie können morgen nicht zum Unterricht kommen. Schreiben Sie eine kurze Mitteilung an Ihren Lehrer. Erklären Sie warum und wann Sie wiederkommen. (40-60 Wörter)",
+                    minWords = 40,
+                    maxWords = 60,
+                    tips = listOf(
+                        "Erklären Sie den Grund kurz",
+                        "Sagen Sie, wann Sie wiederkommen",
+                        "Seien Sie höflich",
+                        "Schreiben Sie formell"
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Persönliche Nachricht",
+                    description = "Personal message - TELC Schreiben Teil 3",
+                    level = level,
+                    orderIndex = 29,
+                    prompt = "Sie haben einen Brief von einem Freund bekommen und möchten antworten. Schreiben Sie über Ihr Leben, Ihre Hobbys und laden Sie ihn zu sich ein. (60-80 Wörter)",
+                    minWords = 60,
+                    maxWords = 80,
+                    tips = listOf(
+                        "Begrüßen Sie freundlich",
+                        "Erzählen Sie von sich",
+                        "Stellen Sie Fragen",
+                        "Verabschieden Sie sich nett"
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD Zertifikat A1 Schreiben - Lessons (39-41)
+                lessons.add(createSchreibenLesson(
+                    title = "Amtliche Korrespondenz",
+                    description = "Official correspondence - ÖSD Schreiben Teil 1",
+                    level = level,
+                    orderIndex = 39,
+                    prompt = "Sie müssen sich bei einem Amt anmelden. Schreiben Sie einen Brief mit Ihren persönlichen Daten, dem Grund für die Anmeldung und Ihren Kontaktdaten. Verwenden Sie eine formelle Sprache. (50-70 Wörter)",
+                    minWords = 50,
+                    maxWords = 70,
+                    tips = listOf(
+                        "Verwenden Sie formelle Anrede",
+                        "Geben Sie alle geforderten Informationen an",
+                        "Schreiben Sie höflich und korrekt",
+                        "Vergessen Sie nicht Datum und Unterschrift"
+                    ),
+                    source = "ÖSD"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Geschäftliche Mitteilung",
+                    description = "Business communication - ÖSD Schreiben Teil 2",
+                    level = level,
+                    orderIndex = 40,
+                    prompt = "Sie arbeiten in einem Geschäft und müssen einen Kunden informieren, dass ein bestelltes Produkt nicht verfügbar ist. Bieten Sie Alternativen an und entschuldigen Sie sich. (60-80 Wörter)",
+                    minWords = 60,
+                    maxWords = 80,
+                    tips = listOf(
+                        "Seien Sie höflich und professionell",
+                        "Erklären Sie das Problem",
+                        "Bieten Sie Lösungen an",
+                        "Bedanken Sie sich für das Verständnis"
+                    ),
+                    source = "ÖSD"
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "Persönliche Einladung",
+                    description = "Personal invitation - ÖSD Schreiben Teil 3",
+                    level = level,
+                    orderIndex = 41,
+                    prompt = "Sie möchten Freunde zu einem Fest einladen. Schreiben Sie eine Einladung mit Datum, Ort, Zeit und was mitgebracht werden soll. Machen Sie die Einladung persönlich und herzlich. (70-90 Wörter)",
+                    minWords = 70,
+                    maxWords = 90,
+                    tips = listOf(
+                        "Schreiben Sie herzlich und einladend",
+                        "Geben Sie alle wichtigen Informationen",
+                        "Erklären Sie, warum es schön wird",
+                        "Bitten Sie um Rückmeldung"
+                    ),
+                    source = "ÖSD"
+                ))
             }
-            
+
             "A2" -> {
                 lessons.add(createSchreibenLesson(
                     title = "E-Mail an eine Kollegin",
@@ -2951,8 +5285,221 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                     modelResponse = "Heute ist das Wetter [Adjektiv]. Es ist [Temperatur] Grad Celsius. Der Himmel ist [Beschreibung]. Ich trage [Kleidung], weil es [Grund] ist. Bei diesem Wetter gehe ich gerne [Aktivität]. Gestern war das Wetter [Vergleich]. Morgen wird es wahrscheinlich [Vorhersage].",
                     keywords = listOf("Wetter", "Temperatur", "Himmel", "tragen", "gehen", "werden")
                 ))
+
+                // Goethe-Zertifikat A1 Sprechen - Additional Lessons (6-20)
+                lessons.add(createSprechenLesson(
+                    title = "Im Restaurant",
+                    description = "Ordering food at a restaurant - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 6,
+                    prompt = "Du bist im Restaurant. Bestelle Essen und Getränke. Erzähle dem Kellner, was du möchtest. Sprich 1-2 Minuten.",
+                    modelResponse = "Guten Abend! Ich hätte gerne die [Gericht]. Als Vorspeise nehme ich die [Vorspeise]. Dazu bitte ein [Getränk]. Für meinen Freund/Freundin: [Gericht] und [Getränk]. Können Sie uns auch Brot bringen? Wir feiern heute [Anlass]. Danke für die Empfehlung!",
+                    keywords = listOf("bestellen", "Gericht", "Vorspeise", "Getränk", "Brot", "feiern")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Einkaufen im Supermarkt",
+                    description = "Shopping at the supermarket - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 7,
+                    prompt = "Du bist im Supermarkt. Erzähle einer Verkäuferin, was du suchst. Frage nach Preisen und Qualität. Sprich 1-2 Minuten.",
+                    modelResponse = "Entschuldigung, wo finde ich [Produkt]? Ist das [Produkt] frisch? Wie viel kostet [Produkt]? Haben Sie auch [Alternative]? Das sieht gut aus. Kann ich [Menge] nehmen? Danke für die Hilfe. Ich brauche noch [anderes Produkt].",
+                    keywords = listOf("suchen", "finden", "frisch", "kosten", "nehmen", "brauchen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Beim Arzt",
+                    description = "Doctor visit conversation - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 8,
+                    prompt = "Du bist beim Arzt. Erzähle dem Arzt von deinen Beschwerden. Beschreibe, was wehtut. Sprich 1-2 Minuten.",
+                    modelResponse = "Guten Tag, Herr/Frau Doktor. Mir geht es nicht gut. Ich habe [Beschwerde] seit [Zeit]. Es tut [hier] weh. Ich habe auch [weitere Symptome]. Habe ich [Verdachtsdiagnose]? Was soll ich machen? Brauche ich [Medikamente]? Wie lange dauert das?",
+                    keywords = listOf("weh", "tun", "beschwerden", "symptome", "machen", "brauchen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Reisen und Verkehr",
+                    description = "Travel and transportation - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 9,
+                    prompt = "Erzähle von einer Reise, die du gemacht hast. Wie bist du gereist? Wohin bist du gefahren? Was hast du gesehen? Sprich 1-2 Minuten.",
+                    modelResponse = "Letzte Woche bin ich nach [Ort] gefahren. Ich habe den [Verkehrsmittel] genommen. Die Fahrt hat [Dauer] gedauert. In [Ort] habe ich [Sehenswürdigkeit] besucht. Das Wetter war [Beschreibung]. Ich habe viele Fotos gemacht. Es war sehr schön!",
+                    keywords = listOf("reisen", "gefahren", "genommen", "gedauert", "besucht", "gesehen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Freizeit und Hobbys",
+                    description = "Free time and hobbies - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 10,
+                    prompt = "Erzähle über deine Hobbys. Was machst du gerne in deiner Freizeit? Treibst du Sport? Gehst du aus? Sprich 1-2 Minuten.",
+                    modelResponse = "In meiner Freizeit [Hobby]. Ich [Hobby] sehr gerne und [Häufigkeit]. Manchmal gehe ich mit Freunden [Aktivität]. Am Wochenende [Wochenendaktivität]. Das macht mir viel Spaß. Meine Freunde finden das auch toll.",
+                    keywords = listOf("Freizeit", "Hobby", "Sport", "gehen", "Wochenende", "Spaß")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Familie und Freunde",
+                    description = "Family and friends - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 11,
+                    prompt = "Erzähle über deine Familie und Freunde. Wie viele Geschwister hast du? Was machen deine Eltern? Hast du viele Freunde? Sprich 1-2 Minuten.",
+                    modelResponse = "Meine Familie ist [Größe]. Ich habe [Anzahl] Geschwister. Mein Bruder/Schwester ist [Alter] Jahre alt und [macht]. Meine Eltern arbeiten als [Berufe]. Ich habe viele Freunde. Wir treffen uns oft und [Aktivitäten]. Meine beste Freundin heißt [Name].",
+                    keywords = listOf("Familie", "Geschwister", "Eltern", "arbeiten", "Freunde", "treffen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Im Büro arbeiten",
+                    description = "Working in the office - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 12,
+                    prompt = "Beschreibe deinen Arbeitstag. Wann beginnt deine Arbeit? Was machst du im Büro? Arbeitet dein Kollege mit dir? Sprich 1-2 Minuten.",
+                    modelResponse = "Mein Arbeitstag beginnt um [Uhrzeit]. Ich komme mit dem [Verkehrsmittel] zur Arbeit. Im Büro arbeite ich am Computer. Ich schreibe E-Mails und mache Präsentationen. Mein Kollege hilft mir oft. Mittags esse ich in der Kantine. Nach der Arbeit gehe ich nach Hause.",
+                    keywords = listOf("Arbeitstag", "beginnt", "Büro", "arbeiten", "schreiben", "helfen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Essen und Kochen",
+                    description = "Food and cooking - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 13,
+                    prompt = "Erzähle über Essen und Kochen. Was isst du gerne? Kochst du selbst? Was ist dein Lieblingsessen? Sprich 1-2 Minuten.",
+                    modelResponse = "Ich esse sehr gerne [Lieblingsessen]. Mein Lieblingsgericht ist [Gericht] mit [Beilage]. Ich koche selbst [Häufigkeit]. Das Kochen macht mir Spaß. Meine Familie mag mein [besonderes Gericht]. Manchmal gehen wir ins Restaurant und probieren neue Gerichte.",
+                    keywords = listOf("essen", "gerne", "kochen", "Lieblingsgericht", "Spaß", "probieren")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Wohnen und Zuhause",
+                    description = "Living and home - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 14,
+                    prompt = "Beschreibe deine Wohnung oder dein Haus. Wie viele Zimmer hat es? Was gibt es in jedem Zimmer? Sprich 1-2 Minuten.",
+                    modelResponse = "Ich wohne in [Art der Wohnung]. Sie hat [Anzahl] Zimmer. Im Wohnzimmer steht [Möbel]. In der Küche koche ich gerne. Mein Schlafzimmer ist [Beschreibung]. Das Bad hat [Ausstattung]. Ich mag meine Wohnung sehr, weil [Grund].",
+                    keywords = listOf("wohnen", "Wohnung", "Zimmer", "Wohnzimmer", "Küche", "Schlafzimmer")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Sport treiben",
+                    description = "Doing sports - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 15,
+                    prompt = "Erzähle über Sport. Welchen Sport treibst du? Wie oft machst du Sport? Wo trainierst du? Sprich 1-2 Minuten.",
+                    modelResponse = "Ich treibe gerne [Sportart]. Ich mache das [Häufigkeit] im [Ort]. Mein Training dauert [Dauer]. Ich gehe mit [Begleitung] zum Sport. Danach fühle ich mich [Gefühl]. Sport ist wichtig für die Gesundheit und macht Spaß.",
+                    keywords = listOf("treiben", "Sport", "trainieren", "dauert", "fühlen", "wichtig")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Einkaufen gehen",
+                    description = "Going shopping - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 16,
+                    prompt = "Du gehst einkaufen. Erzähle, was du brauchst. In welchen Geschäften gehst du? Wie bezahlst du? Sprich 1-2 Minuten.",
+                    modelResponse = "Heute gehe ich einkaufen. Ich brauche [Produkte]. Zuerst gehe ich in den Supermarkt für Lebensmittel. Dann in die [Geschäft] für [Produkt]. Die Preise sind [Bewertung]. Ich bezahle mit [Zahlungsmittel]. Manchmal kaufe ich auch online.",
+                    keywords = listOf("einkaufen", "brauchen", "gehen", "Supermarkt", "bezahlen", "kaufen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Termine und Zeit",
+                    description = "Appointments and time - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 17,
+                    prompt = "Erzähle von deinen Terminen. Hast du heute Termine? Wann musst du wo sein? Wie organisierst du deine Zeit? Sprich 1-2 Minuten.",
+                    modelResponse = "Heute habe ich mehrere Termine. Um [Uhrzeit] muss ich zum [Termin]. Dann gehe ich zu [nächster Termin]. Meine Termine organisiere ich mit [Hilfsmittel]. Manchmal bin ich zu spät, aber meistens pünktlich. Zeitmanagement ist wichtig für mich.",
+                    keywords = listOf("Termine", "muss", "gehen", "organisiere", "pünktlich", "wichtig")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Gesundheit und Krankheit",
+                    description = "Health and illness - Goethe Teil 1 style",
+                    level = level,
+                    orderIndex = 18,
+                    prompt = "Erzähle über Gesundheit. Wie bleibst du gesund? Was machst du, wenn du krank bist? Gehst du zum Arzt? Sprich 1-2 Minuten.",
+                    modelResponse = "Für meine Gesundheit [Aktivitäten]. Ich esse gesund und treibe Sport. Wenn ich krank bin, bleibe ich im Bett und trinke Tee. Manchmal gehe ich zum Arzt. Mein Hausarzt heißt [Name]. Er hilft mir immer. Gesundheit ist das Wichtigste.",
+                    keywords = listOf("Gesundheit", "bleiben", "essen", "treiben", "krank", "gehen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Reisen planen",
+                    description = "Planning a trip - Goethe Teil 2 style",
+                    level = level,
+                    orderIndex = 19,
+                    prompt = "Du planst eine Reise. Wohin möchtest du fahren? Wie reist du? Was möchtest du sehen? Sprich 1-2 Minuten.",
+                    modelResponse = "Ich plane eine Reise nach [Land]. Ich fliege mit dem Flugzeug. Die Reise dauert [Dauer]. Ich möchte [Sehenswürdigkeiten] sehen und [Aktivitäten] machen. Mein Hotel ist [Beschreibung]. Ich freue mich schon sehr auf die Reise!",
+                    keywords = listOf("planen", "Reise", "fliegen", "dauert", "möchte", "sehen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Alltag und Routine",
+                    description = "Daily life and routine - Goethe Teil 3 style",
+                    level = level,
+                    orderIndex = 20,
+                    prompt = "Beschreibe deinen Alltag. Wann stehst du auf? Was machst du morgens? Wie ist dein Arbeitstag? Was machst du abends? Sprich 1-2 Minuten.",
+                    modelResponse = "Mein Alltag beginnt um [Uhrzeit]. Morgens [Aktivitäten]. Dann gehe ich zur Arbeit/Schule. Mittags esse ich [Essen]. Nachmittags [Aktivitäten]. Abends [Aktivitäten]. Mein Alltag ist [Bewertung], aber ich mag ihn.",
+                    keywords = listOf("Alltag", "beginnt", "morgens", "gehe", "mittags", "abends")
+                ))
+
+                // TELC Deutsch A1 Sprechen - Lessons (30-32)
+                lessons.add(createSprechenLesson(
+                    title = "Sich vorstellen",
+                    description = "Introducing yourself - TELC Sprechen Teil 1",
+                    level = level,
+                    orderIndex = 30,
+                    prompt = "Stellen Sie sich vor. Sagen Sie, wie Sie heißen, woher Sie kommen, was Sie machen und was Ihre Hobbys sind. Sprich 1-2 Minuten.",
+                    modelResponse = "Hallo! Mein Name ist [Name]. Ich komme aus [Land/Stadt]. Ich bin [Alter] Jahre alt. Ich arbeite als [Beruf] oder ich studiere [Fach]. In meiner Freizeit [Hobbys]. Ich spreche [Sprachen].",
+                    keywords = listOf("heißen", "kommen", "arbeiten", "studieren", "Hobbys", "sprechen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Termine vereinbaren",
+                    description = "Making appointments - TELC Sprechen Teil 2",
+                    level = level,
+                    orderIndex = 31,
+                    prompt = "Sie möchten einen Termin beim Arzt/Zahnarzt vereinbaren. Rufen Sie an und erklären Sie Ihr Problem. Vereinbaren Sie einen Termin. Sprich 1-2 Minuten.",
+                    modelResponse = "Guten Tag, hier ist [Name]. Ich hätte gerne einen Termin beim [Arzt/Zahnarzt]. Ich habe [Problem]. Wann haben Sie einen Termin frei? Morgen um [Uhrzeit] wäre gut. Vielen Dank für Ihre Hilfe.",
+                    keywords = listOf("Termin", "vereinbaren", "Problem", "wann", "frei", "hilfe")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Einkaufen und Preise",
+                    description = "Shopping and prices - TELC Sprechen Teil 3",
+                    level = level,
+                    orderIndex = 32,
+                    prompt = "Sie sind im Geschäft und möchten etwas kaufen. Fragen Sie nach Preisen, Größen und Qualität. Vergleichen Sie verschiedene Produkte. Sprich 1-2 Minuten.",
+                    modelResponse = "Entschuldigung, wie viel kostet [Produkt]? Haben Sie das in [Größe]? Was ist der Unterschied zwischen [Produkt A] und [Produkt B]? Das ist sehr schön, aber ein bisschen teuer. Haben Sie eine günstigere Variante?",
+                    keywords = listOf("kosten", "Größe", "Unterschied", "teuer", "günstig", "Variante")
+                ))
+
+                // ÖSD Zertifikat A1 Sprechen - Lessons (42-44)
+                lessons.add(createSprechenLesson(
+                    title = "Amtliche Angelegenheiten",
+                    description = "Official matters - ÖSD Sprechen Teil 1",
+                    level = level,
+                    orderIndex = 42,
+                    prompt = "Sie müssen etwas beim Amt erledigen. Erklären Sie Ihr Anliegen, zeigen Sie Ihre Unterlagen und beantworten Sie Fragen des Beamten. Sprich 1-2 Minuten.",
+                    modelResponse = "Guten Tag! Ich möchte [Anliegen, z.B. mich anmelden]. Hier sind meine Unterlagen: Personalausweis, Meldezettel, [weitere Dokumente]. Ich bin [Alter] Jahre alt und komme aus [Land]. Ich brauche [Dokument/Zulassung/etc.] für [Zweck].",
+                    keywords = listOf("Amt", "Anliegen", "Unterlagen", "anmelden", "Dokumente", "brauchen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Berufliche Kommunikation",
+                    description = "Professional communication - ÖSD Sprechen Teil 2",
+                    level = level,
+                    orderIndex = 43,
+                    prompt = "Sie sind in einem Geschäft oder Büro und müssen ein berufliches Gespräch führen. Stellen Sie sich vor, erklären Sie Ihr Anliegen und finden Sie eine Lösung. Sprich 1-2 Minuten.",
+                    modelResponse = "Guten Tag! Mein Name ist [Name]. Ich arbeite bei [Firma] und benötige [Information/Produkt/Dienstleistung]. Können Sie mir helfen? Ich brauche [Details]. Wann wäre das möglich? Vielen Dank für Ihre Unterstützung.",
+                    keywords = listOf("arbeiten", "benötigen", "helfen", "brauchen", "möglich", "Unterstützung")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "Soziale Interaktionen",
+                    description = "Social interactions - ÖSD Sprechen Teil 3",
+                    level = level,
+                    orderIndex = 44,
+                    prompt = "Sie nehmen an einer sozialen Veranstaltung teil. Lernen Sie jemanden kennen, stellen Sie Fragen und erzählen Sie von sich. Sprich 1-2 Minuten.",
+                    modelResponse = "Hallo! Schön Sie kennenzulernen. Ich heiße [Name]. Woher kommen Sie? Was machen Sie beruflich? Ich komme aus [Ort] und arbeite als [Beruf]. In meiner Freizeit [Hobbys]. Erzählen Sie mir von sich!",
+                    keywords = listOf("kennenlernen", "heißen", "kommen", "arbeiten", "Freizeit", "erzählen")
+                ))
             }
-            
+
             "A2" -> {
                 lessons.add(createSprechenLesson(
                     title = "Über deine Stadt",
@@ -3223,7 +5770,8 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         orderIndex: Int,
         text: String,
         questions: List<Question>,
-        vocabulary: List<VocabularyItem>
+        vocabulary: List<VocabularyItem>,
+        source: String = "Goethe"
     ): Lesson {
         return Lesson(
             title = title,
@@ -3231,6 +5779,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
             level = level,
             skill = "lesen",
             content = gson.toJson(LesenContent(text, questions, vocabulary)),
+            source = source,
             orderIndex = orderIndex
         )
     }
@@ -3241,7 +5790,8 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         level: String,
         orderIndex: Int,
         script: String,
-        questions: List<Question>
+        questions: List<Question>,
+        source: String = "Goethe"
     ): Lesson {
         return Lesson(
             title = title,
@@ -3249,6 +5799,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
             level = level,
             skill = "hoeren",
             content = gson.toJson(HoerenContent(script, questions = questions)),
+            source = source,
             orderIndex = orderIndex
         )
     }
@@ -3261,7 +5812,8 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         prompt: String,
         minWords: Int,
         maxWords: Int,
-        tips: List<String>
+        tips: List<String>,
+        source: String = "Goethe"
     ): Lesson {
         return Lesson(
             title = title,
@@ -3269,6 +5821,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
             level = level,
             skill = "schreiben",
             content = gson.toJson(SchreibenContent(prompt, minWords, maxWords, tips = tips)),
+            source = source,
             orderIndex = orderIndex
         )
     }
@@ -3280,7 +5833,8 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
         orderIndex: Int,
         prompt: String,
         modelResponse: String,
-        keywords: List<String>
+        keywords: List<String>,
+        source: String = "Goethe"
     ): Lesson {
         return Lesson(
             title = title,
@@ -3288,6 +5842,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
             level = level,
             skill = "sprechen",
             content = gson.toJson(SprechenContent(prompt, modelResponse, keywords = keywords)),
+            source = source,
             orderIndex = orderIndex
         )
     }

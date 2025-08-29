@@ -17,7 +17,7 @@ import com.hellogerman.app.data.entities.*
         GrammarProgress::class,
         Achievement::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class HelloGermanDatabase : RoomDatabase() {
@@ -39,7 +39,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                     HelloGermanDatabase::class.java,
                     "hello_german_database"
                 )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
@@ -102,6 +102,15 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE user_progress ADD COLUMN dictionaryUsage INTEGER NOT NULL DEFAULT 0")
                 database.execSQL("ALTER TABLE user_progress ADD COLUMN weeklyGoalProgress INTEGER NOT NULL DEFAULT 0")
                 database.execSQL("ALTER TABLE user_progress ADD COLUMN monthlyGoalProgress INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add source column to lessons table for certificate tracking
+                database.execSQL("ALTER TABLE lessons ADD COLUMN source TEXT NOT NULL DEFAULT 'Goethe'")
+                // Add showEnglishExplanations column to user_progress table
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN showEnglishExplanations INTEGER NOT NULL DEFAULT 1")
             }
         }
     }

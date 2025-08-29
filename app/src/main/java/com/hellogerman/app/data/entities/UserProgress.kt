@@ -21,6 +21,7 @@ data class UserProgress(
     val selectedLanguage: String = "en", // en, de
     val isDarkMode: Boolean = false,
     val textSize: Float = 1.0f,
+    val showEnglishExplanations: Boolean = true, // Show English translations and explanations
     // Gamification fields
     val totalXP: Int = 0,
     val coins: Int = 0,

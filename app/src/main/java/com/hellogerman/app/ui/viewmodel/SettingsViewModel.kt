@@ -25,7 +25,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     
     private val _dailyGoal = MutableStateFlow(3)
     val dailyGoal: StateFlow<Int> = _dailyGoal.asStateFlow()
-    
+
+    private val _showEnglishExplanations = MutableStateFlow(true)
+    val showEnglishExplanations: StateFlow<Boolean> = _showEnglishExplanations.asStateFlow()
+
     init {
         loadUserProgress()
     }
@@ -38,6 +41,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                     _isDarkMode.value = progress.isDarkMode
                     _textSize.value = progress.textSize
                     _dailyGoal.value = progress.dailyGoal
+                    _showEnglishExplanations.value = progress.showEnglishExplanations
                 }
             }
         }
@@ -72,7 +76,17 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             }
         }
     }
-    
+
+    fun setEnglishExplanations(enabled: Boolean) {
+        _showEnglishExplanations.value = enabled
+        viewModelScope.launch {
+            _userProgress.value?.let { progress ->
+                val updatedProgress = progress.copy(showEnglishExplanations = enabled)
+                repository.updateUserProgress(updatedProgress)
+            }
+        }
+    }
+
     fun resetProgress() {
         viewModelScope.launch {
             val resetProgress = UserProgress()

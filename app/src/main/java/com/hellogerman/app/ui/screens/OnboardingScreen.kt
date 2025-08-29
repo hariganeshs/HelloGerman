@@ -19,10 +19,8 @@ fun OnboardingScreen(
     mainViewModel: MainViewModel = viewModel()
 ) {
     var selectedLevel by remember { mutableStateOf("A1") }
-    var selectedLanguage by remember { mutableStateOf("en") }
-    
+
     val levels = listOf("A1", "A2", "B1", "B2", "C1", "C2")
-    val languages = listOf("en" to "English", "de" to "Deutsch")
     
     Scaffold(
         topBar = {
@@ -58,7 +56,7 @@ fun OnboardingScreen(
             )
             
             Text(
-                text = "Choose your starting level and preferred language",
+                text = "Choose your starting level",
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -87,31 +85,7 @@ fun OnboardingScreen(
                     }
                 }
             }
-            
-            // Language Selection
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Choose your language",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    languages.forEach { (code, name) ->
-                        FilterChip(
-                            onClick = { selectedLanguage = code },
-                            label = { Text(name) },
-                            selected = selectedLanguage == code
-                        )
-                    }
-                }
-            }
-            
+
             Spacer(modifier = Modifier.weight(1f))
             
             // Start Button
@@ -119,7 +93,6 @@ fun OnboardingScreen(
                 onClick = {
                     // Update user progress with onboarding data
                     mainViewModel.updateCurrentLevel(selectedLevel)
-                    // TODO: Update language preference
                     navController.navigate("dashboard") {
                         popUpTo("onboarding") { inclusive = true }
                     }

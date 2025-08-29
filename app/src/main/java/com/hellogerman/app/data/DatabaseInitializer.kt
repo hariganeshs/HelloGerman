@@ -21,12 +21,24 @@ object DatabaseInitializer {
                 repository.insertUserProgress(com.hellogerman.app.data.entities.UserProgress())
             }
             
-            // Check existing lessons; if missing grammar lessons, insert only grammar lessons
+            // Check existing lessons and force reload if we have the new expanded content
             val existingLessons = repository.getAllLessons()
-            if (existingLessons.isEmpty()) {
+            val a1Lessons = existingLessons.filter { it.level == "A1" }
+
+            // Force reload if we don't have enough A1 lessons (our expanded content should have 104+ A1 lessons)
+            val shouldForceReload = existingLessons.isEmpty() ||
+                                   a1Lessons.size < 50 || // We should have many more than 50 A1 lessons now
+                                   !existingLessons.any { it.source == "Goethe" } || // Check for new source field
+                                   !existingLessons.any { it.source == "TELC" } ||
+                                   !existingLessons.any { it.source == "ÖSD" }
+
+            if (shouldForceReload) {
+                // Clear existing lessons and reload with expanded content
+                repository.clearAllLessons()
                 val lessons = LessonContentGenerator.generateAllLessons()
                 repository.insertLessons(lessons)
             } else {
+                // Original logic for grammar lessons
                 val hasGrammar = existingLessons.any { it.skill == "grammar" }
                 if (!hasGrammar) {
                     val grammarOnly = LessonContentGenerator.generateAllLessons().filter { it.skill == "grammar" }
@@ -35,7 +47,7 @@ object DatabaseInitializer {
                     // Check if existing grammar lessons have placeholder content and refresh them
                     val grammarLessons = existingLessons.filter { it.skill == "grammar" }
                     val hasPlaceholderContent = grammarLessons.any { lesson ->
-                        lesson.content.contains("\"Wähle richtig\"") || 
+                        lesson.content.contains("\"Wähle richtig\"") ||
                         lesson.content.contains("\"Wähle korrekt\"") ||
                         lesson.content.contains("\"A\",\"B\",\"C\"")
                     }
