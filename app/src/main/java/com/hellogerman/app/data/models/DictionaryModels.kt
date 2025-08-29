@@ -3,6 +3,20 @@ package com.hellogerman.app.data.models
 import com.google.gson.annotations.SerializedName
 
 /**
+ * Request model for dictionary searches
+ */
+data class DictionarySearchRequest(
+    val word: String,
+    val fromLang: String = "de",
+    val toLang: String = "en"
+)
+
+/**
+ * Legacy alias for backward compatibility
+ */
+typealias TranslationRequest = DictionarySearchRequest
+
+/**
  * Data models for MyMemory Translation API responses
  */
 
@@ -89,15 +103,7 @@ data class DictionarySearchResult(
     val difficulty: String? = null // CEFR level (A1, A2, etc.)
 )
 
-/**
- * Dictionary search request
- */
-data class DictionarySearchRequest(
-    val word: String,
-    val fromLang: String = "de", // German
-    val toLang: String = "en",   // English
-    val format: String = "json"
-)
+
 
 // Enhanced dictionary data models
 
