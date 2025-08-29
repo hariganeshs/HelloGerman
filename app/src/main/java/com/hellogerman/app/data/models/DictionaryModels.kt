@@ -67,14 +67,26 @@ data class Match(
 )
 
 /**
- * Dictionary search result for UI
+ * Comprehensive dictionary search result for enhanced UI
  */
 data class DictionarySearchResult(
     val originalWord: String,
-    val translations: List<String>,
+    val translations: List<String> = emptyList(),
     val fromLanguage: String,
     val toLanguage: String,
-    val hasResults: Boolean
+    val hasResults: Boolean,
+    
+    // Enhanced dictionary features
+    val definitions: List<Definition> = emptyList(),
+    val examples: List<Example> = emptyList(),
+    val synonyms: List<String> = emptyList(),
+    val antonyms: List<String> = emptyList(),
+    val pronunciation: Pronunciation? = null,
+    val conjugations: VerbConjugations? = null,
+    val etymology: String? = null,
+    val wordType: String? = null, // noun, verb, adjective, etc.
+    val gender: String? = null, // for German nouns (der, die, das)
+    val difficulty: String? = null // CEFR level (A1, A2, etc.)
 )
 
 /**
@@ -85,4 +97,125 @@ data class DictionarySearchRequest(
     val fromLang: String = "de", // German
     val toLang: String = "en",   // English
     val format: String = "json"
+)
+
+// Enhanced dictionary data models
+
+data class Definition(
+    val meaning: String,
+    val partOfSpeech: String? = null,
+    val context: String? = null,
+    val level: String? = null
+)
+
+data class Example(
+    val sentence: String,
+    val translation: String? = null,
+    val source: String? = null
+)
+
+data class Pronunciation(
+    val ipa: String? = null,
+    val audioUrl: String? = null,
+    val region: String? = null
+)
+
+/**
+ * Wiktionary API response models
+ */
+data class WiktionaryResponse(
+    @SerializedName("parse")
+    val parse: WiktionaryParse?
+)
+
+data class WiktionaryParse(
+    @SerializedName("title")
+    val title: String,
+    
+    @SerializedName("pageid")
+    val pageId: Int,
+    
+    @SerializedName("wikitext")
+    val wikitext: WiktionaryWikitext?
+)
+
+data class WiktionaryWikitext(
+    @SerializedName("*")
+    val content: String
+)
+
+/**
+ * German Verb API response models
+ */
+data class VerbConjugationResponse(
+    @SerializedName("verb")
+    val verb: String,
+    
+    @SerializedName("conjugations")
+    val conjugations: VerbConjugations
+)
+
+data class VerbConjugations(
+    @SerializedName("present")
+    val present: Map<String, String> = emptyMap(),
+    
+    @SerializedName("past")
+    val past: Map<String, String> = emptyMap(),
+    
+    @SerializedName("future")
+    val future: Map<String, String> = emptyMap(),
+    
+    @SerializedName("participle")
+    val participle: Participle? = null,
+    
+    @SerializedName("imperative")
+    val imperative: Map<String, String> = emptyMap(),
+    
+    @SerializedName("subjunctive")
+    val subjunctive: Map<String, String> = emptyMap()
+)
+
+data class Participle(
+    @SerializedName("present")
+    val present: String? = null,
+    
+    @SerializedName("past")
+    val past: String? = null
+)
+
+/**
+ * OpenThesaurus API response models
+ */
+data class OpenThesaurusResponse(
+    @SerializedName("synsets")
+    val synsets: List<Synset>
+)
+
+data class Synset(
+    @SerializedName("id")
+    val id: Int,
+    
+    @SerializedName("categories")
+    val categories: List<String>,
+    
+    @SerializedName("terms")
+    val terms: List<Term>
+)
+
+data class Term(
+    @SerializedName("term")
+    val term: String,
+    
+    @SerializedName("level")
+    val level: Int? = null
+)
+
+/**
+ * Cached dictionary entry for offline access
+ */
+data class CachedDictionaryEntry(
+    val word: String,
+    val language: String,
+    val result: DictionarySearchResult,
+    val timestamp: Long = System.currentTimeMillis()
 )

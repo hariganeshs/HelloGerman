@@ -3,11 +3,12 @@ package com.hellogerman.app.data.repository
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.hellogerman.app.data.api.TranslationApiService
-import com.hellogerman.app.data.models.DictionarySearchRequest
-import com.hellogerman.app.data.models.DictionarySearchResult
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.hellogerman.app.data.api.*
+import com.hellogerman.app.data.models.*
+import com.hellogerman.app.data.parser.WiktionaryParser
+import com.hellogerman.app.data.conjugation.GermanVerbConjugator
+import com.hellogerman.app.data.dictionary.GermanDictionary
+import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,33 +16,78 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
- * Repository for dictionary functionality using MyMemory Translation API
+ * Enhanced dictionary repository using multiple free APIs
+ * - Wiktionary for definitions, examples, etymology
+ * - German Verb API for conjugations  
+ * - OpenThesaurus for synonyms
+ * - MyMemory for fallback translations
  */
 class DictionaryRepository(private val context: Context) {
     
-    private val apiService: TranslationApiService by lazy {
-        createApiService()
-    }
+    private val cache = mutableMapOf<String, CachedDictionaryEntry>()
+    private val wiktionaryParser = WiktionaryParser()
     
-    private fun createApiService(): TranslationApiService {
+    // API Services
+    private val translationApiService: TranslationApiService by lazy { createTranslationApiService() }
+    private val wiktionaryApiService: WiktionaryApiService by lazy { createWiktionaryApiService() }
+    private val verbApiService: GermanVerbApiService by lazy { createVerbApiService() }
+    private val thesaurusApiService: OpenThesaurusApiService by lazy { createThesaurusApiService() }
+    
+    private fun createHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            level = HttpLoggingInterceptor.Level.BASIC // Reduced logging for production
         }
         
-        val okHttpClient = OkHttpClient.Builder()
+        return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor { chain ->
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
+                    .header("User-Agent", "HelloGerman/1.0 (German Learning App)")
+                    .header("Accept", "application/json")
+                
+                chain.proceed(requestBuilder.build())
+            }
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
             .build()
-        
+    }
+    
+    private fun createTranslationApiService(): TranslationApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl(TranslationApiService.BASE_URL)
-            .client(okHttpClient)
+            .client(createHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        
         return retrofit.create(TranslationApiService::class.java)
+    }
+    
+    private fun createWiktionaryApiService(): WiktionaryApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(WiktionaryApiService.BASE_URL)
+            .client(createHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(WiktionaryApiService::class.java)
+    }
+    
+    private fun createVerbApiService(): GermanVerbApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(GermanVerbApiService.BASE_URL)
+            .client(createHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(GermanVerbApiService::class.java)
+    }
+    
+    private fun createThesaurusApiService(): OpenThesaurusApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(OpenThesaurusApiService.BASE_URL)
+            .client(createHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(OpenThesaurusApiService::class.java)
     }
     
     /**
@@ -58,40 +104,78 @@ class DictionaryRepository(private val context: Context) {
     }
     
     /**
-     * Search for word translation using MyMemory Translation API
+     * Comprehensive dictionary search using multiple APIs
      */
     suspend fun searchWord(request: DictionarySearchRequest): Result<DictionarySearchResult> {
         return withContext(Dispatchers.IO) {
             try {
+                // Check cache first
+                val cacheKey = "${request.word}_${request.fromLang}"
+                cache[cacheKey]?.let { cached ->
+                    if (System.currentTimeMillis() - cached.timestamp < 3600000) { // 1 hour cache
+                        return@withContext Result.success(cached.result)
+                    }
+                }
+                
                 if (!isInternetAvailable()) {
                     return@withContext Result.failure(Exception("No internet connection"))
                 }
                 
-                val langPair = TranslationApiService.createLanguagePair(request.fromLang, request.toLang)
-                val response = apiService.getTranslation(
-                    query = request.word,
-                    langPair = langPair
+                // Launch parallel API calls for comprehensive data
+                // Only call verb API if word is likely a verb
+                val isLikelyVerb = GermanVerbConjugator.isLikelyVerb(request.word) || 
+                                   GermanDictionary.getWordEntry(request.word)?.wordType == "verb"
+                
+                val deferredResults = listOfNotNull(
+                    async { getWiktionaryData(request.word) },
+                    if (isLikelyVerb) async { getVerbConjugations(request.word) } else null,
+                    async { getSynonyms(request.word) },
+                    async { getBasicTranslation(request) }
                 )
                 
-                if (response.isSuccessful) {
-                    val body = response.body()
-                    if (body != null && body.responseStatus == 200) {
-                        val translations = extractTranslations(body)
-                        val result = DictionarySearchResult(
-                            originalWord = request.word,
-                            translations = translations,
-                            fromLanguage = request.fromLang,
-                            toLanguage = request.toLang,
-                            hasResults = translations.isNotEmpty()
-                        )
-                        Result.success(result)
-                    } else {
-                        val errorMsg = body?.responseDetails ?: "Translation failed"
-                        Result.failure(Exception(errorMsg))
-                    }
-                } else {
-                    Result.failure(Exception("API request failed: ${response.code()} - ${response.message()}"))
-                }
+                val results = deferredResults.awaitAll()
+                val wiktionaryResult = results[0] as? DictionarySearchResult
+                val conjugations = if (isLikelyVerb && results.size > 1) results[1] as? VerbConjugations else null
+                @Suppress("UNCHECKED_CAST")
+                val synonyms = results[if (isLikelyVerb) 2 else 1] as? List<String> ?: emptyList()
+                @Suppress("UNCHECKED_CAST")  
+                val basicTranslation = results[if (isLikelyVerb) 3 else 2] as? List<String> ?: emptyList()
+                
+
+                
+                // Combine all results with guaranteed offline fallback
+                val offlineEntry = GermanDictionary.getWordEntry(request.word)
+                val combinedResult = DictionarySearchResult(
+                    originalWord = request.word,
+                    translations = basicTranslation,
+                    fromLanguage = request.fromLang,
+                    toLanguage = request.toLang,
+                    hasResults = wiktionaryResult?.hasResults == true || basicTranslation.isNotEmpty() || offlineEntry != null,
+                    definitions = (wiktionaryResult?.definitions ?: emptyList()).ifEmpty { 
+                        offlineEntry?.definitions ?: emptyList() 
+                    },
+                    examples = (wiktionaryResult?.examples ?: emptyList()).ifEmpty { 
+                        offlineEntry?.examples ?: emptyList() 
+                    },
+                    synonyms = synonyms,
+                    pronunciation = wiktionaryResult?.pronunciation,
+                    conjugations = conjugations ?: if (offlineEntry?.wordType == "verb") {
+                        GermanVerbConjugator.getConjugation(request.word)
+                    } else null,
+                    etymology = wiktionaryResult?.etymology,
+                    wordType = wiktionaryResult?.wordType ?: offlineEntry?.wordType,
+                    gender = wiktionaryResult?.gender ?: offlineEntry?.gender
+                )
+                
+                // Cache result
+                cache[cacheKey] = CachedDictionaryEntry(
+                    word = request.word,
+                    language = request.fromLang,
+                    result = combinedResult
+                )
+                
+                Result.success(combinedResult)
+                
             } catch (e: Exception) {
                 Result.failure(e)
             }
@@ -99,9 +183,116 @@ class DictionaryRepository(private val context: Context) {
     }
     
     /**
+     * Get comprehensive word data from Wiktionary with offline fallback
+     */
+    private suspend fun getWiktionaryData(word: String): DictionarySearchResult? {
+        return try {
+            // Try Wiktionary API first
+            val response = wiktionaryApiService.getWordDefinition(page = word)
+            if (response.isSuccessful) {
+                val wikitext = response.body()?.parse?.wikitext?.content
+                if (wikitext != null) {
+                    wiktionaryParser.parseWiktionaryContent(word, wikitext)
+                } else {
+                    // Use offline dictionary as fallback
+                    createOfflineResult(word)
+                }
+            } else {
+                // Use offline dictionary for 403/404 errors
+                createOfflineResult(word)
+            }
+        } catch (e: Exception) {
+            // Use offline dictionary on any error
+            createOfflineResult(word)
+        }
+    }
+    
+    /**
+     * Create result from offline dictionary
+     */
+    private fun createOfflineResult(word: String): DictionarySearchResult? {
+        val entry = GermanDictionary.getWordEntry(word)
+        return if (entry != null) {
+            DictionarySearchResult(
+                originalWord = word,
+                fromLanguage = "de",
+                toLanguage = "en", 
+                hasResults = true,
+                definitions = entry.definitions,
+                examples = entry.examples,
+                wordType = entry.wordType,
+                gender = entry.gender
+            )
+        } else null
+    }
+    
+    /**
+     * Get verb conjugations from German Verb API with fallback
+     */
+    private suspend fun getVerbConjugations(word: String): VerbConjugations? {
+        return try {
+            // Try external API first
+            val response = verbApiService.getVerbConjugation(word)
+            if (response.isSuccessful) {
+                response.body()?.conjugations
+            } else {
+                // Fallback to local conjugation system
+                GermanVerbConjugator.getConjugation(word)
+            }
+        } catch (e: Exception) {
+            // Use fallback system on any error
+            GermanVerbConjugator.getConjugation(word)
+        }
+    }
+    
+    /**
+     * Get synonyms from OpenThesaurus
+     */
+    private suspend fun getSynonyms(word: String): List<String> {
+        return try {
+            val response = thesaurusApiService.getSynonyms(word)
+            if (response.isSuccessful) {
+                val synonyms = mutableListOf<String>()
+                response.body()?.synsets?.forEach { synset ->
+                    synset.terms.forEach { term ->
+                        if (term.term != word && !synonyms.contains(term.term)) {
+                            synonyms.add(term.term)
+                        }
+                    }
+                }
+                synonyms.take(10) // Limit to 10 synonyms
+            } else emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+    
+    /**
+     * Get basic translation from MyMemory API (fallback)
+     */
+    private suspend fun getBasicTranslation(request: DictionarySearchRequest): List<String> {
+        return try {
+            val langPair = TranslationApiService.createLanguagePair(request.fromLang, request.toLang)
+            val response = translationApiService.getTranslation(
+                query = request.word,
+                langPair = langPair
+            )
+            
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null && body.responseStatus == 200) {
+                    extractTranslations(body)
+                } else emptyList()
+            } else emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+    
+    /**
      * Extract translations from MyMemory API response
      */
-    private fun extractTranslations(response: com.hellogerman.app.data.models.MyMemoryTranslationResponse): List<String> {
+    private fun extractTranslations(response: MyMemoryTranslationResponse): List<String> {
         val translations = mutableListOf<String>()
         
         // Add primary translation
@@ -122,4 +313,16 @@ class DictionaryRepository(private val context: Context) {
         
         return translations.take(8) // Limit to 8 translations
     }
+    
+    /**
+     * Clear cache (for memory management)
+     */
+    fun clearCache() {
+        cache.clear()
+    }
+    
+    /**
+     * Get cached entries count
+     */
+    fun getCacheSize(): Int = cache.size
 }

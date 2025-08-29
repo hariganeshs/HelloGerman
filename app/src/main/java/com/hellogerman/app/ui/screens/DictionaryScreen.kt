@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -26,7 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.hellogerman.app.ui.theme.*
 import com.hellogerman.app.ui.viewmodel.DictionaryViewModel
-import com.hellogerman.app.data.models.DictionarySearchResult
+import com.hellogerman.app.data.models.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +43,9 @@ fun DictionaryScreen(
     val fromLanguage by dictionaryViewModel.fromLanguage.collectAsState()
     val toLanguage by dictionaryViewModel.toLanguage.collectAsState()
     val searchHistory by dictionaryViewModel.searchHistory.collectAsState()
+    val selectedTab by dictionaryViewModel.selectedTab.collectAsState()
+    val isTTSInitialized by dictionaryViewModel.isTTSInitialized.collectAsState()
+    val isTTSPlaying by dictionaryViewModel.isTTSPlaying.collectAsState()
     
     val keyboardController = LocalSoftwareKeyboardController.current
     var showLanguageDialog by remember { mutableStateOf(false) }
@@ -52,7 +57,7 @@ fun DictionaryScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Header
+        // Header with TTS controls
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -65,14 +70,47 @@ fun DictionaryScreen(
                 color = MaterialTheme.colorScheme.onBackground
             )
             
-            IconButton(
-                onClick = { dictionaryViewModel.clearResults() }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = "Clear",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                // TTS Controls
+                if (searchQuery.isNotEmpty() && fromLanguage == "de" && isTTSInitialized) {
+                    IconButton(
+                        onClick = { 
+                            if (isTTSPlaying) {
+                                dictionaryViewModel.stopTTS()
+                            } else {
+                                dictionaryViewModel.speakWordSlowly()
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = if (isTTSPlaying) Icons.Default.Stop else Icons.AutoMirrored.Filled.VolumeUp,
+                            contentDescription = if (isTTSPlaying) "Stop" else "Speak slowly",
+                            tint = AccentBlue
+                        )
+                    }
+                    
+                    IconButton(
+                        onClick = { dictionaryViewModel.speakWord() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = "Speak normal",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+                
+                IconButton(
+                    onClick = { dictionaryViewModel.clearResults() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = "Clear",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
         
@@ -241,17 +279,94 @@ fun DictionaryScreen(
             }
         }
         
-        // Results or History
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            searchResult?.let { result ->
-                if (result.hasResults) {
-                    item {
-                        ResultCard(result)
+        // Tab Row and Results
+        searchResult?.let { result ->
+            if (result.hasResults) {
+                // Tab Row with ScrollableTabRow for better text visibility
+                ScrollableTabRow(
+                    selectedTabIndex = selectedTab,
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    edgePadding = 16.dp
+                ) {
+                    val tabs = listOf(
+                        "Overview" to Icons.Default.Home,
+                        "Definitions" to Icons.AutoMirrored.Filled.MenuBook,
+                        "Examples" to Icons.Default.FormatQuote,
+                        "Conjugations" to Icons.Default.Transform,
+                        "Synonyms" to Icons.Default.Sync
+                    )
+                    
+                    tabs.forEachIndexed { index, (title, icon) ->
+                        Tab(
+                            selected = selectedTab == index,
+                            onClick = { dictionaryViewModel.setSelectedTab(index) },
+                            text = { 
+                                Text(
+                                    text = title,
+                                    fontSize = 13.sp,
+                                    maxLines = 1,
+                                    fontWeight = if (selectedTab == index) FontWeight.Medium else FontWeight.Normal
+                                )
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = icon,
+                                    contentDescription = title,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            },
+                            modifier = Modifier.padding(horizontal = 4.dp)
+                        )
                     }
                 }
-            } ?: run {
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Tab Content
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    when (selectedTab) {
+                        0 -> { // Overview
+                            item { OverviewCard(result, dictionaryViewModel) }
+                        }
+                        1 -> { // Definitions  
+                            items(result.definitions) { definition ->
+                                DefinitionCard(definition)
+                            }
+                            if (result.definitions.isEmpty()) {
+                                item { EmptyStateCard("No definitions available") }
+                            }
+                        }
+                        2 -> { // Examples
+                            items(result.examples) { example ->
+                                ExampleCard(example, dictionaryViewModel)
+                            }
+                            if (result.examples.isEmpty()) {
+                                item { EmptyStateCard("No examples available") }
+                            }
+                        }
+                        3 -> { // Conjugations
+                            result.conjugations?.let { conjugations ->
+                                item { ConjugationCard(conjugations) }
+                            } ?: item { EmptyStateCard("No conjugations available - word may not be a verb") }
+                        }
+                        4 -> { // Synonyms
+                            if (result.synonyms.isNotEmpty()) {
+                                item { SynonymsCard(result.synonyms, dictionaryViewModel) }
+                            } else {
+                                item { EmptyStateCard("No synonyms available") }
+                            }
+                        }
+                    }
+                }
+            }
+        } ?: run {
+            // Show search history when no results
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 if (searchHistory.isNotEmpty() && !isLoading) {
                     item {
                         SearchHistorySection(
@@ -282,8 +397,10 @@ fun DictionaryScreen(
     }
 }
 
+// Enhanced Dictionary UI Components
+
 @Composable
-private fun ResultCard(result: DictionarySearchResult) {
+private fun OverviewCard(result: DictionarySearchResult, viewModel: DictionaryViewModel) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -291,49 +408,395 @@ private fun ResultCard(result: DictionarySearchResult) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(
-                text = result.originalWord,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = AccentBlue
-            )
-            
-            Spacer(modifier = Modifier.height(12.dp))
-            
-            Text(
-                text = "Translations:",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            result.translations.forEachIndexed { index, translation ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            // Word header with pronunciation
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
                     Text(
-                        text = "${index + 1}.",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.width(24.dp)
+                        text = result.originalWord,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AccentBlue
                     )
+                    
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        result.wordType?.let { type ->
+                            Text(
+                                text = type,
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier
+                                    .background(
+                                        MaterialTheme.colorScheme.primaryContainer,
+                                        RoundedCornerShape(8.dp)
+                                    )
+                                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
+                        
+                        result.gender?.let { gender ->
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = gender,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+                
+                result.pronunciation?.ipa?.let { ipa ->
                     Text(
-                        text = translation,
+                        text = "/$ipa/",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Quick overview sections
+            if (result.translations.isNotEmpty()) {
+                SectionHeader("Translations")
+                result.translations.take(3).forEachIndexed { index, translation ->
+                    Text(
+                        text = "• $translation",
                         fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.padding(vertical = 2.dp)
+                    )
+                }
+                if (result.translations.size > 3) {
+                    Text(
+                        text = "... and ${result.translations.size - 3} more",
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            
+            if (result.definitions.isNotEmpty()) {
+                SectionHeader("Top Definition")
+                Text(
+                    text = result.definitions.first().meaning,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            
+            if (result.examples.isNotEmpty()) {
+                SectionHeader("Example")
+                Text(
+                    text = "\"${result.examples.first().sentence}\"",
+                    fontSize = 16.sp,
+                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun DefinitionCard(definition: Definition) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                definition.partOfSpeech?.let { pos ->
+                    Text(
+                        text = pos,
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .background(
+                                MaterialTheme.colorScheme.secondaryContainer,
+                                RoundedCornerShape(4.dp)
+                            )
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                 }
                 
-                if (index < result.translations.size - 1) {
-                    Spacer(modifier = Modifier.height(4.dp))
+                definition.level?.let { level ->
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = level,
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                text = definition.meaning,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            
+            definition.context?.let { context ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Context: $context",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ExampleCard(example: Example, viewModel: DictionaryViewModel) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "\"${example.sentence}\"",
+                        fontSize = 16.sp,
+                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    
+                    example.translation?.let { translation ->
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "→ $translation",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    
+                    example.source?.let { source ->
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Source: $source",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                
+                IconButton(
+                    onClick = { viewModel.speakExample(example.sentence) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PlayArrow,
+                        contentDescription = "Speak example",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
             }
         }
     }
+}
+
+@Composable
+private fun ConjugationCard(conjugations: VerbConjugations) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            SectionHeader("Verb Conjugations")
+            
+            // Present tense
+            if (conjugations.present.isNotEmpty()) {
+                ConjugationSection("Present", conjugations.present)
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            
+            // Past tense
+            if (conjugations.past.isNotEmpty()) {
+                ConjugationSection("Past", conjugations.past)
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            
+            // Future tense
+            if (conjugations.future.isNotEmpty()) {
+                ConjugationSection("Future", conjugations.future)
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            
+            // Participles
+            conjugations.participle?.let { participle ->
+                Text(
+                    text = "Participles",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                participle.present?.let { present ->
+                    Text(
+                        text = "Present: $present",
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                participle.past?.let { past ->
+                    Text(
+                        text = "Past: $past",
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ConjugationSection(title: String, conjugations: Map<String, String>) {
+    Text(
+        text = title,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Medium,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+    
+    conjugations.forEach { (person, conjugation) ->
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = person,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = conjugation,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium
+            )
+        }
+    }
+}
+
+@Composable
+private fun SynonymsCard(synonyms: List<String>, viewModel: DictionaryViewModel) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            SectionHeader("Synonyms")
+            
+            val chunkedSynonyms = synonyms.chunked(3)
+            chunkedSynonyms.forEach { row ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    row.forEach { synonym ->
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { 
+                                    viewModel.updateSearchQuery(synonym)
+                                    viewModel.searchWord()
+                                },
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer
+                            )
+                        ) {
+                            Text(
+                                text = synonym,
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                modifier = Modifier.padding(12.dp),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                    // Fill empty slots if row is not complete
+                    repeat(3 - row.size) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmptyStateCard(message: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(48.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = message,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SectionHeader(title: String) {
+    Text(
+        text = title,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Medium,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable

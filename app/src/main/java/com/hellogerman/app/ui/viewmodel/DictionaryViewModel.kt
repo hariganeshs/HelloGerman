@@ -6,17 +6,20 @@ import androidx.lifecycle.viewModelScope
 import com.hellogerman.app.data.models.DictionarySearchRequest
 import com.hellogerman.app.data.models.DictionarySearchResult
 import com.hellogerman.app.data.repository.DictionaryRepository
+import com.hellogerman.app.ui.utils.TTSHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel for dictionary functionality
+ * Enhanced ViewModel for comprehensive dictionary functionality
+ * Supports definitions, conjugations, examples, synonyms, and TTS
  */
 class DictionaryViewModel(application: Application) : AndroidViewModel(application) {
     
     private val repository = DictionaryRepository(application)
+    private val ttsHelper = TTSHelper(application)
     
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
@@ -39,6 +42,14 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     private val _searchHistory = MutableStateFlow<List<String>>(emptyList())
     val searchHistory: StateFlow<List<String>> = _searchHistory.asStateFlow()
     
+    // Selected tab for dictionary UI
+    private val _selectedTab = MutableStateFlow(0) // 0=Overview, 1=Definitions, 2=Examples, 3=Conjugations, 4=Synonyms
+    val selectedTab: StateFlow<Int> = _selectedTab.asStateFlow()
+    
+    // TTS states
+    val isTTSInitialized: StateFlow<Boolean> = ttsHelper.isInitialized
+    val isTTSPlaying: StateFlow<Boolean> = ttsHelper.isPlaying
+    
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
         _errorMessage.value = null
@@ -56,6 +67,10 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     
     fun setToLanguage(lang: String) {
         _toLanguage.value = lang
+    }
+    
+    fun setSelectedTab(tabIndex: Int) {
+        _selectedTab.value = tabIndex
     }
     
     fun searchWord() {
@@ -85,8 +100,10 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
                     _searchResult.value = result
                     if (result.hasResults) {
                         addToSearchHistory(query)
+                        // Reset to overview tab when new search is performed
+                        _selectedTab.value = 0
                     } else {
-                        _errorMessage.value = "No translations found for '$query'"
+                        _errorMessage.value = "No information found for '$query'. Try a different word or check spelling."
                     }
                 },
                 onFailure = { exception ->
@@ -98,6 +115,42 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
     
+    /**
+     * Speak the searched word using TTS
+     */
+    fun speakWord() {
+        val word = _searchQuery.value.trim()
+        if (word.isNotEmpty() && _fromLanguage.value == "de") {
+            ttsHelper.speakGerman(word)
+        }
+    }
+    
+    /**
+     * Speak word slowly for pronunciation learning
+     */
+    fun speakWordSlowly() {
+        val word = _searchQuery.value.trim()
+        if (word.isNotEmpty() && _fromLanguage.value == "de") {
+            ttsHelper.speakWordSlowly(word)
+        }
+    }
+    
+    /**
+     * Speak an example sentence
+     */
+    fun speakExample(text: String) {
+        if (_fromLanguage.value == "de") {
+            ttsHelper.speakGerman(text)
+        }
+    }
+    
+    /**
+     * Stop TTS playback
+     */
+    fun stopTTS() {
+        ttsHelper.stop()
+    }
+    
     fun clearError() {
         _errorMessage.value = null
     }
@@ -106,13 +159,14 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
         _searchResult.value = null
         _searchQuery.value = ""
         _errorMessage.value = null
+        _selectedTab.value = 0
     }
     
     private fun addToSearchHistory(query: String) {
         val currentHistory = _searchHistory.value.toMutableList()
         if (!currentHistory.contains(query)) {
             currentHistory.add(0, query)
-            if (currentHistory.size > 10) { // Keep only last 10 searches
+            if (currentHistory.size > 20) { // Keep more history for enhanced dictionary
                 currentHistory.removeAt(currentHistory.size - 1)
             }
             _searchHistory.value = currentHistory
@@ -126,6 +180,14 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     
     fun clearHistory() {
         _searchHistory.value = emptyList()
+    }
+    
+    fun clearCache() {
+        repository.clearCache()
+    }
+    
+    fun getCacheSize(): Int {
+        return repository.getCacheSize()
     }
     
     fun getLanguageName(code: String): String {
@@ -157,5 +219,10 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
             "nl" to "Dutch",
             "sv" to "Swedish"
         )
+    }
+    
+    override fun onCleared() {
+        super.onCleared()
+        ttsHelper.release()
     }
 }
