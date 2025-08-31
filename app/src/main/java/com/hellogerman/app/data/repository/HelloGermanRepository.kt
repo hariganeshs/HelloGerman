@@ -93,7 +93,13 @@ class HelloGermanRepository(context: Context) {
     
     // Lesson Operations
     fun getLessonsBySkillAndLevel(skill: String, level: String): Flow<List<Lesson>> {
-        return lessonDao.getLessonsBySkillAndLevel(skill, level)
+        return lessonDao.getLessonsBySkillAndLevel(skill, level).map { lessons ->
+            android.util.Log.d("HelloGermanRepository", "Repository returning ${lessons.size} lessons for $skill/$level")
+            lessons.forEachIndexed { index, lesson ->
+                android.util.Log.d("HelloGermanRepository", "  Repo Lesson $index: ${lesson.title} (ID: ${lesson.id})")
+            }
+            lessons
+        }
     }
     
     suspend fun getLessonById(lessonId: Int): Lesson? {

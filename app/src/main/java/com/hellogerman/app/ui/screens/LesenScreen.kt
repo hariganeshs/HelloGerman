@@ -43,16 +43,28 @@ fun LesenScreen(
     val isLoading by lessonViewModel.isLoading.collectAsState()
 
     val currentLevel = userProgress?.currentLevel ?: "A1"
-    
+
     var completedCount by remember { mutableStateOf(0) }
     var totalCount by remember { mutableStateOf(0) }
     var averageScore by remember { mutableStateOf(0.0) }
+
+    // Debug: Log lessons count and details
+    LaunchedEffect(lessons) {
+        android.util.Log.d("LesenScreen", "Received ${lessons.size} lessons for lesen/$currentLevel")
+        lessons.forEachIndexed { index, lesson ->
+            android.util.Log.d("LesenScreen", "Lesson $index: ${lesson.title} (ID: ${lesson.id}, Order: ${lesson.orderIndex})")
+        }
+    }
 
     LaunchedEffect(currentLevel) {
         lessonViewModel.loadLessons("lesen", currentLevel)
         completedCount = lessonViewModel.getCompletedLessonsCount("lesen", currentLevel)
         totalCount = lessonViewModel.getTotalLessonsCount("lesen", currentLevel)
         averageScore = lessonViewModel.getAverageScore("lesen", currentLevel)
+
+        // Debug logging
+        android.util.Log.d("LesenScreen", "Loading lessons for level: $currentLevel")
+        android.util.Log.d("LesenScreen", "Completed: $completedCount, Total: $totalCount")
     }
     
     Scaffold(

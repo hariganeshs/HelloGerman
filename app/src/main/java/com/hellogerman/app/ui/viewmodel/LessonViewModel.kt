@@ -36,6 +36,10 @@ class LessonViewModel(application: Application) : AndroidViewModel(application) 
         
         viewModelScope.launch {
             repository.getLessonsBySkillAndLevel(skill, level).collect { lessonList ->
+                android.util.Log.d("LessonViewModel", "Loaded ${lessonList.size} lessons for $skill/$level")
+                lessonList.forEachIndexed { index, lesson ->
+                    android.util.Log.d("LessonViewModel", "  Lesson $index: ${lesson.title} (ID: ${lesson.id})")
+                }
                 _lessons.value = lessonList
                 _isLoading.value = false
             }
