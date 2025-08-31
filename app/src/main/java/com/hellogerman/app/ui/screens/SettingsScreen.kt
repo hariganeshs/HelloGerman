@@ -324,11 +324,52 @@ fun SettingsScreen(
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.secondary
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Debug All Lesson Counts", fontSize = 14.sp)
+                        }
+
+                        // Debug button to check B1 lesson distribution
+                        OutlinedButton(
+                            onClick = {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val b1DebugInfo = com.hellogerman.app.data.LessonContentGenerator.debugB1LessonDistribution()
+                                    android.util.Log.d("B1LessonDebug", b1DebugInfo)
+
+                                    withContext(Dispatchers.Main) {
+                                        snackbarHostState.showSnackbar("B1 lesson distribution logged to console")
+                                    }
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.error
                             ),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text("Check Lesson Counts", fontSize = 14.sp)
+                        }
+
+                        // Quick count button
+                        OutlinedButton(
+                            onClick = {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val (b1Count, skillDistribution, totalCount) = com.hellogerman.app.data.LessonContentGenerator.countB1Lessons()
+
+                                    withContext(Dispatchers.Main) {
+                                        snackbarHostState.showSnackbar(
+                                            "B1: ${b1Count} lessons | L:${skillDistribution["lesen"] ?: 0} H:${skillDistribution["hoeren"] ?: 0} S:${skillDistribution["schreiben"] ?: 0} Sp:${skillDistribution["sprechen"] ?: 0} | Total: $totalCount"
+                                        )
+                                    }
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Quick B1 Count", fontSize = 14.sp)
                         }
 
                         // Clear all cache button

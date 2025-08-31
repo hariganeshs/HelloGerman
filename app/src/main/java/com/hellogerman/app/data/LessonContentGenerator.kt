@@ -56,6 +56,38 @@ object LessonContentGenerator {
         return result.toString()
     }
 
+    // Debug function to verify B1 lesson distribution
+    fun debugB1LessonDistribution(): String {
+        val allLessons = generateAllLessons()
+        val b1Lessons = allLessons.filter { it.level == "B1" }
+
+        val result = StringBuilder()
+        result.append("=== B1 LESSON DISTRIBUTION ===\n")
+        result.append("Total B1 lessons: ${b1Lessons.size}\n\n")
+
+        val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
+        skills.forEach { skill ->
+            val skillLessons = b1Lessons.filter { it.skill == skill }
+            result.append("$skill: ${skillLessons.size} lessons\n")
+            skillLessons.forEachIndexed { index, lesson ->
+                result.append("  ${index + 1}. ${lesson.title}\n")
+            }
+            result.append("\n")
+        }
+
+        return result.toString()
+    }
+
+    // Quick count function
+    fun countB1Lessons(): Triple<Int, Map<String, Int>, Int> {
+        val allLessons = generateAllLessons()
+        val b1Lessons = allLessons.filter { it.level == "B1" }
+
+        val skillDistribution = b1Lessons.groupBy { it.skill }.mapValues { it.value.size }
+
+        return Triple(b1Lessons.size, skillDistribution, allLessons.size)
+    }
+
     /**
      * Initialize with offline cache manager for better performance
      */
