@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Airplane body -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M22,16v-2l-8-5V3.5C14,2.67 13.33,2 12.5,2S11,2.67 11,3.5V9l-8,5v2l8-2.5V19l-2,1.5V22l3.5-1L12,21l2.5,0L17,22v-1.5L15,19v-5.5L22,16z"/>
+    <!-- Wings -->
+    <path
+        android:fillColor="#1976D2"
+        android:pathData="M2,15l10-3.5L22,15"/>
+    <!-- Windows -->
+    <circle
+        android:fillColor="#FFFFFF"
+        android:radius="0.5dp"
+        android:centerX="12"
+        android:centerY="7"/>
+    <circle
+        android:fillColor="#FFFFFF"
+        android:radius="0.5dp"
+        android:centerX="15"
+        android:centerY="7"/>
+    <circle
+        android:fillColor="#FFFFFF"
+        android:radius="0.5dp"
+        android:centerX="9"
+        android:centerY="7"/>
+</vector>
