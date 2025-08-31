@@ -276,7 +276,7 @@ fun SettingsScreen(
                             Text("Force Reload Lessons", fontSize = 14.sp)
                         }
 
-                        // Debug button to check lesson counts
+                        // Debug button to check lesson counts from database
                         OutlinedButton(
                             onClick = {
                                 CoroutineScope(Dispatchers.IO).launch {
@@ -296,10 +296,30 @@ fun SettingsScreen(
 
                                     withContext(Dispatchers.Main) {
                                         snackbarHostState.showSnackbar(
-                                            "Total: ${allLessons.size}, A1: $a1Count, A2: $a2Count, B1: $b1Count | " +
+                                            "DB: Total: ${allLessons.size}, A1: $a1Count, A2: $a2Count, B1: $b1Count | " +
                                             "A2(L:$lesenA2Count H:$hoerenA2Count S:$schreibenA2Count Sp:$sprechenA2Count) | " +
                                             "B1(L:$lesenB1Count H:$hoerenB1Count S:$schreibenB1Count Sp:$sprechenB1Count)"
                                         )
+                                    }
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Check DB Lesson Counts", fontSize = 14.sp)
+                        }
+
+                        // Debug button to check generated lesson counts (not from DB)
+                        OutlinedButton(
+                            onClick = {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val debugInfo = com.hellogerman.app.data.LessonContentGenerator.debugCountLessons()
+                                    android.util.Log.d("LessonDebug", debugInfo)
+
+                                    withContext(Dispatchers.Main) {
+                                        snackbarHostState.showSnackbar("Lesson debug info logged to console")
                                     }
                                 }
                             },

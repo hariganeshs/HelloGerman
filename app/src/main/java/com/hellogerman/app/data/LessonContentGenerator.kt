@@ -8,9 +8,43 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 object LessonContentGenerator {
-
+    
     private val gson = Gson()
     private var offlineCacheManager: OfflineCacheManager? = null
+
+    // Debug function to count lessons by level and skill
+    fun debugCountLessons(): String {
+        val allLessons = generateAllLessons()
+        val result = StringBuilder()
+
+        result.append("=== LESSON COUNT DEBUG ===\n")
+
+        val levels = listOf("A1", "A2", "B1", "B2", "C1", "C2")
+        val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
+
+        levels.forEach { level ->
+            val levelLessons = allLessons.filter { it.level == level }
+            result.append("Level $level: ${levelLessons.size} total\n")
+
+            skills.forEach { skill ->
+                val skillLessons = levelLessons.filter { it.skill == skill }
+                result.append("  $skill: ${skillLessons.size}\n")
+            }
+            result.append("\n")
+        }
+
+        result.append("=== B1 LESSON DETAILS ===\n")
+        val b1Lessons = allLessons.filter { it.level == "B1" }
+        b1Lessons.groupBy { it.skill }.forEach { (skill, lessons) ->
+            result.append("$skill (${lessons.size}):\n")
+            lessons.forEach { lesson ->
+                result.append("  - ${lesson.title} (id: ${lesson.id}, order: ${lesson.orderIndex})\n")
+            }
+            result.append("\n")
+        }
+
+        return result.toString()
+    }
 
     /**
      * Initialize with offline cache manager for better performance
@@ -21,11 +55,11 @@ object LessonContentGenerator {
     
     fun generateAllLessons(): List<Lesson> {
         val lessons = mutableListOf<Lesson>()
-
+        
         // Generate lessons for each level and skill
         val levels = listOf("A1", "A2", "B1", "B2", "C1", "C2")
         val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
-
+        
         levels.forEach { level ->
             skills.forEach { skill ->
                 val skillLessons = generateLessonsForSkillAndLevel(skill, level)
@@ -43,7 +77,7 @@ object LessonContentGenerator {
 
         // Cache the generated lessons asynchronously for better performance
         // Note: Caching will be done when lessons are first accessed
-
+        
         return lessons
     }
 
@@ -3592,7 +3626,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                 }
             }
         }
-
+        
         return lessons
     }
 
@@ -5564,7 +5598,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                 }
             }
         }
-
+        
         return lessons
     }
     
@@ -6899,7 +6933,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                 }
             }
         }
-
+        
         return lessons
     }
     
@@ -7752,7 +7786,7 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                 }
             }
         }
-
+        
         return lessons
     }
     
