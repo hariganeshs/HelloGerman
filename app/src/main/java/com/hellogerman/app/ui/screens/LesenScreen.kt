@@ -24,6 +24,8 @@ import com.hellogerman.app.ui.components.LevelSelector
 import com.hellogerman.app.ui.components.ProgressSummary
 import com.hellogerman.app.ui.components.EnhancedCard
 import com.hellogerman.app.ui.components.EnhancedCardStyle
+import com.hellogerman.app.ui.components.LessonIllustration
+import com.hellogerman.app.ui.components.CharacterDisplay
 import com.hellogerman.app.ui.animations.enhancedPressAnimation
 import com.hellogerman.app.ui.animations.entranceAnimation
 import com.hellogerman.app.ui.animations.floatingAnimation
@@ -176,24 +178,59 @@ fun LessonCard(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = lesson.title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = lesson.description,
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                if (lesson.isCompleted) {
-                    Text(
-                        text = "Score: ${lesson.score}%",
-                        fontSize = 12.sp,
-                        color = LesenColor,
-                        fontWeight = FontWeight.Medium
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = lesson.title,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = lesson.description,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        if (lesson.isCompleted) {
+                            Text(
+                                text = "Score: ${lesson.score}%",
+                                fontSize = 12.sp,
+                                color = LesenColor,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                    }
+
+                    // Lesson illustration
+                    LessonIllustration(
+                        illustrationResId = lesson.illustrationResId,
+                        modifier = Modifier.padding(start = 8.dp),
+                        contentDescription = "Illustration for ${lesson.title}"
                     )
+                }
+
+                // Character display for completed lessons
+                if (lesson.isCompleted) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(top = 8.dp)
+                    ) {
+                        CharacterDisplay(
+                            characterResId = lesson.characterResId,
+                            animationType = lesson.animationType,
+                            contentDescription = "Success character for ${lesson.title}"
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Great job! ✓",
+                            fontSize = 12.sp,
+                            color = LesenColor,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
             }
             

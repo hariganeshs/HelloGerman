@@ -40,6 +40,9 @@ import com.hellogerman.app.ui.theme.SprechenColor
 import com.google.gson.Gson
 import com.hellogerman.app.data.entities.*
 import java.util.*
+import com.hellogerman.app.ui.components.LessonIllustration
+import com.hellogerman.app.ui.components.CharacterDisplay
+import com.hellogerman.app.ui.components.ConfettiAnimation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -368,13 +371,50 @@ fun SprechenLessonDetailScreen(
                                     Column(
                                         modifier = Modifier.padding(16.dp)
                                     ) {
-                                        Text(
-                                            text = "Speaking Prompt",
-                                            fontSize = 18.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                        Spacer(modifier = Modifier.height(8.dp))
+                                        // Header with illustration
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = "Speaking Prompt",
+                                                fontSize = 18.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.onSurface
+                                            )
+
+                                            // Lesson illustration
+                                            LessonIllustration(
+                                                illustrationResId = lesson.illustrationResId,
+                                                contentDescription = "Speaking prompt illustration"
+                                            )
+                                        }
+
+                                        Spacer(modifier = Modifier.height(12.dp))
+
+                                        // Character display with encouragement
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.Start,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            CharacterDisplay(
+                                                characterResId = lesson.characterResId,
+                                                animationType = lesson.animationType,
+                                                contentDescription = "Speaking guide character"
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = "Ready to speak? Let's practice!",
+                                                fontSize = 14.sp,
+                                                color = SprechenColor,
+                                                fontWeight = FontWeight.Medium
+                                            )
+                                        }
+
+                                        Spacer(modifier = Modifier.height(12.dp))
+
                                         Text(
                                             text = lessonContent.prompt ?: "No prompt available",
                                             fontSize = 16.sp,
@@ -674,17 +714,33 @@ fun SprechenLessonDetailScreen(
                                         modifier = Modifier.padding(16.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Icon(
-                                            imageVector = Icons.Default.CheckCircle,
-                                            contentDescription = "Completed",
-                                            tint = SprechenColor,
-                                            modifier = Modifier.size(64.dp)
+                                        // Confetti animation for high scores
+                                        if (score >= 80) {
+                                            ConfettiAnimation(isVisible = true)
+                                        }
+
+                                        // Success character with animation
+                                        CharacterDisplay(
+                                            characterResId = if (score >= 80) "ic_success_character" else "ic_owl_character",
+                                            animationType = if (score >= 80) AnimationType.CONFETTI else AnimationType.BOUNCE,
+                                            contentDescription = "Feedback character"
                                         )
-                                        Spacer(modifier = Modifier.height(16.dp))
+
+                                        Spacer(modifier = Modifier.height(12.dp))
+
+                                        Text(
+                                            text = if (score >= 80) "Excellent work! 🎉" else "Great effort! 👍",
+                                            fontSize = 20.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = SprechenColor
+                                        )
+
+                                        Spacer(modifier = Modifier.height(8.dp))
+
                                         Text(
                                             text = "Speaking Completed!",
-                                            fontSize = 24.sp,
-                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 18.sp,
+                                            fontWeight = FontWeight.Medium,
                                             color = MaterialTheme.colorScheme.onSurface
                                         )
                                         Spacer(modifier = Modifier.height(8.dp))

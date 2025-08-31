@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Red feminine ball (die) -->
+    <circle
+        android:fillColor="#E91E63"
+        android:radius="10dp"
+        android:centerX="12"
+        android:centerY="12"/>
+</vector>

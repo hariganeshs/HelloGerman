@@ -16,7 +16,10 @@ data class Lesson(
     val score: Int = 0,
     val timeSpent: Int = 0, // in seconds
     val createdAt: Long = System.currentTimeMillis(),
-    val orderIndex: Int = 0
+    val orderIndex: Int = 0,
+    val illustrationResId: String? = null, // Drawable resource for lesson illustration
+    val characterResId: String? = null, // Drawable resource for character/avatar
+    val animationType: AnimationType = AnimationType.NONE // Type of animation for this lesson
 )
 
 // Content types for different skills
@@ -82,3 +85,16 @@ data class VocabularyItem(
     val translation: String,
     val example: String
 )
+
+enum class AnimationType {
+    NONE,           // No animation
+    CONFETTI,       // Success celebration
+    PROGRESS_FILL,  // Progress bar animation
+    CHARACTER_HAPPY,// Happy character reaction
+    CHARACTER_SAD,  // Sad character reaction
+    CHARACTER_THINKING, // Thinking character
+    FADE_IN,        // Simple fade in
+    BOUNCE,         // Bounce animation
+    SCALE_UP,       // Scale up effect
+    ROTATE          // Rotation animation
+}

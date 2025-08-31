@@ -30,6 +30,9 @@ import java.util.regex.Pattern
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import androidx.compose.ui.graphics.Color
+import com.hellogerman.app.ui.components.LessonIllustration
+import com.hellogerman.app.ui.components.CharacterDisplay
+import com.hellogerman.app.ui.components.AnimatedProgressBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -163,13 +166,50 @@ fun SchreibenLessonDetailScreen(
                                         Column(
                                             modifier = Modifier.padding(16.dp)
                                         ) {
-                                            Text(
-                                                text = "Writing Prompt",
-                                                fontSize = 18.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                color = MaterialTheme.colorScheme.onSurface
-                                            )
+                                            // Lesson illustration and character
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text(
+                                                    text = "Writing Prompt",
+                                                    fontSize = 18.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = MaterialTheme.colorScheme.onSurface
+                                                )
+
+                                                // Lesson illustration
+                                                LessonIllustration(
+                                                    illustrationResId = lesson.illustrationResId,
+                                                    contentDescription = "Writing prompt illustration"
+                                                )
+                                            }
+
                                             Spacer(modifier = Modifier.height(8.dp))
+
+                                            // Character display
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.Start,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                CharacterDisplay(
+                                                    characterResId = lesson.characterResId,
+                                                    animationType = lesson.animationType,
+                                                    contentDescription = "Writing guide character"
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Text(
+                                                    text = "Let's write something great!",
+                                                    fontSize = 14.sp,
+                                                    color = SchreibenColor,
+                                                    fontWeight = FontWeight.Medium
+                                                )
+                                            }
+
+                                            Spacer(modifier = Modifier.height(12.dp))
+
                                             Text(
                                                 text = content.prompt,
                                                 fontSize = 16.sp,

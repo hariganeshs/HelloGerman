@@ -23,6 +23,9 @@ import com.hellogerman.app.ui.theme.*
 import com.hellogerman.app.ads.BannerAd2
 import com.hellogerman.app.data.repository.LevelUnlockStatus
 import androidx.compose.ui.graphics.Color
+import com.hellogerman.app.ui.components.AnimatedProgressBar
+import com.hellogerman.app.ui.components.CharacterDisplay
+import com.hellogerman.app.data.entities.AnimationType
 
 
 
@@ -401,12 +404,33 @@ fun LevelUnlockCard(unlockStatus: LevelUnlockStatus) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            LinearProgressIndicator(
-                progress = (unlockStatus.overallProgress / 100f).toFloat(),
+            // Animated progress bar with character
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                color = if (unlockStatus.canUnlock) Color(0xFF4CAF50) else MaterialTheme.colorScheme.primary,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant
-            )
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                AnimatedProgressBar(
+                    progress = (unlockStatus.overallProgress / 100f).toFloat(),
+                    modifier = Modifier.weight(1f),
+                    showStar = unlockStatus.canUnlock
+                )
+
+                // Character display based on progress
+                if (unlockStatus.canUnlock) {
+                    CharacterDisplay(
+                        characterResId = "ic_success_character",
+                        animationType = AnimationType.CONFETTI,
+                        contentDescription = "Success celebration character"
+                    )
+                } else if (unlockStatus.overallProgress > 50) {
+                    CharacterDisplay(
+                        characterResId = "ic_owl_character",
+                        animationType = AnimationType.BOUNCE,
+                        contentDescription = "Encouragement character"
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 

@@ -28,7 +28,16 @@ object LessonContentGenerator {
 
         levels.forEach { level ->
             skills.forEach { skill ->
-                lessons.addAll(generateLessonsForSkillAndLevel(skill, level))
+                val skillLessons = generateLessonsForSkillAndLevel(skill, level)
+                // Add visual elements to lessons
+                val lessonsWithVisuals = skillLessons.map { lesson ->
+                    lesson.copy(
+                        illustrationResId = getIllustrationForLesson(lesson),
+                        characterResId = getCharacterForLesson(lesson),
+                        animationType = getAnimationForLesson(lesson)
+                    )
+                }
+                lessons.addAll(lessonsWithVisuals)
             }
         }
 
@@ -57,7 +66,16 @@ object LessonContentGenerator {
 
         levels.forEach { level ->
             skills.forEach { skill ->
-                lessons.addAll(generateLessonsForSkillAndLevel(skill, level))
+                val skillLessons = generateLessonsForSkillAndLevel(skill, level)
+                // Add visual elements to lessons
+                val lessonsWithVisuals = skillLessons.map { lesson ->
+                    lesson.copy(
+                        illustrationResId = getIllustrationForLesson(lesson),
+                        characterResId = getCharacterForLesson(lesson),
+                        animationType = getAnimationForLesson(lesson)
+                    )
+                }
+                lessons.addAll(lessonsWithVisuals)
             }
         }
 
@@ -7486,6 +7504,105 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
             source = source,
             orderIndex = orderIndex
         )
+    }
+
+    /**
+     * Get appropriate illustration for a lesson based on its content and skill
+     */
+    private fun getIllustrationForLesson(lesson: Lesson): String? {
+        val title = lesson.title.lowercase()
+        val skill = lesson.skill.lowercase()
+        val level = lesson.level.lowercase()
+
+        return when {
+            // Lesen illustrations
+            skill == "lesen" -> {
+                when {
+                    title.contains("haus") || title.contains("wohnung") -> "ic_house_illustration"
+                    title.contains("essen") || title.contains("restaurant") -> "ic_pretzel"
+                    title.contains("arbeit") || title.contains("beruf") -> "ic_person_character"
+                    else -> null // Default for lesen - no illustration
+                }
+            }
+            // Hören illustrations
+            skill == "hoeren" -> {
+                when {
+                    title.contains("arbeit") -> "ic_person_character"
+                    else -> "ic_owl_character" // Default for hören
+                }
+            }
+            // Schreiben illustrations
+            skill == "schreiben" -> {
+                when {
+                    title.contains("email") || title.contains("brief") -> "ic_house_illustration"
+                    title.contains("tagebuch") || title.contains("geschichte") -> "ic_person_character"
+                    else -> null // Default for schreiben - no illustration
+                }
+            }
+            // Sprechen illustrations
+            skill == "sprechen" -> {
+                when {
+                    title.contains("essen") -> "ic_pretzel"
+                    else -> "ic_person_character" // Default for sprechen
+                }
+            }
+            // Grammar illustrations - colorful and game-like
+            skill == "grammar" -> {
+                when {
+                    title.contains("artikel") || title.contains("geschlecht") -> {
+                        // Rotate through gender illustrations
+                        val genderIndex = lesson.id % 3
+                        when (genderIndex) {
+                            0 -> "ic_grammar_masculine"
+                            1 -> "ic_grammar_feminine"
+                            else -> "ic_grammar_neuter"
+                        }
+                    }
+                    title.contains("verb") || title.contains("zeit") -> "ic_person_character"
+                    title.contains("präteritum") || title.contains("perfekt") -> "ic_owl_character"
+                    else -> "ic_pretzel" // Default for grammar
+                }
+            }
+            else -> null
+        }
+    }
+
+    /**
+     * Get appropriate character for a lesson
+     */
+    private fun getCharacterForLesson(lesson: Lesson): String? {
+        val skill = lesson.skill.lowercase()
+        val level = lesson.level.lowercase()
+
+        // Rotate through different characters for variety
+        val lessonId = lesson.id
+        val characterIndex = (lessonId % 2)
+
+        return when (skill) {
+            "lesen" -> if (characterIndex == 0) "ic_owl_character" else "ic_person_character"
+            "hoeren" -> "ic_owl_character" // Owl for listening feedback
+            "schreiben" -> "ic_person_character" // Person for writing feedback
+            "sprechen" -> "ic_owl_character" // Owl for speaking feedback
+            "grammar" -> "ic_owl_character" // Owl for grammar explanations
+            else -> null
+        }
+    }
+
+    /**
+     * Get appropriate animation type for a lesson
+     */
+    private fun getAnimationForLesson(lesson: Lesson): AnimationType {
+        val skill = lesson.skill.lowercase()
+        val level = lesson.level.lowercase()
+
+        return when (skill) {
+            "lesen" -> AnimationType.FADE_IN
+            "hoeren" -> AnimationType.CHARACTER_HAPPY
+            "schreiben" -> AnimationType.PROGRESS_FILL
+            "sprechen" -> AnimationType.CONFETTI
+            "grammar" -> AnimationType.BOUNCE
+            else -> AnimationType.NONE
+        }
     }
 }
 
