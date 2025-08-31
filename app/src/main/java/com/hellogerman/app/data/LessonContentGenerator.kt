@@ -37,10 +37,20 @@ object LessonContentGenerator {
         val b1Lessons = allLessons.filter { it.level == "B1" }
         b1Lessons.groupBy { it.skill }.forEach { (skill, lessons) ->
             result.append("$skill (${lessons.size}):\n")
-            lessons.forEach { lesson ->
+            lessons.take(3).forEach { lesson -> // Show first 3 to avoid too much output
                 result.append("  - ${lesson.title} (id: ${lesson.id}, order: ${lesson.orderIndex})\n")
             }
+            if (lessons.size > 3) {
+                result.append("  ... and ${lessons.size - 3} more\n")
+            }
             result.append("\n")
+        }
+
+        result.append("=== B1 LESEN SPECIFIC ===\n")
+        val b1LesenLessons = b1Lessons.filter { it.skill == "lesen" }
+        result.append("Found ${b1LesenLessons.size} lesen lessons in B1:\n")
+        b1LesenLessons.forEach { lesson ->
+            result.append("  - ${lesson.title} (skill: ${lesson.skill}, level: ${lesson.level})\n")
         }
 
         return result.toString()
