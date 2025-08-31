@@ -40,18 +40,28 @@ object DatabaseInitializer {
                 // Debug: Print lesson counts by level
                 val a1Count = lessons.filter { it.level == "A1" }.size
                 val a2Count = lessons.filter { it.level == "A2" }.size
+                val b1Count = lessons.filter { it.level == "B1" }.size
                 val lesenA2Count = lessons.filter { it.level == "A2" && it.skill == "lesen" }.size
                 val hoerenA2Count = lessons.filter { it.level == "A2" && it.skill == "hoeren" }.size
                 val schreibenA2Count = lessons.filter { it.level == "A2" && it.skill == "schreiben" }.size
                 val sprechenA2Count = lessons.filter { it.level == "A2" && it.skill == "sprechen" }.size
-                
+                val lesenB1Count = lessons.filter { it.level == "B1" && it.skill == "lesen" }.size
+                val hoerenB1Count = lessons.filter { it.level == "B1" && it.skill == "hoeren" }.size
+                val schreibenB1Count = lessons.filter { it.level == "B1" && it.skill == "schreiben" }.size
+                val sprechenB1Count = lessons.filter { it.level == "B1" && it.skill == "sprechen" }.size
+
                 android.util.Log.d("DatabaseInitializer", "Generated lessons - Total: ${lessons.size}")
                 android.util.Log.d("DatabaseInitializer", "A1 lessons: $a1Count")
                 android.util.Log.d("DatabaseInitializer", "A2 lessons: $a2Count")
+                android.util.Log.d("DatabaseInitializer", "B1 lessons: $b1Count")
                 android.util.Log.d("DatabaseInitializer", "A2 Lesen: $lesenA2Count")
                 android.util.Log.d("DatabaseInitializer", "A2 Hören: $hoerenA2Count")
                 android.util.Log.d("DatabaseInitializer", "A2 Schreiben: $schreibenA2Count")
                 android.util.Log.d("DatabaseInitializer", "A2 Sprechen: $sprechenA2Count")
+                android.util.Log.d("DatabaseInitializer", "B1 Lesen: $lesenB1Count")
+                android.util.Log.d("DatabaseInitializer", "B1 Hören: $hoerenB1Count")
+                android.util.Log.d("DatabaseInitializer", "B1 Schreiben: $schreibenB1Count")
+                android.util.Log.d("DatabaseInitializer", "B1 Sprechen: $sprechenB1Count")
                 
                 repository.insertLessons(lessons)
             } else {

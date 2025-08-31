@@ -284,16 +284,21 @@ fun SettingsScreen(
                                     val allLessons = repository.getAllLessons()
                                     val a1Count = allLessons.filter { it.level == "A1" }.size
                                     val a2Count = allLessons.filter { it.level == "A2" }.size
+                                    val b1Count = allLessons.filter { it.level == "B1" }.size
                                     val lesenA2Count = allLessons.filter { it.level == "A2" && it.skill == "lesen" }.size
                                     val hoerenA2Count = allLessons.filter { it.level == "A2" && it.skill == "hoeren" }.size
                                     val schreibenA2Count = allLessons.filter { it.level == "A2" && it.skill == "schreiben" }.size
                                     val sprechenA2Count = allLessons.filter { it.level == "A2" && it.skill == "sprechen" }.size
+                                    val lesenB1Count = allLessons.filter { it.level == "B1" && it.skill == "lesen" }.size
+                                    val hoerenB1Count = allLessons.filter { it.level == "B1" && it.skill == "hoeren" }.size
+                                    val schreibenB1Count = allLessons.filter { it.level == "B1" && it.skill == "schreiben" }.size
+                                    val sprechenB1Count = allLessons.filter { it.level == "B1" && it.skill == "sprechen" }.size
 
                                     withContext(Dispatchers.Main) {
                                         snackbarHostState.showSnackbar(
-                                            "Total: ${allLessons.size}, A1: $a1Count, A2: $a2Count, " +
-                                            "A2 Lesen: $lesenA2Count, A2 Hören: $hoerenA2Count, " +
-                                            "A2 Schreiben: $schreibenA2Count, A2 Sprechen: $sprechenA2Count"
+                                            "Total: ${allLessons.size}, A1: $a1Count, A2: $a2Count, B1: $b1Count | " +
+                                            "A2(L:$lesenA2Count H:$hoerenA2Count S:$schreibenA2Count Sp:$sprechenA2Count) | " +
+                                            "B1(L:$lesenB1Count H:$hoerenB1Count S:$schreibenB1Count Sp:$sprechenB1Count)"
                                         )
                                     }
                                 }
