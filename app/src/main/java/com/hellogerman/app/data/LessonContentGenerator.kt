@@ -2289,252 +2289,205 @@ Kritiker warnen vor einer zunehmenden Arbeitsverdichtung durch ständige Erreich
                     )
                 ))
 
+                // NOTE: Hörverstehen lessons should be moved to generateHoerenLessons B1 section
                 lessons.add(createLesenLesson(
-                    title = "B1 Goethe Prüfung - Hörverstehen Teil 1",
-                    description = "Goethe-Zertifikat B1 Listening Comprehension - Multiple choice",
+                    title = "B1 Goethe Prüfung - Leseverstehen Teil 3",
+                    description = "Goethe-Zertifikat B1 Reading Comprehension - Advanced texts",
                     level = level,
                     orderIndex = 3,
-                    text = """Hören Sie sich den folgenden Dialog an und lösen Sie die Aufgaben.
+                    text = """Lesen Sie den folgenden Text und lösen Sie die Aufgaben.
 
-Dialog: Ein Beratungsgespräch bei der Arbeitsagentur
+Berufliche Weiterbildung in Deutschland
 
-Beraterin: Guten Tag, Herr Müller. Was kann ich für Sie tun?
+Die berufliche Weiterbildung spielt eine wichtige Rolle in der deutschen Arbeitswelt. Viele Arbeitnehmer nutzen die Möglichkeit, sich kontinuierlich weiterzubilden, um ihre Karrierechancen zu verbessern.
 
-Herr Müller: Ich suche eine neue Stelle. Ich bin gelernter Koch und habe 5 Jahre Erfahrung.
+Die Volkshochschulen (VHS) bieten ein breites Spektrum an Kursen an. Von Sprachkursen über EDV-Schulungen bis hin zu kreativen Workshops findet man dort alles. Die Kurse sind meistens günstig und werden oft von den Arbeitsagenturen bezuschusst.
 
-Beraterin: Das klingt gut. Haben Sie schon Bewerbungen geschrieben?
+Auch die Industrie- und Handelskammern (IHK) organisieren Weiterbildungsprogramme. Diese sind besonders praxisorientiert und führen oft zu anerkannten Zertifikaten. Viele Unternehmen unterstützen ihre Mitarbeiter bei der Teilnahme an solchen Programmen.
 
-Herr Müller: Ja, aber ich bekomme keine Antworten. Vielleicht liegt es an meinem Lebenslauf.
-
-Beraterin: Lassen Sie mich Ihren Lebenslauf sehen. Ah, ich sehe das Problem. Sie haben keine Weiterbildung erwähnt.
-
-Herr Müller: Was für eine Weiterbildung meinen Sie?
-
-Beraterin: Vielleicht einen Kurs in Hygienevorschriften oder eine Fortbildung zum Küchenchef.
-
-Herr Müller: Das ist eine gute Idee. Wo kann ich solche Kurse machen?
-
-Beraterin: Die Volkshochschule bietet viele Kurse an. Auch die Industrie- und Handelskammer hat Programme.""",
+Besonders beliebt sind aktuell Kurse in den Bereichen Digitalisierung, Nachhaltigkeit und interkulturelle Kommunikation. Diese Kompetenzen werden in der modernen Arbeitswelt immer wichtiger.""",
                     questions = listOf(
                         Question(
                             id = 1,
-                            question = "Was ist Herr Müller von Beruf?",
-                            options = listOf("Bäcker", "Koch", "Kellner", "Manager"),
-                            correctAnswer = "Koch",
+                            question = "Warum ist berufliche Weiterbildung wichtig?",
+                            options = listOf("Für bessere Karrierechancen", "Nur für junge Leute", "Nur für Akademiker", "Nicht notwendig"),
+                            correctAnswer = "Für bessere Karrierechancen",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 2,
-                            question = "Wie viele Jahre Berufserfahrung hat er?",
-                            options = listOf("2 Jahre", "3 Jahre", "5 Jahre", "7 Jahre"),
-                            correctAnswer = "5 Jahre",
+                            question = "Was bieten Volkshochschulen an?",
+                            options = listOf("nur Sprachkurse", "ein breites Spektrum an Kursen", "nur teure Kurse", "nur theoretische Kurse"),
+                            correctAnswer = "ein breites Spektrum an Kursen",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 3,
-                            question = "Was ist das Problem mit seinem Lebenslauf?",
-                            options = listOf("Er hat keine Ausbildung", "Er hat keine Weiterbildung erwähnt", "Er hat keine Berufserfahrung", "Er hat keine Sprachkenntnisse"),
-                            correctAnswer = "Er hat keine Weiterbildung erwähnt",
+                            question = "Wer bezuschusst oft die Kurse?",
+                            options = listOf("Die Universitäten", "Die Arbeitsagenturen", "Private Unternehmen", "Die Banken"),
+                            correctAnswer = "Die Arbeitsagenturen",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 4,
-                            question = "Was schlägt die Beraterin vor?",
-                            options = listOf("einen Kurs in Buchhaltung", "einen Kurs in Hygienevorschriften", "einen Kurs in Fremdsprachen", "einen Kurs in Sport"),
-                            correctAnswer = "einen Kurs in Hygienevorschriften",
+                            question = "Was organisieren IHKs?",
+                            options = listOf("nur theoretische Kurse", "praxisorientierte Weiterbildungsprogramme", "nur Sprachkurse", "nur Freizeitkurse"),
+                            correctAnswer = "praxisorientierte Weiterbildungsprogramme",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 5,
-                            question = "Wo kann er Kurse machen?",
-                            options = listOf("nur an der Universität", "an der Volkshochschule und IHK", "nur im Internet", "nur privat"),
-                            correctAnswer = "an der Volkshochschule und IHK",
+                            question = "Welche Kurse sind besonders beliebt?",
+                            options = listOf("Kurse in alten Technologien", "Kurse in Digitalisierung, Nachhaltigkeit und interkultureller Kommunikation", "nur Sprachkurse", "nur kreative Kurse"),
+                            correctAnswer = "Kurse in Digitalisierung, Nachhaltigkeit und interkultureller Kommunikation",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         )
                     ),
                     vocabulary = listOf(
-                        VocabularyItem("Bewerbung", "application", "Ich schreibe eine Bewerbung."),
-                        VocabularyItem("Lebenslauf", "CV/resume", "Der Lebenslauf ist wichtig."),
                         VocabularyItem("Weiterbildung", "further education", "Weiterbildung ist wichtig für die Karriere."),
-                        VocabularyItem("Hygienevorschriften", "hygiene regulations", "In der Küche sind Hygienevorschriften wichtig."),
-                        VocabularyItem("Volkshochschule", "adult education center", "Die Volkshochschule bietet viele Kurse.")
+                        VocabularyItem("Volkshochschule", "adult education center", "Die Volkshochschule bietet viele Kurse."),
+                        VocabularyItem("Industrie- und Handelskammer", "Chamber of Industry and Commerce", "Die IHK organisiert Weiterbildungen."),
+                        VocabularyItem("praxisorientiert", "practice-oriented", "Die Kurse sind praxisorientiert."),
+                        VocabularyItem("Zertifikat", "certificate", "Man bekommt ein Zertifikat.")
                     )
                 ))
 
                 lessons.add(createLesenLesson(
-                    title = "B1 Goethe Prüfung - Schreiben Teil 1",
-                    description = "Goethe-Zertifikat B1 Writing - Formal letter",
+                    title = "B1 Goethe Prüfung - Leseverstehen Teil 4",
+                    description = "Goethe-Zertifikat B1 Reading Comprehension - Formal correspondence",
                     level = level,
                     orderIndex = 4,
-                    text = """Schreiben Sie eine E-Mail an Ihren Vermieter. Sie haben ein Problem mit Ihrer Wohnung.
+                    text = """Lesen Sie den folgenden Text und lösen Sie die Aufgaben.
 
-Situation: Sie wohnen seit 3 Monaten in einer Mietwohnung. Das Badezimmer ist feucht und es gibt Schimmel. Sie möchten, dass der Vermieter das Problem behebt.
+Mietrecht in Deutschland
 
-Schreiben Sie eine höfliche E-Mail mit folgenden Punkten:
-- Beschreiben Sie das Problem
-- Erklären Sie, seit wann es besteht
-- Bitten Sie um eine schnelle Lösung
-- Geben Sie Ihre Kontaktdaten an
+In Deutschland gibt es viele Regeln für Mieter und Vermieter. Diese Regeln sollen beide Seiten schützen. Wenn es Probleme in der Wohnung gibt, muss der Vermieter diese normalerweise beheben.
 
-Betreff: Problem mit Badezimmer in Wohnung [Ihre Adresse]
+Besonders wichtig ist die Wohnungsabnahme vor dem Einzug. Dabei sollte man alle Mängel dokumentieren. Auch während der Mietzeit sollte man regelmäßig den Zustand der Wohnung überprüfen.
 
-Sehr geehrter Herr/Frau [Name des Vermieters],
+Bei Schimmelbildung ist der Vermieter verpflichtet, die Ursache zu finden und zu beseitigen. Oft liegt das Problem an zu hoher Luftfeuchtigkeit oder schlechter Belüftung. Mieter können in solchen Fällen die Miete mindern oder den Vermieter auffordern, die Reparatur durchzuführen.
 
-ich schreibe Ihnen, weil ich ein Problem mit meiner Wohnung habe. Ich wohne seit drei Monaten in der [Ihre Straße und Hausnummer] und bin mit der Wohnung im Allgemeinen zufrieden. Allerdings gibt es ein ernstes Problem im Badezimmer.
-
-Das Badezimmer ist sehr feucht und es hat sich Schimmel gebildet, besonders an den Wänden und in den Ecken. Dieses Problem besteht schon seit etwa zwei Monaten. Ich habe schon versucht, das Badezimmer regelmäßig zu lüften und die Feuchtigkeit zu reduzieren, aber das Problem wird nicht besser.
-
-Ich bitte Sie höflich, dieses Problem so schnell wie möglich zu beheben. Vielleicht muss die Feuchtigkeitssperre repariert oder erneuert werden. Ich bin unter der Telefonnummer [Ihre Telefonnummer] und per E-Mail unter [Ihre E-Mail] zu erreichen.
-
-Ich freue mich auf Ihre baldige Antwort und hoffe, dass wir das Problem gemeinsam lösen können.
-
-Mit freundlichen Grüßen
-[Ihr Name]""",
+Es ist ratsam, alle Kommunikation mit dem Vermieter schriftlich zu führen. Das schafft Klarheit und dient als Nachweis im Streitfall.""",
                     questions = listOf(
                         Question(
                             id = 1,
-                            question = "Was ist das Hauptproblem in der Wohnung?",
-                            options = listOf("Das Wohnzimmer ist zu klein", "Das Badezimmer ist feucht und hat Schimmel", "Die Küche ist alt", "Das Schlafzimmer ist dunkel"),
-                            correctAnswer = "Das Badezimmer ist feucht und hat Schimmel",
+                            question = "Was sollen Mieter vor dem Einzug machen?",
+                            options = listOf("Die Wohnung putzen", "Alle Mängel dokumentieren", "Die Nachbarn kennenlernen", "Die Schlüssel kopieren"),
+                            correctAnswer = "Alle Mängel dokumentieren",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 2,
-                            question = "Seit wann wohnt die Person in der Wohnung?",
-                            options = listOf("seit 1 Monat", "seit 3 Monaten", "seit 6 Monaten", "seit 1 Jahr"),
-                            correctAnswer = "seit 3 Monaten",
+                            question = "Was muss der Vermieter bei Schimmelbildung tun?",
+                            options = listOf("Nichts, das ist Mieterproblem", "Die Ursache finden und beseitigen", "Die Miete erhöhen", "Die Wohnung verkaufen"),
+                            correctAnswer = "Die Ursache finden und beseitigen",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 3,
-                            question = "Seit wann besteht das Problem?",
-                            options = listOf("seit 1 Woche", "seit 2 Wochen", "seit 2 Monaten", "seit 3 Monaten"),
-                            correctAnswer = "seit 2 Monaten",
+                            question = "Was können Mieter bei Schimmelbildung tun?",
+                            options = listOf("Die Wohnung verlassen", "Die Miete mindern oder Reparatur fordern", "Selbst reparieren", "Die Polizei rufen"),
+                            correctAnswer = "Die Miete mindern oder Reparatur fordern",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 4,
-                            question = "Was bittet die Person vom Vermieter?",
-                            options = listOf("eine neue Wohnung", "eine Mieterhöhung", "eine schnelle Lösung des Problems", "einen Umzug"),
-                            correctAnswer = "eine schnelle Lösung des Problems",
+                            question = "Warum sollte man schriftlich mit dem Vermieter kommunizieren?",
+                            options = listOf("Das ist teurer", "Das schafft Klarheit und dient als Nachweis", "Das geht schneller", "Das ist moderner"),
+                            correctAnswer = "Das schafft Klarheit und dient als Nachweis",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 5,
-                            question = "Wie endet die E-Mail?",
-                            options = listOf("Viele Grüße", "Hochachtungsvoll", "Mit freundlichen Grüßen", "Bis bald"),
-                            correctAnswer = "Mit freundlichen Grüßen",
+                            question = "Was ist oft die Ursache für Schimmelbildung?",
+                            options = listOf("Zu kalte Wohnung", "Zu hohe Luftfeuchtigkeit oder schlechte Belüftung", "Zu trockene Luft", "Zu viel Sonne"),
+                            correctAnswer = "Zu hohe Luftfeuchtigkeit oder schlechte Belüftung",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         )
                     ),
                     vocabulary = listOf(
-                        VocabularyItem("Vermieter", "landlord", "Der Vermieter ist für die Wohnung verantwortlich."),
-                        VocabularyItem("Schimmel", "mold", "Schimmel ist schädlich für die Gesundheit."),
-                        VocabularyItem("Feuchtigkeit", "humidity/moisture", "Hohe Feuchtigkeit kann Probleme verursachen."),
-                        VocabularyItem("beheben", "to fix/resolve", "Das Problem muss behoben werden."),
-                        VocabularyItem("höflich", "polite", "Man sollte höflich schreiben.")
+                        VocabularyItem("Mietrecht", "rental law", "Das Mietrecht schützt Mieter und Vermieter."),
+                        VocabularyItem("Wohnungsabnahme", "apartment inspection", "Die Wohnungsabnahme ist wichtig vor dem Einzug."),
+                        VocabularyItem("Mängel", "defects/flaws", "Alle Mängel sollten dokumentiert werden."),
+                        VocabularyItem("Schimmelbildung", "mold formation", "Schimmelbildung muss verhindert werden."),
+                        VocabularyItem("minden", "to reduce", "Mieter können die Miete mindern.")
                     )
                 ))
 
                 lessons.add(createLesenLesson(
-                    title = "B1 Goethe Prüfung - Sprechen Teil 1",
-                    description = "Goethe-Zertifikat B1 Speaking - Role play",
+                    title = "B1 Goethe Prüfung - Leseverstehen Teil 5",
+                    description = "Goethe-Zertifikat B1 Reading Comprehension - Job market",
                     level = level,
                     orderIndex = 5,
-                    text = """Bereiten Sie sich auf ein Rollenspiel vor.
+                    text = """Lesen Sie den folgenden Text und lösen Sie die Aufgaben.
 
-Situation: Sie sind in einem Reisebüro und möchten eine Reise nach Berlin buchen.
+Der Arbeitsmarkt in Deutschland
 
-Sie sprechen mit einem Reiseberater und müssen folgende Punkte besprechen:
-- Reiseziel und Zeitraum
-- Art der Unterkunft
-- Transportmittel
-- Besondere Wünsche
-- Budget
+Deutschland hat einen starken Arbeitsmarkt mit niedriger Arbeitslosigkeit. Besonders in den Bereichen Technologie, Gesundheit und Ingenieurwesen gibt es viele offene Stellen. Auch im Handwerk werden Fachkräfte gesucht.
 
-Mögliche Dialogstruktur:
+Viele Unternehmen bieten gute Arbeitsbedingungen mit flexiblen Arbeitszeiten und Weiterbildungsmöglichkeiten. Die Work-Life-Balance wird in deutschen Unternehmen immer wichtiger. Homeoffice und Teilzeitmodelle sind weit verbreitet.
 
-Reiseberater: Guten Tag! Wie kann ich Ihnen helfen?
+Für Berufseinsteiger gibt es verschiedene Möglichkeiten: Ausbildung, duales Studium oder Direktübernahme nach dem Studium. Auch Quereinsteiger finden oft gute Chancen, besonders wenn sie bereits Berufserfahrung haben.
 
-Sie: Guten Tag! Ich möchte eine Reise nach Berlin buchen.
-
-Reiseberater: Wann möchten Sie reisen und wie lange?
-
-Sie: Ich möchte im nächsten Monat für eine Woche fahren.
-
-Reiseberater: Was für eine Unterkunft suchen Sie?
-
-Sie: Ein Hotel im Zentrum, nicht zu teuer.
-
-Reiseberater: Wie möchten Sie anreisen?
-
-Sie: Mit dem Zug, bitte.
-
-Reiseberater: Haben Sie besondere Wünsche?
-
-Sie: Ja, ich brauche ein ruhiges Zimmer und eine gute Anbindung an öffentliche Verkehrsmittel.
-
-Reiseberater: Was ist Ihr Budget?
-
-Sie: Etwa 800 Euro für alles zusammen.""",
+Die Arbeitsagenturen bieten kostenlose Beratung und Vermittlung an. Sie helfen bei der Jobsuche und unterstützen bei der Erstellung von Bewerbungsunterlagen.""",
                     questions = listOf(
                         Question(
                             id = 1,
-                            question = "Wo findet das Gespräch statt?",
-                            options = listOf("im Hotel", "im Reisebüro", "am Bahnhof", "am Flughafen"),
-                            correctAnswer = "im Reisebüro",
+                            question = "In welchen Bereichen gibt es viele offene Stellen?",
+                            options = listOf("Landwirtschaft", "Technologie, Gesundheit und Ingenieurwesen", "Kunst und Musik", "Sport und Freizeit"),
+                            correctAnswer = "Technologie, Gesundheit und Ingenieurwesen",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 2,
-                            question = "Was ist das Reiseziel?",
-                            options = listOf("München", "Berlin", "Hamburg", "Köln"),
-                            correctAnswer = "Berlin",
+                            question = "Was wird in deutschen Unternehmen immer wichtiger?",
+                            options = listOf("Längere Arbeitszeiten", "Die Work-Life-Balance", "Mehr Meetings", "Weniger Urlaub"),
+                            correctAnswer = "Die Work-Life-Balance",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 3,
-                            question = "Wie lange möchte die Person bleiben?",
-                            options = listOf("3 Tage", "eine Woche", "2 Wochen", "einen Monat"),
-                            correctAnswer = "eine Woche",
+                            question = "Welche Möglichkeiten gibt es für Berufseinsteiger?",
+                            options = listOf("Nur Studium", "Ausbildung, duales Studium oder Direktübernahme", "Nur Praktikum", "Nur Selbständigkeit"),
+                            correctAnswer = "Ausbildung, duales Studium oder Direktübernahme",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 4,
-                            question = "Wie möchte die Person anreisen?",
-                            options = listOf("mit dem Auto", "mit dem Flugzeug", "mit dem Zug", "mit dem Bus"),
-                            correctAnswer = "mit dem Zug",
+                            question = "Was bieten Arbeitsagenturen an?",
+                            options = listOf("Teure Beratung", "Kostenlose Beratung und Vermittlung", "Nur Arbeitsvermittlung", "Nur Bewerbungshilfe"),
+                            correctAnswer = "Kostenlose Beratung und Vermittlung",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         ),
                         Question(
                             id = 5,
-                            question = "Was ist ungefähr das Budget?",
-                            options = listOf("400 Euro", "800 Euro", "1200 Euro", "2000 Euro"),
-                            correctAnswer = "800 Euro",
+                            question = "Wer findet oft gute Chancen auf dem Arbeitsmarkt?",
+                            options = listOf("Nur Akademiker", "Quereinsteiger mit Berufserfahrung", "Nur junge Leute", "Nur Ausländer"),
+                            correctAnswer = "Quereinsteiger mit Berufserfahrung",
                             correctAnswers = null,
                             type = QuestionType.MULTIPLE_CHOICE
                         )
                     ),
                     vocabulary = listOf(
-                        VocabularyItem("Reisebüro", "travel agency", "Im Reisebüro kann man Reisen buchen."),
-                        VocabularyItem("Unterkunft", "accommodation", "Welche Unterkunft suchen Sie?"),
-                        VocabularyItem("Transportmittel", "means of transport", "Das Transportmittel ist wichtig."),
-                        VocabularyItem("Budget", "budget", "Mein Budget ist begrenzt."),
-                        VocabularyItem("Anbindung", "connection/access", "Gute Anbindung an öffentliche Verkehrsmittel.")
+                        VocabularyItem("Arbeitsmarkt", "labor market", "Der Arbeitsmarkt ist stark."),
+                        VocabularyItem("Work-Life-Balance", "work-life balance", "Work-Life-Balance ist wichtig."),
+                        VocabularyItem("Berufseinsteiger", "career entrants", "Berufseinsteiger haben viele Möglichkeiten."),
+                        VocabularyItem("Quereinsteiger", "career changers", "Quereinsteiger finden gute Chancen."),
+                        VocabularyItem("Arbeitsagentur", "employment agency", "Die Arbeitsagentur hilft bei der Jobsuche.")
                     )
                 ))
             }
