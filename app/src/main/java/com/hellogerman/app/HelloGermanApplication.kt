@@ -7,6 +7,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 
 import com.hellogerman.app.data.DatabaseInitializer
+import com.hellogerman.app.data.LessonContentGenerator
 import com.hellogerman.app.ads.AdMobManager
 
 class HelloGermanApplication : Application() {
@@ -27,6 +28,9 @@ class HelloGermanApplication : Application() {
         
         // Initialize database with sample data
         DatabaseInitializer.initializeDatabase(this)
+
+        // Initialize lesson content generator with cache manager
+        LessonContentGenerator.initializeCacheManager(this)
 
         // Schedule daily grammar challenge worker
         val request = PeriodicWorkRequestBuilder<com.hellogerman.app.work.DailyGrammarChallengeWorker>(

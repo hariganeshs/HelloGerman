@@ -8,6 +8,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,6 +27,9 @@ import com.hellogerman.app.ui.theme.SchreibenColor
 import com.google.gson.Gson
 import com.hellogerman.app.data.entities.*
 import java.util.regex.Pattern
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,19 +45,50 @@ fun SchreibenLessonDetailScreen(
     var userText by remember { mutableStateOf(TextFieldValue("")) }
     var wordCount by remember { mutableStateOf(0) }
     var timeRemaining by remember { mutableStateOf(0) }
+    var isTimerRunning by remember { mutableStateOf(false) }
     var score by remember { mutableStateOf(0) }
     var feedback by remember { mutableStateOf("") }
-    
+    var grammarIssues by remember { mutableStateOf(listOf<String>()) }
+    var spellingSuggestions by remember { mutableStateOf(listOf<String>()) }
+
     val context = LocalContext.current
     val gson = remember { Gson() }
-    
+
     LaunchedEffect(lessonId) {
         lessonViewModel.loadLessonById(lessonId)
     }
-    
+
     // Update word count when text changes
     LaunchedEffect(userText.text) {
         wordCount = userText.text.split("\\s+".toRegex()).filter { it.isNotEmpty() }.size
+    }
+
+    // Timer functionality
+    LaunchedEffect(isTimerRunning) {
+        if (isTimerRunning && timeRemaining > 0) {
+            while (isActive && timeRemaining > 0) {
+                delay(1000)
+                timeRemaining--
+                if (timeRemaining == 0) {
+                    isTimerRunning = false
+                    // Auto-submit when time runs out
+                    currentLesson?.let { lesson ->
+                        try {
+                            val content = gson.fromJson(lesson.content, SchreibenContent::class.java)
+                            val feedbackResult = generateWritingFeedback(userText.text, content)
+                            feedback = feedbackResult.first
+                            score = feedbackResult.second
+                            grammarIssues = analyzeGrammar(userText.text)
+                            spellingSuggestions = checkSpelling(userText.text)
+                            currentStep = 2
+                            lessonViewModel.completeLesson(lessonId, score)
+                        } catch (e: Exception) {
+                            // Handle parsing error
+                        }
+                    }
+                }
+            }
+        }
     }
     
     Scaffold(
@@ -68,7 +104,7 @@ fun SchreibenLessonDetailScreen(
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Go back to writing lessons list"
                         )
                     }
                 },
@@ -150,7 +186,7 @@ fun SchreibenLessonDetailScreen(
                                                  ) {
                                                      Icon(
                                                          imageVector = Icons.Default.Info,
-                                                         contentDescription = "Time",
+                                                         contentDescription = "Time limit indicator",
                                                          tint = SchreibenColor,
                                                          modifier = Modifier.size(20.dp)
                                                      )
@@ -167,7 +203,7 @@ fun SchreibenLessonDetailScreen(
                                                 ) {
                                                     Icon(
                                                         imageVector = Icons.Default.Edit,
-                                                        contentDescription = "Words",
+                                                        contentDescription = "Word count indicator",
                                                         tint = SchreibenColor,
                                                         modifier = Modifier.size(20.dp)
                                                     )
@@ -185,16 +221,28 @@ fun SchreibenLessonDetailScreen(
                                 
                                 item {
                                     Button(
-                                        onClick = { 
+                                        onClick = {
                                             currentStep = 1
                                             timeRemaining = content.timeLimit * 60 // Convert to seconds
+                                            isTimerRunning = true
                                         },
                                         modifier = Modifier.fillMaxWidth(),
                                         colors = ButtonDefaults.buttonColors(
                                             containerColor = SchreibenColor
                                         )
                                     ) {
-                                        Text("Start Writing")
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.Center
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Timer,
+                                                contentDescription = "Writing timer icon",
+                                                modifier = Modifier.size(20.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text("Start Writing (${content.timeLimit} min)")
+                                        }
                                     }
                                 }
                             }
@@ -220,9 +268,9 @@ fun SchreibenLessonDetailScreen(
                                              verticalAlignment = Alignment.CenterVertically
                                          ) {
                                              Icon(
-                                                 imageVector = Icons.Default.Info,
+                                                 imageVector = if (timeRemaining < 300) Icons.Default.Warning else Icons.Default.Timer,
                                                  contentDescription = "Time",
-                                                 tint = SchreibenColor,
+                                                 tint = if (timeRemaining < 300) Color.Red else SchreibenColor,
                                                  modifier = Modifier.size(20.dp)
                                              )
                                              Spacer(modifier = Modifier.width(4.dp))
@@ -230,7 +278,7 @@ fun SchreibenLessonDetailScreen(
                                                  text = "${timeRemaining / 60}:${String.format("%02d", timeRemaining % 60)}",
                                                  fontSize = 16.sp,
                                                  fontWeight = FontWeight.Medium,
-                                                 color = SchreibenColor
+                                                 color = if (timeRemaining < 300) Color.Red else SchreibenColor
                                              )
                                          }
                                     }
@@ -260,6 +308,9 @@ fun SchreibenLessonDetailScreen(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
                                                     .height(200.dp),
+                                                label = {
+                                                    Text("Your German writing response")
+                                                },
                                                 placeholder = {
                                                     Text("Start writing your response here...")
                                                 },
@@ -298,12 +349,15 @@ fun SchreibenLessonDetailScreen(
                                 item {
                                     Button(
                                         onClick = {
+                                            isTimerRunning = false
                                             // Generate feedback and score
                                             val feedbackResult = generateWritingFeedback(userText.text, content)
                                             feedback = feedbackResult.first
                                             score = feedbackResult.second
+                                            grammarIssues = analyzeGrammar(userText.text)
+                                            spellingSuggestions = checkSpelling(userText.text)
                                             currentStep = 2
-                                            
+
                                             // Update lesson completion
                                             lessonViewModel.completeLesson(lessonId, score)
                                         },
@@ -375,6 +429,64 @@ fun SchreibenLessonDetailScreen(
                                                     fontSize = 14.sp,
                                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                                 )
+
+                                                // Grammar Issues
+                                                if (grammarIssues.isNotEmpty()) {
+                                                    Spacer(modifier = Modifier.height(12.dp))
+                                                    Text(
+                                                        text = "Grammatik",
+                                                        fontSize = 16.sp,
+                                                        fontWeight = FontWeight.Medium,
+                                                        color = Color(0xFF1976D2)
+                                                    )
+                                                    grammarIssues.forEach { issue ->
+                                                        Text(
+                                                            text = "• $issue",
+                                                            fontSize = 14.sp,
+                                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                            modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+                                                        )
+                                                    }
+                                                }
+
+                                                // Spelling Suggestions
+                                                if (spellingSuggestions.isNotEmpty()) {
+                                                    Spacer(modifier = Modifier.height(12.dp))
+                                                    Text(
+                                                        text = "Rechtschreibung",
+                                                        fontSize = 16.sp,
+                                                        fontWeight = FontWeight.Medium,
+                                                        color = Color(0xFFD32F2F)
+                                                    )
+                                                    spellingSuggestions.forEach { suggestion ->
+                                                        Text(
+                                                            text = "• $suggestion",
+                                                            fontSize = 14.sp,
+                                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                            modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+                                                        )
+                                                    }
+                                                }
+
+                                                // Detailed feedback
+                                                lessonContent?.let { content ->
+                                                    val detailedFeedback = generateDetailedFeedback(userText.text, content)
+                                                    if (detailedFeedback.isNotEmpty()) {
+                                                        Spacer(modifier = Modifier.height(12.dp))
+                                                        Text(
+                                                            text = "Detailliertes Feedback",
+                                                            fontSize = 16.sp,
+                                                            fontWeight = FontWeight.Medium,
+                                                            color = Color(0xFF388E3C)
+                                                        )
+                                                        Text(
+                                                            text = detailedFeedback,
+                                                            fontSize = 14.sp,
+                                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                            modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+                                                        )
+                                                    }
+                                                }
                                             }
                                         }
                                         
@@ -398,7 +510,7 @@ fun SchreibenLessonDetailScreen(
     }
 }
 
-private fun generateWritingFeedback(text: String, content: SchreibenContent): Pair<String, Int> {
+internal fun generateWritingFeedback(text: String, content: SchreibenContent): Pair<String, Int> {
     var score = 0
     val feedback = mutableListOf<String>()
     
@@ -447,4 +559,128 @@ private fun generateWritingFeedback(text: String, content: SchreibenContent): Pa
     }
     
     return Pair(feedback.joinToString("\n"), score)
+}
+
+internal fun analyzeGrammar(text: String): List<String> {
+    val issues = mutableListOf<String>()
+
+    // Check for common grammar issues
+    val sentences = text.split("[.!?]+".toRegex()).filter { it.trim().isNotEmpty() }
+
+    sentences.forEach { sentence ->
+        // Check for capitalization
+        if (sentence.trim().isNotEmpty() && !sentence.trim()[0].isUpperCase()) {
+            issues.add("Satz sollte mit Großbuchstaben beginnen: '$sentence'")
+        }
+
+        // Check for double spaces
+        if (sentence.contains("  ")) {
+            issues.add("Vermeide doppelte Leerzeichen")
+        }
+
+        // Check for common preposition errors
+        val prepositionErrors = mapOf(
+            "in der" to "im",
+            "in dem" to "im",
+            "an der" to "an der",
+            "an dem" to "am"
+        )
+
+        prepositionErrors.forEach { (wrong, correct) ->
+            if (sentence.contains(wrong, ignoreCase = true)) {
+                issues.add("Möglicherweise '$correct' statt '$wrong'")
+            }
+        }
+    }
+
+    // Check for missing punctuation
+    val words = text.split("\\s+".toRegex()).filter { it.isNotEmpty() }
+    if (words.size > 10 && !text.contains(".") && !text.contains("!") && !text.contains("?")) {
+        issues.add("Füge Interpunktion hinzu")
+    }
+
+    return issues.distinct()
+}
+
+internal fun checkSpelling(text: String): List<String> {
+    val suggestions = mutableListOf<String>()
+
+    // Common German spelling issues for A2 level
+    val commonErrors = mapOf(
+        "das" to listOf("daß", "dass"),
+        "daß" to listOf("das", "dass"),
+        "dass" to listOf("das", "daß"),
+        "machen" to listOf("machan", "machen"),
+        "gehen" to listOf("gehn", "gehen"),
+        "kommen" to listOf("kommn", "kommen"),
+        "essen" to listOf("esn", "essen"),
+        "trinken" to listOf("trinkn", "trinken")
+    )
+
+    val words = text.lowercase().split("\\s+".toRegex()).filter { it.isNotEmpty() }
+
+    words.forEach { word ->
+        commonErrors.forEach { (correct, alternatives) ->
+            if (alternatives.contains(word)) {
+                suggestions.add("'$word' → '$correct'")
+            }
+        }
+    }
+
+    // Check for repeated words
+    val repeatedWords = words.groupBy { it }.filter { it.value.size > 1 }.keys
+    repeatedWords.forEach { word ->
+        if (word.length > 3) { // Only flag longer words
+            suggestions.add("Wort '$word' wird wiederholt - Variation verwenden?")
+        }
+    }
+
+    return suggestions.distinct()
+}
+
+internal fun generateDetailedFeedback(text: String, content: SchreibenContent): String {
+    val feedback = mutableListOf<String>()
+
+    // Word variety analysis
+    val words = text.split("\\s+".toRegex()).filter { it.isNotEmpty() }
+    val uniqueWords = words.distinct().size
+    val varietyRatio = if (words.isNotEmpty()) uniqueWords.toFloat() / words.size else 0f
+
+    if (varietyRatio < 0.6f) {
+        feedback.add("Versuche mehr verschiedene Wörter zu verwenden")
+    } else if (varietyRatio > 0.8f) {
+        feedback.add("✓ Gute Wortvielfalt")
+    }
+
+    // Sentence structure analysis
+    val sentences = text.split("[.!?]+".toRegex()).filter { it.trim().isNotEmpty() }
+    val avgSentenceLength = if (sentences.isNotEmpty()) words.size.toFloat() / sentences.size else 0f
+
+    if (avgSentenceLength < 8) {
+        feedback.add("Sätze könnten etwas länger sein")
+    } else if (avgSentenceLength > 20) {
+        feedback.add("Einige Sätze sind sehr lang - kürzen oder aufteilen?")
+    } else {
+        feedback.add("✓ Ausgewogene Satzlänge")
+    }
+
+    // Content relevance check
+    val relevantKeywords = content.prompt.split("\\s+".toRegex())
+        .filter { it.length > 3 }
+        .take(5) // Take first 5 significant words from prompt
+
+    var keywordMatches = 0
+    relevantKeywords.forEach { keyword ->
+        if (text.contains(keyword, ignoreCase = true)) {
+            keywordMatches++
+        }
+    }
+
+    if (keywordMatches < relevantKeywords.size / 2) {
+        feedback.add("Versuche mehr auf das Thema einzugehen")
+    } else {
+        feedback.add("✓ Gute thematische Relevanz")
+    }
+
+    return feedback.joinToString("\n")
 }

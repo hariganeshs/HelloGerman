@@ -1,26 +1,105 @@
 package com.hellogerman.app.data
 
+import android.content.Context
 import com.google.gson.Gson
 import com.hellogerman.app.data.entities.*
+import com.hellogerman.app.data.repository.OfflineCacheManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 object LessonContentGenerator {
-    
+
     private val gson = Gson()
+    private var offlineCacheManager: OfflineCacheManager? = null
+
+    /**
+     * Initialize with offline cache manager for better performance
+     */
+    fun initializeCacheManager(context: Context) {
+        offlineCacheManager = OfflineCacheManager(context)
+    }
     
     fun generateAllLessons(): List<Lesson> {
         val lessons = mutableListOf<Lesson>()
-        
+
         // Generate lessons for each level and skill
         val levels = listOf("A1", "A2", "B1", "B2", "C1", "C2")
         val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
-        
+
         levels.forEach { level ->
             skills.forEach { skill ->
                 lessons.addAll(generateLessonsForSkillAndLevel(skill, level))
             }
         }
-        
+
+        // Cache the generated lessons asynchronously for better performance
+        // Note: Caching will be done when lessons are first accessed
+
         return lessons
+    }
+
+    /**
+     * Generate lessons with caching support
+     */
+    suspend fun generateAllLessonsWithCache(): List<Lesson> = withContext(Dispatchers.IO) {
+        // Try to load from cache first
+        val cachedLessons = loadCachedLessons()
+        if (cachedLessons.isNotEmpty()) {
+            return@withContext cachedLessons
+        }
+
+        // Generate new lessons if cache is empty
+        val lessons = mutableListOf<Lesson>()
+
+        // Generate lessons for each level and skill
+        val levels = listOf("A1", "A2", "B1", "B2", "C1", "C2")
+        val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
+
+        levels.forEach { level ->
+            skills.forEach { skill ->
+                lessons.addAll(generateLessonsForSkillAndLevel(skill, level))
+            }
+        }
+
+        // Cache the generated lessons
+        cacheGeneratedLessons(lessons)
+
+        return@withContext lessons
+    }
+
+    /**
+     * Cache generated lessons for offline use
+     */
+    private suspend fun cacheGeneratedLessons(lessons: List<Lesson>) {
+        offlineCacheManager?.let { cacheManager ->
+            try {
+                val lessonsJson = gson.toJson(lessons)
+                val success = cacheManager.compressAndCacheLessonData(-1, lessonsJson) // Use -1 for all lessons
+                if (success) {
+                    android.util.Log.d("LessonGenerator", "Successfully cached ${lessons.size} lessons")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("LessonGenerator", "Failed to cache lessons", e)
+            }
+        }
+    }
+
+    /**
+     * Load cached lessons
+     */
+    private suspend fun loadCachedLessons(): List<Lesson> {
+        return offlineCacheManager?.let { cacheManager ->
+            try {
+                val cachedJson = cacheManager.getCachedLessonData(-1) // Use -1 for all lessons
+                cachedJson?.let { json ->
+                    val lessonType = object : com.google.gson.reflect.TypeToken<List<Lesson>>() {}.type
+                    gson.fromJson(json, lessonType) ?: emptyList()
+                } ?: emptyList()
+            } catch (e: Exception) {
+                android.util.Log.e("LessonGenerator", "Failed to load cached lessons", e)
+                emptyList()
+            }
+        } ?: emptyList()
     }
     
     private fun generateLessonsForSkillAndLevel(skill: String, level: String): List<Lesson> {
@@ -1366,6 +1445,650 @@ object LessonContentGenerator {
                         VocabularyItem("Weihnachten", "Christmas", "Weihnachten ist ein wichtiges Fest."),
                         VocabularyItem("Karneval", "carnival", "Karneval wird im Februar gefeiert.")
                     )
+                ))
+
+                // Goethe A2 - Email reading (from Modellsatz)
+                lessons.add(createLesenLesson(
+                    title = "Eine E-Mail lesen",
+                    description = "Reading and understanding emails (Goethe-Zertifikat A2)",
+                    level = level,
+                    orderIndex = 6,
+                    text = """Von: anna.mueller@email.de
+An: info@reiseservice.de
+Betreff: Hotelreservierung in Berlin
+
+Sehr geehrte Damen und Herren,
+
+ich möchte ein Zimmer für zwei Nächte vom 15. bis 17. Mai in Berlin reservieren. Ich suche ein Doppelzimmer mit Frühstück. Die Zimmer sollten ruhig liegen und einen Internetzugang haben.
+
+Bitte senden Sie mir die Preise und Verfügbarkeit. Ich benötige auch Informationen über die Anreise mit öffentlichen Verkehrsmitteln vom Flughafen Tegel.
+
+Mit freundlichen Grüßen
+Anna Müller""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was möchte die Kundin reservieren?", options = listOf("Ein Einzelzimmer", "Ein Doppelzimmer", "Eine Suite", "Zwei Zimmer"), correctAnswer = "Ein Doppelzimmer", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What does the customer want to book?"),
+                        Question(id = 2, question = "Wie lange bleibt sie?", options = listOf("Eine Nacht", "Zwei Nächte", "Drei Nächte", "Eine Woche"), correctAnswer = "Zwei Nächte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How long is she staying?"),
+                        Question(id = 3, question = "Was braucht sie für Informationen?", options = null, correctAnswer = "Anreise mit öffentlichen Verkehrsmitteln", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What information does she need?")
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("reservieren", "to reserve", "Ich möchte ein Zimmer reservieren."),
+                        VocabularyItem("Doppelzimmer", "double room", "Ein Doppelzimmer für zwei Personen."),
+                        VocabularyItem("Anreise", "arrival", "Die Anreise mit dem Zug.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Reading notices
+                lessons.add(createLesenLesson(
+                    title = "Notizen und Anzeigen lesen",
+                    description = "Reading notices and advertisements (TELC Deutsch A2)",
+                    level = level,
+                    orderIndex = 7,
+                    text = """VERMISST: Schwarze Katze, ca. 3 Jahre alt, trägt rotes Halsband.
+Antworten an: Maria Schmidt, Tel. 030-1234567
+
+ZU VERKAUFEN: Fahrrad, Herrenmodell, gut erhalten, Preis 150 Euro.
+Interesse? Ruf an: 0176-9876543
+
+GESUCHT: Babysitter für Mittwoch- und Freitagabende, 18-22 Uhr.
+Kinder 4 und 6 Jahre. Bezahlung 12 Euro/Stunde.
+Bewerbungen an: familie.meier@email.de""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was ist die Telefonnummer für die vermisste Katze?", options = listOf("030-1234567", "0176-9876543", "030-9876543", "0176-1234567"), correctAnswer = "030-1234567", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wie viel kostet das Fahrrad?", options = listOf("100 Euro", "120 Euro", "150 Euro", "200 Euro"), correctAnswer = "150 Euro", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wann braucht die Familie einen Babysitter?", options = null, correctAnswer = "Mittwoch- und Freitagabende", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("vermisst", "missing", "Die Katze ist vermisst."),
+                        VocabularyItem("Halsband", "collar", "Die Katze trägt ein Halsband."),
+                        VocabularyItem("Babysitter", "babysitter", "Wir suchen einen Babysitter.")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Reading dialogs
+                lessons.add(createLesenLesson(
+                    title = "Dialoge verstehen",
+                    description = "Understanding conversations about health (ÖSD Zertifikat A2)",
+                    level = level,
+                    orderIndex = 8,
+                    text = """Arzt: Guten Tag, Frau Müller. Was führt Sie zu mir?
+Patientin: Guten Tag, Herr Doktor. Ich habe seit drei Tagen Halsschmerzen und Husten. Außerdem habe ich Fieber.
+Arzt: Haben Sie auch Kopfschmerzen oder Gliederschmerzen?
+Patientin: Ja, ich habe starke Kopfschmerzen und meine Glieder tun weh.
+Arzt: Ich verschreibe Ihnen ein Antibiotikum und einen Hustenstiller. Trinken Sie viel Tee und ruhen Sie sich aus. In drei Tagen kommen Sie zur Kontrolle.
+Patientin: Vielen Dank, Herr Doktor. Auf Wiedersehen.
+Arzt: Auf Wiedersehen, Frau Müller.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Warum geht die Patientin zum Arzt?", options = listOf("Kopfschmerzen", "Halsschmerzen und Husten", "Rückenschmerzen", "Magenschmerzen"), correctAnswer = "Halsschmerzen und Husten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was verschreibt der Arzt?", options = listOf("Nur Tee", "Antibiotikum und Hustenstiller", "Nur Schmerzmittel", "Eine Spritze"), correctAnswer = "Antibiotikum und Hustenstiller", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wann soll die Patientin wiederkommen?", options = null, correctAnswer = "In drei Tagen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Halsschmerzen", "sore throat", "Ich habe Halsschmerzen."),
+                        VocabularyItem("Husten", "cough", "Ich habe Husten."),
+                        VocabularyItem("verschrei ben", "to prescribe", "Der Arzt verschreibt Medikamente.")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Connected texts about travel
+                lessons.add(createLesenLesson(
+                    title = "Reiseberichte lesen",
+                    description = "Reading connected texts about travel experiences",
+                    level = level,
+                    orderIndex = 9,
+                    text = """Meine Reise nach Österreich
+
+Letztes Jahr habe ich eine Woche in Wien verbracht. Die Stadt hat mir sehr gut gefallen. Ich habe viele Sehenswürdigkeiten besucht: den Stephansdom, das Schloss Schönbrunn und das Belvedere. Besonders beeindruckend fand ich die Musikgeschichte der Stadt.
+
+Die Unterkunft war sehr komfortabel. Das Hotel lag zentral, aber trotzdem ruhig. Das Frühstück war ausgezeichnet und die Bedienung freundlich. Nur das Wetter war nicht ideal - es hat fast jeden Tag geregnet.
+
+Ich habe auch eine Wanderung in den Wienerwald gemacht. Die Natur war wunderschön, obwohl der Weg etwas anstrengend war. In einem Gasthaus habe ich typische Wiener Küche probiert: Schnitzel und Sachertorte.
+
+Ich würde Wien jederzeit wieder besuchen und kann die Stadt wärmstens empfehlen.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wo hat die Person eine Woche verbracht?", options = listOf("Berlin", "Wien", "München", "Salzburg"), correctAnswer = "Wien", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was war nicht ideal?", options = listOf("Die Unterkunft", "Das Frühstück", "Das Wetter", "Die Sehenswürdigkeiten"), correctAnswer = "Das Wetter", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was hat die Person im Wienerwald gemacht?", options = null, correctAnswer = "eine Wanderung", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Sehenswürdigkeit", "sightseeing attraction", "Der Stephansdom ist eine Sehenswürdigkeit."),
+                        VocabularyItem("beeindruckend", "impressive", "Das Schloss ist beeindruckend."),
+                        VocabularyItem("empfehlen", "to recommend", "Ich kann das Restaurant empfehlen.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // Shopping conversations (TELC inspired)
+                lessons.add(createLesenLesson(
+                    title = "Einkaufen gehen",
+                    description = "Reading shopping conversations",
+                    level = level,
+                    orderIndex = 10,
+                    text = """Verkäuferin: Guten Tag! Kann ich Ihnen helfen?
+Kundin: Ja, ich suche eine Jacke für den Winter. Sie soll warm sein und nicht zu teuer.
+Verkäuferin: Welche Größe haben Sie?
+Kundin: Größe 38.
+Verkäuferin: Hier haben wir eine schöne Winterjacke. Sie ist aus Wolle, hat eine Kapuze und kostet 89 Euro.
+Kundin: Die gefällt mir. Haben Sie sie auch in Schwarz?
+Verkäuferin: Ja, in Schwarz und Blau. Die schwarze ist gerade im Angebot für 75 Euro.
+Kundin: Perfekt! Ich nehme die schwarze Jacke.
+Verkäuferin: Möchten Sie auch Handschuhe dazu? Wir haben passende Handschuhe für 15 Euro.
+Kundin: Nein danke, nur die Jacke.
+Verkäuferin: Gut, dann gehen wir zur Kasse.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was sucht die Kundin?", options = listOf("Eine Hose", "Eine Jacke", "Ein Kleid", "Schuhe"), correctAnswer = "Eine Jacke", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wie viel kostet die Jacke im Angebot?", options = listOf("89 Euro", "75 Euro", "65 Euro", "95 Euro"), correctAnswer = "75 Euro", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was kauft die Kundin noch?", options = null, correctAnswer = "Nichts, nur die Jacke", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Jacke", "jacket", "Ich brauche eine warme Jacke."),
+                        VocabularyItem("Kapuze", "hood", "Die Jacke hat eine Kapuze."),
+                        VocabularyItem("Angebot", "special offer", "Die Jacke ist im Angebot.")
+                    ),
+                    source = "TELC"
+                ))
+
+                // Health and routines (ÖSD inspired)
+                lessons.add(createLesenLesson(
+                    title = "Gesundheitsdialoge",
+                    description = "Reading health-related conversations",
+                    level = level,
+                    orderIndex = 11,
+                    text = """Apotheker: Hallo, was kann ich für Sie tun?
+Kunde: Ich brauche etwas gegen Kopfschmerzen. Haben Sie Aspirin?
+Apotheker: Ja, wir haben verschiedene Schmerzmittel. Nehmen Sie regelmäßig Medikamente?
+Kunde: Nein, aber ich habe oft Migräne. Mein Arzt hat mir Tabletten verschrieben.
+Apotheker: Hier ist das Medikament. Nehmen Sie es mit Wasser ein. Wenn die Schmerzen anhalten, gehen Sie zum Arzt.
+Kunde: Danke für den Rat. Wie viel kostet es?
+Apotheker: 8,50 Euro. Zahlen Sie an der Kasse.
+Kunde: Vielen Dank und auf Wiedersehen.
+Apotheker: Auf Wiedersehen! Gute Besserung.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Warum geht der Kunde in die Apotheke?", options = listOf("Für Vitamine", "Für Kopfschmerzen", "Für Erkältung", "Für Allergie"), correctAnswer = "Für Kopfschmerzen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was hat der Arzt verschrieben?", options = listOf("Aspirin", "Vitamine", "Tabletten", "Tropfen"), correctAnswer = "Tabletten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wie viel kostet das Medikament?", options = null, correctAnswer = "8,50 Euro", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Kopfschmerzen", "headache", "Ich habe Kopfschmerzen."),
+                        VocabularyItem("Migräne", "migraine", "Sie hat Migräne."),
+                        VocabularyItem("verschrei ben", "to prescribe", "Der Arzt verschreibt Medikamente.")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Reading instructions
+                lessons.add(createLesenLesson(
+                    title = "Anleitungen verstehen",
+                    description = "Reading and understanding instructions",
+                    level = level,
+                    orderIndex = 12,
+                    text = """Anleitung für den Gebrauch des neuen Kaffeeautomaten
+
+1. Stecken Sie den Stecker in eine Steckdose.
+2. Drücken Sie den Power-Knopf, um das Gerät einzuschalten.
+3. Warten Sie 2 Minuten, bis das Gerät bereit ist.
+4. Füllen Sie Wasser in den Tank (max. 1,5 Liter).
+5. Geben Sie Kaffeepulver in den Filter (2-3 Esslöffel pro Tasse).
+6. Schließen Sie den Deckel und wählen Sie die gewünschte Programm.
+7. Drücken Sie den Start-Knopf.
+8. Warten Sie, bis der Kaffee fertig ist (ca. 3-4 Minuten).
+9. Entfernen Sie die Kanne vorsichtig.
+10. Genießen Sie Ihren Kaffee!
+
+Wichtig: Reinigen Sie das Gerät nach jedem Gebrauch. Verwenden Sie nur kaltes Wasser.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie viel Wasser kann man maximal einfüllen?", options = listOf("1 Liter", "1,5 Liter", "2 Liter", "0,5 Liter"), correctAnswer = "1,5 Liter", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wie viel Kaffeepulver braucht man pro Tasse?", options = listOf("1 Esslöffel", "2-3 Esslöffel", "4 Esslöffel", "Eine Handvoll"), correctAnswer = "2-3 Esslöffel", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was soll man nach jedem Gebrauch machen?", options = null, correctAnswer = "das Gerät reinigen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Anleitung", "instruction", "Lesen Sie die Anleitung."),
+                        VocabularyItem("Steckdose", "socket", "Stecken Sie den Stecker in die Steckdose."),
+                        VocabularyItem("Kaffeepulver", "coffee powder", "Geben Sie Kaffeepulver in den Filter.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // Travel notices (TELC inspired)
+                lessons.add(createLesenLesson(
+                    title = "Reiseinformationen",
+                    description = "Reading travel information and notices",
+                    level = level,
+                    orderIndex = 13,
+                    text = """INFORMATION FÜR REISENDE
+
+Abfahrt der Züge von Gleis 8:
+- Hamburg 14:25 (verspätet 10 Minuten)
+- Berlin 14:45 (pünktlich)
+- München 15:10 (ausgefallen)
+
+Wichtige Mitteilung: Aufgrund von Bauarbeiten ist die S-Bahn-Linie S1 zwischen den Stationen Hauptbahnhof und Ostbahnhof unterbrochen. Benutzen Sie bitte die Buslinie 123 als Ersatz.
+
+Flugauskunft:
+LH 456 nach Frankfurt: Boarding 15:30, Gate A7
+LH 789 nach London: Boarding 16:00, Gate B3
+LH 234 nach Paris: Boarding 16:45, Gate A9
+
+Bitte beachten Sie: Rauchen ist in allen Bereichen des Flughafens verboten.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Welcher Zug ist ausgefallen?", options = listOf("Hamburg", "Berlin", "München", "Alle Züge"), correctAnswer = "München", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Warum ist die S-Bahn unterbrochen?", options = listOf("Wetter", "Bauarbeiten", "Streik", "Unfall"), correctAnswer = "Bauarbeiten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wann boardet der Flug nach Paris?", options = null, correctAnswer = "16:45", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("verspätet", "delayed", "Der Zug ist verspätet."),
+                        VocabularyItem("ausgefallen", "cancelled", "Der Flug ist ausgefallen."),
+                        VocabularyItem("Ersatz", "replacement", "Benutzen Sie den Ersatzbus.")
+                    ),
+                    source = "TELC"
+                ))
+
+                // Health advice (ÖSD inspired)
+                lessons.add(createLesenLesson(
+                    title = "Gesundheitstipps",
+                    description = "Reading health advice and recommendations",
+                    level = level,
+                    orderIndex = 14,
+                    text = """Gesund leben - Tipps für jeden Tag
+
+1. Bewegung: Gehen Sie jeden Tag mindestens 30 Minuten spazieren. Sport hält fit und macht glücklich.
+
+2. Ernährung: Essen Sie viel Obst und Gemüse. Vermeiden Sie zu viel Zucker und Fett. Trinken Sie täglich 2 Liter Wasser.
+
+3. Schlaf: Schlafen Sie 7-8 Stunden pro Nacht. Ein fester Schlaf-Wach-Rhythmus ist wichtig für die Gesundheit.
+
+4. Stress vermeiden: Machen Sie Pausen bei der Arbeit. Hören Sie Musik oder treffen Sie Freunde.
+
+5. Arztbesuche: Gehen Sie regelmäßig zur Vorsorge. Früherkennung kann Leben retten.
+
+6. Hygiene: Waschen Sie sich regelmäßig die Hände. Das verhindert Krankheiten.
+
+Denken Sie daran: Vorbeugen ist besser als Heilen!""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie viel sollte man täglich spazieren gehen?", options = listOf("10 Minuten", "20 Minuten", "30 Minuten", "60 Minuten"), correctAnswer = "30 Minuten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wie viel Wasser sollte man täglich trinken?", options = listOf("1 Liter", "2 Liter", "3 Liter", "0,5 Liter"), correctAnswer = "2 Liter", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was ist besser als Heilen?", options = null, correctAnswer = "Vorbeugen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Bewegung", "exercise", "Regelmäßige Bewegung ist wichtig."),
+                        VocabularyItem("Ernährung", "nutrition", "Gesunde Ernährung ist essentiell."),
+                        VocabularyItem("Vorbeugen", "to prevent", "Vorbeugen ist besser als heilen.")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Reading emails about plans
+                lessons.add(createLesenLesson(
+                    title = "E-Mails über Pläne",
+                    description = "Reading emails about future plans",
+                    level = level,
+                    orderIndex = 15,
+                    text = """Von: max.berger@email.de
+An: lisa.koch@email.de
+Betreff: Wochenendpläne
+
+Liebe Lisa,
+
+wie geht es Dir? Ich hoffe, Du bist gesund. Nächstes Wochenende möchte ich Dich besuchen kommen. Ich könnte Freitagabend ankommen und bis Sonntag bleiben.
+
+Ich würde gerne mit Dir ins Museum gehen und danach essen. Kennst Du ein gutes Restaurant in der Nähe? Vielleicht können wir auch einen Spaziergang machen.
+
+Sag mir bitte Bescheid, ob das für Dich passt. Ich freue mich auf Deine Antwort.
+
+Viele Grüße
+Max""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wann möchte Max zu Besuch kommen?", options = listOf("Dieses Wochenende", "Nächstes Wochenende", "In zwei Wochen", "Am Montag"), correctAnswer = "Nächstes Wochenende", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wie lange möchte er bleiben?", options = listOf("Einen Tag", "Zwei Tage", "Drei Tage", "Eine Woche"), correctAnswer = "Zwei Tage", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was möchte er mit Lisa machen?", options = null, correctAnswer = "ins Museum gehen und essen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Wochenendpläne", "weekend plans", "Ich habe Wochenendpläne."),
+                        VocabularyItem("besuchen", "to visit", "Ich möchte Dich besuchen."),
+                        VocabularyItem("Spaziergang", "walk", "Wir machen einen Spaziergang.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Reading invitations and responses
+                lessons.add(createLesenLesson(
+                    title = "Einladungen lesen",
+                    description = "Reading invitations and responses",
+                    level = level,
+                    orderIndex = 16,
+                    text = """EINLADUNG
+
+Liebe Freunde,
+
+wir möchten euch zu unserer Gartenparty einladen!
+Datum: Samstag, 20. Juni
+Uhrzeit: 15:00 - 20:00 Uhr
+Ort: Gartenstraße 15, 80331 München
+
+Wir freuen uns auf Grillen, Spiele und gute Gespräche. Bringt bitte etwas zu trinken mit. Bei schlechtem Wetter findet die Party im Haus statt.
+
+Bitte gebt uns bis zum 15. Juni Bescheid, ob ihr kommt.
+
+Mit freundlichen Grüßen
+Anna und Thomas
+
+---
+
+Von: maria@email.de
+An: anna@email.de
+Betreff: AW: Einladung Gartenparty
+
+Liebe Anna, lieber Thomas,
+
+vielen Dank für die Einladung! Wir kommen sehr gerne. Ich bringe einen Salat mit. Soll ich noch etwas anderes mitbringen?
+
+Liebe Grüße
+Maria""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wann findet die Party statt?", options = listOf("20. Mai", "20. Juni", "20. Juli", "20. August"), correctAnswer = "20. Juni", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sollen die Gäste mitbringen?", options = listOf("Essen", "Getränke", "Geschenke", "Musik"), correctAnswer = "Getränke", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was bringt Maria mit?", options = null, correctAnswer = "einen Salat", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Einladung", "invitation", "Ich habe eine Einladung bekommen."),
+                        VocabularyItem("Gartenparty", "garden party", "Die Gartenparty ist am Samstag."),
+                        VocabularyItem("Bescheid geben", "to let know", "Gib mir Bescheid.")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Reading about past events
+                lessons.add(createLesenLesson(
+                    title = "Erlebnisse erzählen",
+                    description = "Reading stories about past experiences",
+                    level = level,
+                    orderIndex = 17,
+                    text = """Mein Urlaub in den Bergen
+
+Vor zwei Jahren habe ich eine Wanderreise in den bayerischen Alpen gemacht. Ich war mit drei Freunden unterwegs. Wir hatten schönes Wetter und konnten jeden Tag wandern.
+
+Am ersten Tag sind wir zum Königssee gefahren. Der See war wunderschön und das Wasser war sehr klar. Wir haben eine Bootsfahrt gemacht und die Berge bestaunt.
+
+Am nächsten Tag haben wir eine lange Wanderung zum Gipfel gemacht. Es war anstrengend, aber die Aussicht war fantastisch. Auf dem Weg haben wir viele Blumen und Tiere gesehen.
+
+Abends haben wir in einer Berghütte übernachtet. Das Essen war typisch bayerisch: Knödel, Schweinebraten und Bier. Die Wirtin hat uns Geschichten aus der Region erzählt.
+
+Es war eine unvergessliche Reise. Ich würde gerne wieder in die Alpen fahren.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wann hat die Person die Reise gemacht?", options = listOf("Letztes Jahr", "Vor zwei Jahren", "Vor einem Jahr", "Dieses Jahr"), correctAnswer = "Vor zwei Jahren", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wo haben sie übernachtet?", options = listOf("Im Hotel", "In einer Berghütte", "Im Zelt", "Bei Freunden"), correctAnswer = "In einer Berghütte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was war fantastisch?", options = null, correctAnswer = "die Aussicht", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Wanderreise", "hiking trip", "Ich mache eine Wanderreise."),
+                        VocabularyItem("Bootsfahrt", "boat trip", "Wir machen eine Bootsfahrt."),
+                        VocabularyItem("unvergesslich", "unforgettable", "Die Reise war unvergesslich.")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Reading notices about events
+                lessons.add(createLesenLesson(
+                    title = "Veranstaltungsankündigungen",
+                    description = "Reading event announcements",
+                    level = level,
+                    orderIndex = 18,
+                    text = """STADTFEST BERLIN 2024
+
+Das traditionelle Stadtfest findet dieses Jahr vom 15. bis 17. August statt. Veranstaltungsort ist der Alexanderplatz und die umliegenden Straßen.
+
+Programm:
+Freitag, 15.08.: Eröffnung mit Feuerwerk um 20:00 Uhr
+Samstag, 16.08.: Live-Musik verschiedener Bands, Kinderprogramm, Essensstände
+Sonntag, 17.08.: Familiennachmittag mit Spielen und Vorführungen
+
+Eintritt frei! Für Verpflegung ist gesorgt. Bei Regen findet das Fest in der Kongresshalle statt.
+
+Besuchen Sie unsere Website für detaillierte Informationen: www.stadtfest-berlin.de""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie lange dauert das Stadtfest?", options = listOf("Einen Tag", "Zwei Tage", "Drei Tage", "Eine Woche"), correctAnswer = "Drei Tage", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wo findet das Fest statt?", options = listOf("Brandenburger Tor", "Alexanderplatz", "Potsdamer Platz", "Museumsinsel"), correctAnswer = "Alexanderplatz", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was gibt es am Sonntag?", options = null, correctAnswer = "Familiennachmittag mit Spielen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Veranstaltung", "event", "Die Veranstaltung ist interessant."),
+                        VocabularyItem("Feuerwerk", "fireworks", "Das Feuerwerk ist schön."),
+                        VocabularyItem("Vor führung", "performance", "Die Vorführung beginnt um 15 Uhr.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Reading job advertisements
+                lessons.add(createLesenLesson(
+                    title = "Stellenanzeigen lesen",
+                    description = "Reading job advertisements",
+                    level = level,
+                    orderIndex = 19,
+                    text = """GESUCHT: Verkäuferin/Verkäufer für Bekleidungsgeschäft
+
+Wir suchen ab sofort eine/n motivierte/n Verkäufer/in für unser Bekleidungsgeschäft in der Innenstadt.
+
+Anforderungen:
+- Freundliches Auftreten
+- Erfahrung im Verkauf erwünscht, aber nicht zwingend
+- Flexibilität bezüglich Arbeitszeiten
+- Gute Deutschkenntnisse
+
+Wir bieten:
+- Festanstellung
+- Übertarifliche Bezahlung
+- Mitarbeiterrabatte
+- Angenehmes Arbeitsumfeld
+
+Bewerbungen mit Lebenslauf an: personal@modehaus.de""",
+                    questions = listOf(
+                        Question(id = 1, question = "Für welches Geschäft suchen sie jemanden?", options = listOf("Restaurant", "Bekleidungsgeschäft", "Supermarkt", "Buchladen"), correctAnswer = "Bekleidungsgeschäft", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ist erwünscht aber nicht zwingend?", options = listOf("Freundliches Auftreten", "Erfahrung im Verkauf", "Gute Deutschkenntnisse", "Flexibilität"), correctAnswer = "Erfahrung im Verkauf", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was bieten sie?", options = null, correctAnswer = "Festanstellung und übertarifliche Bezahlung", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Verkäufer", "salesperson", "Der Verkäufer ist freundlich."),
+                        VocabularyItem("Anforderungen", "requirements", "Die Anforderungen sind hoch."),
+                        VocabularyItem("Bewerbung", "application", "Schicken Sie Ihre Bewerbung.")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Reading about daily routines
+                lessons.add(createLesenLesson(
+                    title = "Alltägliche Routinen",
+                    description = "Reading about daily routines and habits",
+                    level = level,
+                    orderIndex = 20,
+                    text = """Ein Tag im Leben von Frau Schmidt
+
+Frau Schmidt steht jeden Morgen um 6:30 Uhr auf. Zuerst duscht sie und zieht sich an. Dann bereitet sie das Frühstück für die Familie vor. Um 7:15 Uhr weckt sie ihre Kinder und sie frühstücken zusammen.
+
+Von 8:00 bis 16:00 Uhr arbeitet sie als Krankenschwester im Krankenhaus. Ihre Schicht ist anstrengend, aber sie hilft gerne den Patienten. In der Mittagspause isst sie in der Kantine.
+
+Nach der Arbeit kauft sie auf dem Heimweg ein. Zu Hause kocht sie das Abendessen und hilft den Kindern bei den Hausaufgaben. Abends sieht sie manchmal fern oder liest ein Buch.
+
+Um 22:00 Uhr geht sie ins Bett. Sie braucht ihren Schlaf, denn der nächste Tag beginnt früh.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wann steht Frau Schmidt auf?", options = listOf("6:00 Uhr", "6:30 Uhr", "7:00 Uhr", "7:30 Uhr"), correctAnswer = "6:30 Uhr", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ist ihr Beruf?", options = listOf("Lehrerin", "Krankenschwester", "Verkäuferin", "Köchin"), correctAnswer = "Krankenschwester", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was macht sie nach der Arbeit?", options = null, correctAnswer = "einkaufen und Abendessen kochen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("aufstehen", "to get up", "Ich stehe um 7 Uhr auf."),
+                        VocabularyItem("Krankenschwester", "nurse", "Sie arbeitet als Krankenschwester."),
+                        VocabularyItem("Schicht", "shift", "Die Schicht dauert 8 Stunden.")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Reading product descriptions
+                lessons.add(createLesenLesson(
+                    title = "Produktbeschreibungen",
+                    description = "Reading product descriptions and reviews",
+                    level = level,
+                    orderIndex = 21,
+                    text = """NEU: Smart Home Lautsprecher S-2000
+
+Der S-2000 ist unser neuestes Modell für das smarte Zuhause. Mit diesem kabellosen Lautsprecher können Sie Musik in hoher Qualität hören.
+
+Technische Daten:
+- Bluetooth 5.0 für stabile Verbindung
+- Akkulaufzeit bis zu 12 Stunden
+- Wassergeschützt (IPX7)
+- Sprachsteuerung möglich
+- Preis: 149 Euro
+
+Kundenbewertung: "Der Lautsprecher hat einen tollen Klang und ist sehr einfach zu bedienen. Die Akkulaufzeit ist ausgezeichnet. Ich kann ihn überall im Haus verwenden." - Maria K., Berlin
+
+Bestellen Sie jetzt online oder besuchen Sie unser Geschäft!""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie lange hält der Akku?", options = listOf("6 Stunden", "8 Stunden", "10 Stunden", "12 Stunden"), correctAnswer = "12 Stunden", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ist besonders erwähnt?", options = listOf("WLAN", "Bluetooth 5.0", "USB-Anschluss", "Radio"), correctAnswer = "Bluetooth 5.0", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wie viel kostet der Lautsprecher?", options = null, correctAnswer = "149 Euro", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("kabellos", "wireless", "Der Lautsprecher ist kabellos."),
+                        VocabularyItem("Akkulaufzeit", "battery life", "Die Akkulaufzeit ist 12 Stunden."),
+                        VocabularyItem("Sprachsteuerung", "voice control", "Die Sprachsteuerung funktioniert gut.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Reading weather reports
+                lessons.add(createLesenLesson(
+                    title = "Wetterberichte lesen",
+                    description = "Reading weather reports and forecasts",
+                    level = level,
+                    orderIndex = 22,
+                    text = """WETTERVORHERSAGE FÜR DEUTSCHLAND
+
+Heute: Meist bewölkt mit Regenschauern, besonders im Norden und Westen. Temperaturen zwischen 12°C und 18°C. Wind aus West bis Nordwest, 3-5 Bft.
+
+Morgen: Wechselhaft mit Sonne und Wolken. Im Süden sonnig, im Norden bewölkt. Temperaturen 14-22°C. Nachts kühler, Tiefstwert 8°C.
+
+Übermorgen: Sonnig und warm. Temperaturen bis 25°C. Ideal für Outdoor-Aktivitäten.
+
+Wochenende: Stabil mit viel Sonnenschein. Perfekt für Ausflüge und Grillen.
+
+Unwetterwarnung: Am Donnerstag Sturmwarnung für die Küstenregionen. Wind bis 8 Bft möglich.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie ist das Wetter heute?", options = listOf("Sonnig", "Meist bewölkt mit Regenschauern", "Sturm", "Schnee"), correctAnswer = "Meist bewölkt mit Regenschauern", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wann wird es sonnig und warm?", options = listOf("Heute", "Morgen", "Übermorgen", "Wochenende"), correctAnswer = "Übermorgen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wo gibt es eine Sturmwarnung?", options = null, correctAnswer = "Küstenregionen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Regenschauer", "rain showers", "Es gibt Regenschauer."),
+                        VocabularyItem("wechselhaft", "changeable", "Das Wetter ist wechselhaft."),
+                        VocabularyItem("Unwetterwarnung", "severe weather warning", "Es gibt eine Unwetterwarnung.")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Reading personal descriptions
+                lessons.add(createLesenLesson(
+                    title = "Personenbeschreibungen",
+                    description = "Reading personal descriptions and characteristics",
+                    level = level,
+                    orderIndex = 23,
+                    text = """Meine beste Freundin Anna
+
+Anna ist 28 Jahre alt und wohnt in Hamburg. Sie ist Lehrerin an einer Grundschule und liebt ihren Beruf. Anna ist sehr geduldig und hat viel Verständnis für die Kinder.
+
+Sie ist etwa 1,70 m groß und hat lange, braune Haare. Ihre Augen sind blau und sie trägt meist eine Brille. Anna kleidet sich praktisch und bequem, meist Jeans und Pullover.
+
+In ihrer Freizeit geht sie gerne joggen oder macht Yoga. Sie interessiert sich für Umweltschutz und engagiert sich in einer Umweltorganisation. Anna kocht sehr gerne und probiert immer neue Rezepte aus.
+
+Anna ist hilfsbereit und zuverlässig. Sie ist eine treue Freundin und immer da, wenn man sie braucht. Ich kenne sie seit der Universität und schätze ihre Ehrlichkeit und ihren Humor.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was ist Annas Beruf?", options = listOf("Ärztin", "Lehrerin", "Ingenieurin", "Verkäuferin"), correctAnswer = "Lehrerin", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wie sind ihre Haare?", options = listOf("Kurz und blond", "Lange und braune", "Schwarz und lockig", "Rot und kurz"), correctAnswer = "Lange und braune", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wofür interessiert sie sich?", options = null, correctAnswer = "Umweltschutz", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("geduldig", "patient", "Die Lehrerin ist geduldig."),
+                        VocabularyItem("Verständnis", "understanding", "Sie hat viel Verständnis."),
+                        VocabularyItem("hilfsbereit", "helpful", "Anna ist hilfsbereit.")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Reading menu descriptions
+                lessons.add(createLesenLesson(
+                    title = "Speisekarten lesen",
+                    description = "Reading restaurant menus and food descriptions",
+                    level = level,
+                    orderIndex = 24,
+                    text = """RESTAURANT ZUR POST - TAGESKARTE
+
+VORSPEISEN:
+- Gulaschsuppe (traditionelle ungarische Suppe mit Paprika und Rindfleisch) - 4,50 €
+- Caesar Salad (frischer Salat mit Hähnchenbrust, Parmesan und Knoblauch-Dressing) - 6,80 €
+
+HAUPTGERICHTE:
+- Wiener Schnitzel (paniertes Kalbfleisch mit Petersilienkartoffeln und Preiselbeeren) - 12,90 €
+- Lachsforelle (frischer Lachs mit Zitronenbutter, Reis und Gemüse) - 14,50 €
+- Vegetarisches Curry (gemischtes Gemüse in Kokosmilch mit Reis) - 11,20 €
+
+NACHSPEISEN:
+- Apfelstrudel (hausgemachter Strudel mit Vanillesauce) - 4,90 €
+- Schokoladenmousse (luftige Schokoladencreme mit Beeren) - 5,20 €
+
+Alle Preise inklusive Bedienung. Wir bitten um Reservierung unter Tel. 089-123456.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was kostet die Gulaschsuppe?", options = listOf("4,50 €", "6,80 €", "12,90 €", "14,50 €"), correctAnswer = "4,50 €", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ist im Caesar Salad?", options = listOf("Fisch", "Hähnchenbrust", "Rindfleisch", "Schinken"), correctAnswer = "Hähnchenbrust", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was gibt es zum Wiener Schnitzel?", options = null, correctAnswer = "Petersilienkartoffeln und Preiselbeeren", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Vorspeise", "starter/appetizer", "Die Suppe ist eine Vorspeise."),
+                        VocabularyItem("Hauptgericht", "main course", "Das Schnitzel ist ein Hauptgericht."),
+                        VocabularyItem("hausgemacht", "homemade", "Der Kuchen ist hausgemacht.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Reading appointment confirmations
+                lessons.add(createLesenLesson(
+                    title = "Terminbestätigungen",
+                    description = "Reading appointment confirmations and schedules",
+                    level = level,
+                    orderIndex = 25,
+                    text = """TERMINBESTÄTIGUNG
+
+Zahnarztpraxis Dr. Müller
+Maximilianstraße 12, 80539 München
+
+Sehr geehrter Herr Schmidt,
+
+wir bestätigen Ihren Termin für die Zahnkontrolle:
+Datum: Donnerstag, 25. April 2024
+Uhrzeit: 14:30 Uhr
+Behandlung: Routinekontrolle und Zahnreinigung
+
+Bitte bringen Sie folgende Unterlagen mit:
+- Krankenkassenkarte
+- Personalausweis
+- Vorherige Röntgenbilder (falls vorhanden)
+
+Falls Sie den Termin nicht wahrnehmen können, bitten wir um Absage bis spätestens 24 Stunden vorher.
+
+Mit freundlichen Grüßen
+Zahnarztpraxis Dr. Müller
+Tel.: 089-9876543""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wann ist der Termin?", options = listOf("25. April", "25. Mai", "25. Juni", "25. Juli"), correctAnswer = "25. April", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was soll man mitbringen?", options = listOf("Geld", "Krankenkassenkarte", "Fotoapparat", "Buch"), correctAnswer = "Krankenkassenkarte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Bis wann sollte man absagen?", options = null, correctAnswer = "24 Stunden vorher", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Terminbestätigung", "appointment confirmation", "Die Terminbestätigung ist da."),
+                        VocabularyItem("Zahnkontrolle", "dental check-up", "Die Zahnkontrolle ist wichtig."),
+                        VocabularyItem("wahrnehmen", "to attend", "Können Sie den Termin wahrnehmen?")
+                    ),
+                    source = "TELC"
                 ))
             }
             
@@ -4127,6 +4850,306 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         Question(id = 3, question = "Was für ein Film läuft nächste Woche?", options = null, correctAnswer = "Actionfilm", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What kind of movie is showing next week?")
                     )
                 ))
+
+                // Goethe A2 - Extended listening content
+                lessons.add(createHoerenLesson(
+                    title = "Wettergespräch",
+                    description = "Talking about weather and plans (Goethe-Zertifikat A2)",
+                    level = level,
+                    orderIndex = 6,
+                    script = "Anna: Hallo Thomas! Was für ein schönes Wetter heute!\nThomas: Ja, endlich scheint die Sonne. Was machst du heute?\nAnna: Ich gehe mit Freunden an den See. Wir wollen schwimmen und picknicken.\nThomas: Das klingt super! Wie ist die Wassertemperatur?\nAnna: Das Wasser ist 22 Grad warm. Perfekt zum Schwimmen!\nThomas: Ich würde gerne mitkommen, aber ich muss arbeiten.\nAnna: Schade! Vielleicht nächstes Wochenende?\nThomas: Ja, gerne! Das Wetter soll schön bleiben.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie ist das Wetter?", options = listOf("Regnerisch", "Bewölkt", "Sonnig", "Windig"), correctAnswer = "Sonnig", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How is the weather?", optionsEnglish = listOf("Rainy", "Cloudy", "Sunny", "Windy")),
+                        Question(id = 2, question = "Was wollen Anna und ihre Freunde machen?", options = listOf("Einkaufen", "Schwimmen und picknicken", "Ins Kino gehen", "Sport treiben"), correctAnswer = "Schwimmen und picknicken", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What do Anna and her friends want to do?", optionsEnglish = listOf("Shopping", "Swimming and picnic", "Go to cinema", "Do sports")),
+                        Question(id = 3, question = "Wie warm ist das Wasser?", options = null, correctAnswer = "22 Grad", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "How warm is the water?")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Shopping and prices
+                lessons.add(createHoerenLesson(
+                    title = "Im Bekleidungsgeschäft",
+                    description = "Shopping for clothes (TELC Deutsch A2)",
+                    level = level,
+                    orderIndex = 7,
+                    script = "Verkäuferin: Guten Tag! Kann ich Ihnen helfen?\nKundin: Ja, ich suche eine Winterjacke. Haben Sie Jacken in Größe 38?\nVerkäuferin: Ja, wir haben verschiedene Modelle. Diese hier ist sehr warm und hat eine Kapuze.\nKundin: Wie viel kostet sie?\nVerkäuferin: Normalerweise 89 Euro, aber heute im Angebot für 75 Euro.\nKundin: Die gefällt mir. Haben Sie sie auch in Blau?\nVerkäuferin: Moment, ich schaue nach... Ja, hier ist sie in Blau.\nKundin: Perfekt! Kann ich sie anprobieren?\nVerkäuferin: Natürlich, die Umkleidekabinen sind dort drüben.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was sucht die Kundin?", options = listOf("Eine Hose", "Eine Winterjacke", "Ein Kleid", "Schuhe"), correctAnswer = "Eine Winterjacke", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What is the customer looking for?", optionsEnglish = listOf("Pants", "Winter jacket", "Dress", "Shoes")),
+                        Question(id = 2, question = "Wie viel kostet die Jacke im Angebot?", options = listOf("89 Euro", "75 Euro", "65 Euro", "95 Euro"), correctAnswer = "75 Euro", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How much does the jacket cost on offer?", optionsEnglish = listOf("89 Euro", "75 Euro", "65 Euro", "95 Euro")),
+                        Question(id = 3, question = "Was hat die Jacke?", options = null, correctAnswer = "Kapuze", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What does the jacket have?")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Health and doctor's appointment
+                lessons.add(createHoerenLesson(
+                    title = "Beim Arzt",
+                    description = "Doctor's appointment conversation (ÖSD Zertifikat A2)",
+                    level = level,
+                    orderIndex = 8,
+                    script = "Arzt: Guten Tag, Frau Müller. Was führt Sie zu mir?\nPatientin: Guten Tag, Herr Doktor. Ich habe seit zwei Tagen starke Bauchschmerzen.\nArzt: Haben Sie auch Übelkeit oder Erbrechen?\nPatientin: Ja, mir ist übel, aber ich habe nicht erbrochen. Außerdem habe ich Durchfall.\nArzt: Seit wann haben Sie diese Symptome?\nPatientin: Seit vorgestern Abend. Ich habe auch Fieber, 38,5 Grad.\nArzt: Das klingt nach einer Magen-Darm-Grippe. Ich verschreibe Ihnen Medikamente gegen die Übelkeit.\nPatientin: Soll ich mich krankschreiben lassen?\nArzt: Ja, bleiben Sie zu Hause und trinken Sie viel Tee. In drei Tagen kommen Sie zur Kontrolle.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was hat die Patientin?", options = listOf("Kopfschmerzen", "Bauchschmerzen", "Rückenschmerzen", "Halsschmerzen"), correctAnswer = "Bauchschmerzen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What does the patient have?", optionsEnglish = listOf("Headache", "Stomach pain", "Back pain", "Sore throat")),
+                        Question(id = 2, question = "Wie hoch ist das Fieber?", options = listOf("37,5 Grad", "38,5 Grad", "39,5 Grad", "36,5 Grad"), correctAnswer = "38,5 Grad", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How high is the fever?", optionsEnglish = listOf("37.5 degrees", "38.5 degrees", "39.5 degrees", "36.5 degrees")),
+                        Question(id = 3, question = "Was soll die Patientin trinken?", options = null, correctAnswer = "Tee", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What should the patient drink?")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Travel planning
+                lessons.add(createHoerenLesson(
+                    title = "Urlaubsplanung",
+                    description = "Planning a vacation",
+                    level = level,
+                    orderIndex = 9,
+                    script = "Lisa: Hallo Markus! Hast du schon Urlaubspläne?\nMarkus: Ja, wir fahren nächstes Jahr nach Spanien. Und ihr?\nLisa: Wir wollen nach Italien, nach Rom und Florenz.\nMarkus: Wie lange bleibt ihr?\nLisa: Drei Wochen im August. Wir fliegen hin und mieten ein Auto.\nMarkus: Das klingt toll! Wo übernachtet ihr?\nLisa: In kleinen Hotels und einer Ferienwohnung. Es soll nicht zu teuer sein.\nMarkus: Passt auf die Hitze auf! Im August ist es sehr heiß in Italien.\nLisa: Danke für den Tipp! Wir nehmen Sonnencreme mit.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wohin fahren Lisa und ihre Familie?", options = listOf("Spanien", "Italien", "Frankreich", "Griechenland"), correctAnswer = "Italien", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "Where are Lisa and her family going?", optionsEnglish = listOf("Spain", "Italy", "France", "Greece")),
+                        Question(id = 2, question = "Wie lange bleiben sie?", options = listOf("Zwei Wochen", "Drei Wochen", "Vier Wochen", "Einen Monat"), correctAnswer = "Drei Wochen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How long are they staying?", optionsEnglish = listOf("Two weeks", "Three weeks", "Four weeks", "One month")),
+                        Question(id = 3, question = "Wann fahren sie?", options = null, correctAnswer = "August", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "When are they going?")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - At the train station
+                lessons.add(createHoerenLesson(
+                    title = "Am Bahnhof",
+                    description = "At the train station",
+                    level = level,
+                    orderIndex = 10,
+                    script = "Reisender: Entschuldigung, wann fährt der nächste Zug nach Berlin?\nSchalter: Der nächste Zug fährt in 15 Minuten von Gleis 8.\nReisender: Ist das ein direkter Zug?\nSchalter: Nein, Sie müssen in Hannover umsteigen.\nReisender: Wie lange dauert die Fahrt insgesamt?\nSchalter: Etwa 4 Stunden. Sie kommen um 16:30 Uhr an.\nReisender: Haben Sie auch Fahrkartenautomaten?\nSchalter: Ja, dort drüben. Oder ich kann Ihnen hier eine Fahrkarte verkaufen.\nReisender: Dann bitte eine Fahrkarte einfach für Erwachsene.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wann fährt der nächste Zug?", options = listOf("In 5 Minuten", "In 15 Minuten", "In 30 Minuten", "In einer Stunde"), correctAnswer = "In 15 Minuten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "When does the next train leave?", optionsEnglish = listOf("In 5 minutes", "In 15 minutes", "In 30 minutes", "In an hour")),
+                        Question(id = 2, question = "Wo muss der Reisende umsteigen?", options = listOf("Berlin", "Hannover", "München", "Hamburg"), correctAnswer = "Hannover", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "Where does the traveler have to change trains?", optionsEnglish = listOf("Berlin", "Hannover", "Munich", "Hamburg")),
+                        Question(id = 3, question = "Wie lange dauert die Fahrt?", options = null, correctAnswer = "4 Stunden", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "How long does the journey take?")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Daily routines
+                lessons.add(createHoerenLesson(
+                    title = "Alltagsgespräche",
+                    description = "Daily conversations about routines",
+                    level = level,
+                    orderIndex = 11,
+                    script = "Maria: Guten Morgen, Frau Schneider! Wie geht es Ihnen?\nFrau Schneider: Guten Morgen! Danke, gut. Und Ihnen?\nMaria: Auch gut. Arbeiten Sie heute?\nFrau Schneider: Nein, heute habe ich frei. Ich gehe zum Friseur.\nMaria: Das ist schön. Wann haben Sie Termin?\nFrau Schneider: Um 10 Uhr. Danach kaufe ich ein und koche Mittagessen.\nMaria: Was kochen Sie heute?\nFrau Schneider: Einen Eintopf mit Gemüse und Fleisch. Mein Mann kommt um 13 Uhr nach Hause.\nMaria: Das klingt lecker! Einen schönen Tag noch!",
+                    questions = listOf(
+                        Question(id = 1, question = "Was macht Frau Schneider heute?", options = listOf("Sie arbeitet", "Sie geht zum Friseur", "Sie geht einkaufen", "Sie kocht"), correctAnswer = "Sie geht zum Friseur", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What is Mrs. Schneider doing today?", optionsEnglish = listOf("She works", "She goes to the hairdresser", "She goes shopping", "She cooks")),
+                        Question(id = 2, question = "Um wie viel Uhr hat sie Termin?", options = listOf("9 Uhr", "10 Uhr", "11 Uhr", "12 Uhr"), correctAnswer = "10 Uhr", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "At what time does she have an appointment?", optionsEnglish = listOf("9 AM", "10 AM", "11 AM", "12 PM")),
+                        Question(id = 3, question = "Was kocht sie?", options = null, correctAnswer = "Eintopf mit Gemüse und Fleisch", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What is she cooking?")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Making appointments
+                lessons.add(createHoerenLesson(
+                    title = "Terminvereinbarung",
+                    description = "Making appointments",
+                    level = level,
+                    orderIndex = 12,
+                    script = "Sekretärin: Guten Tag! Zahnarztpraxis Dr. Meier. Wie kann ich Ihnen helfen?\nPatient: Guten Tag! Ich möchte einen Termin für eine Zahnkontrolle.\nSekretärin: Wann würde es Ihnen passen?\nPatient: Am besten nächste Woche, vielleicht Dienstag oder Mittwoch.\nSekretärin: Dienstag um 14 Uhr oder Mittwoch um 10 Uhr?\nPatient: Mittwoch um 10 Uhr passt mir gut.\nSekretärin: Gut, dann trage ich Sie für Mittwoch, den 15. April um 10 Uhr ein.\nPatient: Vielen Dank! Soll ich etwas mitbringen?\nSekretärin: Bringen Sie bitte Ihre Versicherungskarte und frühere Röntgenbilder mit.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wofür braucht der Patient einen Termin?", options = listOf("Für eine Operation", "Für eine Zahnkontrolle", "Für einen Check-up", "Für eine Behandlung"), correctAnswer = "Für eine Zahnkontrolle", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What does the patient need an appointment for?", optionsEnglish = listOf("For an operation", "For a dental check-up", "For a check-up", "For treatment")),
+                        Question(id = 2, question = "Wann ist der Termin?", options = listOf("Dienstag um 14 Uhr", "Mittwoch um 10 Uhr", "Donnerstag um 15 Uhr", "Freitag um 11 Uhr"), correctAnswer = "Mittwoch um 10 Uhr", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "When is the appointment?", optionsEnglish = listOf("Tuesday at 2 PM", "Wednesday at 10 AM", "Thursday at 3 PM", "Friday at 11 AM")),
+                        Question(id = 3, question = "Was soll der Patient mitbringen?", options = null, correctAnswer = "Versicherungskarte und Röntgenbilder", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What should the patient bring?")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Hotel booking
+                lessons.add(createHoerenLesson(
+                    title = "Hotelreservierung",
+                    description = "Hotel reservation conversation",
+                    level = level,
+                    orderIndex = 13,
+                    script = "Rezeptionist: Guten Abend! Herzlich willkommen im Hotel Berlin.\nGast: Guten Abend! Ich habe eine Reservierung auf den Namen Müller.\nRezeptionist: Moment, ich schaue nach... Ja, hier ist sie. Ein Doppelzimmer für drei Nächte.\nGast: Stimmt. Können Sie mir sagen, wo das Zimmer ist?\nRezeptionist: Ihr Zimmer ist im dritten Stock, Nummer 312. Hier ist Ihre Schlüsselkarte.\nGast: Gibt es WLAN im Zimmer?\nRezeptionist: Ja, natürlich. Das Passwort steht auf der Karte neben dem Schreibtisch.\nGast: Wann wird das Frühstück serviert?\nRezeptionist: Von 7 bis 10 Uhr im Frühstücksraum.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie viele Nächte bleibt der Gast?", options = listOf("Eine Nacht", "Zwei Nächte", "Drei Nächte", "Vier Nächte"), correctAnswer = "Drei Nächte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How many nights is the guest staying?", optionsEnglish = listOf("One night", "Two nights", "Three nights", "Four nights")),
+                        Question(id = 2, question = "Wo ist das Zimmer?", options = listOf("Im ersten Stock", "Im zweiten Stock", "Im dritten Stock", "Im vierten Stock"), correctAnswer = "Im dritten Stock", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "Where is the room?", optionsEnglish = listOf("On the first floor", "On the second floor", "On the third floor", "On the fourth floor")),
+                        Question(id = 3, question = "Wann gibt es Frühstück?", options = null, correctAnswer = "Von 7 bis 10 Uhr", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "When is breakfast served?")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - At the pharmacy
+                lessons.add(createHoerenLesson(
+                    title = "In der Apotheke",
+                    description = "At the pharmacy",
+                    level = level,
+                    orderIndex = 14,
+                    script = "Apotheker: Guten Tag! Was kann ich für Sie tun?\nKunde: Hallo! Ich brauche etwas gegen Schnupfen und Husten.\nApotheker: Haben Sie auch Fieber oder Halsschmerzen?\nKunde: Nein, nur Schnupfen und Husten. Ich habe eine Erkältung.\nApotheker: Hier habe ich ein Kombinationspräparat. Es hilft gegen beide Symptome.\nKunde: Wie oft soll ich es nehmen?\nApotheker: Dreimal täglich nach dem Essen. Nehmen Sie es mit Wasser ein.\nKunde: Gibt es Nebenwirkungen?\nApotheker: Es kann müde machen. Fahren Sie kein Auto.\nKunde: Verstanden. Wie viel kostet es?\nApotheker: 12,50 Euro. Zahlen Sie an der Kasse.",
+                    questions = listOf(
+                        Question(id = 1, question = "Warum geht der Kunde in die Apotheke?", options = listOf("Für Schmerzmittel", "Für Schnupfen und Husten", "Für Vitamine", "Für Allergie"), correctAnswer = "Für Schnupfen und Husten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "Why does the customer go to the pharmacy?", optionsEnglish = listOf("For pain medication", "For runny nose and cough", "For vitamins", "For allergy")),
+                        Question(id = 2, question = "Wie oft soll er das Medikament nehmen?", options = listOf("Einmal täglich", "Zweimal täglich", "Dreimal täglich", "Vier mal täglich"), correctAnswer = "Dreimal täglich", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How often should he take the medication?", optionsEnglish = listOf("Once daily", "Twice daily", "Three times daily", "Four times daily")),
+                        Question(id = 3, question = "Was kann Nebenwirkung sein?", options = null, correctAnswer = "müde machen", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What can be a side effect?")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Job interview
+                lessons.add(createHoerenLesson(
+                    title = "Vorstellungsgespräch",
+                    description = "Job interview conversation",
+                    level = level,
+                    orderIndex = 15,
+                    script = "Interviewer: Guten Tag! Erzählen Sie uns etwas über Ihre Berufserfahrung.\nBewerber: Guten Tag! Ich habe drei Jahre als Verkäuferin gearbeitet.\nInterviewer: Warum möchten Sie bei uns arbeiten?\nBewerber: Ihr Unternehmen ist sehr bekannt und ich möchte in einem Team arbeiten.\nInterviewer: Was sind Ihre Stärken?\nBewerber: Ich bin kommunikativ und kann gut mit Kunden umgehen.\nInterviewer: Haben Sie auch Schwächen?\nBewerber: Manchmal bin ich zu perfektionistisch. Aber das hilft mir, gute Arbeit zu leisten.\nInterviewer: Vielen Dank für das Gespräch. Wir melden uns bei Ihnen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie lange hat die Bewerberin gearbeitet?", options = listOf("Ein Jahr", "Zwei Jahre", "Drei Jahre", "Vier Jahre"), correctAnswer = "Drei Jahre", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How long has the applicant worked?", optionsEnglish = listOf("One year", "Two years", "Three years", "Four years")),
+                        Question(id = 2, question = "Warum möchte sie bei dem Unternehmen arbeiten?", options = listOf("Wegen des Gehalts", "Wegen des Teams", "Wegen der Lage", "Wegen der Größe"), correctAnswer = "Wegen des Teams", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "Why does she want to work for the company?", optionsEnglish = listOf("Because of the salary", "Because of the team", "Because of the location", "Because of the size")),
+                        Question(id = 3, question = "Was ist ihre Stärke?", options = null, correctAnswer = "kommunikativ", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What is her strength?")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - At the bank
+                lessons.add(createHoerenLesson(
+                    title = "Bei der Bank",
+                    description = "At the bank",
+                    level = level,
+                    orderIndex = 16,
+                    script = "Bankangestellte: Guten Tag! Wie kann ich Ihnen helfen?\nKunde: Hallo! Ich möchte ein Konto eröffnen.\nBankangestellte: Welche Art von Konto wünschen Sie?\nKunde: Ein Girokonto für den täglichen Gebrauch.\nBankangestellte: Gut. Haben Sie Ihren Personalausweis dabei?\nKunde: Ja, hier ist er. Brauche ich noch etwas?\nBankangestellte: Eine Adressbestätigung, zum Beispiel eine Rechnung.\nKunde: Hier habe ich eine Stromrechnung.\nBankangestellte: Perfekt. Das Formular müssen Sie ausfüllen.\nKunde: Wie lange dauert es, bis das Konto aktiv ist?\nBankangestellte: Normalerweise zwei bis drei Werktage.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was möchte der Kunde?", options = listOf("Ein Sparkonto", "Ein Girokonto", "Ein Kreditkonto", "Ein Depotkonto"), correctAnswer = "Ein Girokonto", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What does the customer want?", optionsEnglish = listOf("A savings account", "A checking account", "A credit account", "An investment account")),
+                        Question(id = 2, question = "Was braucht er für die Kontoeröffnung?", options = listOf("Nur Personalausweis", "Personalausweis und Adressbestätigung", "Nur eine Rechnung", "Nichts"), correctAnswer = "Personalausweis und Adressbestätigung", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What does he need to open the account?", optionsEnglish = listOf("Just ID", "ID and address confirmation", "Just a bill", "Nothing")),
+                        Question(id = 3, question = "Wie lange dauert es bis das Konto aktiv ist?", options = null, correctAnswer = "zwei bis drei Werktage", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "How long does it take until the account is active?")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Restaurant conversation
+                lessons.add(createHoerenLesson(
+                    title = "Im Restaurant bestellen",
+                    description = "Ordering in a restaurant",
+                    level = level,
+                    orderIndex = 17,
+                    script = "Kellner: Guten Abend! Haben Sie schon gewählt?\nGast: Ja, ich nehme die Bratwurst mit Sauerkraut.\nKellner: Möchten Sie dazu Pommes oder Kartoffelsalat?\nGast: Kartoffelsalat, bitte. Und ein Bier.\nKellner: Gerne. Und als Dessert?\nGast: Was empfehlen Sie?\nKellner: Unser Apfelkuchen ist sehr beliebt. Oder die Schokoladenmousse.\nGast: Dann den Apfelkuchen. Ist er hausgemacht?\nKellner: Ja, natürlich. Alles wird frisch zubereitet.\nGast: Perfekt! Bringen Sie bitte auch die Speisekarte für meinen Freund?",
+                    questions = listOf(
+                        Question(id = 1, question = "Was bestellt der Gast als Hauptgericht?", options = listOf("Schnitzel", "Bratwurst mit Sauerkraut", "Steak", "Fisch"), correctAnswer = "Bratwurst mit Sauerkraut", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What does the guest order as main course?", optionsEnglish = listOf("Schnitzel", "Sausage with sauerkraut", "Steak", "Fish")),
+                        Question(id = 2, question = "Was empfiehlt der Kellner als Dessert?", options = listOf("Tiramisu", "Apfelkuchen", "Eis", "Käsekuchen"), correctAnswer = "Apfelkuchen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What does the waiter recommend as dessert?", optionsEnglish = listOf("Tiramisu", "Apple cake", "Ice cream", "Cheesecake")),
+                        Question(id = 3, question = "Was trinkt der Gast?", options = null, correctAnswer = "Bier", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What is the guest drinking?")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Post office
+                lessons.add(createHoerenLesson(
+                    title = "Auf der Post",
+                    description = "At the post office",
+                    level = level,
+                    orderIndex = 18,
+                    script = "Kunde: Guten Tag! Ich möchte ein Paket aufgeben.\nPostangestellte: Guten Tag! Wohin soll das Paket?\nKunde: Nach Österreich, nach Wien.\nPostangestellte: Wie schwer ist das Paket?\nKunde: Etwa 2 Kilogramm.\nPostangestellte: Dann kostet der Versand 15 Euro.\nKunde: Geht das auch als Express?\nPostangestellte: Ja, dann kommt es in zwei Tagen an. Das kostet 25 Euro.\nKunde: Gut, dann nehme ich Express. Hier ist das Paket.\nPostangestellte: Füllen Sie bitte dieses Formular aus.\nKunde: Natürlich. Wann kann ich es abholen?\nPostangestellte: Sie bekommen eine Abholnummer. Kommen Sie morgen wieder.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wohin geht das Paket?", options = listOf("Nach Deutschland", "Nach Österreich", "Nach Frankreich", "Nach Italien"), correctAnswer = "Nach Österreich", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "Where is the package going?", optionsEnglish = listOf("To Germany", "To Austria", "To France", "To Italy")),
+                        Question(id = 2, question = "Wie schwer ist das Paket?", options = listOf("1 Kilogramm", "2 Kilogramm", "3 Kilogramm", "4 Kilogramm"), correctAnswer = "2 Kilogramm", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How heavy is the package?", optionsEnglish = listOf("1 kilogram", "2 kilograms", "3 kilograms", "4 kilograms")),
+                        Question(id = 3, question = "Wie schnell kommt das Express-Paket an?", options = null, correctAnswer = "in zwei Tagen", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "How fast does the express package arrive?")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Cinema tickets
+                lessons.add(createHoerenLesson(
+                    title = "Kinokarten kaufen",
+                    description = "Buying cinema tickets",
+                    level = level,
+                    orderIndex = 19,
+                    script = "Kartenverkäufer: Guten Abend! Was möchten Sie?\nBesucher: Zwei Karten für den Film 'Der verlorene Sohn'.\nKartenverkäufer: Wann möchten Sie gehen?\nBesucher: Heute Abend um 20 Uhr.\nKartenverkäufer: In welchem Saal läuft der Film?\nBesucher: Im Saal 3. Sind noch Karten frei?\nKartenverkäufer: Ja, Reihe 8, Plätze 12 und 13.\nBesucher: Wie viel kosten die Karten?\nKartenverkäufer: Normal 12 Euro pro Karte, aber heute Studentenrabatt.\nBesucher: Wir sind Studenten. Dann 10 Euro pro Karte?\nKartenverkäufer: Ja, genau. Macht zusammen 20 Euro.\nBesucher: Hier sind 25 Euro.\nKartenverkäufer: Hier ist Ihr Wechselgeld und die Karten.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wann geht der Film?", options = listOf("Um 18 Uhr", "Um 20 Uhr", "Um 22 Uhr", "Um 16 Uhr"), correctAnswer = "Um 20 Uhr", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "When does the movie start?", optionsEnglish = listOf("At 6 PM", "At 8 PM", "At 10 PM", "At 4 PM")),
+                        Question(id = 2, question = "Wo läuft der Film?", options = listOf("Saal 1", "Saal 2", "Saal 3", "Saal 4"), correctAnswer = "Saal 3", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "Where does the movie play?", optionsEnglish = listOf("Hall 1", "Hall 2", "Hall 3", "Hall 4")),
+                        Question(id = 3, question = "Wie viel kosten die Karten mit Rabatt?", options = null, correctAnswer = "10 Euro pro Karte", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "How much do the tickets cost with discount?")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Library conversation
+                lessons.add(createHoerenLesson(
+                    title = "In der Bibliothek",
+                    description = "At the library",
+                    level = level,
+                    orderIndex = 20,
+                    script = "Bibliothekar: Hallo! Wie kann ich Ihnen helfen?\nLeser: Ich suche ein Buch über deutsche Geschichte.\nBibliothekar: Welche Epoche interessiert Sie?\nLeser: Die Zeit nach dem Zweiten Weltkrieg.\nBibliothekar: Hier haben wir ein gutes Buch: 'Deutschland nach 1945'.\nLeser: Kann ich es ausleihen?\nBibliothekar: Ja, aber Sie brauchen einen Bibliotheksausweis.\nLeser: Den habe ich schon. Wie lange kann ich es behalten?\nBibliothekar: Vier Wochen. Wenn Sie es verlängern wollen, rufen Sie an.\nLeser: Gibt es auch Bücher auf Englisch?\nBibliothekar: Ja, in der englischen Abteilung. Soll ich Ihnen den Weg zeigen?\nLeser: Ja, gerne. Vielen Dank!",
+                    questions = listOf(
+                        Question(id = 1, question = "Was sucht der Leser?", options = listOf("Ein Kochbuch", "Ein Buch über deutsche Geschichte", "Einen Roman", "Ein Sachbuch über Tiere"), correctAnswer = "Ein Buch über deutsche Geschichte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What is the reader looking for?", optionsEnglish = listOf("A cookbook", "A book about German history", "A novel", "A book about animals")),
+                        Question(id = 2, question = "Wie lange kann er das Buch behalten?", options = listOf("Zwei Wochen", "Drei Wochen", "Vier Wochen", "Fünf Wochen"), correctAnswer = "Vier Wochen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How long can he keep the book?", optionsEnglish = listOf("Two weeks", "Three weeks", "Four weeks", "Five weeks")),
+                        Question(id = 3, question = "Was braucht er für die Ausleihe?", options = null, correctAnswer = "Bibliotheksausweis", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What does he need to borrow the book?")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Hairdresser
+                lessons.add(createHoerenLesson(
+                    title = "Beim Friseur",
+                    description = "At the hairdresser",
+                    level = level,
+                    orderIndex = 21,
+                    script = "Friseurin: Hallo! Was wünschen Sie?\nKunde: Ich möchte meine Haare schneiden lassen.\nFriseurin: Wie kurz sollen die Haare werden?\nKunde: Etwa 5 Zentimeter kürzer als jetzt.\nFriseurin: Gut. Möchten Sie auch eine neue Farbe?\nKunde: Nein, nur schneiden. Aber waschen Sie die Haare?\nFriseurin: Ja, natürlich. Waschen, schneiden und föhnen.\nKunde: Wie viel Zeit brauchen Sie?\nFriseurin: Etwa 45 Minuten. Haben Sie einen Termin?\nKunde: Nein, aber ich kann warten.\nFriseurin: Gut, setzen Sie sich bitte in den Wartebereich.\nKunde: Vielen Dank!",
+                    questions = listOf(
+                        Question(id = 1, question = "Was möchte der Kunde?", options = listOf("Haare waschen", "Haare schneiden", "Haare färben", "Haare kämmen"), correctAnswer = "Haare schneiden", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What does the customer want?", optionsEnglish = listOf("Hair washing", "Hair cutting", "Hair coloring", "Hair combing")),
+                        Question(id = 2, question = "Wie viel kürzer sollen die Haare werden?", options = listOf("3 Zentimeter", "5 Zentimeter", "7 Zentimeter", "10 Zentimeter"), correctAnswer = "5 Zentimeter", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How much shorter should the hair be?", optionsEnglish = listOf("3 centimeters", "5 centimeters", "7 centimeters", "10 centimeters")),
+                        Question(id = 3, question = "Wie lange dauert es ungefähr?", options = null, correctAnswer = "45 Minuten", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "How long does it take approximately?")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Supermarket
+                lessons.add(createHoerenLesson(
+                    title = "Im Supermarkt",
+                    description = "At the supermarket",
+                    level = level,
+                    orderIndex = 22,
+                    script = "Kassiererin: Hallo! Haben Sie alles gefunden?\nKunde: Ja, danke. Nur die Milch fehlt noch.\nKassiererin: Welche Milch möchten Sie?\nKunde: Die fettarme Milch, bitte. Ein Liter.\nKassiererin: Hier ist sie. Sonst noch etwas?\nKunde: Nein, das war's. Wie viel kostet das alles?\nKassiererin: Das macht 24,50 Euro.\nKunde: Hier sind 25 Euro.\nKassiererin: Danke, 50 Cent zurück. Einen schönen Tag!\nKunde: Danke, Ihnen auch! Auf Wiedersehen.\nKassiererin: Auf Wiedersehen!",
+                    questions = listOf(
+                        Question(id = 1, question = "Welche Milch möchte der Kunde?", options = listOf("Vollmilch", "Fettarme Milch", "Sojamilch", "Mandel milch"), correctAnswer = "Fettarme Milch", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What kind of milk does the customer want?", optionsEnglish = listOf("Whole milk", "Low-fat milk", "Soy milk", "Almond milk")),
+                        Question(id = 2, question = "Wie viel Liter Milch möchte er?", options = listOf("0,5 Liter", "1 Liter", "1,5 Liter", "2 Liter"), correctAnswer = "1 Liter", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How many liters of milk does he want?", optionsEnglish = listOf("0.5 liters", "1 liter", "1.5 liters", "2 liters")),
+                        Question(id = 3, question = "Wie viel kostet der Einkauf?", options = null, correctAnswer = "24,50 Euro", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "How much does the shopping cost?")
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Travel agency
+                lessons.add(createHoerenLesson(
+                    title = "Im Reisebüro",
+                    description = "At the travel agency",
+                    level = level,
+                    orderIndex = 23,
+                    script = "Reiseberater: Guten Tag! Wohin möchten Sie reisen?\nKunde: Nach Prag, in die Tschechische Republik.\nReiseberater: Wann möchten Sie fahren?\nKunde: Im Juni, für eine Woche.\nReiseberater: Wir haben ein schönes Hotel im Stadtzentrum.\nKunde: Wie viel kostet das?\nReiseberater: Für 7 Nächte mit Frühstück: 450 Euro pro Person.\nKunde: Ist der Flug im Preis inbegriffen?\nReiseberater: Ja, Hin- und Rückflug von Frankfurt.\nKunde: Gibt es auch andere Hotels?\nReiseberater: Ja, ein günstigeres Hotel für 380 Euro.\nKunde: Dann nehme ich das günstigere. Wann ist der nächste Flug?\nReiseberater: Morgen um 9:15 Uhr. Soll ich für Sie buchen?",
+                    questions = listOf(
+                        Question(id = 1, question = "Wohin möchte der Kunde reisen?", options = listOf("Nach Berlin", "Nach Prag", "Nach Wien", "Nach Budapest"), correctAnswer = "Nach Prag", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "Where does the customer want to travel?", optionsEnglish = listOf("To Berlin", "To Prague", "To Vienna", "To Budapest")),
+                        Question(id = 2, question = "Wie lange möchte er bleiben?", options = listOf("3 Tage", "Eine Woche", "Zwei Wochen", "Einen Monat"), correctAnswer = "Eine Woche", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How long does he want to stay?", optionsEnglish = listOf("3 days", "One week", "Two weeks", "One month")),
+                        Question(id = 3, question = "Wie viel kostet das günstigere Hotel?", options = null, correctAnswer = "380 Euro", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "How much does the cheaper hotel cost?")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Police station
+                lessons.add(createHoerenLesson(
+                    title = "Auf dem Polizeirevier",
+                    description = "At the police station",
+                    level = level,
+                    orderIndex = 24,
+                    script = "Polizist: Guten Tag! Was ist passiert?\nBürger: Guten Tag! Man hat mir die Tasche gestohlen.\nPolizist: Wann und wo ist das passiert?\nBürger: Vor einer Stunde am Hauptbahnhof.\nPolizist: Können Sie die Tasche beschreiben?\nBürger: Es ist eine schwarze Ledertasche mit einem Reißverschluss.\nPolizist: Waren wichtige Dinge darin?\nBürger: Ja, mein Portemonnaie mit Ausweis und Kreditkarte.\nPolizist: Wir brauchen Ihre Personalien. Füllen Sie bitte dieses Formular aus.\nBürger: Natürlich. Bekomme ich eine Anzeige?\nPolizist: Ja, wir stellen eine Anzeige aus. Kommen Sie in zwei Tagen wieder.\nBürger: Vielen Dank für Ihre Hilfe.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was ist gestohlen worden?", options = listOf("Ein Auto", "Eine Tasche", "Ein Fahrrad", "Ein Handy"), correctAnswer = "Eine Tasche", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "What was stolen?", optionsEnglish = listOf("A car", "A bag", "A bicycle", "A mobile phone")),
+                        Question(id = 2, question = "Wo ist es passiert?", options = listOf("Am Flughafen", "Am Hauptbahnhof", "Im Supermarkt", "Zu Hause"), correctAnswer = "Am Hauptbahnhof", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "Where did it happen?", optionsEnglish = listOf("At the airport", "At the main station", "At the supermarket", "At home")),
+                        Question(id = 3, question = "Was war in der Tasche?", options = null, correctAnswer = "Portemonnaie mit Ausweis und Kreditkarte", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "What was in the bag?")
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Museum visit
+                lessons.add(createHoerenLesson(
+                    title = "Im Museum",
+                    description = "At the museum",
+                    level = level,
+                    orderIndex = 25,
+                    script = "Museumswächter: Hallo! Willkommen im Museum. Haben Sie Eintrittskarten?\nBesucher: Nein, noch nicht. Wie viel kostet der Eintritt?\nMuseumswächter: Erwachsene 12 Euro, Kinder unter 12 Jahren frei.\nBesucher: Wir sind zwei Erwachsene und ein Kind.\nMuseumswächter: Dann macht das 24 Euro. Möchten Sie eine Führung?\nBesucher: Ja, wann beginnt die nächste Führung?\nMuseumswächter: In 15 Minuten. Sie dauert etwa eine Stunde.\nBesucher: Perfekt! Gibt es auch einen Museumsshop?\nMuseumswächter: Ja, im Erdgeschoss. Dort finden Sie Bücher und Souvenirs.\nBesucher: Vielen Dank! Wo sind die Toiletten?\nMuseumswächter: Gleich rechts neben dem Eingang.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie viel kostet der Eintritt für Erwachsene?", options = listOf("8 Euro", "10 Euro", "12 Euro", "15 Euro"), correctAnswer = "12 Euro", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How much is the entrance fee for adults?", optionsEnglish = listOf("8 Euro", "10 Euro", "12 Euro", "15 Euro")),
+                        Question(id = 2, question = "Wie lange dauert die Führung?", options = listOf("30 Minuten", "45 Minuten", "Eine Stunde", "1,5 Stunden"), correctAnswer = "Eine Stunde", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE, questionEnglish = "How long does the tour take?", optionsEnglish = listOf("30 minutes", "45 minutes", "One hour", "1.5 hours")),
+                        Question(id = 3, question = "Wo ist der Museumsshop?", options = null, correctAnswer = "im Erdgeschoss", correctAnswers = null, type = QuestionType.FILL_BLANK, questionEnglish = "Where is the museum shop?")
+                    ),
+                    source = "TELC"
+                ))
             }
             
             "B1" -> {
@@ -4902,6 +5925,384 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         "Eine konkrete Lösung fordern"
                     )
                 ))
+
+                // Goethe A2 - Extended writing content
+                lessons.add(createSchreibenLesson(
+                    title = "Eine E-Mail schreiben",
+                    description = "Write an email about travel plans (Goethe-Zertifikat A2)",
+                    level = level,
+                    orderIndex = 5,
+                    prompt = "Du möchtest deinen Freund zu einem Wochenendausflug einladen. Schreibe eine E-Mail mit folgenden Informationen: Datum und Ort des Ausflugs, was ihr machen werdet, was mitzubringen ist, und bitte um Bestätigung. (80-120 Wörter)",
+                    minWords = 80,
+                    maxWords = 120,
+                    tips = listOf(
+                        "Verwende eine angemessene Anrede",
+                        "Gib alle wichtigen Details an",
+                        "Sei freundlich und einladend",
+                        "Schließe mit einer Verabschiedung"
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Writing notes and messages
+                lessons.add(createSchreibenLesson(
+                    title = "Eine Nachricht hinterlassen",
+                    description = "Leave a message for someone (TELC Deutsch A2)",
+                    level = level,
+                    orderIndex = 6,
+                    prompt = "Du kommst zu spät zu einem Treffen und musst eine Nachricht für deine Freunde hinterlassen. Erkläre warum du zu spät kommst, wann du ungefähr ankommst, und entschuldige dich. (60-90 Wörter)",
+                    minWords = 60,
+                    maxWords = 90,
+                    tips = listOf(
+                        "Sei höflich und entschuldigend",
+                        "Gib eine kurze Erklärung",
+                        "Sage wann du ankommst",
+                        "Biete an, später zu erklären"
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Writing descriptions
+                lessons.add(createSchreibenLesson(
+                    title = "Eine Person beschreiben",
+                    description = "Describe a person (ÖSD Zertifikat A2)",
+                    level = level,
+                    orderIndex = 7,
+                    prompt = "Beschreibe einen Familienangehörigen oder einen guten Freund. Wie sieht er/sie aus? Welche Persönlichkeit hat er/sie? Was macht er/sie gerne? Warum magst du ihn/sie? (100-140 Wörter)",
+                    minWords = 100,
+                    maxWords = 140,
+                    tips = listOf(
+                        "Beginne mit dem Aussehen",
+                        "Beschreibe die Persönlichkeit",
+                        "Erzähle von Hobbys und Interessen",
+                        "Erkläre die Beziehung"
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Writing about past events
+                lessons.add(createSchreibenLesson(
+                    title = "Ein Erlebnis erzählen",
+                    description = "Write about a past experience",
+                    level = level,
+                    orderIndex = 8,
+                    prompt = "Erzähle von einem besonderen Erlebnis aus deinem Leben. Was ist passiert? Wann und wo war es? Wie hast du dich gefühlt? Was hast du gelernt? (120-160 Wörter)",
+                    minWords = 120,
+                    maxWords = 160,
+                    tips = listOf(
+                        "Setze eine chronologische Reihenfolge",
+                        "Beschreibe deine Gefühle",
+                        "Erkläre die Bedeutung",
+                        "Schließe mit einer Erkenntnis"
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Writing forms and applications
+                lessons.add(createSchreibenLesson(
+                    title = "Ein Formular ausfüllen",
+                    description = "Fill out an application form",
+                    level = level,
+                    orderIndex = 9,
+                    prompt = "Du bewirbst dich um einen Ferienjob in einem Café. Fülle das Bewerbungsformular aus. Gib deine persönlichen Daten, deine Verfügbarkeit und warum du den Job möchtest an. (80-110 Wörter)",
+                    minWords = 80,
+                    maxWords = 110,
+                    tips = listOf(
+                        "Schreibe vollständige Angaben",
+                        "Sei ehrlich und präzise",
+                        "Erkläre deine Motivation",
+                        "Überprüfe auf Rechtschreibung"
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Writing about health
+                lessons.add(createSchreibenLesson(
+                    title = "Gesundheitsberatung",
+                    description = "Write about health advice",
+                    level = level,
+                    orderIndex = 10,
+                    prompt = "Du gibst einem Freund Gesundheitsratschläge. Erkläre warum gesunde Ernährung wichtig ist, welche Lebensmittel er essen sollte, und welche Sportarten du empfiehlst. (100-130 Wörter)",
+                    minWords = 100,
+                    maxWords = 130,
+                    tips = listOf(
+                        "Erkläre die Vorteile",
+                        "Gib konkrete Beispiele",
+                        "Sei ermutigend",
+                        "Biete Hilfe an"
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Writing emails to authorities
+                lessons.add(createSchreibenLesson(
+                    title = "Eine offizielle E-Mail",
+                    description = "Write an official email",
+                    level = level,
+                    orderIndex = 11,
+                    prompt = "Du möchtest deinen Führerschein verlängern lassen. Schreibe eine E-Mail an das Straßenverkehrsamt. Gib deine Personalien an, erkläre was du brauchst, und frage nach den nächsten Schritten. (90-120 Wörter)",
+                    minWords = 90,
+                    maxWords = 120,
+                    tips = listOf(
+                        "Verwende formelle Sprache",
+                        "Gib alle notwendigen Informationen",
+                        "Sei höflich und klar",
+                        "Schließe mit einer Bitte um Rückmeldung"
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Writing invitations
+                lessons.add(createSchreibenLesson(
+                    title = "Eine Einladung schreiben",
+                    description = "Write an invitation",
+                    level = level,
+                    orderIndex = 12,
+                    prompt = "Du organisierst eine Geburtstagsfeier für einen Freund. Schreibe eine Einladung mit Datum, Uhrzeit, Ort, was mitzubringen ist, und warum es besonders wird. (80-110 Wörter)",
+                    minWords = 80,
+                    maxWords = 110,
+                    tips = listOf(
+                        "Sei herzlich und einladend",
+                        "Gib alle wichtigen Details",
+                        "Erkläre was erwartet wird",
+                        "Bitte um Rückmeldung"
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Writing about daily routines
+                lessons.add(createSchreibenLesson(
+                    title = "Mein Tagesablauf",
+                    description = "Describe your daily routine",
+                    level = level,
+                    orderIndex = 13,
+                    prompt = "Beschreibe deinen typischen Tagesablauf von morgens bis abends. Erkläre wann du aufstehst, was du frühstückst, wie du zur Arbeit/Schule kommst, was du dort machst, und wie dein Abend aussieht. (120-150 Wörter)",
+                    minWords = 120,
+                    maxWords = 150,
+                    tips = listOf(
+                        "Folge einer zeitlichen Reihenfolge",
+                        "Einschließe Mahlzeiten und Transport",
+                        "Beschreibe Arbeit/Schule",
+                        "Erwähne Freizeitaktivitäten"
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Writing about future plans
+                lessons.add(createSchreibenLesson(
+                    title = "Zukunftspläne",
+                    description = "Write about future plans",
+                    level = level,
+                    orderIndex = 14,
+                    prompt = "Schreibe über deine Pläne für die nächsten Jahre. Was möchtest du beruflich erreichen? Wohin möchtest du reisen? Welche Hobbys möchtest du ausüben? Wie stellst du dir dein Leben in 5 Jahren vor? (130-170 Wörter)",
+                    minWords = 130,
+                    maxWords = 170,
+                    tips = listOf(
+                        "Teile in verschiedene Lebensbereiche",
+                        "Sei realistisch aber optimistisch",
+                        "Erkläre warum diese Pläne wichtig sind",
+                        "Beschreibe konkrete Schritte"
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Writing complaints
+                lessons.add(createSchreibenLesson(
+                    title = "Reklamation schreiben",
+                    description = "Write a complaint",
+                    level = level,
+                    orderIndex = 15,
+                    prompt = "Du hast in einem Restaurant schlechten Service erlebt. Schreibe eine Beschwerde-E-Mail an den Restaurantbesitzer. Beschreibe was passiert ist, wie du dich gefühlt hast, und was du als Lösung erwartest. (100-130 Wörter)",
+                    minWords = 100,
+                    maxWords = 130,
+                    tips = listOf(
+                        "Bleibe sachlich aber bestimmt",
+                        "Beschreibe das Problem detailliert",
+                        "Erkläre die Auswirkungen",
+                        "Fordere eine angemessene Lösung"
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Writing about hobbies
+                lessons.add(createSchreibenLesson(
+                    title = "Meine Hobbys",
+                    description = "Write about your hobbies",
+                    level = level,
+                    orderIndex = 16,
+                    prompt = "Beschreibe deine Hobbys und warum du sie magst. Wie hast du sie entdeckt? Was brauchst du dafür? Wie viel Zeit verbringst du damit? Was hast du schon erreicht? (110-140 Wörter)",
+                    minWords = 110,
+                    maxWords = 140,
+                    tips = listOf(
+                        "Nenne mehrere Hobbys",
+                        "Erkläre die Entstehung",
+                        "Beschreibe Ausrüstung und Zeitaufwand",
+                        "Erzähle von Erfolgen oder Fortschritten"
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Writing thank-you notes
+                lessons.add(createSchreibenLesson(
+                    title = "Danksagung schreiben",
+                    description = "Write a thank-you note",
+                    level = level,
+                    orderIndex = 17,
+                    prompt = "Du hast eine Einladung zum Essen erhalten und möchtest dich bedanken. Schreibe eine Dankes-E-Mail. Erinnere an den schönen Abend, bedanke dich für das Essen und die Gastfreundschaft, und schlage vor, sich bald wiederzusehen. (70-100 Wörter)",
+                    minWords = 70,
+                    maxWords = 100,
+                    tips = listOf(
+                        "Sei aufrichtig und herzlich",
+                        "Erinnere an positive Momente",
+                        "Bedanke dich konkret",
+                        "Schlage weiteren Kontakt vor"
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Writing about work
+                lessons.add(createSchreibenLesson(
+                    title = "Arbeitsalltag beschreiben",
+                    description = "Describe your work routine",
+                    level = level,
+                    orderIndex = 18,
+                    prompt = "Beschreibe deinen Arbeitsalltag. Wann beginnt dein Arbeitstag? Was sind deine Aufgaben? Mit wem arbeitest du zusammen? Was gefällt dir an deiner Arbeit? Was ist manchmal schwierig? (120-150 Wörter)",
+                    minWords = 120,
+                    maxWords = 150,
+                    tips = listOf(
+                        "Beschreibe den Zeitplan",
+                        "Liste wichtige Aufgaben auf",
+                        "Erwähne Kollegen und Vorgesetzte",
+                        "Teile Vor- und Nachteile"
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Writing about travel experiences
+                lessons.add(createSchreibenLesson(
+                    title = "Reiseerfahrungen",
+                    description = "Write about travel experiences",
+                    level = level,
+                    orderIndex = 19,
+                    prompt = "Erzähle von deiner schönsten Reise. Wohin bist du gefahren? Mit wem warst du unterwegs? Was habt ihr gemacht? Welche Sehenswürdigkeiten hast du besucht? Was war das Highlight? (130-160 Wörter)",
+                    minWords = 130,
+                    maxWords = 160,
+                    tips = listOf(
+                        "Beginne mit dem Reiseziel",
+                        "Beschreibe die Reisegruppe",
+                        "Erzähle von Aktivitäten",
+                        "Hebe besondere Momente hervor"
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Writing requests
+                lessons.add(createSchreibenLesson(
+                    title = "Eine Anfrage stellen",
+                    description = "Write a request",
+                    level = level,
+                    orderIndex = 20,
+                    prompt = "Du möchtest Informationen über einen Deutschkurs bekommen. Schreibe eine E-Mail an das Sprachinstitut. Frage nach Kurszeiten, Preisen, Dauer, und ob es Anfängerkurse gibt. Gib auch deine Kontaktdaten an. (90-120 Wörter)",
+                    minWords = 90,
+                    maxWords = 120,
+                    tips = listOf(
+                        "Sei höflich und klar",
+                        "Stelle konkrete Fragen",
+                        "Gib ausreichend Informationen",
+                        "Bitte um Rückmeldung"
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Writing about family
+                lessons.add(createSchreibenLesson(
+                    title = "Meine Familie vorstellen",
+                    description = "Introduce your family",
+                    level = level,
+                    orderIndex = 21,
+                    prompt = "Stelle deine Familie vor. Wie viele Personen seid ihr? Beschreibe jeden Familienangehörigen (Alter, Beruf, Charakter). Erzähle wie ihr zusammenlebt und was ihr gemeinsam macht. (120-150 Wörter)",
+                    minWords = 120,
+                    maxWords = 150,
+                    tips = listOf(
+                        "Beginne mit der Familiengröße",
+                        "Beschreibe jedes Mitglied",
+                        "Erzähle von Beziehungen",
+                        "Beschreibe gemeinsame Aktivitäten"
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Writing opinions
+                lessons.add(createSchreibenLesson(
+                    title = "Eine Meinung äußern",
+                    description = "Express an opinion",
+                    level = level,
+                    orderIndex = 22,
+                    prompt = "Schreibe einen Leserbrief an eine Zeitung über Umweltschutz. Erkläre warum Umweltschutz wichtig ist, gib Beispiele für Umweltprobleme, und schlage Lösungen vor. (130-160 Wörter)",
+                    minWords = 130,
+                    maxWords = 160,
+                    tips = listOf(
+                        "Stelle das Thema vor",
+                        "Gib Argumente und Beispiele",
+                        "Sei überzeugend",
+                        "Schlage praktische Lösungen vor"
+                    ),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Writing apologies
+                lessons.add(createSchreibenLesson(
+                    title = "Eine Entschuldigung schreiben",
+                    description = "Write an apology",
+                    level = level,
+                    orderIndex = 23,
+                    prompt = "Du hast einen Termin vergessen und kommst zu spät zu einem Treffen. Schreibe eine Entschuldigungs-E-Mail an deinen Freund. Erkläre was passiert ist, entschuldige dich aufrichtig, und schlage einen neuen Termin vor. (80-110 Wörter)",
+                    minWords = 80,
+                    maxWords = 110,
+                    tips = listOf(
+                        "Sei ehrlich und aufrichtig",
+                        "Erkläre die Situation",
+                        "Übernimm die Verantwortung",
+                        "Biete Wiedergutmachung an"
+                    ),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Writing descriptions of places
+                lessons.add(createSchreibenLesson(
+                    title = "Einen Ort beschreiben",
+                    description = "Describe a place",
+                    level = level,
+                    orderIndex = 24,
+                    prompt = "Beschreibe deinen Lieblingsort in der Stadt oder Natur. Wo liegt er? Wie sieht er aus? Was kannst du dort machen? Warum gefällt er dir besonders? Was gibt es in der Nähe? (110-140 Wörter)",
+                    minWords = 110,
+                    maxWords = 140,
+                    tips = listOf(
+                        "Beschreibe Lage und Aussehen",
+                        "Erzähle von Aktivitäten",
+                        "Erkläre persönliche Bedeutung",
+                        "Erwähne die Umgebung"
+                    ),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Writing about technology
+                lessons.add(createSchreibenLesson(
+                    title = "Technik im Alltag",
+                    description = "Write about technology in daily life",
+                    level = level,
+                    orderIndex = 25,
+                    prompt = "Beschreibe wie Technik deinen Alltag beeinflusst. Welche technischen Geräte benutzt du täglich? Wie hilft dir dein Smartphone? Was machst du am Computer? Welche Vor- und Nachteile siehst du? (120-150 Wörter)",
+                    minWords = 120,
+                    maxWords = 150,
+                    tips = listOf(
+                        "Liste wichtige Geräte auf",
+                        "Beschreibe deren Nutzung",
+                        "Erkläre Vorteile",
+                        "Erwähne auch Nachteile"
+                    ),
+                    source = "ÖSD"
+                ))
                 
                 lessons.add(createSchreibenLesson(
                     title = "Hobby-Beschreibung",
@@ -5549,6 +6950,246 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                     prompt = "Erzähle über deine Gesundheit und Sportaktivitäten. Was machst du, um gesund zu bleiben? Sprich 2-3 Minuten.",
                     modelResponse = "Gesundheit ist mir sehr wichtig. Ich achte auf [Aspekt] und mache regelmäßig Sport. Ich gehe [Häufigkeit] ins Fitnessstudio und mache [Sportarten]. Außerdem esse ich [Ernährung] und versuche, genug zu schlafen. Sport hilft mir, [Vorteil] und ich fühle mich [Gefühl].",
                     keywords = listOf("Gesundheit", "Sport", "Fitnessstudio", "essen", "schlafen", "fühlen")
+                ))
+
+                // Goethe A2 - Extended speaking content
+                lessons.add(createSprechenLesson(
+                    title = "Einen Freund beschreiben",
+                    description = "Describe a friend (Goethe-Zertifikat A2)",
+                    level = level,
+                    orderIndex = 6,
+                    prompt = "Beschreibe einen deiner Freunde oder eine Freundin. Wie sieht er/sie aus? Welche Persönlichkeit hat er/sie? Was macht ihr zusammen? Sprich 2-3 Minuten.",
+                    modelResponse = "Mein bester Freund heißt [Name]. Er ist [Alter] Jahre alt und wohnt in [Stadt]. Er hat [Haarfarbe] Haare und [Augenfarbe] Augen. Er ist [Größe] groß und trägt gerne [Kleidung]. [Name] ist sehr [Persönlichkeitsmerkmal] und [Persönlichkeitsmerkmal]. Wir kennen uns seit [Zeit] Jahren und machen oft zusammen Sport. Am Wochenende gehen wir [Aktivität] oder treffen uns mit anderen Freunden.",
+                    keywords = listOf("Freund", "beschreiben", "Persönlichkeit", "zusammen", "Sport", "treffen"),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Speaking about plans
+                lessons.add(createSprechenLesson(
+                    title = "Wochenendpläne",
+                    description = "Talk about weekend plans (TELC Deutsch A2)",
+                    level = level,
+                    orderIndex = 7,
+                    prompt = "Erzähle über deine Pläne für das Wochenende. Was wirst du machen? Mit wem? Wo? Wann beginnt es? Sprich 2-3 Minuten.",
+                    modelResponse = "Dieses Wochenende habe ich viele Pläne. Am Samstagmorgen gehe ich einkaufen und dann treffe ich mich mit [Freund]. Wir wollen ins Kino gehen und einen Film sehen. Der Film beginnt um [Uhrzeit]. Am Abend essen wir zusammen in einem Restaurant. Am Sonntag schlafe ich länger aus und dann gehe ich joggen im Park. Vielleicht besuche ich auch meine Familie.",
+                    keywords = listOf("Wochenende", "Pläne", "treffen", "Kino", "essen", "besuchen"),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Speaking about past experiences
+                lessons.add(createSprechenLesson(
+                    title = "Ein besonderes Erlebnis",
+                    description = "Talk about a special experience (ÖSD Zertifikat A2)",
+                    level = level,
+                    orderIndex = 8,
+                    prompt = "Erzähle von einem besonderen Erlebnis in deinem Leben. Was ist passiert? Wann war das? Wie hast du dich gefühlt? Sprich 2-3 Minuten.",
+                    modelResponse = "Vor zwei Jahren hatte ich ein sehr besonderes Erlebnis. Ich bin nach [Land] gereist und habe [Aktivität] gemacht. Es war im [Jahreszeit] und das Wetter war [Beschreibung]. Ich war mit [Person] zusammen und wir haben [Details]. Es war sehr aufregend und ich habe mich [Gefühl] gefühlt. Seitdem erzähle ich oft von diesem Erlebnis.",
+                    keywords = listOf("Erlebnis", "passiert", "gefühlt", "gereist", "aufregend", "erzählen"),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Speaking about daily routines
+                lessons.add(createSprechenLesson(
+                    title = "Mein Tagesablauf",
+                    description = "Describe your daily routine",
+                    level = level,
+                    orderIndex = 9,
+                    prompt = "Beschreibe deinen typischen Tagesablauf. Wann stehst du auf? Was machst du morgens? Wie kommst du zur Arbeit/Schule? Sprich 2-3 Minuten.",
+                    modelResponse = "Mein Tag beginnt normalerweise um [Uhrzeit]. Ich stehe auf, dusche und frühstücke. Dann ziehe ich mich an und gehe zur Arbeit. Ich arbeite von [Uhrzeit] bis [Uhrzeit] als [Beruf]. In der Mittagspause esse ich [Essen] und treffe manchmal Kollegen. Nach der Arbeit kaufe ich ein und koche Abendessen. Abends sehe ich fern oder lese. Um [Uhrzeit] gehe ich ins Bett.",
+                    keywords = listOf("Tagesablauf", "aufstehen", "arbeiten", "Mittagspause", "Abendessen", "schlafen"),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Speaking about shopping
+                lessons.add(createSprechenLesson(
+                    title = "Einkaufen",
+                    description = "Talk about shopping",
+                    level = level,
+                    orderIndex = 10,
+                    prompt = "Erzähle über deine Einkaufsgewohnheiten. Wo kaufst du ein? Was kaufst du normalerweise? Wie oft gehst du einkaufen? Sprich 2-3 Minuten.",
+                    modelResponse = "Ich gehe gerne einkaufen, aber nicht zu oft. Normalerweise kaufe ich im Supermarkt in der Nähe ein. Ich kaufe Obst, Gemüse, Brot und Milchprodukte. Zweimal pro Woche gehe ich in den Supermarkt. Manchmal kaufe ich auch Kleidung in einem Geschäft in der Stadtmitte. Ich achte auf die Preise und nehme oft Sonderangebote wahr. Einkaufen macht mir Spaß, besonders wenn ich Zeit habe.",
+                    keywords = listOf("Einkaufen", "Supermarkt", "kaufen", "Preise", "Sonderangebote", "Spaß"),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Speaking about food and cooking
+                lessons.add(createSprechenLesson(
+                    title = "Essen und Kochen",
+                    description = "Talk about food and cooking",
+                    level = level,
+                    orderIndex = 11,
+                    prompt = "Erzähle über deine Essgewohnheiten und Kochen. Was isst du gerne? Kochst du selbst? Welche Gerichte kannst du kochen? Sprich 2-3 Minuten.",
+                    modelResponse = "Essen ist mir sehr wichtig und ich koche gerne selbst. Zum Frühstück esse ich immer Müsli mit Obst und Joghurt. Mittags esse ich meistens in der Kantine bei der Arbeit. Abends koche ich verschiedene Gerichte. Ich kann gut Spaghetti kochen, Salat machen und manchmal backe ich Kuchen. Meine Lieblingsgerichte sind Pizza und asiatisches Essen. Ich achte darauf, viel Gemüse zu essen.",
+                    keywords = listOf("Essen", "kochen", "Frühstück", "Gerichte", "Lieblingsgerichte", "Gemüse"),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Speaking about technology
+                lessons.add(createSprechenLesson(
+                    title = "Technik im Alltag",
+                    description = "Talk about technology in daily life",
+                    level = level,
+                    orderIndex = 12,
+                    prompt = "Erzähle über die Technik in deinem Leben. Welche technischen Geräte benutzt du? Wie hilft dir das Smartphone? Sprich 2-3 Minuten.",
+                    modelResponse = "Technik spielt eine große Rolle in meinem Alltag. Ich benutze jeden Tag mein Smartphone für viele Dinge. Damit telefoniere ich, schreibe Nachrichten und gehe ins Internet. Ich habe auch einen Computer zu Hause für die Arbeit und zum Lernen. Im Auto höre ich Musik über Bluetooth. Technik macht vieles einfacher, aber manchmal vermisse ich auch die alte Zeit ohne so viele Geräte.",
+                    keywords = listOf("Technik", "Smartphone", "Computer", "Bluetooth", "einfacher", "Geräte"),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Speaking about travel
+                lessons.add(createSprechenLesson(
+                    title = "Reisen",
+                    description = "Talk about traveling",
+                    level = level,
+                    orderIndex = 13,
+                    prompt = "Erzähle über deine Reiseerfahrungen. Wohin bist du schon gereist? Wie reist du am liebsten? Was planst du als nächstes? Sprich 2-3 Minuten.",
+                    modelResponse = "Ich liebe es zu reisen und habe schon viele Länder besucht. Letztes Jahr war ich in Italien und Spanien. Am liebsten reise ich mit dem Zug oder Auto, weil ich unterwegs die Landschaft sehen kann. Flugzeug nehme ich nur für weite Strecken. Als nächstes möchte ich nach Skandinavien fahren. Ich plane immer meine Reisen im Voraus und freue mich auf neue Abenteuer.",
+                    keywords = listOf("reisen", "besucht", "liebsten", "planen", "Abenteuer", "Landschaft"),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Speaking about education
+                lessons.add(createSprechenLesson(
+                    title = "Lernen und Bildung",
+                    description = "Talk about learning and education",
+                    level = level,
+                    orderIndex = 14,
+                    prompt = "Erzähle über deine Bildung und Lernen. Was hast du gelernt? Lernst du noch etwas Neues? Welche Sprachen sprichst du? Sprich 2-3 Minuten.",
+                    modelResponse = "Ich habe [Abschluss] und arbeite seit [Zeit] Jahren. Neben der Arbeit lerne ich Deutsch, weil ich in Deutschland lebe. Zweimal pro Woche habe ich Unterricht. Ich spreche schon ganz gut Deutsch und Englisch. Außerdem interessiere ich mich für Kochen und nehme Kochkurse. Lernen macht mir Spaß und ich lerne gerne neue Dinge. Nächstes Jahr möchte ich einen Computerkurs machen.",
+                    keywords = listOf("Bildung", "lernen", "Sprachen", "Unterricht", "interessieren", "Kurs"),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Speaking about family
+                lessons.add(createSprechenLesson(
+                    title = "Meine Familie",
+                    description = "Talk about your family",
+                    level = level,
+                    orderIndex = 15,
+                    prompt = "Erzähle über deine Familie. Wie viele Personen seid ihr? Was machen deine Familienmitglieder? Sprich 2-3 Minuten.",
+                    modelResponse = "Meine Familie besteht aus [Anzahl] Personen. Meine Eltern wohnen in [Stadt] und mein Vater arbeitet als [Beruf]. Meine Mutter ist [Beruf] und hat viel zu tun. Ich habe [Anzahl] Geschwister. Meine Schwester ist [Alter] und studiert [Fach]. Mein Bruder ist [Alter] und macht eine Ausbildung. Wir treffen uns oft am Wochenende und feiern Familienfeste zusammen.",
+                    keywords = listOf("Familie", "bestehen", "arbeiten", "studieren", "treffen", "feiern"),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Speaking about free time
+                lessons.add(createSprechenLesson(
+                    title = "Freizeitaktivitäten",
+                    description = "Talk about leisure activities",
+                    level = level,
+                    orderIndex = 16,
+                    prompt = "Erzähle über deine Freizeitaktivitäten. Was machst du in deiner freien Zeit? Gehst du aus? Bleibst du zu Hause? Sprich 2-3 Minuten.",
+                    modelResponse = "In meiner Freizeit mache ich viele verschiedene Dinge. Am Wochenende gehe ich oft ins Fitnessstudio und treibe Sport. Manchmal gehe ich mit Freunden aus, ins Kino oder in ein Café. Zu Hause koche ich gerne und sehe fern. Ich lese auch Bücher, besonders Krimis. Im Sommer mache ich gerne Wanderungen oder fahre Rad. Freizeit ist wichtig für mich, um zu entspannen und neue Energie zu tanken.",
+                    keywords = listOf("Freizeit", "Sport", "ausgehen", "kochen", "lesen", "entspannen"),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Speaking about environment
+                lessons.add(createSprechenLesson(
+                    title = "Umwelt und Natur",
+                    description = "Talk about environment and nature",
+                    level = level,
+                    orderIndex = 17,
+                    prompt = "Erzähle über Umwelt und Natur. Was machst du für die Umwelt? Besuchst du gerne die Natur? Sprich 2-3 Minuten.",
+                    modelResponse = "Umwelt ist ein wichtiges Thema für mich. Ich versuche, umweltbewusst zu leben. Ich trenne den Müll und kaufe Bio-Produkte. Mit dem Fahrrad fahre ich zur Arbeit, statt mit dem Auto. In der Natur mache ich gerne Wanderungen im Wald oder am See. Die Natur ist schön und ich entspanne dort. Manchmal mache ich auch Picknick mit Freunden. Ich finde, wir müssen die Umwelt besser schützen.",
+                    keywords = listOf("Umwelt", "Natur", "umweltbewusst", "trennen", "Wanderungen", "schützen"),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Speaking about work
+                lessons.add(createSprechenLesson(
+                    title = "Mein Arbeitsplatz",
+                    description = "Talk about your workplace",
+                    level = level,
+                    orderIndex = 18,
+                    prompt = "Beschreibe deinen Arbeitsplatz. Wo arbeitest du? Wie sieht dein Büro aus? Was machst du den ganzen Tag? Sprich 2-3 Minuten.",
+                    modelResponse = "Ich arbeite in einem Büro in der Stadtmitte. Mein Arbeitsplatz ist in einem modernen Gebäude mit großen Fenstern. Ich sitze an einem Schreibtisch mit Computer und Telefon. Den ganzen Tag bearbeite ich E-Mails, führe Telefonate und habe Meetings mit Kollegen. Manchmal muss ich auch Berichte schreiben. Die Atmosphäre ist gut und die Kollegen sind nett. Ich arbeite von 9 bis 17 Uhr mit einer Stunde Mittagspause.",
+                    keywords = listOf("Arbeitsplatz", "arbeiten", "Büro", "bearbeiten", "führen", "schreiben"),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Speaking about media
+                lessons.add(createSprechenLesson(
+                    title = "Medien und Unterhaltung",
+                    description = "Talk about media and entertainment",
+                    level = level,
+                    orderIndex = 19,
+                    prompt = "Erzähle über deine Mediennutzung. Welche Fernsehsendungen siehst du? Hörst du Radio? Liest du Zeitung? Sprich 2-3 Minuten.",
+                    modelResponse = "Ich informiere mich jeden Tag über die Nachrichten. Morgens höre ich Radio im Auto auf dem Weg zur Arbeit. Abends sehe ich manchmal fern, besonders die Tagesschau und Dokumentationen. Am Wochenende lese ich die Zeitung und Zeitschriften. Ich höre auch Podcasts über verschiedene Themen. Im Internet lese ich Nachrichten und sehe Videos. Medien sind wichtig, aber ich achte darauf, nicht zu viel Zeit damit zu verbringen.",
+                    keywords = listOf("Medien", "fernsehen", "hören", "lesen", "informieren", "achten"),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Speaking about future plans
+                lessons.add(createSprechenLesson(
+                    title = "Zukunftspläne",
+                    description = "Talk about future plans",
+                    level = level,
+                    orderIndex = 20,
+                    prompt = "Erzähle über deine Pläne für die Zukunft. Was möchtest du in den nächsten Jahren erreichen? Sprich 2-3 Minuten.",
+                    modelResponse = "Für die Zukunft habe ich viele Pläne. Beruflich möchte ich mich weiterentwickeln und mehr Verantwortung übernehmen. Vielleicht mache ich einen Kurs oder Weiterbildung. Privat möchte ich mehr reisen und neue Länder kennenlernen. Ich spare Geld für eine Reise nach Asien. Auch meine Wohnung möchte ich renovieren. Gesundheit ist mir wichtig, deshalb mache ich mehr Sport. Die Zukunft sieht positiv aus.",
+                    keywords = listOf("Zukunft", "Pläne", "beruflich", "reisen", "sparen", "Gesundheit"),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Speaking about culture
+                lessons.add(createSprechenLesson(
+                    title = "Kultur und Traditionen",
+                    description = "Talk about culture and traditions",
+                    level = level,
+                    orderIndex = 21,
+                    prompt = "Erzähle über Kultur und Traditionen in deinem Land oder in Deutschland. Welche Feste feiert ihr? Sprich 2-3 Minuten.",
+                    modelResponse = "In Deutschland gibt es viele schöne Traditionen. Weihnachten ist das wichtigste Fest. Wir schmücken den Baum und feiern mit der Familie. Ostern feiern wir auch, mit bemalten Eiern und Hasen. Karneval ist lustig, besonders im Rheinland. Ich mag auch den Frühlingsanfang mit den ersten Blumen. Jede Region hat ihre eigenen Traditionen. Das macht Deutschland so interessant und vielfältig.",
+                    keywords = listOf("Kultur", "Traditionen", "feiern", "schmücken", "bemalten", "vielfältig"),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Speaking about shopping preferences
+                lessons.add(createSprechenLesson(
+                    title = "Einkaufsgewohnheiten",
+                    description = "Talk about shopping habits",
+                    level = level,
+                    orderIndex = 22,
+                    prompt = "Erzähle über deine Einkaufsgewohnheiten. Wo kaufst du am liebsten ein? Was sind deine Lieblingsläden? Sprich 2-3 Minuten.",
+                    modelResponse = "Ich gehe gerne in verschiedene Geschäfte einkaufen. Für Lebensmittel gehe ich in den Supermarkt, aber auch auf den Markt. Dort kaufe ich frisches Obst und Gemüse. Für Kleidung mag ich Geschäfte in der Stadtmitte. Meine Lieblingsläden sind [Laden] und [Laden]. Sie haben gute Qualität und freundliches Personal. Manchmal kaufe ich auch online, besonders Bücher und Elektronik. Ich achte auf Preise und Qualität.",
+                    keywords = listOf("Einkaufen", "Supermarkt", "Markt", "Kleidung", "Qualität", "Preise"),
+                    source = "TELC"
+                ))
+
+                // ÖSD A2 - Speaking about accommodation
+                lessons.add(createSprechenLesson(
+                    title = "Wohnen",
+                    description = "Talk about housing",
+                    level = level,
+                    orderIndex = 23,
+                    prompt = "Beschreibe, wo und wie du wohnst. Erzähle über deine Wohnung oder dein Haus. Sprich 2-3 Minuten.",
+                    modelResponse = "Ich wohne in einer schönen Wohnung in der Stadt. Die Wohnung hat drei Zimmer, Küche, Bad und Balkon. Sie ist hell und modern eingerichtet. In der Küche koche ich gerne und im Wohnzimmer sehe ich fern. Mein Schlafzimmer ist ruhig und gemütlich. Die Nachbarn sind freundlich und das Viertel ist sicher. Die Miete ist angemessen und ich fühle mich wohl hier. Manchmal denke ich über einen Umzug nach, aber im Moment bin ich zufrieden.",
+                    keywords = listOf("wohnen", "Wohnung", "Zimmer", "eingerichtet", "gemütlich", "zufrieden"),
+                    source = "ÖSD"
+                ))
+
+                // Goethe A2 - Speaking about music and arts
+                lessons.add(createSprechenLesson(
+                    title = "Musik und Kunst",
+                    description = "Talk about music and arts",
+                    level = level,
+                    orderIndex = 24,
+                    prompt = "Erzähle über deine Interessen an Musik und Kunst. Welche Musik hörst du? Gehst du ins Museum oder Theater? Sprich 2-3 Minuten.",
+                    modelResponse = "Musik ist ein wichtiger Teil meines Lebens. Ich höre gerne Pop und Rock, besonders deutsche Bands. Manchmal gehe ich zu Konzerten. Kunst interessiert mich auch sehr. Ich besuche Museen und sehe mir Ausstellungen an. Vor kurzem war ich in einer Kunstausstellung mit modernen Bildern. Theater mag ich weniger, aber ich sehe gerne Filme. Musik und Kunst machen mein Leben bunter und inspirieren mich.",
+                    keywords = listOf("Musik", "Kunst", "hören", "besuchen", "Theater", "inspirieren"),
+                    source = "Goethe"
+                ))
+
+                // TELC A2 - Speaking about celebrations
+                lessons.add(createSprechenLesson(
+                    title = "Feste und Feiern",
+                    description = "Talk about celebrations",
+                    level = level,
+                    orderIndex = 25,
+                    prompt = "Erzähle über Feste und Feiern in deinem Leben. Welche Feste feierst du? Wie feierst du Geburtstage? Sprich 2-3 Minuten.",
+                    modelResponse = "Ich feiere gerne Feste mit Familie und Freunden. Geburtstage sind besonders wichtig. Ich backe Kuchen und lade Freunde ein. Zu Weihnachten schmücken wir den Baum und essen traditionelle Gerichte. Ostern machen wir Eiersuchen im Garten. Silvester feiere ich mit Feuerwerk und Sekt. Manchmal organisiere ich Grillfeste im Sommer. Feste bringen Menschen zusammen und machen Spaß. Ich freue mich immer auf die nächste Feier.",
+                    keywords = listOf("Feste", "feiern", "Geburtstage", "Weihnachten", "organisiere", "Spaß"),
+                    source = "TELC"
                 ))
             }
             

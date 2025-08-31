@@ -27,6 +27,10 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.remember
 import com.hellogerman.app.data.DatabaseInitializer
 import androidx.compose.ui.platform.LocalContext
+import com.hellogerman.app.data.repository.HelloGermanRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -240,6 +244,70 @@ fun SettingsScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Button(
+                            onClick = {
+                                scope.launch {
+                                    val success = cacheManager.clearAllCache()
+                                    val message = if (success) "Cache cleared successfully" else "Failed to clear cache"
+                                    snackbarHostState.showSnackbar(message)
+                                    cacheStats = cacheManager.getCacheStats()
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.secondary
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Reload Lessons", fontSize = 14.sp)
+                        }
+
+                        // Force reload lessons button
+                        OutlinedButton(
+                            onClick = {
+                                scope.launch {
+                                    DatabaseInitializer.forceReloadLessons(navController.context)
+                                    snackbarHostState.showSnackbar("Lessons reloaded successfully")
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Force Reload Lessons", fontSize = 14.sp)
+                        }
+
+                        // Debug button to check lesson counts
+                        OutlinedButton(
+                            onClick = {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val repository = HelloGermanRepository(navController.context)
+                                    val allLessons = repository.getAllLessons()
+                                    val a1Count = allLessons.filter { it.level == "A1" }.size
+                                    val a2Count = allLessons.filter { it.level == "A2" }.size
+                                    val lesenA2Count = allLessons.filter { it.level == "A2" && it.skill == "lesen" }.size
+                                    val hoerenA2Count = allLessons.filter { it.level == "A2" && it.skill == "hoeren" }.size
+                                    val schreibenA2Count = allLessons.filter { it.level == "A2" && it.skill == "schreiben" }.size
+                                    val sprechenA2Count = allLessons.filter { it.level == "A2" && it.skill == "sprechen" }.size
+
+                                    withContext(Dispatchers.Main) {
+                                        snackbarHostState.showSnackbar(
+                                            "Total: ${allLessons.size}, A1: $a1Count, A2: $a2Count, " +
+                                            "A2 Lesen: $lesenA2Count, A2 Hören: $hoerenA2Count, " +
+                                            "A2 Schreiben: $schreibenA2Count, A2 Sprechen: $sprechenA2Count"
+                                        )
+                                    }
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.error
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Check Lesson Counts", fontSize = 14.sp)
+                        }
+
+                        // Clear all cache button
+                        OutlinedButton(
                             onClick = {
                                 scope.launch {
                                     val success = cacheManager.clearAllCache()

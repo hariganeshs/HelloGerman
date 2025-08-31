@@ -11,6 +11,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
+// Data classes for enhanced progress tracking
+data class LevelUnlockStatus(
+    val currentLevel: String,
+    val overallProgress: Double,
+    val skillProgress: Map<String, Double>,
+    val canUnlock: Boolean,
+    val lessonsCompleted: Int,
+    val totalLessons: Int,
+    val nextLevel: String?
+)
+
+data class LevelCompletionInfo(
+    val completed: Int,
+    val total: Int,
+    val averageScore: Double,
+    val progressPercentage: Double,
+    val isComplete: Boolean
+)
+
 class HelloGermanRepository(context: Context) {
     
     private val database = HelloGermanDatabase.getDatabase(context)
@@ -221,12 +240,77 @@ class HelloGermanRepository(context: Context) {
         val averageScore = getAverageScore(skill, level) ?: 0.0
         return averageScore >= 70.0
     }
-    
+
     suspend fun getNextLevel(currentLevel: String): String? {
         val levels = listOf("A1", "A2", "B1", "B2", "C1", "C2")
         val currentIndex = levels.indexOf(currentLevel)
         return if (currentIndex >= 0 && currentIndex < levels.size - 1) {
             levels[currentIndex + 1]
         } else null
+    }
+
+    // Enhanced adaptive progress system
+    suspend fun checkLevelUnlock(currentLevel: String): LevelUnlockStatus {
+        val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
+        var totalCompleted = 0
+        var totalLessons = 0
+        val skillProgress = mutableMapOf<String, Double>()
+
+        skills.forEach { skill ->
+            val completed = getCompletedLessonsCount(skill, currentLevel)
+            val total = getTotalLessonsCount(skill, currentLevel)
+            val percentage = if (total > 0) (completed.toDouble() / total) * 100 else 0.0
+
+            totalCompleted += completed
+            totalLessons += total
+            skillProgress[skill] = percentage
+        }
+
+        val overallProgress = if (totalLessons > 0) (totalCompleted.toDouble() / totalLessons) * 100 else 0.0
+        val canUnlock = overallProgress >= 80.0
+
+        return LevelUnlockStatus(
+            currentLevel = currentLevel,
+            overallProgress = overallProgress,
+            skillProgress = skillProgress,
+            canUnlock = canUnlock,
+            lessonsCompleted = totalCompleted,
+            totalLessons = totalLessons,
+            nextLevel = if (canUnlock) getNextLevel(currentLevel) else null
+        )
+    }
+
+    suspend fun getLevelCompletionStatus(currentLevel: String): Map<String, LevelCompletionInfo> {
+        val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
+        val completionStatus = mutableMapOf<String, LevelCompletionInfo>()
+
+        skills.forEach { skill ->
+            val completed = getCompletedLessonsCount(skill, currentLevel)
+            val total = getTotalLessonsCount(skill, currentLevel)
+            val averageScore = getAverageScore(skill, currentLevel) ?: 0.0
+            val progress = if (total > 0) (completed.toDouble() / total) * 100 else 0.0
+
+            completionStatus[skill] = LevelCompletionInfo(
+                completed = completed,
+                total = total,
+                averageScore = averageScore,
+                progressPercentage = progress,
+                isComplete = progress >= 80.0
+            )
+        }
+
+        return completionStatus
+    }
+
+    suspend fun autoAdvanceLevelIfReady(): Boolean {
+        val currentProgress = getUserProgress().first()
+        currentProgress?.let { progress ->
+            val unlockStatus = checkLevelUnlock(progress.currentLevel)
+            if (unlockStatus.canUnlock && unlockStatus.nextLevel != null) {
+                updateCurrentLevel(unlockStatus.nextLevel!!)
+                return true
+            }
+        }
+        return false
     }
 }

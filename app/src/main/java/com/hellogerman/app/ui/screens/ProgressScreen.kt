@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -19,6 +21,8 @@ import androidx.navigation.NavController
 import com.hellogerman.app.ui.viewmodel.MainViewModel
 import com.hellogerman.app.ui.theme.*
 import com.hellogerman.app.ads.BannerAd2
+import com.hellogerman.app.data.repository.LevelUnlockStatus
+import androidx.compose.ui.graphics.Color
 
 
 
@@ -29,6 +33,16 @@ fun ProgressScreen(
     mainViewModel: MainViewModel = viewModel()
 ) {
     val userProgress by mainViewModel.userProgress.collectAsState()
+    val levelUnlockStatus by mainViewModel.levelUnlockStatus.collectAsState()
+    val levelCompletionInfo by mainViewModel.levelCompletionInfo.collectAsState()
+
+    var progressText by remember { mutableStateOf("") }
+
+    LaunchedEffect(levelUnlockStatus) {
+        levelUnlockStatus?.let {
+            progressText = mainViewModel.getLevelProgressText()
+        }
+    }
     
     Scaffold(
         topBar = {
@@ -154,6 +168,13 @@ fun ProgressScreen(
                 )
             }
             
+            // Level Unlock Status
+            levelUnlockStatus?.let { unlockStatus ->
+                item {
+                    LevelUnlockCard(unlockStatus = unlockStatus)
+                }
+            }
+
             item {
                 // Learning Insights
                 Text(
@@ -330,6 +351,84 @@ fun InsightsCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = content,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LevelUnlockCard(unlockStatus: LevelUnlockStatus) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = if (unlockStatus.canUnlock)
+                Color(0xFFE8F5E8) else MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = if (unlockStatus.canUnlock) "🎉 Level Unlock Ready!" else "Level Progress",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (unlockStatus.canUnlock)
+                        Color(0xFF2E7D32) else MaterialTheme.colorScheme.onSurface
+                )
+
+                Icon(
+                    imageVector = if (unlockStatus.canUnlock) Icons.Default.LockOpen else Icons.Default.Lock,
+                    contentDescription = if (unlockStatus.canUnlock) "Unlocked" else "Locked",
+                    tint = if (unlockStatus.canUnlock) Color(0xFF2E7D32) else Color(0xFF757575)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Overall progress
+            Text(
+                text = "Overall Progress: ${unlockStatus.overallProgress.toInt()}%",
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            LinearProgressIndicator(
+                progress = (unlockStatus.overallProgress / 100f).toFloat(),
+                modifier = Modifier.fillMaxWidth(),
+                color = if (unlockStatus.canUnlock) Color(0xFF4CAF50) else MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "${unlockStatus.lessonsCompleted}/${unlockStatus.totalLessons} lessons completed",
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            if (unlockStatus.canUnlock && unlockStatus.nextLevel != null) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "Ready to unlock ${unlockStatus.nextLevel}!",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color(0xFF2E7D32)
+                )
+            } else if (unlockStatus.nextLevel != null) {
+                val remainingPercent = 80 - unlockStatus.overallProgress.toInt()
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "${remainingPercent}% more to unlock ${unlockStatus.nextLevel}",
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

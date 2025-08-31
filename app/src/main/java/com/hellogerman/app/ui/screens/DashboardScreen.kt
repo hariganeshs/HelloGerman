@@ -12,6 +12,8 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Wifi
+import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.material.icons.filled.*
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -45,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import com.hellogerman.app.R
 import com.hellogerman.app.ads.BannerAd1
 import com.hellogerman.app.data.DatabaseInitializer
+import com.hellogerman.app.utils.NetworkUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,6 +77,30 @@ fun DashboardScreen(
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+
+                // Offline status indicator
+                val context = LocalContext.current
+                val isOnline = remember { mutableStateOf(NetworkUtils.isNetworkAvailable(context)) }
+
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                                            Icon(
+                            imageVector = if (isOnline.value) Icons.Filled.Wifi else Icons.Filled.WifiOff,
+                            contentDescription = if (isOnline.value) "Device is online with full internet connectivity" else "Device is offline with limited functionality",
+                            tint = if (isOnline.value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = if (isOnline.value) "Online - Full functionality available" else "Offline - Limited functionality",
+                        fontSize = 12.sp,
+                        color = if (isOnline.value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             }
         }
         
@@ -208,7 +235,10 @@ fun SkillProgressCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable(
+                onClick = onClick,
+                onClickLabel = "Open ${skill.name} lessons"
+            ),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),

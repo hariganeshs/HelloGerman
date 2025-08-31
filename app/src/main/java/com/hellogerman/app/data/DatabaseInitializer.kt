@@ -36,6 +36,23 @@ object DatabaseInitializer {
                 // Clear existing lessons and reload with expanded content
                 repository.clearAllLessons()
                 val lessons = LessonContentGenerator.generateAllLessons()
+                
+                // Debug: Print lesson counts by level
+                val a1Count = lessons.filter { it.level == "A1" }.size
+                val a2Count = lessons.filter { it.level == "A2" }.size
+                val lesenA2Count = lessons.filter { it.level == "A2" && it.skill == "lesen" }.size
+                val hoerenA2Count = lessons.filter { it.level == "A2" && it.skill == "hoeren" }.size
+                val schreibenA2Count = lessons.filter { it.level == "A2" && it.skill == "schreiben" }.size
+                val sprechenA2Count = lessons.filter { it.level == "A2" && it.skill == "sprechen" }.size
+                
+                android.util.Log.d("DatabaseInitializer", "Generated lessons - Total: ${lessons.size}")
+                android.util.Log.d("DatabaseInitializer", "A1 lessons: $a1Count")
+                android.util.Log.d("DatabaseInitializer", "A2 lessons: $a2Count")
+                android.util.Log.d("DatabaseInitializer", "A2 Lesen: $lesenA2Count")
+                android.util.Log.d("DatabaseInitializer", "A2 Hören: $hoerenA2Count")
+                android.util.Log.d("DatabaseInitializer", "A2 Schreiben: $schreibenA2Count")
+                android.util.Log.d("DatabaseInitializer", "A2 Sprechen: $sprechenA2Count")
+                
                 repository.insertLessons(lessons)
             } else {
                 // Original logic for grammar lessons

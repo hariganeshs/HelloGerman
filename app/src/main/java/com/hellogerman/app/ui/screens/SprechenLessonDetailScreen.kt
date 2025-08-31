@@ -27,6 +27,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -234,7 +235,7 @@ fun SprechenLessonDetailScreen(
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Go back to speaking lessons list"
                         )
                     }
                 },
@@ -411,7 +412,7 @@ fun SprechenLessonDetailScreen(
                                             ) {
                                                 Icon(
                                                     imageVector = if (isPlayingPrompt) Icons.Default.Close else Icons.Default.PlayArrow,
-                                                    contentDescription = if (isPlayingPrompt) "Stop" else "Play",
+                                                    contentDescription = if (isPlayingPrompt) "Stop playing model response" else "Play model response audio",
                                                     tint = SprechenColor
                                                 )
                                             }
@@ -482,8 +483,14 @@ fun SprechenLessonDetailScreen(
                                              Spacer(modifier = Modifier.height(8.dp))
                                              Text(
                                                  text = "⚠ Internet connection required for speech recognition",
-                                                 fontSize = 12.sp,
-                                                 color = MaterialTheme.colorScheme.error
+                                                 color = MaterialTheme.colorScheme.error,
+                                                 style = MaterialTheme.typography.bodySmall
+                                             )
+                                             Spacer(modifier = Modifier.height(4.dp))
+                                             Text(
+                                                 text = "✓ Text-to-Speech works offline",
+                                                 color = MaterialTheme.colorScheme.primary,
+                                                 style = MaterialTheme.typography.bodySmall
                                              )
                                          }
                                         Spacer(modifier = Modifier.height(16.dp))
@@ -545,7 +552,7 @@ fun SprechenLessonDetailScreen(
                                             ) {
                                             Icon(
                                                 imageVector = if (isRecording) Icons.Default.Close else Icons.Default.Info,
-                                                contentDescription = if (isRecording) "Stop Recording" else "Start Recording",
+                                                contentDescription = if (isRecording) "Stop voice recording" else "Start voice recording for speaking practice",
                                                 tint = if (isRecording) MaterialTheme.colorScheme.error else SprechenColor,
                                                 modifier = Modifier.size(48.dp)
                                             )
@@ -710,6 +717,46 @@ fun SprechenLessonDetailScreen(
                                                     fontSize = 14.sp,
                                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                                 )
+
+                                                // Show model response for comparison
+                                                if (lessonContent.modelResponse?.isNotEmpty() == true) {
+                                                    Spacer(modifier = Modifier.height(12.dp))
+                                                    Text(
+                                                        text = "Model Response for Comparison:",
+                                                        fontSize = 14.sp,
+                                                        fontWeight = FontWeight.Medium,
+                                                        color = MaterialTheme.colorScheme.primary
+                                                    )
+                                                    Spacer(modifier = Modifier.height(4.dp))
+                                                    Text(
+                                                        text = lessonContent.modelResponse!!,
+                                                        fontSize = 13.sp,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                        modifier = Modifier.background(
+                                                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                                                        ).padding(8.dp)
+                                                    )
+                                                }
+
+                                                // Pronunciation tips
+                                                val pronunciationTips = generatePronunciationTips(userTranscript)
+                                                if (pronunciationTips.isNotEmpty()) {
+                                                    Spacer(modifier = Modifier.height(12.dp))
+                                                    Text(
+                                                        text = "Pronunciation Tips:",
+                                                        fontSize = 14.sp,
+                                                        fontWeight = FontWeight.Medium,
+                                                        color = Color(0xFF1976D2)
+                                                    )
+                                                    pronunciationTips.forEach { tip ->
+                                                        Text(
+                                                            text = "• $tip",
+                                                            fontSize = 13.sp,
+                                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                            modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+                                                        )
+                                                    }
+                                                }
                                             }
                                         }
                                         
@@ -746,15 +793,15 @@ private fun isNetworkAvailable(context: Context): Boolean {
     }
 }
 
-private fun generateSpeakingFeedback(userTranscript: String, content: SprechenContent): Pair<String, Int> {
+internal fun generateSpeakingFeedback(userTranscript: String, content: SprechenContent): Pair<String, Int> {
     var score = 0
     val feedback = mutableListOf<String>()
-    
+
     // Check if user provided any response
     if (userTranscript.isBlank() || userTranscript.contains("Error:") || userTranscript.contains("No speech detected")) {
         return Pair("No speech detected. Please try again.", 0)
     }
-    
+
     // Basic length check
     val wordCount = userTranscript.split("\\s+".toRegex()).filter { it.isNotEmpty() }.size
     if (wordCount >= 5) {
@@ -766,88 +813,221 @@ private fun generateSpeakingFeedback(userTranscript: String, content: SprechenCo
     } else {
         feedback.add("✗ Response too short (only $wordCount words)")
     }
-    
-    // Enhanced German vocabulary check
+
+    // Enhanced German vocabulary check with A2-specific words
     val germanWords = listOf(
         // Basic pronouns
         "ich", "du", "er", "sie", "es", "wir", "ihr", "Sie", "mich", "dich", "sich",
         // Common conjunctions
         "und", "oder", "aber", "dass", "wenn", "weil", "denn", "sondern",
-        // Common verbs
+        // Common verbs (A2 level)
         "sein", "haben", "werden", "können", "müssen", "sollen", "wollen", "mögen",
-        // Common nouns
+        "gehen", "kommen", "machen", "sagen", "finden", "geben", "sehen", "stehen",
+        // Common nouns (A2 level)
         "hallo", "danke", "bitte", "ja", "nein", "gut", "schlecht", "groß", "klein",
+        "haus", "zeit", "tag", "nacht", "arbeit", "schule", "stadt", "land",
         // Question words
-        "was", "wer", "wo", "wann", "warum", "wie", "welche", "welcher", "welches"
+        "was", "wer", "wo", "wann", "warum", "wie", "welche", "welcher", "welches",
+        // Prepositions (A2 level)
+        "in", "auf", "an", "mit", "nach", "von", "zu", "für", "bei", "aus"
     )
     val foundGermanWords = germanWords.count { userTranscript.contains(it, ignoreCase = true) }
-    if (foundGermanWords >= 3) {
+    if (foundGermanWords >= 4) {
         score += 25
         feedback.add("✓ Excellent use of German vocabulary ($foundGermanWords German words)")
+    } else if (foundGermanWords >= 3) {
+        score += 20
+        feedback.add("✓ Very good use of German vocabulary ($foundGermanWords German words)")
     } else if (foundGermanWords >= 2) {
         score += 15
         feedback.add("✓ Good use of German vocabulary ($foundGermanWords German words)")
     } else {
         feedback.add("✗ Try to use more German vocabulary (found $foundGermanWords German words)")
     }
-    
+
     // Check for keywords from the lesson content
     val keywords = content.keywords
     if (keywords.isNotEmpty()) {
         val foundKeywords = keywords.count { userTranscript.contains(it, ignoreCase = true) }
-        if (foundKeywords >= 2) {
+        if (foundKeywords >= keywords.size / 2) {
             score += 20
             feedback.add("✓ Great use of lesson keywords ($foundKeywords/${keywords.size})")
         } else if (foundKeywords >= 1) {
             score += 10
             feedback.add("⚠ Used some lesson keywords ($foundKeywords/${keywords.size})")
         } else {
-            feedback.add("✗ Try to use the lesson keywords: ${keywords.joinToString(", ")}")
+            feedback.add("✗ Try to use the lesson keywords: ${keywords.take(3).joinToString(", ")}")
         }
     }
-    
-    // Enhanced similarity check with model response
+
+    // Advanced similarity scoring with model response
     val modelResponse = content.modelResponse ?: ""
-    val modelWords = modelResponse.lowercase().split("\\s+".toRegex()).filter { it.isNotEmpty() }
-    val userWords = userTranscript.lowercase().split("\\s+".toRegex()).filter { it.isNotEmpty() }
-    val commonWords = modelWords.intersect(userWords.toSet()).size
-    
-    if (commonWords >= 3) {
-        score += 20
-        feedback.add("✓ Excellent content relevance")
-    } else if (commonWords >= 2) {
-        score += 15
-        feedback.add("✓ Good content relevance")
-    } else if (commonWords >= 1) {
-        score += 5
-        feedback.add("⚠ Some content relevance")
-    } else {
-        feedback.add("✗ Try to address the prompt more directly")
+    if (modelResponse.isNotEmpty()) {
+        val similarityScore = calculateSimilarity(userTranscript, modelResponse)
+        if (similarityScore >= 0.7) {
+            score += 20
+            feedback.add("✓ Excellent similarity to model response (${(similarityScore * 100).toInt()}%)")
+        } else if (similarityScore >= 0.5) {
+            score += 15
+            feedback.add("✓ Good similarity to model response (${(similarityScore * 100).toInt()}%)")
+        } else if (similarityScore >= 0.3) {
+            score += 10
+            feedback.add("⚠ Moderate similarity to model response (${(similarityScore * 100).toInt()}%)")
+        } else {
+            feedback.add("✗ Low similarity to model response (${(similarityScore * 100).toInt()}%) - try to follow the model structure")
+        }
     }
-    
-    // Enhanced fluency check
-    val hasPunctuation = userTranscript.contains(".") || userTranscript.contains("!") || userTranscript.contains("?")
-    val hasCapitalization = userTranscript.matches(Regex(".*[A-Z].*"))
-    val hasProperStructure = userTranscript.contains(" ") && userTranscript.length > 10
-    
-    if (hasPunctuation && hasCapitalization && hasProperStructure) {
-        score += 15
-        feedback.add("✓ Excellent sentence structure and punctuation")
-    } else if (hasPunctuation && hasProperStructure) {
+
+    // Pronunciation quality assessment (based on speech recognition success)
+    if (userTranscript.length > 30 && !userTranscript.contains("Error") && wordCount >= 4) {
         score += 10
-        feedback.add("✓ Good sentence structure")
-    } else {
-        feedback.add("✗ Improve sentence structure and punctuation")
-    }
-    
-    // Pronunciation confidence (based on word recognition)
-    if (userTranscript.length > 20 && !userTranscript.contains("Error")) {
+        feedback.add("✓ Good pronunciation quality (clear speech recognition)")
+    } else if (userTranscript.length > 20 && wordCount >= 3) {
         score += 5
-        feedback.add("✓ Good speech recognition confidence")
+        feedback.add("⚠ Adequate pronunciation quality")
     }
-    
+
+    // Fluency and naturalness check
+    val avgWordLength = if (wordCount > 0) userTranscript.length.toFloat() / wordCount else 0f
+    if (avgWordLength > 4.0 && wordCount >= 4) {
+        score += 5
+        feedback.add("✓ Good fluency and natural speech patterns")
+    }
+
+    // A2-specific grammar checks
+    val grammarIssues = checkA2Grammar(userTranscript)
+    if (grammarIssues.isEmpty()) {
+        score += 10
+        feedback.add("✓ No major grammar issues detected")
+    } else {
+        score += 5
+        feedback.add("⚠ Minor grammar suggestions: ${grammarIssues.joinToString(", ")}")
+    }
+
     // Ensure score doesn't exceed 100
     score = minOf(score, 100)
-    
+
     return Pair(feedback.joinToString("\n"), score)
+}
+
+internal fun calculateSimilarity(userText: String, modelText: String): Double {
+    val userWords = userText.lowercase().split("\\s+".toRegex()).filter { it.isNotEmpty() && it.length > 1 }
+    val modelWords = modelText.lowercase().split("\\s+".toRegex()).filter { it.isNotEmpty() && it.length > 1 }
+
+    if (userWords.isEmpty() || modelWords.isEmpty()) return 0.0
+
+    val commonWords = userWords.intersect(modelWords.toSet()).size
+    val totalUniqueWords = (userWords + modelWords).distinct().size
+
+    // Jaccard similarity coefficient
+    return if (totalUniqueWords > 0) commonWords.toDouble() / totalUniqueWords else 0.0
+}
+
+internal fun checkA2Grammar(text: String): List<String> {
+    val suggestions = mutableListOf<String>()
+
+    // Check for common A2-level errors
+    val sentences = text.split("[.!?]+".toRegex()).filter { it.trim().isNotEmpty() }
+
+    sentences.forEach { sentence ->
+        // Check for missing articles (common A2 issue)
+        val words = sentence.trim().split("\\s+".toRegex()).filter { it.isNotEmpty() }
+        if (words.size > 3) {
+            val firstWord = words[0].lowercase()
+            // Simple check for nouns that might need articles
+            if (firstWord.matches(Regex("^(haus|schule|arbeit|stadt|zeit|tag|mensch|frau|mann|kind)$")) &&
+                !sentence.contains("der ") && !sentence.contains("die ") && !sentence.contains("das ")) {
+                suggestions.add("Consider using articles (der/die/das)")
+            }
+        }
+
+        // Check for preposition + article contractions (A2 topic)
+        if (sentence.contains(" in der ") || sentence.contains(" in dem ")) {
+            suggestions.add("Try 'im' instead of 'in der/dem' where appropriate")
+        }
+        if (sentence.contains(" an der ") || sentence.contains(" an dem ")) {
+            suggestions.add("Try 'am' instead of 'an der/dem' where appropriate")
+        }
+    }
+
+    // Check for verb conjugation patterns (A2: Perfekt)
+    val perfektVerbs = listOf("gehen", "kommen", "machen", "sagen", "finden", "geben", "sehen")
+    perfektVerbs.forEach { verb ->
+        if (text.contains(verb, ignoreCase = true) &&
+            !text.contains("ge$verb", ignoreCase = true) &&
+            !text.contains("bin", ignoreCase = true) &&
+            !text.contains("habe", ignoreCase = true)) {
+            suggestions.add("Consider using Perfekt tense for '$verb'")
+        }
+    }
+
+    return suggestions.distinct().take(2) // Limit to 2 suggestions
+}
+
+internal fun generatePronunciationTips(text: String): List<String> {
+    val tips = mutableListOf<String>()
+
+    // Check for common German pronunciation challenges
+    val words = text.lowercase().split("\\s+".toRegex()).filter { it.isNotEmpty() }
+
+    words.forEach { word ->
+        when {
+            // German 'ch' sounds
+            word.contains("ach") || word.contains("echt") -> {
+                tips.add("'$word': 'ch' after 'a' sounds like the 'ch' in Scottish 'loch'")
+            }
+            word.contains("ich") || word.contains("licht") -> {
+                tips.add("'$word': 'ch' after 'i' sounds like 'h' in 'huge'")
+            }
+            word.contains("buch") || word.contains("lachen") -> {
+                tips.add("'$word': 'ch' after 'u'/'au' sounds like 'sh' in 'ship'")
+            }
+
+            // German umlauts and special characters
+            word.contains("ä") || word.contains("ae") -> {
+                tips.add("'$word': 'ä' sounds like 'e' in 'bed' (not like 'a' in 'bad')")
+            }
+            word.contains("ö") || word.contains("oe") -> {
+                tips.add("'$word': 'ö' sounds like 'i' in 'bird' with rounded lips")
+            }
+            word.contains("ü") || word.contains("ue") -> {
+                tips.add("'$word': 'ü' sounds like 'ee' in 'see' with rounded lips")
+            }
+
+            // German 'w' and 'v'
+            word.contains("wasser") || word.contains("wie") -> {
+                tips.add("'$word': German 'w' sounds like English 'v'")
+            }
+            word.contains("vater") || word.contains("viel") -> {
+                tips.add("'$word': German 'v' sounds like English 'f'")
+            }
+
+            // German 'r' sound
+            word.contains("rot") || word.contains("recht") -> {
+                tips.add("'$word': German 'r' is rolled or sounds like 'ch' in Scottish")
+            }
+
+            // German 'z' and 'tz'
+            word.contains("zeit") || word.contains("zieht") -> {
+                tips.add("'$word': 'z' sounds like 'ts' in 'cats'")
+            }
+        }
+    }
+
+    // General pronunciation tips based on speech patterns
+    if (words.size > 3) {
+        if (text.contains("sch", ignoreCase = true)) {
+            tips.add("Practice the 'sch' sound - it should sound like 'sh' in 'ship'")
+        }
+
+        if (text.contains("st", ignoreCase = true) || text.contains("sp", ignoreCase = true)) {
+            tips.add("At the beginning of words, 'st'/'sp' sound like 'sht'/'shp'")
+        }
+
+        if (text.contains("ng", ignoreCase = true)) {
+            tips.add("German 'ng' is like English 'ng' in 'sing' (not like 'n'+'g')")
+        }
+    }
+
+    return tips.distinct().take(3) // Limit to 3 tips
 }
