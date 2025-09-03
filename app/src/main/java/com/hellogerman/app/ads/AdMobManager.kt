@@ -108,44 +108,48 @@ fun BannerAd(
     val context = LocalContext.current
     var adLoaded by remember { mutableStateOf(false) }
     var adError by remember { mutableStateOf<String?>(null) }
+    val adView = remember {
+        AdView(context).apply {
+            setAdSize(AdSize.BANNER)
+            this.adUnitId = adUnitId
+        }
+    }
     
-    DisposableEffect(Unit) {
+    DisposableEffect(adUnitId) {
+        adView.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                Log.d("AdMobManager", "Banner ad loaded successfully: $adUnitId")
+                adLoaded = true
+                adError = null
+            }
+            
+            override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                Log.e("AdMobManager", "Banner ad failed to load: ${loadAdError.message}")
+                adError = loadAdError.message
+                adLoaded = false
+            }
+            
+            override fun onAdOpened() {
+                Log.d("AdMobManager", "Banner ad opened")
+            }
+            
+            override fun onAdClicked() {
+                Log.d("AdMobManager", "Banner ad clicked")
+            }
+        }
+
+        adView.loadAd(AdRequest.Builder().build())
+        Log.d("AdMobManager", "Loading banner ad with ID: $adUnitId")
+
         onDispose {
-            // Cleanup if needed
+            adView.adListener = null
+            adView.destroy()
         }
     }
     
     AndroidView(
         modifier = modifier,
-        factory = { context ->
-            AdView(context).apply {
-                setAdSize(AdSize.BANNER)
-                this.adUnitId = adUnitId
-                
-                adListener = object : AdListener() {
-                    override fun onAdLoaded() {
-                        Log.d("AdMobManager", "Banner ad loaded successfully: $adUnitId")
-                        adLoaded = true
-                    }
-                    
-                    override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                        Log.e("AdMobManager", "Banner ad failed to load: ${loadAdError.message}")
-                        adError = loadAdError.message
-                    }
-                    
-                    override fun onAdOpened() {
-                        Log.d("AdMobManager", "Banner ad opened")
-                    }
-                    
-                    override fun onAdClicked() {
-                        Log.d("AdMobManager", "Banner ad clicked")
-                    }
-                }
-                
-                loadAd(AdRequest.Builder().build())
-                Log.d("AdMobManager", "Loading banner ad with ID: $adUnitId")
-            }
-        },
+        factory = { adView },
         update = { adView ->
             // Update if needed
         }
