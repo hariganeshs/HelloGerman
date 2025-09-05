@@ -1,19 +1,12 @@
 package com.hellogerman.app
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Translate
-import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -31,6 +24,11 @@ import androidx.navigation.compose.rememberNavController
 import com.hellogerman.app.ui.navigation.Screen
 import com.hellogerman.app.ui.screens.*
 import com.hellogerman.app.ui.theme.HelloGermanTheme
+import com.hellogerman.app.ui.theme.ResponsiveTheme
+import com.hellogerman.app.ui.utils.ResponsiveUtils
+import com.hellogerman.app.ui.utils.ResponsiveLayout
+import com.hellogerman.app.ui.utils.ResponsiveNavigationLayout
+import com.hellogerman.app.ui.components.ResponsiveNavigation
 import com.hellogerman.app.ui.viewmodel.MainViewModel
 import com.hellogerman.app.ui.viewmodel.ThemeViewModel
 
@@ -42,9 +40,17 @@ class MainActivity : ComponentActivity() {
             val isDarkMode by themeViewModel.isDarkMode.collectAsState()
             
             HelloGermanTheme(darkTheme = isDarkMode) {
-                HelloGermanApp()
+                ResponsiveTheme(darkTheme = isDarkMode) {
+                    HelloGermanApp()
+                }
             }
         }
+    }
+    
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Handle configuration changes (orientation, screen size, etc.)
+        // The UI will automatically recompose due to configChanges in manifest
     }
 }
 
@@ -63,97 +69,22 @@ fun HelloGermanApp() {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
         
-        Scaffold(
+        ResponsiveNavigationLayout(
             bottomBar = {
                 if (currentDestination?.route !in listOf(Screen.Splash.route, Screen.Onboarding.route)) {
-                    NavigationBar(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    ) {
-                        val navItems = listOf(
-                            NavigationItem(
-                                route = Screen.Dashboard.route,
-                                icon = Icons.Default.Home,
-                                label = "Home"
-                            ),
-                            NavigationItem(
-                                route = Screen.Dictionary.route,
-                                icon = Icons.Default.Translate,
-                                label = "Dict"
-                            ),
-                            NavigationItem(
-                                route = Screen.Lesen.route,
-                                icon = Icons.Default.List,
-                                label = "Read"
-                            ),
-                            NavigationItem(
-                                route = Screen.Hoeren.route,
-                                icon = Icons.Default.PlayArrow,
-                                label = "Listen"
-                            ),
-                            NavigationItem(
-                                route = Screen.Schreiben.route,
-                                icon = Icons.Default.Edit,
-                                label = "Write"
-                            ),
-                            NavigationItem(
-                                route = Screen.Grammar.route,
-                                icon = Icons.AutoMirrored.Filled.MenuBook,
-                                label = "Grammar"
-                            )
-                        )
-                        
-                        navItems.forEach { item ->
-                            NavigationBarItem(
-                                icon = { 
-                                    Icon(
-                                        imageVector = item.icon, 
-                                        contentDescription = item.label,
-                                        modifier = Modifier.size(22.dp)
-                                    ) 
-                                },
-                                label = { 
-                                    Text(
-                                        text = item.label,
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Medium,
-                                        maxLines = 1
-                                    ) 
-                                },
-                                selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
-                                onClick = {
-                                    navController.navigate(item.route) {
-                                        // Pop up to the start destination of the graph to
-                                        // avoid building up a large stack of destinations
-                                        // on the back stack as users select items
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
-                                        }
-                                        // Avoid multiple copies of the same destination when
-                                        // reselecting the same item
-                                        launchSingleTop = true
-                                        // Restore state when reselecting a previously selected item
-                                        restoreState = true
-                                    }
-                                },
-                                colors = NavigationBarItemDefaults.colors(
-                                    selectedIconColor = MaterialTheme.colorScheme.primary,
-                                    selectedTextColor = MaterialTheme.colorScheme.primary,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    indicatorColor = MaterialTheme.colorScheme.primaryContainer
-                                )
-                            )
-                        }
-                    }
+                    ResponsiveNavigation(
+                        navController = navController,
+                        currentDestination = currentDestination
+                    )
                 }
             }
-        ) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = if (userProgress?.isOnboarded == true) Screen.Dashboard.route else Screen.Onboarding.route,
-                modifier = Modifier.padding(innerPadding)
-            ) {
+        ) {
+            ResponsiveLayout {
+                NavHost(
+                    navController = navController,
+                    startDestination = if (userProgress?.isOnboarded == true) Screen.Dashboard.route else Screen.Onboarding.route,
+                    modifier = Modifier.fillMaxSize()
+                ) {
                 composable(
                     route = Screen.Splash.route,
                     enterTransition = { fadeIn(animationSpec = tween(300)) },
@@ -338,9 +269,3 @@ fun HelloGermanApp() {
         }
     }
 }
-
-data class NavigationItem(
-    val route: String,
-    val icon: androidx.compose.ui.graphics.vector.ImageVector,
-    val label: String
-)

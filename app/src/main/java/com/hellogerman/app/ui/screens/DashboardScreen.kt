@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -48,6 +50,7 @@ import com.hellogerman.app.R
 import com.hellogerman.app.ads.BannerAd1
 import com.hellogerman.app.data.DatabaseInitializer
 import com.hellogerman.app.utils.NetworkUtils
+import com.hellogerman.app.ui.utils.ResponsiveUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,8 +63,8 @@ fun DashboardScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(ResponsiveUtils.getResponsivePadding()),
+        verticalArrangement = Arrangement.spacedBy(ResponsiveUtils.getResponsiveSpacing())
     ) {
         item {
             // Header
@@ -215,14 +218,34 @@ fun SkillsProgressSection(
         SkillProgress("Grammar", "grammar", GrammarColor, userProgress?.grammarScore ?: 0)
     )
     
-    Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        skills.forEach { skill ->
-            SkillProgressCard(
-                skill = skill,
-                onClick = { onSkillClick(skill.route) }
-            )
+    val isTablet = ResponsiveUtils.isTablet()
+    val isLandscape = ResponsiveUtils.isLandscape()
+    
+    if (isTablet && isLandscape) {
+        // Tablet landscape - show skills in a grid
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(ResponsiveUtils.getResponsiveSpacing()),
+            horizontalArrangement = Arrangement.spacedBy(ResponsiveUtils.getResponsiveSpacing())
+        ) {
+            items(skills) { skill ->
+                SkillProgressCard(
+                    skill = skill,
+                    onClick = { onSkillClick(skill.route) }
+                )
+            }
+        }
+    } else {
+        // Phone or tablet portrait - show skills in a column
+        Column(
+            verticalArrangement = Arrangement.spacedBy(ResponsiveUtils.getResponsiveSpacing())
+        ) {
+            skills.forEach { skill ->
+                SkillProgressCard(
+                    skill = skill,
+                    onClick = { onSkillClick(skill.route) }
+                )
+            }
         }
     }
 }
