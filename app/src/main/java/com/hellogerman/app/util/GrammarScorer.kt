@@ -60,20 +60,20 @@ object GrammarScorer {
 	 * Advanced grammar checking using regex patterns
 	 */
 	fun checkGrammarAnswer(userAnswer: String, correctAnswer: String, grammarRule: GrammarRule): Boolean {
-		val cleanUser = userAnswer.trim().lowercase()
-		val cleanCorrect = correctAnswer.trim().lowercase()
+		val trimmedUser = userAnswer.trim()
+		val trimmedCorrect = correctAnswer.trim()
 		
 		return when (grammarRule) {
-			GrammarRule.EXACT_MATCH -> cleanUser == cleanCorrect
-			GrammarRule.CASE_INSENSITIVE -> cleanUser.equals(cleanCorrect, ignoreCase = true)
-			GrammarRule.ARTICLE_MATCH -> checkArticleMatch(cleanUser, cleanCorrect)
-			GrammarRule.VERB_CONJUGATION -> checkVerbConjugation(cleanUser, cleanCorrect)
-			GrammarRule.ADJECTIVE_DECLENSION -> checkAdjectiveDeclension(cleanUser, cleanCorrect)
+			GrammarRule.EXACT_MATCH -> trimmedUser == trimmedCorrect
+			GrammarRule.CASE_INSENSITIVE -> trimmedUser.equals(trimmedCorrect, ignoreCase = true)
+			GrammarRule.ARTICLE_MATCH -> checkArticleMatch(trimmedUser, trimmedCorrect)
+			GrammarRule.VERB_CONJUGATION -> checkVerbConjugation(trimmedUser, trimmedCorrect)
+			GrammarRule.ADJECTIVE_DECLENSION -> checkAdjectiveDeclension(trimmedUser, trimmedCorrect)
 		}
 	}
 	
 	private fun checkArticleMatch(userAnswer: String, correctAnswer: String): Boolean {
-		val articlePattern = Pattern.compile("\\b(der|die|das|ein|eine|einen|einem|einer|des|dem|den)\\b")
+		val articlePattern = Pattern.compile("\\b(der|die|das|ein|eine|einen|einem|einer|des|dem|den)\\b", Pattern.CASE_INSENSITIVE)
 		val userArticles = extractMatches(articlePattern, userAnswer)
 		val correctArticles = extractMatches(articlePattern, correctAnswer)
 		return userArticles == correctArticles
@@ -81,7 +81,7 @@ object GrammarScorer {
 	
 	private fun checkVerbConjugation(userAnswer: String, correctAnswer: String): Boolean {
 		// Check verb endings for regular patterns
-		val verbEndingPattern = Pattern.compile("\\w+(e|st|t|en|et)\\b")
+		val verbEndingPattern = Pattern.compile("\\w+(e|st|t|en|et)\\b", Pattern.CASE_INSENSITIVE)
 		val userVerbs = extractMatches(verbEndingPattern, userAnswer)
 		val correctVerbs = extractMatches(verbEndingPattern, correctAnswer)
 		return userVerbs == correctVerbs
@@ -89,7 +89,7 @@ object GrammarScorer {
 	
 	private fun checkAdjectiveDeclension(userAnswer: String, correctAnswer: String): Boolean {
 		// Check adjective endings
-		val adjectivePattern = Pattern.compile("\\w+(e|er|es|en|em)\\b")
+		val adjectivePattern = Pattern.compile("\\w+(e|er|es|en|em)\\b", Pattern.CASE_INSENSITIVE)
 		val userAdjectives = extractMatches(adjectivePattern, userAnswer)
 		val correctAdjectives = extractMatches(adjectivePattern, correctAnswer)
 		return userAdjectives == correctAdjectives

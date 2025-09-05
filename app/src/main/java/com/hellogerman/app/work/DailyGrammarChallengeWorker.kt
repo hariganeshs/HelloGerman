@@ -36,11 +36,15 @@ class DailyGrammarChallengeWorker(
 						progress
 					}
 					daysSinceLastStudy == 1 -> {
-						// Studied yesterday, maintain streak
-						progress.copy(currentStreak = progress.currentStreak)
+						// Consecutive day: increment streak and update longest if needed
+						val newStreak = progress.currentStreak + 1
+						progress.copy(
+							currentStreak = newStreak,
+							longestStreak = maxOf(progress.longestStreak, newStreak)
+						)
 					}
 					else -> {
-						// Streak broken, reset to 0
+						// Streak broken, reset to 0 and preserve longest
 						progress.copy(
 							currentStreak = 0,
 							longestStreak = maxOf(progress.longestStreak, progress.currentStreak)
