@@ -1,6 +1,15 @@
 package com.hellogerman.app.data
 
 import android.content.Context
+import com.google.gson.Gson
+import com.hellogerman.app.data.entities.HoerenContent
+import com.hellogerman.app.data.entities.LesenContent
+import com.hellogerman.app.data.entities.Lesson
+import com.hellogerman.app.data.entities.Question
+import com.hellogerman.app.data.entities.QuestionType
+import com.hellogerman.app.data.entities.SchreibenContent
+import com.hellogerman.app.data.entities.SprechenContent
+import com.hellogerman.app.data.entities.VocabularyItem
 import com.hellogerman.app.data.repository.HelloGermanRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,13 +33,23 @@ object DatabaseInitializer {
             // Check existing lessons and force reload if we have the new expanded content
             val existingLessons = repository.getAllLessons()
             val a1Lessons = existingLessons.filter { it.level == "A1" }
+            val b1LesenExisting = existingLessons.count { it.level == "B1" && it.skill == "lesen" }
+            val b1HoerenExisting = existingLessons.count { it.level == "B1" && it.skill == "hoeren" }
+            val b1SchreibenExisting = existingLessons.count { it.level == "B1" && it.skill == "schreiben" }
+            val b1SprechenExisting = existingLessons.count { it.level == "B1" && it.skill == "sprechen" }
 
             // Force reload if we don't have enough A1 lessons (our expanded content should have 104+ A1 lessons)
             val shouldForceReload = existingLessons.isEmpty() ||
                                    a1Lessons.size < 50 || // We should have many more than 50 A1 lessons now
-                                   !existingLessons.any { it.source == "Goethe" } || // Check for new source field
+                                   // Ensure all sources exist
+                                   !existingLessons.any { it.source == "Goethe" } ||
                                    !existingLessons.any { it.source == "TELC" } ||
-                                   !existingLessons.any { it.source == "ÖSD" }
+                                   !existingLessons.any { it.source == "ÖSD" } ||
+                                   // New: ensure expanded B1 content is present (>= 25 per skill)
+                                   b1LesenExisting < 25 ||
+                                   b1HoerenExisting < 25 ||
+                                   b1SchreibenExisting < 25 ||
+                                   b1SprechenExisting < 25
 
             if (shouldForceReload) {
                 // Clear existing lessons and reload with expanded content

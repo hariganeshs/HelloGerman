@@ -142,7 +142,6 @@ fun BannerAd(
         Log.d("AdMobManager", "Loading banner ad with ID: $adUnitId")
 
         onDispose {
-            adView.adListener = null
             adView.destroy()
         }
     }

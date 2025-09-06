@@ -4,6 +4,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.hellogerman.app.ui.utils.ResponsiveUtils
 
@@ -74,8 +75,10 @@ fun ResponsiveTheme(
         else -> MaterialTheme.typography
     }
     
+    val context = LocalContext.current
+
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+        colorScheme = if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context),
         typography = typography,
         shapes = shapes,
         content = content

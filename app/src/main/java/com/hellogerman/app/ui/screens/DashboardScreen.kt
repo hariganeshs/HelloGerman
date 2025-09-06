@@ -228,7 +228,8 @@ fun SkillsProgressSection(
             verticalArrangement = Arrangement.spacedBy(ResponsiveUtils.getResponsiveSpacing()),
             horizontalArrangement = Arrangement.spacedBy(ResponsiveUtils.getResponsiveSpacing())
         ) {
-            items(skills) { skill ->
+            items(skills.size) { index ->
+                val skill = skills[index]
                 SkillProgressCard(
                     skill = skill,
                     onClick = { onSkillClick(skill.route) }
