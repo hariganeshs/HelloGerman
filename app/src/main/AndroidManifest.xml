@@ -16,6 +16,52 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Screen support declarations -->
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:anyDensity="true"
+        android:requiresSmallestWidthDp="320"
+        android:compatibleWidthLimitDp="480"
+        android:largestWidthLimitDp="840" />
+
+    <!-- Screen density support -->
+    <compatible-screens>
+        <!-- All small size screens -->
+        <screen android:screenSize="small" android:screenDensity="ldpi" />
+        <screen android:screenSize="small" android:screenDensity="mdpi" />
+        <screen android:screenSize="small" android:screenDensity="hdpi" />
+        <screen android:screenSize="small" android:screenDensity="xhdpi" />
+        <screen android:screenSize="small" android:screenDensity="xxhdpi" />
+        <screen android:screenSize="small" android:screenDensity="xxxhdpi" />
+        
+        <!-- All normal size screens -->
+        <screen android:screenSize="normal" android:screenDensity="ldpi" />
+        <screen android:screenSize="normal" android:screenDensity="mdpi" />
+        <screen android:screenSize="normal" android:screenDensity="hdpi" />
+        <screen android:screenSize="normal" android:screenDensity="xhdpi" />
+        <screen android:screenSize="normal" android:screenDensity="xxhdpi" />
+        <screen android:screenSize="normal" android:screenDensity="xxxhdpi" />
+        
+        <!-- All large size screens -->
+        <screen android:screenSize="large" android:screenDensity="ldpi" />
+        <screen android:screenSize="large" android:screenDensity="mdpi" />
+        <screen android:screenSize="large" android:screenDensity="hdpi" />
+        <screen android:screenSize="large" android:screenDensity="xhdpi" />
+        <screen android:screenSize="large" android:screenDensity="xxhdpi" />
+        <screen android:screenSize="large" android:screenDensity="xxxhdpi" />
+        
+        <!-- All xlarge size screens -->
+        <screen android:screenSize="xlarge" android:screenDensity="ldpi" />
+        <screen android:screenSize="xlarge" android:screenDensity="mdpi" />
+        <screen android:screenSize="xlarge" android:screenDensity="hdpi" />
+        <screen android:screenSize="xlarge" android:screenDensity="xhdpi" />
+        <screen android:screenSize="xlarge" android:screenDensity="xxhdpi" />
+        <screen android:screenSize="xlarge" android:screenDensity="xxxhdpi" />
+    </compatible-screens>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -25,7 +71,10 @@
         android:roundIcon="@mipmap/ic_launcher_custom"
         android:supportsRtl="true"
         android:theme="@style/Theme.HelloGerman"
-        android:name=".HelloGermanApplication">
+        android:name=".HelloGermanApplication"
+        android:largeHeap="true"
+        android:hardwareAccelerated="true"
+        android:extractNativeLibs="false">
 
         <!-- AdMob App ID -->
         <meta-data
@@ -40,7 +89,10 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.HelloGerman"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode">
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|density|smallestScreenSize|layoutDirection"
+            android:screenOrientation="unspecified"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
