@@ -4,12 +4,16 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowCompat
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,6 +39,10 @@ import com.hellogerman.app.ui.viewmodel.ThemeViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Enable edge-to-edge for Android 15 compatibility
+        enableEdgeToEdge()
+        
         setContent {
             val themeViewModel: ThemeViewModel = viewModel()
             val isDarkMode by themeViewModel.isDarkMode.collectAsState()
@@ -79,7 +87,9 @@ fun HelloGermanApp() {
                 }
             }
         ) {
-            ResponsiveLayout {
+            ResponsiveLayout(
+                modifier = Modifier.systemBarsPadding()
+            ) {
                 NavHost(
                     navController = navController,
                     startDestination = if (userProgress?.isOnboarded == true) Screen.Dashboard.route else Screen.Onboarding.route,
