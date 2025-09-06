@@ -28,6 +28,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         
+        // Screen density support for all screen types
+        ndk {
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
+        
         // Room schema location
         javaCompileOptions {
             annotationProcessorOptions {
@@ -70,6 +75,10 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+        // Memory optimization for 16kb page support
+        jniLibs {
+            useLegacyPackaging = false
         }
     }
 }
