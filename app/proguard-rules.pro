@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep edge-to-edge related classes for Android 15 compatibility
+-keep class androidx.activity.ComponentActivity { *; }
+-keep class androidx.core.view.WindowCompat { *; }
+-keep class androidx.activity.enableEdgeToEdge { *; }
+
+# Keep system UI related classes
+-keep class android.view.WindowInsets { *; }
+-keep class androidx.compose.foundation.layout.* { *; }

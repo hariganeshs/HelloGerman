@@ -71,7 +71,14 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+        // 16 KB page size support for Android 15
+        jniLibs {
+            useLegacyPackaging = false
+        }
     }
+    
+    // Configure NDK for 16 KB page size support
+    ndkVersion = "26.1.10909125"
 }
 
 dependencies {
@@ -79,6 +86,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    
+    // Edge-to-edge support
+    implementation("androidx.activity:activity-compose:1.10.1")
+    implementation("androidx.core:core-ktx:1.17.0")
     
     // Compose
     implementation(platform(libs.androidx.compose.bom))
