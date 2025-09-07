@@ -2909,6 +2909,1090 @@ Die Herausforderung besteht darin, die Vorteile der Globalisierung zu nutzen, oh
                         VocabularyItem("Identität", "identity", "Die Sprache ist Teil der Identität.")
                     )
                 ))
+
+                // Additional B2 Reading Lessons (1-10)
+                lessons.add(createLesenLesson(
+                    title = "B2 Goethe Prüfung - Leseverstehen Teil 2",
+                    description = "Goethe-Zertifikat B2 Reading Comprehension - Environmental issues",
+                    level = level,
+                    orderIndex = 6,
+                    text = """Lesen Sie den folgenden Text über Umweltschutz und lösen Sie die Aufgaben.
+
+Nachhaltigkeit in der modernen Gesellschaft
+
+Der Begriff der Nachhaltigkeit hat in den letzten Jahrzehnten eine zentrale Bedeutung in der gesellschaftlichen Diskussion erlangt. Ursprünglich aus der Forstwirtschaft stammend, beschreibt Nachhaltigkeit heute ein umfassendes Konzept, das ökologische, ökonomische und soziale Aspekte miteinander verbindet.
+
+Die Herausforderungen des 21. Jahrhunderts erfordern ein Umdenken in allen Bereichen des Lebens. Der Klimawandel, die Ressourcenknappheit und die wachsende Weltbevölkerung stellen die Menschheit vor bisher unbekannte Probleme. Gleichzeitig bieten technologische Innovationen neue Möglichkeiten, diese Herausforderungen zu bewältigen.
+
+In Deutschland hat sich eine starke Umweltbewegung entwickelt, die sowohl auf politischer als auch auf gesellschaftlicher Ebene aktiv ist. Unternehmen werden zunehmend dazu verpflichtet, nachhaltige Geschäftspraktiken zu implementieren. Verbraucher achten immer mehr auf umweltfreundliche Produkte und Dienstleistungen.
+
+Die Energiewende ist ein Beispiel für erfolgreiche Nachhaltigkeitspolitik. Der Ausbau erneuerbarer Energien hat Deutschland zu einem Vorreiter in der Klimapolitik gemacht. Wind- und Solarenergie decken mittlerweile einen erheblichen Teil des deutschen Energiebedarfs ab.
+
+Dennoch bleibt noch viel zu tun. Die Mobilität, die Landwirtschaft und der Konsum müssen nachhaltiger gestaltet werden. Jeder Einzelne kann durch bewusste Entscheidungen einen Beitrag zum Umweltschutz leisten.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Woher stammt der Begriff der Nachhaltigkeit ursprünglich?",
+                            options = listOf("Aus der Landwirtschaft", "Aus der Forstwirtschaft", "Aus der Industrie", "Aus der Wissenschaft"),
+                            correctAnswer = "Aus der Forstwirtschaft",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Welche drei Aspekte verbindet das Konzept der Nachhaltigkeit?",
+                            options = listOf("Ökologische, ökonomische und soziale Aspekte", "Politische, wirtschaftliche und kulturelle Aspekte", "Technische, wissenschaftliche und praktische Aspekte", "Historische, gegenwärtige und zukünftige Aspekte"),
+                            correctAnswer = "Ökologische, ökonomische und soziale Aspekte",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was ist ein Beispiel für erfolgreiche Nachhaltigkeitspolitik?",
+                            options = null,
+                            correctAnswer = "Die Energiewende",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Welche Energiequellen decken einen erheblichen Teil des deutschen Energiebedarfs ab?",
+                            options = listOf("Kernenergie und Kohle", "Wind- und Solarenergie", "Gas und Öl", "Wasserkraft und Biomasse"),
+                            correctAnswer = "Wind- und Solarenergie",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was müssen nachhaltiger gestaltet werden?",
+                            options = listOf("Nur die Industrie", "Nur der Verkehr", "Mobilität, Landwirtschaft und Konsum", "Nur die Energieversorgung"),
+                            correctAnswer = "Mobilität, Landwirtschaft und Konsum",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Nachhaltigkeit", "sustainability", "Nachhaltigkeit ist wichtig für die Zukunft."),
+                        VocabularyItem("Ressourcenknappheit", "resource scarcity", "Ressourcenknappheit ist ein Problem."),
+                        VocabularyItem("Energiewende", "energy transition", "Die Energiewende ist erfolgreich."),
+                        VocabularyItem("erneuerbare Energien", "renewable energies", "Erneuerbare Energien sind umweltfreundlich."),
+                        VocabularyItem("Umweltbewegung", "environmental movement", "Die Umweltbewegung ist stark.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 TELC Prüfung - Leseverstehen",
+                    description = "TELC B2 Reading Comprehension - Technology and society",
+                    level = level,
+                    orderIndex = 7,
+                    text = """Lesen Sie den folgenden Text über künstliche Intelligenz und lösen Sie die Aufgaben.
+
+Künstliche Intelligenz: Chance oder Bedrohung?
+
+Die Entwicklung der künstlichen Intelligenz (KI) schreitet rasant voran und verändert bereits heute viele Bereiche unseres Lebens. Von der Medizin über den Verkehr bis hin zur Bildung – KI-Systeme werden immer leistungsfähiger und allgegenwärtiger. Doch diese Entwicklung wirft auch wichtige Fragen auf.
+
+Befürworter der KI argumentieren, dass diese Technologie enorme Chancen bietet. In der Medizin können KI-Systeme bei der Diagnose von Krankheiten helfen und personalisierte Behandlungspläne erstellen. Im Verkehr versprechen autonome Fahrzeuge mehr Sicherheit und Effizienz. In der Bildung ermöglicht KI personalisiertes Lernen, das auf die individuellen Bedürfnisse der Schüler zugeschnitten ist.
+
+Kritiker warnen jedoch vor den Risiken. Sie befürchten, dass KI-Systeme Arbeitsplätze ersetzen könnten, besonders in Bereichen, die routinemäßige Tätigkeiten umfassen. Zudem gibt es Bedenken hinsichtlich der Datensicherheit und des Datenschutzes. Die Entscheidungen von KI-Systemen sind oft schwer nachvollziehbar, was zu Problemen bei der Verantwortlichkeit führen kann.
+
+Die Gesellschaft steht vor der Herausforderung, die Vorteile der KI zu nutzen und gleichzeitig die Risiken zu minimieren. Dazu sind klare Regulierungen und ethische Richtlinien notwendig. Die Bildung muss angepasst werden, um Menschen auf eine Welt mit KI vorzubereiten.
+
+Die Zukunft wird zeigen, ob die Menschheit es schafft, KI als Werkzeug für den Fortschritt zu nutzen, ohne dabei ihre eigenen Werte und Freiheiten zu gefährden.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "In welchen Bereichen werden KI-Systeme bereits eingesetzt?",
+                            options = listOf("Nur in der Medizin", "Nur im Verkehr", "Medizin, Verkehr und Bildung", "Nur in der Bildung"),
+                            correctAnswer = "Medizin, Verkehr und Bildung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was versprechen autonome Fahrzeuge?",
+                            options = listOf("Niedrigere Kosten", "Mehr Sicherheit und Effizienz", "Schnellere Geschwindigkeit", "Weniger Staus"),
+                            correctAnswer = "Mehr Sicherheit und Effizienz",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was befürchten Kritiker der KI?",
+                            options = null,
+                            correctAnswer = "dass KI-Systeme Arbeitsplätze ersetzen könnten",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was ist notwendig, um die Risiken der KI zu minimieren?",
+                            options = listOf("Mehr Technologie", "Klare Regulierungen und ethische Richtlinien", "Weniger Forschung", "Mehr Investitionen"),
+                            correctAnswer = "Klare Regulierungen und ethische Richtlinien",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was muss angepasst werden, um Menschen auf KI vorzubereiten?",
+                            options = listOf("Die Technologie", "Die Bildung", "Die Wirtschaft", "Die Politik"),
+                            correctAnswer = "Die Bildung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("künstliche Intelligenz", "artificial intelligence", "KI verändert unser Leben."),
+                        VocabularyItem("autonome Fahrzeuge", "autonomous vehicles", "Autonome Fahrzeuge sind die Zukunft."),
+                        VocabularyItem("personalisiertes Lernen", "personalized learning", "Personalisiertes Lernen ist effektiv."),
+                        VocabularyItem("Datensicherheit", "data security", "Datensicherheit ist wichtig."),
+                        VocabularyItem("Verantwortlichkeit", "accountability", "Verantwortlichkeit ist ein Problem.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 Goethe Prüfung - Leseverstehen Teil 3",
+                    description = "Goethe-Zertifikat B2 Reading Comprehension - Migration and integration",
+                    level = level,
+                    orderIndex = 8,
+                    text = """Lesen Sie den folgenden Text über Migration und Integration und lösen Sie die Aufgaben.
+
+Migration und Integration in Deutschland
+
+Deutschland ist seit Jahrzehnten ein Einwanderungsland. Millionen von Menschen aus verschiedenen Ländern haben hier eine neue Heimat gefunden. Die Integration dieser Menschen in die deutsche Gesellschaft ist eine der wichtigsten Aufgaben der Gegenwart.
+
+Die Gründe für Migration sind vielfältig. Manche Menschen fliehen vor Krieg und Verfolgung, andere suchen bessere wirtschaftliche Möglichkeiten. Wieder andere kommen, um zu studieren oder zu arbeiten. Jeder Fall ist einzigartig und verdient Respekt und Verständnis.
+
+Die Integration ist ein wechselseitiger Prozess. Einerseits müssen sich die Zugewanderten an die deutsche Gesellschaft anpassen, die deutsche Sprache lernen und die Gesetze respektieren. Andererseits muss die Gesellschaft offen sein für neue Kulturen und Traditionen. Vielfalt kann eine Bereicherung sein.
+
+Die deutsche Sprache ist der Schlüssel zur Integration. Ohne Sprachkenntnisse ist es schwierig, Arbeit zu finden, Kontakte zu knüpfen und am gesellschaftlichen Leben teilzunehmen. Deshalb gibt es zahlreiche Sprachkurse und Integrationsprogramme.
+
+Arbeit ist ein weiterer wichtiger Faktor. Wer eine Arbeit hat, kann sich selbst versorgen und fühlt sich als Teil der Gesellschaft. Viele Unternehmen haben erkannt, dass Vielfalt in der Belegschaft ein Vorteil ist.
+
+Trotz aller Bemühungen gibt es noch Herausforderungen. Diskriminierung, Vorurteile und kulturelle Missverständnisse können die Integration erschweren. Es ist wichtig, dass alle Beteiligten geduldig und tolerant miteinander umgehen.
+
+Die Integration ist ein langfristiger Prozess, der Generationen dauern kann. Aber wenn sie gelingt, profitieren alle davon – die Zugewanderten, die deutsche Gesellschaft und die Wirtschaft.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was ist Deutschland seit Jahrzehnten?",
+                            options = listOf("Ein Auswanderungsland", "Ein Einwanderungsland", "Ein neutrales Land", "Ein isoliertes Land"),
+                            correctAnswer = "Ein Einwanderungsland",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was ist die Integration?",
+                            options = listOf("Ein einseitiger Prozess", "Ein wechselseitiger Prozess", "Ein automatischer Prozess", "Ein einfacher Prozess"),
+                            correctAnswer = "Ein wechselseitiger Prozess",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was ist der Schlüssel zur Integration?",
+                            options = null,
+                            correctAnswer = "die deutsche Sprache",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was haben viele Unternehmen erkannt?",
+                            options = listOf("Dass Vielfalt ein Nachteil ist", "Dass Vielfalt in der Belegschaft ein Vorteil ist", "Dass Einheitlichkeit wichtig ist", "Dass Tradition wichtig ist"),
+                            correctAnswer = "Dass Vielfalt in der Belegschaft ein Vorteil ist",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was kann die Integration erschweren?",
+                            options = listOf("Nur Sprachprobleme", "Nur kulturelle Unterschiede", "Diskriminierung, Vorurteile und kulturelle Missverständnisse", "Nur wirtschaftliche Probleme"),
+                            correctAnswer = "Diskriminierung, Vorurteile und kulturelle Missverständnisse",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Einwanderungsland", "immigration country", "Deutschland ist ein Einwanderungsland."),
+                        VocabularyItem("Integration", "integration", "Integration ist wichtig."),
+                        VocabularyItem("wechselseitig", "mutual", "Integration ist wechselseitig."),
+                        VocabularyItem("Vielfalt", "diversity", "Vielfalt ist eine Bereicherung."),
+                        VocabularyItem("Diskriminierung", "discrimination", "Diskriminierung ist ein Problem.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 TELC Prüfung - Leseverstehen Teil 2",
+                    description = "TELC B2 Reading Comprehension - Health and lifestyle",
+                    level = level,
+                    orderIndex = 9,
+                    text = """Lesen Sie den folgenden Text über Gesundheit und Lebensstil und lösen Sie die Aufgaben.
+
+Gesundheit im digitalen Zeitalter
+
+Die Digitalisierung hat nicht nur die Arbeitswelt, sondern auch den Gesundheitssektor grundlegend verändert. Telemedizin, Gesundheits-Apps und digitale Gesundheitsdaten eröffnen neue Möglichkeiten, bergen aber auch neue Herausforderungen.
+
+Ein großer Vorteil der digitalen Gesundheitstechnologien ist die verbesserte Zugänglichkeit medizinischer Versorgung. Menschen in ländlichen Gebieten können über Videosprechstunden mit Ärzten kommunizieren, ohne lange Wege auf sich nehmen zu müssen. Gesundheits-Apps helfen dabei, den eigenen Gesundheitszustand zu überwachen und gesunde Gewohnheiten zu entwickeln.
+
+Die Prävention gewinnt an Bedeutung. Durch die kontinuierliche Überwachung von Vitalparametern können Krankheiten früher erkannt werden. Wearables wie Fitness-Tracker und Smartwatches motivieren Menschen zu mehr Bewegung und einem gesünderen Lebensstil.
+
+Doch es gibt auch Bedenken. Der Schutz persönlicher Gesundheitsdaten ist ein wichtiges Thema. Datenschutz und Datensicherheit müssen gewährleistet sein, damit Patienten Vertrauen in die digitalen Technologien haben können. Zudem besteht die Gefahr, dass Menschen sich zu sehr auf Technologie verlassen und den direkten Kontakt zu Ärzten verlieren.
+
+Die Zukunft der Gesundheit liegt wahrscheinlich in einer Kombination aus traditioneller Medizin und digitalen Innovationen. Wichtig ist, dass die Technologie den Menschen dient und nicht umgekehrt. Ärzte müssen lernen, mit den neuen Technologien umzugehen, und Patienten müssen aufgeklärt werden über die Möglichkeiten und Grenzen der digitalen Gesundheit.
+
+Gesundheit ist ein Menschenrecht, und digitale Technologien können dazu beitragen, dieses Recht für alle Menschen zugänglicher zu machen.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was hat die Digitalisierung verändert?",
+                            options = listOf("Nur die Arbeitswelt", "Nur den Gesundheitssektor", "Arbeitswelt und Gesundheitssektor", "Nur die Bildung"),
+                            correctAnswer = "Arbeitswelt und Gesundheitssektor",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was ist ein Vorteil der digitalen Gesundheitstechnologien?",
+                            options = listOf("Niedrigere Kosten", "Verbesserte Zugänglichkeit medizinischer Versorgung", "Schnellere Behandlung", "Weniger Medikamente"),
+                            correctAnswer = "Verbesserte Zugänglichkeit medizinischer Versorgung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was gewinnt an Bedeutung?",
+                            options = null,
+                            correctAnswer = "Die Prävention",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was ist ein wichtiges Thema beim Schutz persönlicher Daten?",
+                            options = listOf("Nur Datensicherheit", "Nur Datenschutz", "Datenschutz und Datensicherheit", "Nur Verschlüsselung"),
+                            correctAnswer = "Datenschutz und Datensicherheit",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Worin liegt wahrscheinlich die Zukunft der Gesundheit?",
+                            options = listOf("Nur in traditioneller Medizin", "Nur in digitalen Innovationen", "In einer Kombination aus traditioneller Medizin und digitalen Innovationen", "In der Selbstbehandlung"),
+                            correctAnswer = "In einer Kombination aus traditioneller Medizin und digitalen Innovationen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Telemedizin", "telemedicine", "Telemedizin ist praktisch."),
+                        VocabularyItem("Gesundheits-Apps", "health apps", "Gesundheits-Apps sind nützlich."),
+                        VocabularyItem("Prävention", "prevention", "Prävention ist wichtig."),
+                        VocabularyItem("Wearables", "wearables", "Wearables sind beliebt."),
+                        VocabularyItem("Vitalparameter", "vital parameters", "Vitalparameter werden überwacht.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 Goethe Prüfung - Leseverstehen Teil 4",
+                    description = "Goethe-Zertifikat B2 Reading Comprehension - Education and future",
+                    level = level,
+                    orderIndex = 10,
+                    text = """Lesen Sie den folgenden Text über Bildung und Zukunft und lösen Sie die Aufgaben.
+
+Bildung im 21. Jahrhundert
+
+Die Anforderungen an das Bildungssystem haben sich in den letzten Jahrzehnten drastisch verändert. Während früher das Auswendiglernen von Fakten im Vordergrund stand, sind heute Kompetenzen wie kritisches Denken, Kreativität und Zusammenarbeit gefragt.
+
+Die Digitalisierung hat die Art und Weise, wie wir lernen, revolutioniert. Online-Kurse, interaktive Lernplattformen und virtuelle Klassenzimmer ermöglichen flexibles und personalisiertes Lernen. Schüler können in ihrem eigenen Tempo lernen und auf verschiedene Lernmaterialien zugreifen.
+
+Doch die Digitalisierung bringt auch Herausforderungen mit sich. Nicht alle Schüler haben gleichen Zugang zu digitalen Geräten und schnellem Internet. Die digitale Spaltung kann bestehende Ungleichheiten verstärken. Zudem müssen Lehrer lernen, die neuen Technologien effektiv im Unterricht einzusetzen.
+
+Die Zukunft der Bildung wird wahrscheinlich hybrid sein – eine Kombination aus traditionellem Präsenzunterricht und digitalen Elementen. Wichtig ist, dass die Technologie das Lernen unterstützt und nicht ersetzt. Der direkte Kontakt zwischen Lehrern und Schülern bleibt unverzichtbar.
+
+Bildung muss auch auf die Herausforderungen der Zukunft vorbereiten. Themen wie Klimawandel, künstliche Intelligenz und globale Vernetzung müssen in den Lehrplan integriert werden. Schüler müssen lernen, mit Unsicherheit und Komplexität umzugehen.
+
+Die Rolle der Lehrer verändert sich. Sie werden zu Lernbegleitern, die Schülern helfen, selbstständig zu lernen und ihre eigenen Interessen zu verfolgen. Gleichzeitig müssen sie sicherstellen, dass alle Schüler die notwendigen Grundkompetenzen erwerben.
+
+Bildung ist der Schlüssel zu einer besseren Zukunft. Investitionen in Bildung sind Investitionen in die Zukunft der Gesellschaft.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was stand früher im Vordergrund der Bildung?",
+                            options = listOf("Kritisches Denken", "Das Auswendiglernen von Fakten", "Kreativität", "Zusammenarbeit"),
+                            correctAnswer = "Das Auswendiglernen von Fakten",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was ermöglicht die Digitalisierung?",
+                            options = listOf("Nur traditionelles Lernen", "Flexibles und personalisiertes Lernen", "Nur Online-Lernen", "Nur Gruppenlernen"),
+                            correctAnswer = "Flexibles und personalisiertes Lernen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was kann die digitale Spaltung verstärken?",
+                            options = null,
+                            correctAnswer = "bestehende Ungleichheiten",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was wird wahrscheinlich die Zukunft der Bildung sein?",
+                            options = listOf("Nur digital", "Nur traditionell", "Hybrid – eine Kombination aus traditionellem und digitalem Lernen", "Nur online"),
+                            correctAnswer = "Hybrid – eine Kombination aus traditionellem und digitalem Lernen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was verändert sich bei der Rolle der Lehrer?",
+                            options = listOf("Sie werden zu Wissensvermittlern", "Sie werden zu Lernbegleitern", "Sie werden zu Aufsehern", "Sie werden zu Bewertern"),
+                            correctAnswer = "Sie werden zu Lernbegleitern",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Kompetenzen", "competencies", "Kompetenzen sind wichtig."),
+                        VocabularyItem("kritisches Denken", "critical thinking", "Kritisches Denken ist gefragt."),
+                        VocabularyItem("digitale Spaltung", "digital divide", "Die digitale Spaltung ist ein Problem."),
+                        VocabularyItem("hybrid", "hybrid", "Die Zukunft ist hybrid."),
+                        VocabularyItem("Lernbegleiter", "learning companion", "Lehrer werden zu Lernbegleitern.")
+                    )
+                ))
+
+                // Additional B2 Reading Lessons (11-20)
+                lessons.add(createLesenLesson(
+                    title = "B2 TELC Prüfung - Leseverstehen Teil 3",
+                    description = "TELC B2 Reading Comprehension - Work and career",
+                    level = level,
+                    orderIndex = 11,
+                    text = """Lesen Sie den folgenden Text über Arbeit und Karriere und lösen Sie die Aufgaben.
+
+Die Zukunft der Arbeit
+
+Die Arbeitswelt befindet sich in einem tiefgreifenden Wandel. Digitalisierung, Automatisierung und Globalisierung verändern nicht nur die Art, wie wir arbeiten, sondern auch die Anforderungen an Arbeitnehmer und Arbeitgeber.
+
+Traditionelle Berufe verschwinden, während neue entstehen. Jobs, die routinemäßige Tätigkeiten umfassen, werden zunehmend von Maschinen und Algorithmen übernommen. Gleichzeitig entstehen neue Berufsfelder in den Bereichen Digitalisierung, Nachhaltigkeit und Kreativität.
+
+Die Anforderungen an Arbeitnehmer haben sich verändert. Neben fachlichen Kompetenzen werden heute auch sogenannte Soft Skills immer wichtiger. Kreativität, kritisches Denken, Teamfähigkeit und emotionale Intelligenz sind gefragt. Die Fähigkeit, sich kontinuierlich weiterzubilden, wird zur Grundvoraussetzung für beruflichen Erfolg.
+
+Flexibilität ist ein weiterer wichtiger Faktor. Homeoffice, flexible Arbeitszeiten und projektbasierte Zusammenarbeit werden zur Norm. Arbeitnehmer müssen lernen, in virtuellen Teams zu arbeiten und sich schnell an neue Technologien anzupassen.
+
+Für Arbeitgeber bedeutet dies neue Herausforderungen. Sie müssen attraktive Arbeitsbedingungen schaffen, um qualifizierte Mitarbeiter zu gewinnen und zu halten. Work-Life-Balance, Weiterbildungsmöglichkeiten und eine positive Unternehmenskultur werden immer wichtiger.
+
+Die Zukunft der Arbeit wird von der Fähigkeit abhängen, sich an Veränderungen anzupassen und lebenslang zu lernen. Wer bereit ist, sich kontinuierlich weiterzuentwickeln, wird auch in der neuen Arbeitswelt erfolgreich sein.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was verändert die Arbeitswelt?",
+                            options = listOf("Nur Digitalisierung", "Nur Automatisierung", "Digitalisierung, Automatisierung und Globalisierung", "Nur Globalisierung"),
+                            correctAnswer = "Digitalisierung, Automatisierung und Globalisierung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Welche Jobs werden von Maschinen übernommen?",
+                            options = listOf("Alle Jobs", "Jobs mit routinemäßigen Tätigkeiten", "Nur kreative Jobs", "Nur technische Jobs"),
+                            correctAnswer = "Jobs mit routinemäßigen Tätigkeiten",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was werden heute immer wichtiger?",
+                            options = null,
+                            correctAnswer = "Soft Skills",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was wird zur Norm?",
+                            options = listOf("Nur Büroarbeit", "Homeoffice, flexible Arbeitszeiten und projektbasierte Zusammenarbeit", "Nur Vollzeitstellen", "Nur Teilzeitstellen"),
+                            correctAnswer = "Homeoffice, flexible Arbeitszeiten und projektbasierte Zusammenarbeit",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was wird zur Grundvoraussetzung für beruflichen Erfolg?",
+                            options = listOf("Nur Erfahrung", "Die Fähigkeit, sich kontinuierlich weiterzubilden", "Nur gute Noten", "Nur Kontakte"),
+                            correctAnswer = "Die Fähigkeit, sich kontinuierlich weiterzubilden",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Automatisierung", "automation", "Automatisierung verändert die Arbeit."),
+                        VocabularyItem("Soft Skills", "soft skills", "Soft Skills sind wichtig."),
+                        VocabularyItem("Teamfähigkeit", "teamwork skills", "Teamfähigkeit ist gefragt."),
+                        VocabularyItem("Work-Life-Balance", "work-life balance", "Work-Life-Balance ist wichtig."),
+                        VocabularyItem("Unternehmenskultur", "corporate culture", "Unternehmenskultur ist wichtig.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 Goethe Prüfung - Leseverstehen Teil 5",
+                    description = "Goethe-Zertifikat B2 Reading Comprehension - Social media and communication",
+                    level = level,
+                    orderIndex = 12,
+                    text = """Lesen Sie den folgenden Text über soziale Medien und Kommunikation und lösen Sie die Aufgaben.
+
+Soziale Medien: Verbindung oder Isolation?
+
+Soziale Medien haben die Art und Weise, wie wir kommunizieren, revolutioniert. Milliarden von Menschen weltweit nutzen Plattformen wie Facebook, Instagram, Twitter und TikTok, um sich zu vernetzen, Informationen auszutauschen und sich auszudrücken.
+
+Die Vorteile der sozialen Medien sind offensichtlich. Sie ermöglichen es, mit Menschen auf der ganzen Welt in Kontakt zu bleiben, auch wenn sie weit entfernt leben. Sie bieten eine Plattform für den Austausch von Ideen, die Organisation von Veranstaltungen und die Verbreitung von Informationen. Für viele Menschen sind sie ein wichtiges Werkzeug für berufliche Netzwerke und Marketing.
+
+Doch es gibt auch Schattenseiten. Studien zeigen, dass exzessive Nutzung sozialer Medien zu psychischen Problemen führen kann. Der ständige Vergleich mit anderen, die Angst, etwas zu verpassen (FOMO), und die Sucht nach Likes und Anerkennung können das Selbstwertgefühl beeinträchtigen.
+
+Ein weiteres Problem ist die Verbreitung von Falschinformationen. Fake News verbreiten sich in sozialen Medien oft schneller als echte Nachrichten. Algorithmen verstärken oft extreme Meinungen und schaffen sogenannte Filterblasen, in denen Menschen nur noch Informationen sehen, die ihre bestehenden Ansichten bestätigen.
+
+Die Privatsphäre ist ein weiteres wichtiges Thema. Viele Nutzer sind sich nicht bewusst, wie viele persönliche Daten sie preisgeben und wie diese von Unternehmen genutzt werden. Datenschutz und der Schutz der Privatsphäre werden immer wichtiger.
+
+Trotz aller Probleme sind soziale Medien aus dem modernen Leben nicht mehr wegzudenken. Die Herausforderung besteht darin, sie verantwortungsvoll zu nutzen und die negativen Auswirkungen zu minimieren.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was haben soziale Medien revolutioniert?",
+                            options = listOf("Die Technologie", "Die Art und Weise, wie wir kommunizieren", "Die Wirtschaft", "Die Bildung"),
+                            correctAnswer = "Die Art und Weise, wie wir kommunizieren",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was ermöglichen soziale Medien?",
+                            options = listOf("Nur Unterhaltung", "Mit Menschen weltweit in Kontakt zu bleiben", "Nur Shopping", "Nur Spiele"),
+                            correctAnswer = "Mit Menschen weltweit in Kontakt zu bleiben",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was kann exzessive Nutzung sozialer Medien verursachen?",
+                            options = null,
+                            correctAnswer = "psychische Probleme",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was verbreiten sich in sozialen Medien oft schneller?",
+                            options = listOf("Echte Nachrichten", "Fake News", "Wissenschaftliche Artikel", "Bücher"),
+                            correctAnswer = "Fake News",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was wird immer wichtiger?",
+                            options = listOf("Nur mehr Features", "Datenschutz und der Schutz der Privatsphäre", "Nur bessere Algorithmen", "Nur mehr Nutzer"),
+                            correctAnswer = "Datenschutz und der Schutz der Privatsphäre",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("soziale Medien", "social media", "Soziale Medien sind beliebt."),
+                        VocabularyItem("FOMO", "fear of missing out", "FOMO ist ein Problem."),
+                        VocabularyItem("Fake News", "fake news", "Fake News verbreiten sich schnell."),
+                        VocabularyItem("Filterblasen", "filter bubbles", "Filterblasen sind problematisch."),
+                        VocabularyItem("Privatsphäre", "privacy", "Privatsphäre ist wichtig.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 TELC Prüfung - Leseverstehen Teil 4",
+                    description = "TELC B2 Reading Comprehension - Urban development",
+                    level = level,
+                    orderIndex = 13,
+                    text = """Lesen Sie den folgenden Text über Stadtentwicklung und lösen Sie die Aufgaben.
+
+Smart Cities: Die Zukunft der Städte
+
+Mehr als die Hälfte der Weltbevölkerung lebt heute in Städten, und dieser Trend wird sich fortsetzen. Bis 2050 werden voraussichtlich zwei Drittel aller Menschen in urbanen Gebieten leben. Diese Entwicklung stellt Städte vor enorme Herausforderungen, aber auch vor neue Möglichkeiten.
+
+Smart Cities sind ein Konzept, das Technologie nutzt, um Städte effizienter, nachhaltiger und lebenswerter zu machen. Sensoren sammeln Daten über Verkehr, Luftqualität, Energieverbrauch und andere Aspekte des städtischen Lebens. Diese Daten werden analysiert, um bessere Entscheidungen zu treffen und Ressourcen optimal zu nutzen.
+
+Verkehr ist ein wichtiger Bereich der Smart City. Intelligente Ampelsysteme passen sich dem Verkehrsaufkommen an, um Staus zu reduzieren. Elektrische und autonome Fahrzeuge werden die Mobilität revolutionieren. Carsharing und Bike-Sharing-Systeme bieten flexible Alternativen zum eigenen Auto.
+
+Energieeffizienz ist ein weiterer Schwerpunkt. Smart Grids optimieren die Verteilung von Strom, und intelligente Gebäude passen ihren Energieverbrauch automatisch an. Erneuerbare Energien werden direkt in die städtische Infrastruktur integriert.
+
+Doch es gibt auch Herausforderungen. Die Digitalisierung der Städte wirft Fragen zum Datenschutz auf. Wer hat Zugang zu den gesammelten Daten? Wie werden sie geschützt? Zudem besteht die Gefahr, dass die digitale Spaltung verstärkt wird, wenn nicht alle Bürger Zugang zu den neuen Technologien haben.
+
+Die Entwicklung von Smart Cities erfordert eine enge Zusammenarbeit zwischen Regierungen, Unternehmen und Bürgern. Nur wenn alle Beteiligten zusammenarbeiten, können Städte wirklich smart und nachhaltig werden.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wie viel Prozent der Weltbevölkerung leben heute in Städten?",
+                            options = listOf("Ein Drittel", "Die Hälfte", "Mehr als die Hälfte", "Zwei Drittel"),
+                            correctAnswer = "Mehr als die Hälfte",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was ist das Konzept der Smart Cities?",
+                            options = listOf("Größere Städte zu bauen", "Technologie zu nutzen, um Städte effizienter zu machen", "Mehr Autos zu haben", "Höhere Gebäude zu bauen"),
+                            correctAnswer = "Technologie zu nutzen, um Städte effizienter zu machen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was sammeln Sensoren?",
+                            options = null,
+                            correctAnswer = "Daten über Verkehr, Luftqualität, Energieverbrauch",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was werden intelligente Ampelsysteme tun?",
+                            options = listOf("Immer grün sein", "Sich dem Verkehrsaufkommen anpassen", "Immer rot sein", "Nicht funktionieren"),
+                            correctAnswer = "Sich dem Verkehrsaufkommen anpassen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was erfordert die Entwicklung von Smart Cities?",
+                            options = listOf("Nur Geld", "Eine enge Zusammenarbeit zwischen Regierungen, Unternehmen und Bürgern", "Nur Technologie", "Nur Zeit"),
+                            correctAnswer = "Eine enge Zusammenarbeit zwischen Regierungen, Unternehmen und Bürgern",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Smart Cities", "smart cities", "Smart Cities sind die Zukunft."),
+                        VocabularyItem("Sensoren", "sensors", "Sensoren sammeln Daten."),
+                        VocabularyItem("Smart Grids", "smart grids", "Smart Grids optimieren Strom."),
+                        VocabularyItem("Carsharing", "car sharing", "Carsharing ist beliebt."),
+                        VocabularyItem("digitale Spaltung", "digital divide", "Die digitale Spaltung ist ein Problem.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 Goethe Prüfung - Leseverstehen Teil 6",
+                    description = "Goethe-Zertifikat B2 Reading Comprehension - Cultural diversity",
+                    level = level,
+                    orderIndex = 14,
+                    text = """Lesen Sie den folgenden Text über kulturelle Vielfalt und lösen Sie die Aufgaben.
+
+Kulturelle Vielfalt als Bereicherung
+
+In einer globalisierten Welt wird kulturelle Vielfalt immer wichtiger. Menschen aus verschiedenen Kulturen leben, arbeiten und lernen zusammen. Diese Vielfalt kann eine große Bereicherung sein, aber sie stellt auch Herausforderungen dar.
+
+Kulturelle Vielfalt bringt viele Vorteile mit sich. Verschiedene Perspektiven führen zu kreativeren Lösungen und innovativen Ideen. Teams mit kultureller Vielfalt sind oft erfolgreicher, weil sie verschiedene Denkweisen und Erfahrungen einbringen. Kulturelle Vielfalt fördert auch Toleranz und Verständnis zwischen verschiedenen Gruppen.
+
+In der Wirtschaft ist kulturelle Vielfalt ein wichtiger Faktor für den Erfolg. Unternehmen, die eine vielfältige Belegschaft haben, können besser auf die Bedürfnisse einer globalen Kundschaft eingehen. Sie verstehen verschiedene Märkte und Kulturen besser und können dadurch erfolgreicher agieren.
+
+Doch es gibt auch Herausforderungen. Kulturelle Unterschiede können zu Missverständnissen und Konflikten führen. Verschiedene Kommunikationsstile, Werte und Normen können die Zusammenarbeit erschweren. Es ist wichtig, dass alle Beteiligten lernen, mit diesen Unterschieden umzugehen.
+
+Interkulturelle Kompetenz wird daher immer wichtiger. Menschen müssen lernen, andere Kulturen zu verstehen und zu respektieren. Dazu gehört auch die Fähigkeit, eigene kulturelle Vorurteile zu erkennen und zu überwinden.
+
+Bildung spielt eine wichtige Rolle bei der Förderung kultureller Vielfalt. Schulen und Universitäten sollten interkulturelle Bildung in ihre Lehrpläne integrieren. Schüler und Studenten sollten die Möglichkeit haben, andere Kulturen kennenzulernen und interkulturelle Erfahrungen zu sammeln.
+
+Kulturelle Vielfalt ist eine Realität der modernen Welt. Wer lernt, sie als Bereicherung zu sehen und konstruktiv mit ihr umzugehen, wird in einer globalisierten Gesellschaft erfolgreich sein.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was wird in einer globalisierten Welt immer wichtiger?",
+                            options = listOf("Einheitlichkeit", "Kulturelle Vielfalt", "Tradition", "Isolation"),
+                            correctAnswer = "Kulturelle Vielfalt",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Warum sind Teams mit kultureller Vielfalt oft erfolgreicher?",
+                            options = listOf("Weil sie mehr Geld haben", "Weil sie verschiedene Denkweisen und Erfahrungen einbringen", "Weil sie größer sind", "Weil sie schneller arbeiten"),
+                            correctAnswer = "Weil sie verschiedene Denkweisen und Erfahrungen einbringen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was können Unternehmen mit vielfältiger Belegschaft besser?",
+                            options = null,
+                            correctAnswer = "auf die Bedürfnisse einer globalen Kundschaft eingehen",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was wird immer wichtiger?",
+                            options = listOf("Nur technische Kompetenz", "Interkulturelle Kompetenz", "Nur Sprachkenntnisse", "Nur Fachwissen"),
+                            correctAnswer = "Interkulturelle Kompetenz",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was sollten Schulen und Universitäten tun?",
+                            options = listOf("Nur traditionelle Bildung anbieten", "Interkulturelle Bildung in ihre Lehrpläne integrieren", "Nur eine Sprache lehren", "Nur eine Kultur vermitteln"),
+                            correctAnswer = "Interkulturelle Bildung in ihre Lehrpläne integrieren",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("kulturelle Vielfalt", "cultural diversity", "Kulturelle Vielfalt ist wichtig."),
+                        VocabularyItem("Bereicherung", "enrichment", "Vielfalt ist eine Bereicherung."),
+                        VocabularyItem("interkulturelle Kompetenz", "intercultural competence", "Interkulturelle Kompetenz ist gefragt."),
+                        VocabularyItem("Vorurteile", "prejudices", "Vorurteile müssen überwunden werden."),
+                        VocabularyItem("Toleranz", "tolerance", "Toleranz ist wichtig.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 TELC Prüfung - Leseverstehen Teil 5",
+                    description = "TELC B2 Reading Comprehension - Mental health",
+                    level = level,
+                    orderIndex = 15,
+                    text = """Lesen Sie den folgenden Text über psychische Gesundheit und lösen Sie die Aufgaben.
+
+Psychische Gesundheit in der modernen Gesellschaft
+
+Psychische Gesundheit ist ein wichtiges Thema, das lange Zeit tabuisiert wurde. Heute wird es zunehmend anerkannt, dass psychische Gesundheit genauso wichtig ist wie körperliche Gesundheit. Depressionen, Angststörungen und Burnout sind weit verbreitete Probleme in der modernen Gesellschaft.
+
+Die Ursachen für psychische Probleme sind vielfältig. Stress am Arbeitsplatz, finanzielle Sorgen, soziale Isolation und der Druck, in der digitalen Welt immer erreichbar zu sein, können zu psychischen Belastungen führen. Die Corona-Pandemie hat diese Probleme noch verstärkt.
+
+Arbeit ist ein wichtiger Faktor für psychische Gesundheit. Ein gesundes Arbeitsumfeld, das Wertschätzung, Work-Life-Balance und Unterstützung bietet, kann psychische Gesundheit fördern. Umgekehrt können schlechte Arbeitsbedingungen, Mobbing und Überlastung zu psychischen Problemen führen.
+
+Soziale Beziehungen sind ebenfalls wichtig. Menschen brauchen soziale Kontakte und Unterstützung von Familie und Freunden. Soziale Isolation kann zu Depressionen und anderen psychischen Problemen führen. Die Digitalisierung kann sowohl helfen als auch schaden – sie ermöglicht Kontakte über große Entfernungen, kann aber auch zu oberflächlichen Beziehungen führen.
+
+Bewegung und Ernährung spielen auch eine Rolle. Regelmäßige körperliche Aktivität kann Stress reduzieren und die Stimmung verbessern. Eine ausgewogene Ernährung mit ausreichend Nährstoffen ist wichtig für das Gehirn und die psychische Gesundheit.
+
+Es ist wichtig, dass Menschen lernen, auf ihre psychische Gesundheit zu achten und bei Problemen Hilfe zu suchen. Psychotherapie, Entspannungstechniken und Achtsamkeit können helfen, psychische Gesundheit zu erhalten oder wiederherzustellen.
+
+Die Gesellschaft muss psychische Gesundheit ernster nehmen und bessere Unterstützung und Behandlung anbieten. Nur so können Menschen mit psychischen Problemen ein erfülltes Leben führen.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was wurde lange Zeit tabuisiert?",
+                            options = listOf("Körperliche Gesundheit", "Psychische Gesundheit", "Ernährung", "Bewegung"),
+                            correctAnswer = "Psychische Gesundheit",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was sind weit verbreitete psychische Probleme?",
+                            options = listOf("Nur Depressionen", "Depressionen, Angststörungen und Burnout", "Nur Angststörungen", "Nur Burnout"),
+                            correctAnswer = "Depressionen, Angststörungen und Burnout",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was kann zu psychischen Belastungen führen?",
+                            options = null,
+                            correctAnswer = "Stress am Arbeitsplatz, finanzielle Sorgen, soziale Isolation",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was kann psychische Gesundheit fördern?",
+                            options = listOf("Nur mehr Geld", "Ein gesundes Arbeitsumfeld", "Nur weniger Arbeit", "Nur mehr Freizeit"),
+                            correctAnswer = "Ein gesundes Arbeitsumfeld",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was kann helfen, psychische Gesundheit zu erhalten?",
+                            options = listOf("Nur Medikamente", "Psychotherapie, Entspannungstechniken und Achtsamkeit", "Nur Urlaub", "Nur Sport"),
+                            correctAnswer = "Psychotherapie, Entspannungstechniken und Achtsamkeit",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("psychische Gesundheit", "mental health", "Psychische Gesundheit ist wichtig."),
+                        VocabularyItem("tabuisiert", "taboo", "Das Thema wurde tabuisiert."),
+                        VocabularyItem("Burnout", "burnout", "Burnout ist ein Problem."),
+                        VocabularyItem("Work-Life-Balance", "work-life balance", "Work-Life-Balance ist wichtig."),
+                        VocabularyItem("Achtsamkeit", "mindfulness", "Achtsamkeit kann helfen.")
+                    )
+                ))
+
+                // Additional B2 Reading Lessons (16-20)
+                lessons.add(createLesenLesson(
+                    title = "B2 Goethe Prüfung - Leseverstehen Teil 7",
+                    description = "Goethe-Zertifikat B2 Reading Comprehension - Climate change",
+                    level = level,
+                    orderIndex = 16,
+                    text = """Lesen Sie den folgenden Text über den Klimawandel und lösen Sie die Aufgaben.
+
+Klimawandel: Eine globale Herausforderung
+
+Der Klimawandel ist eine der größten Herausforderungen unserer Zeit. Die Erderwärmung, verursacht durch den Ausstoß von Treibhausgasen, hat bereits jetzt spürbare Auswirkungen auf das Leben auf der Erde. Gletscher schmelzen, der Meeresspiegel steigt, und extreme Wetterereignisse werden häufiger.
+
+Die Hauptursache des Klimawandels ist der menschliche Einfluss. Die Verbrennung fossiler Brennstoffe wie Kohle, Öl und Gas setzt große Mengen Kohlendioxid frei. Auch die Abholzung von Wäldern trägt zum Klimawandel bei, da Bäume Kohlendioxid aus der Atmosphäre aufnehmen.
+
+Die Auswirkungen des Klimawandels sind vielfältig. In der Arktis schmilzt das Eis, was den Lebensraum von Eisbären und anderen Tieren bedroht. In vielen Regionen der Welt werden Dürren häufiger und intensiver. Andere Gebiete leiden unter Überschwemmungen und Stürmen.
+
+Der Klimawandel betrifft auch die Landwirtschaft. Ernteausfälle durch extreme Wetterereignisse werden häufiger. Viele Pflanzen und Tiere müssen sich an neue klimatische Bedingungen anpassen oder sterben aus. Dies kann zu Nahrungsmittelknappheit führen.
+
+Um den Klimawandel zu bekämpfen, sind verschiedene Maßnahmen notwendig. Der Ausbau erneuerbarer Energien wie Wind- und Solarkraft ist wichtig. Auch die Energieeffizienz muss verbessert werden. Jeder Einzelne kann durch bewusste Entscheidungen einen Beitrag leisten, zum Beispiel durch die Nutzung öffentlicher Verkehrsmittel oder den Kauf energieeffizienter Geräte.
+
+Die Bekämpfung des Klimawandels erfordert internationale Zusammenarbeit. Alle Länder müssen zusammenarbeiten, um die Emissionen zu reduzieren und die Erderwärmung zu begrenzen. Nur so kann eine nachhaltige Zukunft für alle Menschen gesichert werden.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was ist eine der größten Herausforderungen unserer Zeit?",
+                            options = listOf("Die Wirtschaft", "Der Klimawandel", "Die Technologie", "Die Bildung"),
+                            correctAnswer = "Der Klimawandel",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was ist die Hauptursache des Klimawandels?",
+                            options = listOf("Die Natur", "Der menschliche Einfluss", "Die Sonne", "Die Ozeane"),
+                            correctAnswer = "Der menschliche Einfluss",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was setzt die Verbrennung fossiler Brennstoffe frei?",
+                            options = null,
+                            correctAnswer = "große Mengen Kohlendioxid",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was wird in der Arktis bedroht?",
+                            options = listOf("Die Städte", "Der Lebensraum von Eisbären und anderen Tieren", "Die Industrie", "Die Landwirtschaft"),
+                            correctAnswer = "Der Lebensraum von Eisbären und anderen Tieren",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was ist wichtig, um den Klimawandel zu bekämpfen?",
+                            options = listOf("Nur mehr Geld", "Der Ausbau erneuerbarer Energien", "Nur weniger Menschen", "Nur bessere Technologie"),
+                            correctAnswer = "Der Ausbau erneuerbarer Energien",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Klimawandel", "climate change", "Der Klimawandel ist ein Problem."),
+                        VocabularyItem("Treibhausgase", "greenhouse gases", "Treibhausgase verursachen Erwärmung."),
+                        VocabularyItem("fossile Brennstoffe", "fossil fuels", "Fossile Brennstoffe sind problematisch."),
+                        VocabularyItem("Kohlendioxid", "carbon dioxide", "Kohlendioxid ist ein Treibhausgas."),
+                        VocabularyItem("erneuerbare Energien", "renewable energies", "Erneuerbare Energien sind wichtig.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 TELC Prüfung - Leseverstehen Teil 6",
+                    description = "TELC B2 Reading Comprehension - Digital privacy",
+                    level = level,
+                    orderIndex = 17,
+                    text = """Lesen Sie den folgenden Text über digitale Privatsphäre und lösen Sie die Aufgaben.
+
+Digitale Privatsphäre im Zeitalter der Überwachung
+
+In der digitalen Welt hinterlassen wir überall Spuren. Jeder Klick, jede Suchanfrage und jede Nachricht wird gespeichert und analysiert. Diese Daten werden von Unternehmen und Regierungen genutzt, um unser Verhalten zu verstehen und zu beeinflussen. Die Frage nach der digitalen Privatsphäre wird immer wichtiger.
+
+Soziale Medien sammeln enorme Mengen persönlicher Daten. Diese werden verwendet, um personalisierte Werbung zu erstellen und Nutzerprofile zu erstellen. Algorithmen entscheiden, welche Inhalte wir sehen und welche nicht. Dies kann zu Filterblasen führen, in denen wir nur noch Informationen erhalten, die unsere bestehenden Ansichten bestätigen.
+
+Auch Regierungen sammeln Daten über ihre Bürger. Überwachungskameras, Handyortung und Internetüberwachung sind weit verbreitet. Dies wird oft mit Sicherheit begründet, wirft aber Fragen nach der Balance zwischen Sicherheit und Privatsphäre auf.
+
+Die Datenschutz-Grundverordnung (DSGVO) in der EU ist ein Versuch, die Privatsphäre der Bürger zu schützen. Sie gibt Menschen mehr Kontrolle über ihre Daten und verpflichtet Unternehmen, transparent zu sein, wie sie Daten sammeln und verwenden.
+
+Doch es gibt auch Herausforderungen. Viele Menschen sind sich nicht bewusst, wie viele Daten sie preisgeben. Die Nutzung von kostenlosen Apps und Diensten hat oft einen Preis: unsere persönlichen Daten. Zudem ist es schwierig, die Kontrolle über einmal geteilte Daten zurückzugewinnen.
+
+Technische Lösungen wie Verschlüsselung und anonyme Suchmaschinen können helfen, die Privatsphäre zu schützen. Aber auch das Verhalten der Nutzer ist wichtig. Bewusste Entscheidungen über die Nutzung digitaler Dienste und regelmäßige Überprüfung der Privatsphäre-Einstellungen sind notwendig.
+
+Die digitale Privatsphäre ist ein Menschenrecht, das geschützt werden muss. Es ist wichtig, dass Menschen verstehen, wie ihre Daten verwendet werden, und dass sie die Kontrolle darüber behalten.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was hinterlassen wir in der digitalen Welt?",
+                            options = listOf("Nur Geld", "Überall Spuren", "Nur Freunde", "Nur Nachrichten"),
+                            correctAnswer = "Überall Spuren",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wofür werden persönliche Daten verwendet?",
+                            options = listOf("Nur für Sicherheit", "Um personalisierte Werbung zu erstellen", "Nur für Forschung", "Nur für Bildung"),
+                            correctAnswer = "Um personalisierte Werbung zu erstellen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was kann zu Filterblasen führen?",
+                            options = null,
+                            correctAnswer = "Algorithmen",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was ist die DSGVO?",
+                            options = listOf("Eine App", "Ein Versuch, die Privatsphäre der Bürger zu schützen", "Eine Suchmaschine", "Ein soziales Netzwerk"),
+                            correctAnswer = "Ein Versuch, die Privatsphäre der Bürger zu schützen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was ist ein Menschenrecht?",
+                            options = listOf("Nur körperliche Freiheit", "Die digitale Privatsphäre", "Nur Meinungsfreiheit", "Nur Religionsfreiheit"),
+                            correctAnswer = "Die digitale Privatsphäre",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("digitale Privatsphäre", "digital privacy", "Digitale Privatsphäre ist wichtig."),
+                        VocabularyItem("Überwachung", "surveillance", "Überwachung ist weit verbreitet."),
+                        VocabularyItem("Algorithmen", "algorithms", "Algorithmen entscheiden über Inhalte."),
+                        VocabularyItem("Filterblasen", "filter bubbles", "Filterblasen sind problematisch."),
+                        VocabularyItem("Verschlüsselung", "encryption", "Verschlüsselung schützt Daten.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 Goethe Prüfung - Leseverstehen Teil 8",
+                    description = "Goethe-Zertifikat B2 Reading Comprehension - Aging society",
+                    level = level,
+                    orderIndex = 18,
+                    text = """Lesen Sie den folgenden Text über die alternde Gesellschaft und lösen Sie die Aufgaben.
+
+Die alternde Gesellschaft: Herausforderungen und Chancen
+
+Deutschland und viele andere Industrieländer stehen vor einer demografischen Herausforderung: Die Bevölkerung wird immer älter. Geburtenraten sinken, während die Lebenserwartung steigt. Dies hat weitreichende Auswirkungen auf alle Bereiche der Gesellschaft.
+
+Die Ursachen für die Alterung der Gesellschaft sind vielfältig. Moderne Medizin und bessere Lebensbedingungen haben die Lebenserwartung deutlich erhöht. Gleichzeitig entscheiden sich immer weniger Paare für Kinder, oft aus beruflichen oder finanziellen Gründen. Die Vereinbarkeit von Familie und Beruf ist für viele Menschen schwierig.
+
+Die Auswirkungen auf das Gesundheitssystem sind enorm. Ältere Menschen benötigen mehr medizinische Versorgung, was die Kosten steigen lässt. Es fehlen Ärzte und Pflegekräfte, um die wachsende Zahl älterer Patienten zu versorgen. Die Pflege wird zu einem wichtigen Thema.
+
+Auch die Wirtschaft ist betroffen. Es gibt weniger junge Arbeitskräfte, was zu einem Fachkräftemangel führen kann. Unternehmen müssen sich anpassen und ältere Arbeitnehmer länger beschäftigen. Die Rente wird zu einem wichtigen Thema, da immer mehr Menschen länger arbeiten müssen.
+
+Doch es gibt auch positive Aspekte. Ältere Menschen bringen Erfahrung und Wissen mit. Sie können als Mentoren für jüngere Kollegen fungieren. Viele Senioren sind aktiv und engagieren sich ehrenamtlich in der Gesellschaft.
+
+Die Gesellschaft muss sich an die neue Realität anpassen. Barrierefreie Städte, altersgerechte Arbeitsplätze und bessere Pflegeeinrichtungen sind notwendig. Auch die Einstellung gegenüber dem Alter muss sich ändern. Ältere Menschen sollten als wertvolle Mitglieder der Gesellschaft gesehen werden, nicht als Belastung.
+
+Die alternde Gesellschaft ist eine Herausforderung, aber auch eine Chance, eine inklusivere und nachhaltigere Gesellschaft zu schaffen.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was steht Deutschland vor?",
+                            options = listOf("Nur wirtschaftlichen Problemen", "Einer demografischen Herausforderung", "Nur technischen Problemen", "Nur politischen Problemen"),
+                            correctAnswer = "Einer demografischen Herausforderung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was passiert mit der Lebenserwartung?",
+                            options = listOf("Sie sinkt", "Sie steigt", "Sie bleibt gleich", "Sie schwankt"),
+                            correctAnswer = "Sie steigt",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was lässt die Kosten im Gesundheitssystem steigen?",
+                            options = null,
+                            correctAnswer = "dass ältere Menschen mehr medizinische Versorgung benötigen",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was kann zu einem Fachkräftemangel führen?",
+                            options = listOf("Zu viele junge Menschen", "Weniger junge Arbeitskräfte", "Zu viele ältere Menschen", "Weniger Bildung"),
+                            correctAnswer = "Weniger junge Arbeitskräfte",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was können ältere Menschen für jüngere Kollegen sein?",
+                            options = listOf("Nur Konkurrenten", "Mentoren", "Nur Vorgesetzte", "Nur Kollegen"),
+                            correctAnswer = "Mentoren",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("demografische Herausforderung", "demographic challenge", "Die demografische Herausforderung ist groß."),
+                        VocabularyItem("Lebenserwartung", "life expectancy", "Die Lebenserwartung steigt."),
+                        VocabularyItem("Geburtenraten", "birth rates", "Die Geburtenraten sinken."),
+                        VocabularyItem("Fachkräftemangel", "shortage of skilled workers", "Fachkräftemangel ist ein Problem."),
+                        VocabularyItem("Mentoren", "mentors", "Ältere Menschen können Mentoren sein.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 TELC Prüfung - Leseverstehen Teil 7",
+                    description = "TELC B2 Reading Comprehension - Innovation and creativity",
+                    level = level,
+                    orderIndex = 19,
+                    text = """Lesen Sie den folgenden Text über Innovation und Kreativität und lösen Sie die Aufgaben.
+
+Innovation und Kreativität: Motoren des Fortschritts
+
+Innovation und Kreativität sind die treibenden Kräfte hinter dem technologischen und gesellschaftlichen Fortschritt. Sie ermöglichen es, neue Lösungen für alte Probleme zu finden und neue Möglichkeiten zu erschließen. In einer sich schnell verändernden Welt werden diese Fähigkeiten immer wichtiger.
+
+Kreativität ist die Fähigkeit, neue und originelle Ideen zu entwickeln. Sie ist nicht nur in der Kunst wichtig, sondern auch in der Wissenschaft, Technologie und Wirtschaft. Kreative Menschen denken außerhalb der gewohnten Bahnen und finden unkonventionelle Lösungen.
+
+Innovation ist die Umsetzung kreativer Ideen in praktische Anwendungen. Sie kann in verschiedenen Bereichen stattfinden: in der Technologie, in Geschäftsmodellen, in der Bildung oder in der Gesellschaft. Innovationen verändern die Art, wie wir leben, arbeiten und kommunizieren.
+
+Die Digitalisierung hat neue Möglichkeiten für Innovation und Kreativität geschaffen. Künstliche Intelligenz kann bei der Entwicklung neuer Ideen helfen, aber sie kann die menschliche Kreativität nicht ersetzen. Die Kombination aus menschlicher Kreativität und technologischen Möglichkeiten führt zu den besten Ergebnissen.
+
+Bildung spielt eine wichtige Rolle bei der Förderung von Kreativität und Innovation. Schulen und Universitäten sollten nicht nur Wissen vermitteln, sondern auch kreatives Denken fördern. Schüler und Studenten sollten ermutigt werden, Fragen zu stellen und eigene Ideen zu entwickeln.
+
+Auch die Arbeitswelt muss sich ändern, um Kreativität und Innovation zu fördern. Flexible Arbeitszeiten, offene Büroräume und die Möglichkeit, eigene Projekte zu verfolgen, können die Kreativität der Mitarbeiter steigern. Fehler sollten als Lernmöglichkeiten gesehen werden, nicht als Versagen.
+
+Die Gesellschaft braucht Menschen, die bereit sind, neue Wege zu gehen und Risiken einzugehen. Innovation und Kreativität sind nicht nur für den wirtschaftlichen Erfolg wichtig, sondern auch für die Lösung gesellschaftlicher Probleme wie Klimawandel, Armut und Ungleichheit.
+
+Die Zukunft gehört denen, die kreativ denken und innovativ handeln. Es ist wichtig, diese Fähigkeiten zu fördern und zu entwickeln.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was sind die treibenden Kräfte hinter dem Fortschritt?",
+                            options = listOf("Nur Technologie", "Innovation und Kreativität", "Nur Geld", "Nur Bildung"),
+                            correctAnswer = "Innovation und Kreativität",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was ist Kreativität?",
+                            options = listOf("Nur Kunst", "Die Fähigkeit, neue und originelle Ideen zu entwickeln", "Nur Musik", "Nur Malerei"),
+                            correctAnswer = "Die Fähigkeit, neue und originelle Ideen zu entwickeln",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was ist Innovation?",
+                            options = null,
+                            correctAnswer = "Die Umsetzung kreativer Ideen in praktische Anwendungen",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was kann künstliche Intelligenz nicht ersetzen?",
+                            options = listOf("Arbeit", "Die menschliche Kreativität", "Bildung", "Kommunikation"),
+                            correctAnswer = "Die menschliche Kreativität",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was sollten Schulen und Universitäten fördern?",
+                            options = listOf("Nur Wissen", "Kreatives Denken", "Nur Disziplin", "Nur Fleiß"),
+                            correctAnswer = "Kreatives Denken",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Innovation", "innovation", "Innovation ist wichtig."),
+                        VocabularyItem("Kreativität", "creativity", "Kreativität ist gefragt."),
+                        VocabularyItem("Fortschritt", "progress", "Fortschritt ist notwendig."),
+                        VocabularyItem("unkonventionell", "unconventional", "Unkonventionelle Lösungen sind gut."),
+                        VocabularyItem("Risiken", "risks", "Risiken sind manchmal notwendig.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B2 Goethe Prüfung - Leseverstehen Teil 9",
+                    description = "Goethe-Zertifikat B2 Reading Comprehension - Future of democracy",
+                    level = level,
+                    orderIndex = 20,
+                    text = """Lesen Sie den folgenden Text über die Zukunft der Demokratie und lösen Sie die Aufgaben.
+
+Die Zukunft der Demokratie im digitalen Zeitalter
+
+Die Demokratie steht vor neuen Herausforderungen. Die Digitalisierung verändert nicht nur die Art, wie wir kommunizieren, sondern auch die Art, wie wir Politik machen und an der Gesellschaft teilhaben. Diese Veränderungen bringen sowohl Chancen als auch Risiken mit sich.
+
+Einerseits ermöglichen digitale Technologien neue Formen der politischen Partizipation. Bürger können online an Diskussionen teilnehmen, Petitionen unterschreiben und ihre Meinung zu politischen Themen äußern. Soziale Medien geben Menschen eine Stimme, die früher nicht gehört wurden.
+
+Andererseits gibt es auch Probleme. Fake News und Desinformation verbreiten sich schnell in sozialen Medien. Algorithmen können zu Filterblasen führen, in denen Menschen nur noch Informationen sehen, die ihre bestehenden Ansichten bestätigen. Dies kann die Polarisierung der Gesellschaft verstärken.
+
+Die Rolle der traditionellen Medien verändert sich. Zeitungen und Fernsehsender kämpfen um Aufmerksamkeit in einer Welt, in der jeder Inhalte erstellen und verbreiten kann. Qualitätsjournalismus wird wichtiger, aber auch schwieriger zu finanzieren.
+
+Politiker müssen lernen, mit den neuen Medien umzugehen. Sie müssen authentisch und transparent sein, aber auch professionell kommunizieren. Die Erwartungen der Bürger an Transparenz und Beteiligung sind gestiegen.
+
+Die Demokratie muss sich an die digitale Welt anpassen. Neue Formen der Bürgerbeteiligung, wie Online-Abstimmungen oder digitale Bürgerräte, werden erprobt. Wichtig ist, dass diese Innovationen die Grundprinzipien der Demokratie stärken und nicht schwächen.
+
+Die Zukunft der Demokratie hängt davon ab, ob es gelingt, die Chancen der Digitalisierung zu nutzen und die Risiken zu minimieren. Bürger müssen lernen, Informationen kritisch zu bewerten und verantwortungsvoll mit digitalen Medien umzugehen.
+
+Demokratie ist nicht selbstverständlich. Sie muss jeden Tag neu gelebt und verteidigt werden. In der digitalen Welt ist das wichtiger denn je.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wovor steht die Demokratie?",
+                            options = listOf("Nur wirtschaftlichen Problemen", "Neuen Herausforderungen", "Nur technischen Problemen", "Nur sozialen Problemen"),
+                            correctAnswer = "Neuen Herausforderungen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was ermöglichen digitale Technologien?",
+                            options = listOf("Nur Unterhaltung", "Neue Formen der politischen Partizipation", "Nur Shopping", "Nur Spiele"),
+                            correctAnswer = "Neue Formen der politischen Partizipation",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was verbreitet sich schnell in sozialen Medien?",
+                            options = null,
+                            correctAnswer = "Fake News und Desinformation",
+                            correctAnswers = null,
+                            type = QuestionType.FILL_BLANK
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was wird wichtiger, aber auch schwieriger zu finanzieren?",
+                            options = listOf("Nur Technologie", "Qualitätsjournalismus", "Nur Unterhaltung", "Nur Werbung"),
+                            correctAnswer = "Qualitätsjournalismus",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was ist nicht selbstverständlich?",
+                            options = listOf("Nur Technologie", "Die Demokratie", "Nur Bildung", "Nur Gesundheit"),
+                            correctAnswer = "Die Demokratie",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Demokratie", "democracy", "Demokratie ist wichtig."),
+                        VocabularyItem("Partizipation", "participation", "Partizipation ist notwendig."),
+                        VocabularyItem("Desinformation", "disinformation", "Desinformation ist gefährlich."),
+                        VocabularyItem("Polarisierung", "polarization", "Polarisierung ist problematisch."),
+                        VocabularyItem("Transparenz", "transparency", "Transparenz ist wichtig.")
+                    )
+                ))
             }
 
 
@@ -5614,6 +6698,268 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         Question(id = 3, question = "Was wird immer wichtiger?", options = null, correctAnswer = "Crowdfunding und private Sponsoren", correctAnswers = null, type = QuestionType.FILL_BLANK)
                     )
                 ))
+
+                // Additional B2 Listening Lessons (6-25)
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 2",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Environmental discussion",
+                    level = level,
+                    orderIndex = 6,
+                    script = "Dr. Schmidt: Wie können wir den Klimawandel effektiv bekämpfen?\nProf. Weber: Das ist eine komplexe Frage. Wir brauchen eine Kombination aus technologischen Lösungen und Verhaltensänderungen.\nDr. Schmidt: Welche Rolle spielt die Politik dabei?\nProf. Weber: Die Politik muss klare Rahmenbedingungen schaffen. CO2-Preise, Subventionen für erneuerbare Energien und Investitionen in grüne Technologien sind wichtig.\nDr. Schmidt: Und was kann jeder Einzelne tun?\nProf. Weber: Jeder kann durch bewusste Entscheidungen einen Beitrag leisten: weniger fliegen, öffentliche Verkehrsmittel nutzen, energieeffiziente Geräte kaufen.\nDr. Schmidt: Wie optimistisch sind Sie für die Zukunft?\nProf. Weber: Ich bin vorsichtig optimistisch. Die Technologie entwickelt sich schnell, aber wir müssen auch schneller handeln.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was brauchen wir gegen den Klimawandel?", options = listOf("Nur Technologie", "Eine Kombination aus technologischen Lösungen und Verhaltensänderungen", "Nur Politik", "Nur Geld"), correctAnswer = "Eine Kombination aus technologischen Lösungen und Verhaltensänderungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was muss die Politik schaffen?", options = listOf("Nur Gesetze", "Klare Rahmenbedingungen", "Nur Geld", "Nur Technologie"), correctAnswer = "Klare Rahmenbedingungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was kann jeder Einzelne tun?", options = null, correctAnswer = "durch bewusste Entscheidungen einen Beitrag leisten", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen",
+                    description = "TELC B2 Listening Comprehension - Technology and society",
+                    level = level,
+                    orderIndex = 7,
+                    script = "Interviewer: Wie verändert künstliche Intelligenz unsere Arbeitswelt?\nExpertin: KI automatisiert viele Routineaufgaben, aber sie schafft auch neue Jobs. Die Frage ist, wie wir uns darauf vorbereiten.\nInterviewer: Welche Fähigkeiten werden in Zukunft wichtig sein?\nExpertin: Kreativität, kritisches Denken und emotionale Intelligenz werden wichtiger. Technische Fähigkeiten sind wichtig, aber menschliche Qualitäten werden unersetzbar bleiben.\nInterviewer: Wie können sich Arbeitnehmer auf diese Veränderungen vorbereiten?\nExpertin: Lebenslanges Lernen wird zur Notwendigkeit. Menschen müssen bereit sein, sich kontinuierlich weiterzubilden und neue Fähigkeiten zu erwerben.\nInterviewer: Was ist die größte Herausforderung?\nExpertin: Die Geschwindigkeit der Veränderung. Wir müssen lernen, mit Unsicherheit umzugehen und flexibel zu bleiben.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was automatisiert KI?", options = listOf("Alle Jobs", "Viele Routineaufgaben", "Nur kreative Arbeit", "Nur körperliche Arbeit"), correctAnswer = "Viele Routineaufgaben", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was wird in Zukunft wichtiger?", options = listOf("Nur Technik", "Kreativität, kritisches Denken und emotionale Intelligenz", "Nur Erfahrung", "Nur Ausbildung"), correctAnswer = "Kreativität, kritisches Denken und emotionale Intelligenz", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was wird zur Notwendigkeit?", options = null, correctAnswer = "Lebenslanges Lernen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 3",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Migration and integration",
+                    level = level,
+                    orderIndex = 8,
+                    script = "Moderator: Wie gelingt Integration in Deutschland am besten?\nSoziologin: Integration ist ein wechselseitiger Prozess. Einerseits müssen Zugewanderte die Sprache lernen und sich anpassen, andererseits muss die Gesellschaft offen sein.\nModerator: Welche Rolle spielt die Sprache?\nSoziologin: Die deutsche Sprache ist der Schlüssel zur Integration. Ohne Sprachkenntnisse ist es schwierig, Arbeit zu finden und am gesellschaftlichen Leben teilzunehmen.\nModerator: Was sind die größten Herausforderungen?\nSoziologin: Diskriminierung und Vorurteile sind noch immer ein Problem. Wir brauchen mehr Toleranz und Verständnis auf beiden Seiten.\nModerator: Wie kann die Gesellschaft helfen?\nSoziologin: Durch bessere Bildung, mehr Chancengleichheit und die Anerkennung, dass Vielfalt eine Bereicherung ist.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was ist Integration?", options = listOf("Ein einseitiger Prozess", "Ein wechselseitiger Prozess", "Ein automatischer Prozess", "Ein einfacher Prozess"), correctAnswer = "Ein wechselseitiger Prozess", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ist der Schlüssel zur Integration?", options = listOf("Geld", "Die deutsche Sprache", "Arbeit", "Wohnung"), correctAnswer = "Die deutsche Sprache", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was sind die größten Herausforderungen?", options = null, correctAnswer = "Diskriminierung und Vorurteile", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen Teil 2",
+                    description = "TELC B2 Listening Comprehension - Health and lifestyle",
+                    level = level,
+                    orderIndex = 9,
+                    script = "Arzt: Wie können wir unsere Gesundheit im digitalen Zeitalter schützen?\nPatientin: Das ist eine wichtige Frage. Ich merke, dass ich zu viel Zeit vor dem Bildschirm verbringe.\nArzt: Das ist ein häufiges Problem. Digitale Geräte können Stress verursachen und den Schlaf beeinträchtigen.\nPatientin: Was kann ich dagegen tun?\nArzt: Regelmäßige Pausen sind wichtig. Die 20-20-20-Regel: alle 20 Minuten 20 Sekunden auf etwas 20 Meter entferntes schauen.\nPatientin: Und was ist mit Bewegung?\nArzt: Bewegung ist essentiell. Mindestens 30 Minuten moderate Aktivität täglich. Auch kleine Veränderungen helfen: Treppen steigen statt Aufzug fahren.\nPatientin: Wie wichtig ist die Ernährung?\nArzt: Sehr wichtig. Eine ausgewogene Ernährung mit viel Obst und Gemüse stärkt das Immunsystem und gibt Energie.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was können digitale Geräte verursachen?", options = listOf("Nur Spaß", "Stress und Schlafprobleme", "Nur Entspannung", "Nur Produktivität"), correctAnswer = "Stress und Schlafprobleme", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ist die 20-20-20-Regel?", options = listOf("20 Minuten arbeiten, 20 Minuten Pause", "Alle 20 Minuten 20 Sekunden auf etwas 20 Meter entferntes schauen", "20 Stunden arbeiten, 20 Stunden schlafen", "20 Aufgaben pro Tag"), correctAnswer = "Alle 20 Minuten 20 Sekunden auf etwas 20 Meter entferntes schauen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wie viel Bewegung wird empfohlen?", options = null, correctAnswer = "mindestens 30 Minuten moderate Aktivität täglich", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 4",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Education and future",
+                    level = level,
+                    orderIndex = 10,
+                    script = "Lehrerin: Wie sollte sich die Schule an die digitale Welt anpassen?\nSchüler: Ich denke, wir brauchen mehr praktische Erfahrungen und weniger Auswendiglernen.\nLehrerin: Das ist ein guter Punkt. Welche Fähigkeiten sind heute wichtig?\nSchüler: Kritisches Denken, Kreativität und Zusammenarbeit. Wir müssen lernen, Informationen zu bewerten und Probleme zu lösen.\nLehrerin: Wie kann Technologie dabei helfen?\nSchüler: Technologie kann das Lernen interessanter machen, aber sie sollte den Unterricht unterstützen, nicht ersetzen.\nLehrerin: Was wünschst du dir für die Zukunft der Bildung?\nSchüler: Mehr individuelle Förderung und die Möglichkeit, eigene Interessen zu verfolgen. Jeder lernt anders und in seinem eigenen Tempo.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was brauchen Schüler heute mehr?", options = listOf("Nur Auswendiglernen", "Mehr praktische Erfahrungen", "Nur Theorie", "Nur Tests"), correctAnswer = "Mehr praktische Erfahrungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Welche Fähigkeiten sind heute wichtig?", options = listOf("Nur Rechnen", "Kritisches Denken, Kreativität und Zusammenarbeit", "Nur Lesen", "Nur Schreiben"), correctAnswer = "Kritisches Denken, Kreativität und Zusammenarbeit", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was sollte Technologie tun?", options = null, correctAnswer = "den Unterricht unterstützen, nicht ersetzen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen Teil 3",
+                    description = "TELC B2 Listening Comprehension - Work and career",
+                    level = level,
+                    orderIndex = 11,
+                    script = "Personalberater: Wie hat sich die Arbeitswelt in den letzten Jahren verändert?\nBewerber: Dramatisch! Homeoffice, flexible Arbeitszeiten und internationale Teams sind heute normal.\nPersonalberater: Welche Fähigkeiten sind heute gefragt?\nBewerber: Neben Fachwissen sind Soft Skills wichtig: Kommunikation, Teamfähigkeit und Anpassungsfähigkeit.\nPersonalberater: Wie bereiten Sie sich auf die Zukunft vor?\nBewerber: Ich lerne kontinuierlich dazu, besonders im digitalen Bereich. Online-Kurse und Zertifikate sind wichtig.\nPersonalberater: Was ist die größte Herausforderung?\nBewerber: Die Geschwindigkeit der Veränderung. Man muss bereit sein, sich ständig anzupassen und neue Wege zu gehen.\nPersonalberater: Welchen Rat geben Sie anderen?\nBewerber: Bleiben Sie neugierig, lernen Sie lebenslang und seien Sie offen für neue Möglichkeiten.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was ist heute in der Arbeitswelt normal?", options = listOf("Nur Büroarbeit", "Homeoffice, flexible Arbeitszeiten und internationale Teams", "Nur Vollzeit", "Nur Einzelarbeit"), correctAnswer = "Homeoffice, flexible Arbeitszeiten und internationale Teams", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sind heute wichtige Soft Skills?", options = listOf("Nur Technik", "Kommunikation, Teamfähigkeit und Anpassungsfähigkeit", "Nur Erfahrung", "Nur Ausbildung"), correctAnswer = "Kommunikation, Teamfähigkeit und Anpassungsfähigkeit", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was ist die größte Herausforderung?", options = null, correctAnswer = "Die Geschwindigkeit der Veränderung", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 5",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Social media and communication",
+                    level = level,
+                    orderIndex = 12,
+                    script = "Psychologin: Wie beeinflussen soziale Medien unsere Kommunikation?\nPatient: Ich merke, dass ich oberflächlicher kommuniziere. Emojis ersetzen oft echte Emotionen.\nPsychologin: Das ist ein häufiges Phänomen. Was sind die Vorteile sozialer Medien?\nPatient: Man kann schnell in Kontakt bleiben und sich über große Entfernungen austauschen. Das ist praktisch.\nPsychologin: Und die Nachteile?\nPatient: Echte Gespräche werden seltener. Man verliert die Fähigkeit, komplexe Gedanken auszudrücken.\nPsychologin: Wie können wir das ausbalancieren?\nPatient: Ich versuche, bewusste Pausen zu machen und mehr persönliche Gespräche zu führen. Qualität vor Quantität.\nPsychologin: Das ist ein guter Ansatz. Digitale Kommunikation sollte echte Beziehungen ergänzen, nicht ersetzen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie kommuniziert der Patient heute?", options = listOf("Tiefer", "Oberflächlicher", "Komplexer", "Länger"), correctAnswer = "Oberflächlicher", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ersetzen oft echte Emotionen?", options = listOf("Worte", "Emojis", "Bilder", "Videos"), correctAnswer = "Emojis", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was wird seltener?", options = null, correctAnswer = "Echte Gespräche", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen Teil 4",
+                    description = "TELC B2 Listening Comprehension - Urban development",
+                    level = level,
+                    orderIndex = 13,
+                    script = "Stadtplaner: Wie können wir Städte nachhaltiger gestalten?\nBürger: Ich denke, wir brauchen mehr Grünflächen und bessere öffentliche Verkehrsmittel.\nStadtplaner: Das sind wichtige Punkte. Was bedeutet Smart City für Sie?\nBürger: Technologie, die das Leben einfacher macht: intelligente Ampeln, digitale Services und umweltfreundliche Lösungen.\nStadtplaner: Welche Herausforderungen sehen Sie?\nBürger: Die Kosten und der Datenschutz. Nicht alle können sich die neuen Technologien leisten.\nStadtplaner: Wie kann die Stadt das lösen?\nBürger: Durch Subventionen und transparente Datennutzung. Alle Bürger sollten von den Vorteilen profitieren können.\nStadtplaner: Was wünschen Sie sich für die Zukunft?\nBürger: Eine lebenswerte Stadt, die Technologie nutzt, um das Leben zu verbessern, ohne die Privatsphäre zu gefährden.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was brauchen Städte laut dem Bürger?", options = listOf("Nur mehr Autos", "Mehr Grünflächen und bessere öffentliche Verkehrsmittel", "Nur mehr Gebäude", "Nur mehr Technologie"), correctAnswer = "Mehr Grünflächen und bessere öffentliche Verkehrsmittel", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was bedeutet Smart City für den Bürger?", options = listOf("Nur Internet", "Technologie, die das Leben einfacher macht", "Nur Computer", "Nur Apps"), correctAnswer = "Technologie, die das Leben einfacher macht", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was sind die Herausforderungen?", options = null, correctAnswer = "Die Kosten und der Datenschutz", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 6",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Cultural diversity",
+                    level = level,
+                    orderIndex = 14,
+                    script = "Kulturwissenschaftlerin: Wie erleben Sie kulturelle Vielfalt in Ihrem Alltag?\nStudent: Sehr positiv! Ich lerne viel über andere Kulturen und erweitere meinen Horizont.\nKulturwissenschaftlerin: Welche Vorteile sehen Sie?\nStudent: Verschiedene Perspektiven führen zu kreativeren Lösungen. Man lernt, flexibler zu denken.\nKulturwissenschaftlerin: Gibt es auch Herausforderungen?\nStudent: Manchmal gibt es Missverständnisse wegen unterschiedlicher Kommunikationsstile. Aber das löst sich meist durch Offenheit.\nKulturwissenschaftlerin: Wie kann die Gesellschaft Vielfalt fördern?\nStudent: Durch Bildung, interkulturelle Begegnungen und die Anerkennung, dass Vielfalt eine Stärke ist.\nKulturwissenschaftlerin: Was ist Ihr Wunsch für die Zukunft?\nStudent: Eine Gesellschaft, in der alle Menschen unabhängig von ihrer Herkunft die gleichen Chancen haben.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie erlebt der Student kulturelle Vielfalt?", options = listOf("Negativ", "Sehr positiv", "Neutral", "Kompliziert"), correctAnswer = "Sehr positiv", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was führen verschiedene Perspektiven zu?", options = listOf("Nur Problemen", "Kreativeren Lösungen", "Nur Konflikten", "Nur Verwirrung"), correctAnswer = "Kreativeren Lösungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was löst sich meist durch Offenheit?", options = null, correctAnswer = "Missverständnisse", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen Teil 5",
+                    description = "TELC B2 Listening Comprehension - Mental health",
+                    level = level,
+                    orderIndex = 15,
+                    script = "Therapeutin: Wie geht es Ihnen mit dem Stress im Alltag?\nPatient: Manchmal fühle ich mich überfordert. Die Erwartungen sind hoch und die Zeit ist knapp.\nTherapeutin: Das ist verständlich. Was hilft Ihnen beim Entspannen?\nPatient: Spaziergänge in der Natur und Musik hören. Aber ich schaffe es nicht immer, Zeit dafür zu finden.\nTherapeutin: Wie wichtig ist es, Grenzen zu setzen?\nPatient: Sehr wichtig! Ich lerne, Nein zu sagen und mir Zeit für mich zu nehmen.\nTherapeutin: Was können Sie für Ihre psychische Gesundheit tun?\nPatient: Regelmäßige Routinen, ausreichend Schlaf und soziale Kontakte pflegen.\nTherapeutin: Wann sollten Sie professionelle Hilfe suchen?\nPatient: Wenn die Belastung zu groß wird und ich allein nicht mehr zurechtkomme. Es ist okay, Hilfe zu suchen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie fühlt sich der Patient manchmal?", options = listOf("Entspannt", "Überfordert", "Glücklich", "Gelangweilt"), correctAnswer = "Überfordert", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was hilft dem Patienten beim Entspannen?", options = listOf("Nur Fernsehen", "Spaziergänge in der Natur und Musik hören", "Nur Schlafen", "Nur Essen"), correctAnswer = "Spaziergänge in der Natur und Musik hören", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was lernt der Patient?", options = null, correctAnswer = "Nein zu sagen und sich Zeit für sich zu nehmen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                // Additional B2 Listening Lessons (16-25)
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 7",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Climate change",
+                    level = level,
+                    orderIndex = 16,
+                    script = "Umweltaktivist: Wie können wir junge Menschen für den Klimaschutz motivieren?\nSchülerin: Ich denke, wir müssen die Auswirkungen des Klimawandels greifbarer machen. Viele verstehen nicht, was auf dem Spiel steht.\nUmweltaktivist: Was motiviert Sie persönlich?\nSchülerin: Die Sorge um meine Zukunft und die meiner Kinder. Ich möchte, dass sie in einer lebenswerten Welt aufwachsen.\nUmweltaktivist: Welche Aktionen sind am effektivsten?\nSchülerin: Demonstrationen und soziale Medien erreichen viele Menschen. Aber auch kleine Aktionen im Alltag sind wichtig.\nUmweltaktivist: Wie können Schulen helfen?\nSchülerin: Durch Bildung über Nachhaltigkeit und praktische Projekte. Schüler sollten lernen, wie sie selbst aktiv werden können.\nUmweltaktivist: Was ist Ihre Botschaft an die Politik?\nSchülerin: Hört auf die Wissenschaft und handelt jetzt! Wir haben keine Zeit mehr für leere Versprechungen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was müssen wir laut der Schülerin machen?", options = listOf("Nur reden", "Die Auswirkungen des Klimawandels greifbarer machen", "Nur warten", "Nur hoffen"), correctAnswer = "Die Auswirkungen des Klimawandels greifbarer machen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was motiviert die Schülerin?", options = listOf("Nur Geld", "Die Sorge um ihre Zukunft und die ihrer Kinder", "Nur Spaß", "Nur Anerkennung"), correctAnswer = "Die Sorge um ihre Zukunft und die ihrer Kinder", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was sind am effektivsten?", options = null, correctAnswer = "Demonstrationen und soziale Medien", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen Teil 6",
+                    description = "TELC B2 Listening Comprehension - Digital privacy",
+                    level = level,
+                    orderIndex = 17,
+                    script = "Datenschutzexperte: Wie können sich Nutzer vor Datenmissbrauch schützen?\nVerbraucher: Das ist eine wichtige Frage. Ich bin mir oft nicht sicher, welche Apps sicher sind.\nDatenschutzexperte: Was sind die wichtigsten Maßnahmen?\nVerbraucher: Starke Passwörter, regelmäßige Updates und vorsichtiger Umgang mit persönlichen Daten.\nDatenschutzexperte: Wie wichtig sind die Privatsphäre-Einstellungen?\nVerbraucher: Sehr wichtig! Ich überprüfe regelmäßig, welche Apps Zugriff auf meine Daten haben.\nDatenschutzexperte: Was ist mit kostenlosen Apps?\nVerbraucher: Die sind oft problematisch. Wenn etwas kostenlos ist, bezahlt man meist mit seinen Daten.\nDatenschutzexperte: Welchen Rat geben Sie anderen?\nVerbraucher: Seien Sie skeptisch und informieren Sie sich. Nicht alles, was technisch möglich ist, ist auch gut.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was sind die wichtigsten Maßnahmen?", options = listOf("Nur Passwörter", "Starke Passwörter, regelmäßige Updates und vorsichtiger Umgang mit persönlichen Daten", "Nur Updates", "Nur Vorsicht"), correctAnswer = "Starke Passwörter, regelmäßige Updates und vorsichtiger Umgang mit persönlichen Daten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was überprüft der Verbraucher regelmäßig?", options = listOf("Nur Preise", "Welche Apps Zugriff auf seine Daten haben", "Nur Bewertungen", "Nur Updates"), correctAnswer = "Welche Apps Zugriff auf seine Daten haben", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was sind oft problematisch?", options = null, correctAnswer = "kostenlose Apps", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 8",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Aging society",
+                    level = level,
+                    orderIndex = 18,
+                    script = "Sozialarbeiterin: Wie erleben Sie die alternde Gesellschaft in Ihrem Beruf?\nPfleger: Es ist eine große Herausforderung. Es gibt immer mehr ältere Menschen, aber nicht genug Pflegekräfte.\nSozialarbeiterin: Was sind die Hauptprobleme?\nPfleger: Die Arbeitsbelastung ist hoch, die Bezahlung oft niedrig. Viele junge Menschen wollen nicht in der Pflege arbeiten.\nSozialarbeiterin: Wie kann man das ändern?\nPfleger: Bessere Arbeitsbedingungen, höhere Löhne und mehr Anerkennung für den Beruf. Die Gesellschaft muss die Pflege wertschätzen.\nSozialarbeiterin: Welche Rolle spielt Technologie?\nPfleger: Technologie kann helfen, aber sie kann menschliche Zuwendung nicht ersetzen. Ältere Menschen brauchen persönlichen Kontakt.\nSozialarbeiterin: Was wünschen Sie sich für die Zukunft?\nPfleger: Eine Gesellschaft, die alle Generationen wertschätzt und in der jeder die Unterstützung bekommt, die er braucht.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was ist eine große Herausforderung?", options = listOf("Nur Technologie", "Es gibt immer mehr ältere Menschen, aber nicht genug Pflegekräfte", "Nur Geld", "Nur Zeit"), correctAnswer = "Es gibt immer mehr ältere Menschen, aber nicht genug Pflegekräfte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sind die Hauptprobleme?", options = listOf("Nur Technologie", "Die Arbeitsbelastung ist hoch, die Bezahlung oft niedrig", "Nur Zeit", "Nur Platz"), correctAnswer = "Die Arbeitsbelastung ist hoch, die Bezahlung oft niedrig", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was kann Technologie nicht ersetzen?", options = null, correctAnswer = "menschliche Zuwendung", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen Teil 7",
+                    description = "TELC B2 Listening Comprehension - Innovation and creativity",
+                    level = level,
+                    orderIndex = 19,
+                    script = "Innovationsberater: Wie können Unternehmen Kreativität fördern?\nManager: Das ist eine wichtige Frage. Wir brauchen eine Kultur, die Experimente und Fehler erlaubt.\nInnovationsberater: Was sind die wichtigsten Faktoren?\nManager: Vielfalt im Team, offene Kommunikation und die Freiheit, neue Ideen auszuprobieren.\nInnovationsberater: Wie wichtig ist die Arbeitsumgebung?\nManager: Sehr wichtig! Flexible Arbeitsplätze, gemeinsame Bereiche und Rückzugsräume fördern Kreativität.\nInnovationsberater: Was ist mit der Führung?\nManager: Führungskräfte müssen Vorbilder sein und ihre Mitarbeiter ermutigen, kreativ zu denken.\nInnovationsberater: Welche Fehler sollten vermieden werden?\nManager: Zu viel Kontrolle und Angst vor Fehlern. Kreativität braucht Freiheit und Vertrauen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was brauchen Unternehmen laut dem Manager?", options = listOf("Nur Geld", "Eine Kultur, die Experimente und Fehler erlaubt", "Nur Technologie", "Nur Zeit"), correctAnswer = "Eine Kultur, die Experimente und Fehler erlaubt", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sind die wichtigsten Faktoren?", options = listOf("Nur Geld", "Vielfalt im Team, offene Kommunikation und die Freiheit, neue Ideen auszuprobieren", "Nur Technologie", "Nur Zeit"), correctAnswer = "Vielfalt im Team, offene Kommunikation und die Freiheit, neue Ideen auszuprobieren", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was braucht Kreativität?", options = null, correctAnswer = "Freiheit und Vertrauen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 9",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Future of democracy",
+                    level = level,
+                    orderIndex = 20,
+                    script = "Politikwissenschaftler: Wie verändert sich die Demokratie durch die Digitalisierung?\nBürger: Das ist eine komplexe Frage. Einerseits gibt es neue Möglichkeiten der Partizipation, andererseits auch neue Risiken.\nPolitikwissenschaftler: Welche Chancen sehen Sie?\nBürger: Bürger können leichter an Diskussionen teilnehmen und ihre Meinung äußern. Online-Petitionen und digitale Bürgerräte sind interessant.\nPolitikwissenschaftler: Und die Risiken?\nBürger: Fake News, Manipulation und die Gefahr, dass nur bestimmte Gruppen gehört werden. Die digitale Spaltung ist ein Problem.\nPolitikwissenschaftler: Wie kann man das ausbalancieren?\nBürger: Durch Bildung, Medienkompetenz und klare Regeln für digitale Partizipation. Alle Bürger müssen Zugang haben.\nPolitikwissenschaftler: Was ist Ihre Vision für die Zukunft?\nBürger: Eine Demokratie, die die Vorteile der Digitalisierung nutzt, aber ihre Grundwerte bewahrt: Freiheit, Gleichheit und Transparenz.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was gibt es durch die Digitalisierung?", options = listOf("Nur Probleme", "Neue Möglichkeiten der Partizipation, aber auch neue Risiken", "Nur Vorteile", "Nur Nachteile"), correctAnswer = "Neue Möglichkeiten der Partizipation, aber auch neue Risiken", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sind interessant?", options = listOf("Nur soziale Medien", "Online-Petitionen und digitale Bürgerräte", "Nur Videos", "Nur Apps"), correctAnswer = "Online-Petitionen und digitale Bürgerräte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was ist ein Problem?", options = null, correctAnswer = "Die digitale Spaltung", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen Teil 8",
+                    description = "TELC B2 Listening Comprehension - Sustainable living",
+                    level = level,
+                    orderIndex = 21,
+                    script = "Umweltberaterin: Wie können Menschen nachhaltiger leben?\nVerbraucher: Ich versuche, bewusste Entscheidungen zu treffen. Weniger konsumieren, mehr reparieren und wiederverwenden.\nUmweltberaterin: Was sind die größten Herausforderungen?\nVerbraucher: Die Bequemlichkeit und der Zeitmangel. Nachhaltige Alternativen sind oft teurer oder aufwendiger.\nUmweltberaterin: Welche kleinen Schritte helfen?\nVerbraucher: Öffentliche Verkehrsmittel nutzen, regionale Produkte kaufen, weniger Fleisch essen. Jeder kleine Schritt zählt.\nUmweltberaterin: Wie wichtig ist Bildung?\nVerbraucher: Sehr wichtig! Menschen müssen verstehen, warum Nachhaltigkeit wichtig ist und wie sie selbst handeln können.\nUmweltberaterin: Was motiviert Sie?\nVerbraucher: Die Verantwortung für zukünftige Generationen. Ich möchte, dass meine Kinder in einer gesunden Umwelt aufwachsen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was versucht der Verbraucher zu treffen?", options = listOf("Nur schnelle Entscheidungen", "Bewusste Entscheidungen", "Nur günstige Entscheidungen", "Nur einfache Entscheidungen"), correctAnswer = "Bewusste Entscheidungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sind die größten Herausforderungen?", options = listOf("Nur Geld", "Die Bequemlichkeit und der Zeitmangel", "Nur Technologie", "Nur Wissen"), correctAnswer = "Die Bequemlichkeit und der Zeitmangel", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was zählt?", options = null, correctAnswer = "Jeder kleine Schritt", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 10",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Intercultural communication",
+                    level = level,
+                    orderIndex = 22,
+                    script = "Interkulturelle Trainerin: Wie können Menschen aus verschiedenen Kulturen besser kommunizieren?\nTeilnehmer: Ich denke, Offenheit und Respekt sind die Grundlage. Man muss bereit sein, andere Perspektiven zu verstehen.\nInterkulturelle Trainerin: Was sind häufige Missverständnisse?\nTeilnehmer: Unterschiedliche Kommunikationsstile, verschiedene Auffassungen von Zeit und unterschiedliche Körpersprache.\nInterkulturelle Trainerin: Wie kann man diese überwinden?\nTeilnehmer: Durch aktives Zuhören, Fragen stellen und nicht zu schnell urteilen. Man sollte nachfragen, wenn etwas unklar ist.\nInterkulturelle Trainerin: Welche Rolle spielt die Sprache?\nTeilnehmer: Sehr wichtig, aber auch die Art, wie man kommuniziert. Höflichkeit und Geduld sind in allen Kulturen geschätzt.\nInterkulturelle Trainerin: Was ist Ihr wichtigster Rat?\nTeilnehmer: Seien Sie neugierig und lernen Sie von anderen. Jede Kultur hat etwas Wertvolles zu bieten.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was sind die Grundlage für bessere Kommunikation?", options = listOf("Nur Sprache", "Offenheit und Respekt", "Nur Wissen", "Nur Erfahrung"), correctAnswer = "Offenheit und Respekt", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sind häufige Missverständnisse?", options = listOf("Nur Sprache", "Unterschiedliche Kommunikationsstile, verschiedene Auffassungen von Zeit und unterschiedliche Körpersprache", "Nur Kultur", "Nur Religion"), correctAnswer = "Unterschiedliche Kommunikationsstile, verschiedene Auffassungen von Zeit und unterschiedliche Körpersprache", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was sollte man tun, wenn etwas unklar ist?", options = null, correctAnswer = "nachfragen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen Teil 9",
+                    description = "TELC B2 Listening Comprehension - Digital learning",
+                    level = level,
+                    orderIndex = 23,
+                    script = "Bildungsexpertin: Wie verändert sich das Lernen durch digitale Technologien?\nLehrer: Dramatisch! Wir haben neue Möglichkeiten, aber auch neue Herausforderungen. Die Schüler sind oft abgelenkt.\nBildungsexpertin: Was sind die Vorteile?\nLehrer: Personalisiertes Lernen, interaktive Inhalte und die Möglichkeit, überall zu lernen. Jeder kann in seinem eigenen Tempo arbeiten.\nBildungsexpertin: Und die Nachteile?\nLehrer: Weniger direkter Kontakt, technische Probleme und die Gefahr, dass wichtige soziale Fähigkeiten verloren gehen.\nBildungsexpertin: Wie können Lehrer damit umgehen?\nLehrer: Durch eine gute Balance zwischen digitalen und analogen Methoden. Technologie sollte das Lernen unterstützen, nicht dominieren.\nBildungsexpertin: Was ist Ihre Vision?\nLehrer: Eine Bildung, die die Vorteile der Digitalisierung nutzt, aber die menschlichen Aspekte des Lernens bewahrt.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was haben Lehrer durch digitale Technologien?", options = listOf("Nur Probleme", "Neue Möglichkeiten, aber auch neue Herausforderungen", "Nur Vorteile", "Nur Nachteile"), correctAnswer = "Neue Möglichkeiten, aber auch neue Herausforderungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sind die Vorteile?", options = listOf("Nur Geschwindigkeit", "Personalisierte Lernen, interaktive Inhalte und die Möglichkeit, überall zu lernen", "Nur Kosten", "Nur Zeit"), correctAnswer = "Personalisierte Lernen, interaktive Inhalte und die Möglichkeit, überall zu lernen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was sollte Technologie tun?", options = null, correctAnswer = "das Lernen unterstützen, nicht dominieren", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 Goethe Prüfung - Hörverstehen Teil 11",
+                    description = "Goethe-Zertifikat B2 Listening Comprehension - Future of work",
+                    level = level,
+                    orderIndex = 24,
+                    script = "Zukunftsforscher: Wie wird sich die Arbeitswelt in den nächsten Jahren verändern?\nArbeitnehmer: Ich denke, Flexibilität wird noch wichtiger. Remote Work und internationale Teams werden zur Norm.\nZukunftsforscher: Welche Fähigkeiten werden gefragt sein?\nArbeitnehmer: Anpassungsfähigkeit, digitale Kompetenzen und die Fähigkeit, in virtuellen Teams zu arbeiten. Soft Skills werden wichtiger.\nZukunftsforscher: Was sind die größten Herausforderungen?\nArbeitnehmer: Die Geschwindigkeit der Veränderung und die Notwendigkeit, sich kontinuierlich weiterzubilden. Man kann sich nicht mehr auf eine Ausbildung verlassen.\nZukunftsforscher: Wie können sich Menschen vorbereiten?\nArbeitnehmer: Durch lebenslanges Lernen, Netzwerken und die Bereitschaft, neue Wege zu gehen. Offenheit für Veränderungen ist wichtig.\nZukunftsforscher: Was ist Ihre Prognose?\nArbeitnehmer: Die Arbeitswelt wird dynamischer und internationaler. Wer flexibel bleibt und lernt, wird erfolgreich sein.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was wird noch wichtiger?", options = listOf("Nur Technologie", "Flexibilität", "Nur Erfahrung", "Nur Ausbildung"), correctAnswer = "Flexibilität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was werden zur Norm?", options = listOf("Nur Büroarbeit", "Remote Work und internationale Teams", "Nur Vollzeit", "Nur Einzelarbeit"), correctAnswer = "Remote Work und internationale Teams", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was ist wichtig?", options = null, correctAnswer = "Offenheit für Veränderungen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "B2 TELC Prüfung - Hörverstehen Teil 10",
+                    description = "TELC B2 Listening Comprehension - Social responsibility",
+                    level = level,
+                    orderIndex = 25,
+                    script = "Sozialarbeiterin: Wie können Unternehmen soziale Verantwortung übernehmen?\nManager: Das ist ein wichtiges Thema. Wir müssen über den Profit hinausdenken und gesellschaftliche Verantwortung zeigen.\nSozialarbeiterin: Was sind konkrete Maßnahmen?\nManager: Faire Arbeitsbedingungen, Umweltschutz und Engagement in der lokalen Gemeinschaft. Auch die Lieferkette muss nachhaltig sein.\nSozialarbeiterin: Wie wichtig ist Transparenz?\nManager: Sehr wichtig! Kunden und Mitarbeiter wollen wissen, wie das Unternehmen handelt. Ehrlichkeit schafft Vertrauen.\nSozialarbeiterin: Was sind die Vorteile?\nManager: Bessere Reputation, motivierte Mitarbeiter und langfristiger Erfolg. Soziale Verantwortung ist auch wirtschaftlich sinnvoll.\nSozialarbeiterin: Welchen Rat geben Sie anderen?\nManager: Fangen Sie klein an und seien Sie authentisch. Soziale Verantwortung ist keine Marketingstrategie, sondern eine Haltung.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was müssen Unternehmen laut dem Manager tun?", options = listOf("Nur Profit machen", "Über den Profit hinausdenken und gesellschaftliche Verantwortung zeigen", "Nur Geld verdienen", "Nur wachsen"), correctAnswer = "Über den Profit hinausdenken und gesellschaftliche Verantwortung zeigen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sind konkrete Maßnahmen?", options = listOf("Nur Werbung", "Faire Arbeitsbedingungen, Umweltschutz und Engagement in der lokalen Gemeinschaft", "Nur Produkte", "Nur Dienstleistungen"), correctAnswer = "Faire Arbeitsbedingungen, Umweltschutz und Engagement in der lokalen Gemeinschaft", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was schafft Vertrauen?", options = null, correctAnswer = "Ehrlichkeit", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
             }
             
             "C1" -> {
@@ -6903,6 +8249,327 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         "Philosophische Konzepte definieren",
                         "Verschiedene Ansichten diskutieren",
                         "Eigene Position entwickeln"
+                    )
+                ))
+
+                // Additional B2 Writing Lessons (6-25)
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 2",
+                    description = "Goethe-Zertifikat B2 Writing - Environmental essay",
+                    level = level,
+                    orderIndex = 6,
+                    prompt = "Schreibe einen argumentativen Essay über 'Nachhaltigkeit im Alltag: Was kann jeder Einzelne tun?'. Erkläre, warum nachhaltiges Handeln wichtig ist, und gib konkrete Beispiele für umweltfreundliches Verhalten. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Beginne mit einer klaren These",
+                        "Verwende konkrete Beispiele",
+                        "Argumentiere logisch und überzeugend",
+                        "Schließe mit einem Appell ab"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben",
+                    description = "TELC B2 Writing - Technology and society",
+                    level = level,
+                    orderIndex = 7,
+                    prompt = "Verfasse einen Kommentar über 'Die Auswirkungen der Digitalisierung auf die Arbeitswelt'. Diskutiere sowohl positive als auch negative Aspekte und entwickle eine ausgewogene Position. (300-400 Wörter)",
+                    minWords = 300,
+                    maxWords = 400,
+                    tips = listOf(
+                        "Analysiere verschiedene Aspekte",
+                        "Verwende Pro- und Contra-Argumente",
+                        "Belege deine Aussagen mit Beispielen",
+                        "Formuliere eine begründete Schlussfolgerung"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 3",
+                    description = "Goethe-Zertifikat B2 Writing - Migration and integration",
+                    level = level,
+                    orderIndex = 8,
+                    prompt = "Schreibe einen Bericht über 'Integration in Deutschland: Erfolge und Herausforderungen'. Basierend auf aktuellen Entwicklungen, analysiere die Situation und schlage Lösungsansätze vor. (400-500 Wörter)",
+                    minWords = 400,
+                    maxWords = 500,
+                    tips = listOf(
+                        "Strukturiere den Bericht klar",
+                        "Verwende aktuelle Informationen",
+                        "Analysiere verschiedene Perspektiven",
+                        "Schlage konkrete Maßnahmen vor"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben Teil 2",
+                    description = "TELC B2 Writing - Health and lifestyle",
+                    level = level,
+                    orderIndex = 9,
+                    prompt = "Verfasse einen Artikel über 'Gesundheit im digitalen Zeitalter: Chancen und Risiken'. Erkläre, wie digitale Technologien unsere Gesundheit beeinflussen und gib Empfehlungen für einen gesunden Umgang. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Definiere das Thema klar",
+                        "Unterscheide zwischen Chancen und Risiken",
+                        "Verwende medizinische Erkenntnisse",
+                        "Gib praktische Tipps"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 4",
+                    description = "Goethe-Zertifikat B2 Writing - Education and future",
+                    level = level,
+                    orderIndex = 10,
+                    prompt = "Schreibe einen Essay über 'Bildung im 21. Jahrhundert: Welche Kompetenzen brauchen Schüler heute?'. Diskutiere die Anforderungen der modernen Arbeitswelt und entwickle Vorschläge für die Schule der Zukunft. (400-500 Wörter)",
+                    minWords = 400,
+                    maxWords = 500,
+                    tips = listOf(
+                        "Identifiziere wichtige Kompetenzen",
+                        "Verwende Beispiele aus der Praxis",
+                        "Vergleiche traditionelle und moderne Bildung",
+                        "Entwickle konkrete Vorschläge"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben Teil 3",
+                    description = "TELC B2 Writing - Work and career",
+                    level = level,
+                    orderIndex = 11,
+                    prompt = "Verfasse einen Kommentar über 'Die Zukunft der Arbeit: Flexibilität vs. Sicherheit'. Analysiere die Entwicklung der Arbeitswelt und diskutiere, wie Arbeitnehmer sich darauf vorbereiten können. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Analysiere aktuelle Trends",
+                        "Diskutiere verschiedene Arbeitsmodelle",
+                        "Berücksichtige verschiedene Perspektiven",
+                        "Gib praktische Ratschläge"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 5",
+                    description = "Goethe-Zertifikat B2 Writing - Social media and communication",
+                    level = level,
+                    orderIndex = 12,
+                    prompt = "Schreibe einen kritischen Essay über 'Soziale Medien: Verbindung oder Isolation?'. Analysiere, wie soziale Medien unsere Kommunikation und Beziehungen verändern. (400-500 Wörter)",
+                    minWords = 400,
+                    maxWords = 500,
+                    tips = listOf(
+                        "Definiere das Problem klar",
+                        "Verwende konkrete Beispiele",
+                        "Analysiere positive und negative Aspekte",
+                        "Schlage Lösungsansätze vor"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben Teil 4",
+                    description = "TELC B2 Writing - Urban development",
+                    level = level,
+                    orderIndex = 13,
+                    prompt = "Verfasse einen Bericht über 'Smart Cities: Technologie für eine bessere Zukunft?'. Erkläre das Konzept der intelligenten Städte und diskutiere Vor- und Nachteile. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Erkläre das Konzept verständlich",
+                        "Verwende konkrete Beispiele",
+                        "Analysiere technische und soziale Aspekte",
+                        "Berücksichtige Datenschutz und Nachhaltigkeit"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 6",
+                    description = "Goethe-Zertifikat B2 Writing - Cultural diversity",
+                    level = level,
+                    orderIndex = 14,
+                    prompt = "Schreibe einen Essay über 'Kulturelle Vielfalt als Bereicherung: Wie können wir voneinander lernen?'. Diskutiere die Vorteile interkultureller Begegnungen und entwickle Ideen für ein besseres Zusammenleben. (400-500 Wörter)",
+                    minWords = 400,
+                    maxWords = 500,
+                    tips = listOf(
+                        "Definiere kulturelle Vielfalt",
+                        "Verwende persönliche oder gesellschaftliche Beispiele",
+                        "Analysiere Herausforderungen und Chancen",
+                        "Entwickle konkrete Handlungsvorschläge"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben Teil 5",
+                    description = "TELC B2 Writing - Mental health",
+                    level = level,
+                    orderIndex = 15,
+                    prompt = "Verfasse einen Artikel über 'Psychische Gesundheit in der modernen Gesellschaft: Ein Tabu-Thema?'. Erkläre, warum psychische Gesundheit wichtig ist und wie wir sie fördern können. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Behandle das Thema sensibel",
+                        "Verwende medizinische Erkenntnisse",
+                        "Analysiere gesellschaftliche Stigmata",
+                        "Gib praktische Tipps für die Gesundheit"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 7",
+                    description = "Goethe-Zertifikat B2 Writing - Climate change",
+                    level = level,
+                    orderIndex = 16,
+                    prompt = "Schreibe einen argumentativen Essay über 'Klimawandel: Die Verantwortung der Industrieländer'. Analysiere die Rolle der Industrieländer beim Klimaschutz und entwickle konkrete Handlungsvorschläge. (400-500 Wörter)",
+                    minWords = 400,
+                    maxWords = 500,
+                    tips = listOf(
+                        "Verwende aktuelle Daten und Fakten",
+                        "Analysiere historische Verantwortung",
+                        "Berücksichtige wirtschaftliche Aspekte",
+                        "Entwickle realistische Lösungsansätze"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben Teil 6",
+                    description = "TELC B2 Writing - Digital privacy",
+                    level = level,
+                    orderIndex = 17,
+                    prompt = "Verfasse einen Kommentar über 'Digitale Privatsphäre: Ein Menschenrecht im digitalen Zeitalter?'. Diskutiere die Bedeutung des Datenschutzes und entwickle Vorschläge für besseren Schutz. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Definiere digitale Privatsphäre",
+                        "Verwende aktuelle Beispiele",
+                        "Analysiere rechtliche und technische Aspekte",
+                        "Gib praktische Tipps für Nutzer"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 8",
+                    description = "Goethe-Zertifikat B2 Writing - Aging society",
+                    level = level,
+                    orderIndex = 18,
+                    prompt = "Schreibe einen Bericht über 'Die alternde Gesellschaft: Herausforderungen und Chancen'. Analysiere die demografische Entwicklung und entwickle Konzepte für eine generationengerechte Gesellschaft. (400-500 Wörter)",
+                    minWords = 400,
+                    maxWords = 500,
+                    tips = listOf(
+                        "Verwende demografische Daten",
+                        "Analysiere verschiedene Lebensbereiche",
+                        "Berücksichtige alle Generationen",
+                        "Entwickle nachhaltige Lösungen"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben Teil 7",
+                    description = "TELC B2 Writing - Innovation and creativity",
+                    level = level,
+                    orderIndex = 19,
+                    prompt = "Verfasse einen Essay über 'Innovation und Kreativität: Motoren des Fortschritts'. Erkläre, warum Kreativität wichtig ist und wie sie in verschiedenen Bereichen gefördert werden kann. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Definiere Innovation und Kreativität",
+                        "Verwende Beispiele aus verschiedenen Bereichen",
+                        "Analysiere fördernde und hemmende Faktoren",
+                        "Entwickle konkrete Förderkonzepte"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 9",
+                    description = "Goethe-Zertifikat B2 Writing - Future of democracy",
+                    level = level,
+                    orderIndex = 20,
+                    prompt = "Schreibe einen kritischen Essay über 'Die Zukunft der Demokratie im digitalen Zeitalter'. Analysiere, wie die Digitalisierung die Demokratie verändert und entwickle Visionen für eine digitale Demokratie. (400-500 Wörter)",
+                    minWords = 400,
+                    maxWords = 500,
+                    tips = listOf(
+                        "Definiere demokratische Grundwerte",
+                        "Analysiere digitale Chancen und Risiken",
+                        "Verwende aktuelle politische Beispiele",
+                        "Entwickle konkrete Reformvorschläge"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben Teil 8",
+                    description = "TELC B2 Writing - Sustainable living",
+                    level = level,
+                    orderIndex = 21,
+                    prompt = "Verfasse einen Ratgeber-Artikel über 'Nachhaltig leben: Praktische Tipps für den Alltag'. Gib konkrete Anleitungen für umweltfreundliches Verhalten in verschiedenen Lebensbereichen. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Strukturiere nach Lebensbereichen",
+                        "Verwende konkrete, umsetzbare Tipps",
+                        "Erkläre die Umweltauswirkungen",
+                        "Berücksichtige verschiedene Lebenssituationen"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 10",
+                    description = "Goethe-Zertifikat B2 Writing - Intercultural communication",
+                    level = level,
+                    orderIndex = 22,
+                    prompt = "Schreibe einen Leitfaden über 'Interkulturelle Kommunikation: Erfolgreich in einer globalisierten Welt'. Erkläre wichtige Prinzipien und gib praktische Tipps für interkulturelle Begegnungen. (400-500 Wörter)",
+                    minWords = 400,
+                    maxWords = 500,
+                    tips = listOf(
+                        "Definiere interkulturelle Kompetenz",
+                        "Verwende konkrete Beispiele",
+                        "Analysiere häufige Missverständnisse",
+                        "Gib praktische Kommunikationstipps"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben Teil 9",
+                    description = "TELC B2 Writing - Digital learning",
+                    level = level,
+                    orderIndex = 23,
+                    prompt = "Verfasse einen Kommentar über 'Digitales Lernen: Revolution oder Evolution?'. Analysiere die Veränderungen im Bildungswesen durch digitale Technologien und entwickle eine ausgewogene Position. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Analysiere verschiedene Lernformen",
+                        "Verwende pädagogische Erkenntnisse",
+                        "Berücksichtige verschiedene Zielgruppen",
+                        "Entwickle konkrete Empfehlungen"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 Goethe Prüfung - Schreiben Teil 11",
+                    description = "Goethe-Zertifikat B2 Writing - Future of work",
+                    level = level,
+                    orderIndex = 24,
+                    prompt = "Schreibe einen Zukunftsbericht über 'Die Arbeitswelt von morgen: Trends und Prognosen'. Analysiere aktuelle Entwicklungen und entwickle Szenarien für die Arbeitswelt der Zukunft. (400-500 Wörter)",
+                    minWords = 400,
+                    maxWords = 500,
+                    tips = listOf(
+                        "Verwende aktuelle Studien und Daten",
+                        "Analysiere verschiedene Branchen",
+                        "Berücksichtige technologische und gesellschaftliche Trends",
+                        "Entwickle realistische Zukunftsszenarien"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "B2 TELC Prüfung - Schreiben Teil 10",
+                    description = "TELC B2 Writing - Social responsibility",
+                    level = level,
+                    orderIndex = 25,
+                    prompt = "Verfasse einen Essay über 'Soziale Verantwortung: Die Rolle von Unternehmen in der Gesellschaft'. Diskutiere, wie Unternehmen gesellschaftliche Verantwortung übernehmen können und sollten. (350-450 Wörter)",
+                    minWords = 350,
+                    maxWords = 450,
+                    tips = listOf(
+                        "Definiere soziale Verantwortung",
+                        "Verwende konkrete Unternehmensbeispiele",
+                        "Analysiere verschiedene Verantwortungsbereiche",
+                        "Entwickle konkrete Handlungsempfehlungen"
                     )
                 ))
             }
