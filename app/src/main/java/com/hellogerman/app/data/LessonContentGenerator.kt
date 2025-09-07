@@ -3317,6 +3317,296 @@ Nach der Präsentation: Diskussion und Beantwortung von Fragen.""",
                         VocabularyItem("empirische Studien", "empirical studies", "Empirische Studien belegen diesen Zusammenhang.")
                     )
                 ))
+
+                // Additional C1 Reading Lessons - Environmental and Scientific Topics
+                lessons.add(createLesenLesson(
+                    title = "C1 TELC - Umweltpolitik und Nachhaltigkeit",
+                    description = "TELC C1 Reading - Environmental policy and sustainability",
+                    level = level,
+                    orderIndex = 6,
+                    text = """Lesen Sie den folgenden Text über deutsche Umweltpolitik und lösen Sie die Aufgaben.
+
+Die Energiewende als gesellschaftliches Transformationsprojekt
+
+Die deutsche Energiewende stellt eines der ambitioniertesten gesellschaftlichen Transformationsprojekte der Gegenwart dar. Sie umfasst nicht nur den technischen Umbau der Energieversorgung von fossilen auf erneuerbare Energien, sondern erfordert auch tiefgreifende Veränderungen in Wirtschaft, Gesellschaft und individuellen Lebensstilen.
+
+Der Ausstieg aus der Kernenergie nach der Reaktorkatastrophe von Fukushima 2011 markierte einen Wendepunkt in der deutschen Energiepolitik. Die Bundesregierung beschloss den beschleunigten Atomausstieg und setzte gleichzeitig auf den massiven Ausbau erneuerbarer Energien. Wind- und Solarenergie sollten die Grundpfeiler einer klimaneutralen Energieversorgung werden.
+
+Doch die Energiewende stößt auf komplexe Herausforderungen. Die Integration fluktuierender erneuerbarer Energien in das bestehende Stromnetz erfordert intelligente Netzinfrastrukturen und Speichertechnologien. Die Kosten der Transformation werden kontrovers diskutiert, insbesondere die Belastung privater Haushalte durch die EEG-Umlage.
+
+Gesellschaftlich wirft die Energiewende Fragen nach Gerechtigkeit und Partizipation auf. Während einige Regionen von der Windenergie profitieren, sehen sich andere mit Landschaftsveränderungen konfrontiert. Bürgerenergiegenossenschaften ermöglichen eine dezentrale Teilhabe, während Großkonzerne um Marktanteile konkurrieren.
+
+Die internationale Dimension der Energiewende wird oft unterschätzt. Deutschland als Exportnation muss seine Wettbewerbsfähigkeit in einer dekarbonisierten Weltwirtschaft sichern. Gleichzeitig kann die deutsche Technologieführerschaft bei erneuerbaren Energien als Vorbild für andere Länder dienen.
+
+Die Erfolgsmessung der Energiewende erfordert neue Indikatoren jenseits traditioneller ökonomischer Kennzahlen. Lebensqualität, regionale Wertschöpfung und gesellschaftliche Akzeptanz werden zu entscheidenden Faktoren für den langfristigen Erfolg des Transformationsprojekts.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was umfasst die deutsche Energiewende?",
+                            options = listOf("Nur technischen Umbau", "Technischen Umbau und gesellschaftliche Veränderungen", "Nur wirtschaftliche Aspekte", "Nur politische Entscheidungen"),
+                            correctAnswer = "Technischen Umbau und gesellschaftliche Veränderungen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was war der Auslöser für den beschleunigten Atomausstieg?",
+                            options = listOf("Kostensteigerung", "Die Reaktorkatastrophe von Fukushima", "Politische Meinungsumfragen", "Technische Probleme"),
+                            correctAnswer = "Die Reaktorkatastrophe von Fukushima",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Welche Herausforderung wird im Text genannt?",
+                            options = listOf("Integration fluktuierender erneuerbarer Energien", "Nur Kostenprobleme", "Nur technische Probleme", "Nur politische Widerstände"),
+                            correctAnswer = "Integration fluktuierender erneuerbarer Energien",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Verbinden Sie die Begriffe mit ihren Definitionen:",
+                            options = null,
+                            correctAnswer = "",
+                            correctAnswers = null,
+                            type = QuestionType.TEXT_MATCHING,
+                            matchingItems = mapOf(
+                                "Energiewende" to "Gesellschaftliches Transformationsprojekt",
+                                "EEG-Umlage" to "Belastung privater Haushalte",
+                                "Bürgerenergiegenossenschaften" to "Dezentrale Teilhabe",
+                                "Dekarbonisierung" to "Reduzierung von CO2-Emissionen"
+                            )
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Die Energiewende hat nur positive Auswirkungen auf die Gesellschaft.",
+                            options = null,
+                            correctAnswer = "Falsch",
+                            correctAnswers = null,
+                            type = QuestionType.TRUE_FALSE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Energiewende", "energy transition", "Die Energiewende ist ein großes Projekt."),
+                        VocabularyItem("Transformationsprojekt", "transformation project", "Es ist ein gesellschaftliches Transformationsprojekt."),
+                        VocabularyItem("fluktuierend", "fluctuating", "Fluktuierende Energien sind schwer zu speichern."),
+                        VocabularyItem("EEG-Umlage", "renewable energy surcharge", "Die EEG-Umlage belastet die Haushalte."),
+                        VocabularyItem("dekarbonisiert", "decarbonized", "Eine dekarbonisierte Wirtschaft ist das Ziel.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C1 Goethe - Künstliche Intelligenz und Ethik",
+                    description = "Goethe C1 Reading - Artificial intelligence and ethics",
+                    level = level,
+                    orderIndex = 7,
+                    text = """Lesen Sie den folgenden Text über künstliche Intelligenz und ethische Fragen und lösen Sie die Aufgaben.
+
+Algorithmische Entscheidungsfindung und gesellschaftliche Verantwortung
+
+Die rasante Entwicklung künstlicher Intelligenz wirft fundamentale ethische Fragen auf, die unsere Gesellschaft vor neue Herausforderungen stellen. Algorithmische Systeme durchdringen zunehmend alle Bereiche des menschlichen Lebens – von der medizinischen Diagnostik über die Personalauswahl bis hin zur Strafverfolgung.
+
+Ein zentrales Problem liegt in der Transparenz algorithmischer Entscheidungen. Während traditionelle Entscheidungsprozesse nachvollziehbar und diskutierbar sind, operieren viele KI-Systeme als "Black Boxes", deren Entscheidungslogik selbst für ihre Entwickler nicht vollständig verständlich ist. Diese Intransparenz erschwert die gesellschaftliche Kontrolle und demokratische Legitimation automatisierter Entscheidungen.
+
+Besonders problematisch ist die Reproduktion gesellschaftlicher Vorurteile durch algorithmische Systeme. Wenn Trainingsdaten historische Diskriminierungen widerspiegeln, können KI-Systeme diese Ungerechtigkeiten perpetuieren und sogar verstärken. Studien zeigen, dass Gesichtserkennungssoftware bei Menschen mit dunklerer Hautfarbe häufiger Fehler macht, während Bewerbungsalgorithmen Frauen systematisch benachteiligen können.
+
+Die Frage nach der Verantwortung für algorithmische Entscheidungen stellt das traditionelle Rechtssystem vor neue Herausforderungen. Wer haftet, wenn ein autonomes Fahrzeug einen Unfall verursacht? Wie können wir sicherstellen, dass KI-Systeme im Einklang mit gesellschaftlichen Werten und Menschenrechten operieren?
+
+Die Entwicklung ethischer KI erfordert interdisziplinäre Zusammenarbeit zwischen Informatikern, Philosophen, Juristen und Sozialwissenschaftlern. Technische Lösungen allein reichen nicht aus – wir brauchen gesellschaftliche Debatten über die Werte, die in algorithmische Systeme eingebettet werden sollen.
+
+Die europäische KI-Verordnung versucht, einen Rahmen für vertrauenswürdige KI zu schaffen. Sie verbietet bestimmte Anwendungen, die als unvereinbar mit europäischen Werten gelten, und fordert Transparenz und menschliche Aufsicht bei hochriskanten KI-Systemen. Doch die Umsetzung dieser Regulierung wird komplexe technische und rechtliche Herausforderungen mit sich bringen.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was ist ein zentrales Problem algorithmischer Entscheidungen?",
+                            options = listOf("Hohe Kosten", "Mangelnde Transparenz", "Langsame Verarbeitung", "Komplexe Programmierung"),
+                            correctAnswer = "Mangelnde Transparenz",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was können KI-Systeme reproduzieren?",
+                            options = listOf("Nur positive Aspekte", "Gesellschaftliche Vorurteile", "Nur technische Fehler", "Nur zufällige Muster"),
+                            correctAnswer = "Gesellschaftliche Vorurteile",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Welche Disziplinen müssen zusammenarbeiten?",
+                            options = listOf("Nur Informatik", "Informatik, Philosophie, Jura, Sozialwissenschaften", "Nur Philosophie", "Nur Jura"),
+                            correctAnswer = "Informatik, Philosophie, Jura, Sozialwissenschaften",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was fordert die europäische KI-Verordnung?",
+                            options = listOf("Nur technische Standards", "Transparenz und menschliche Aufsicht", "Nur Verbote", "Nur finanzielle Förderung"),
+                            correctAnswer = "Transparenz und menschliche Aufsicht",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "KI-Systeme sind immer fair und unvoreingenommen.",
+                            options = null,
+                            correctAnswer = "Falsch",
+                            correctAnswers = null,
+                            type = QuestionType.TRUE_FALSE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("algorithmisch", "algorithmic", "Algorithmische Entscheidungen sind komplex."),
+                        VocabularyItem("Black Box", "black box", "Das System ist eine Black Box."),
+                        VocabularyItem("perpetuieren", "perpetuate", "KI kann Vorurteile perpetuieren."),
+                        VocabularyItem("autonom", "autonomous", "Autonome Fahrzeuge sind die Zukunft."),
+                        VocabularyItem("Regulierung", "regulation", "Die Regulierung von KI ist wichtig.")
+                    )
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C1 TELC - Migration und Integration",
+                    description = "TELC C1 Reading - Migration and integration",
+                    level = level,
+                    orderIndex = 8,
+                    text = """Lesen Sie den folgenden Text über Migration und Integration in Deutschland und lösen Sie die Aufgaben.
+
+Interkulturelle Kompetenz als Schlüssel zur gesellschaftlichen Kohäsion
+
+Deutschland hat sich in den letzten Jahrzehnten zu einem Einwanderungsland entwickelt, was sowohl Chancen als auch Herausforderungen für die gesellschaftliche Integration mit sich bringt. Die erfolgreiche Integration von Menschen mit Migrationshintergrund erfordert nicht nur individuelle Anstrengungen, sondern auch strukturelle Veränderungen in Bildung, Arbeitsmarkt und gesellschaftlichen Institutionen.
+
+Sprache gilt als zentraler Schlüssel zur Integration. Der Erwerb der deutschen Sprache ermöglicht nicht nur die Teilhabe am Arbeitsmarkt, sondern auch die Partizipation am gesellschaftlichen Leben. Integrationskurse haben sich als wichtiges Instrument erwiesen, um neu Zugewanderte beim Spracherwerb zu unterstützen. Doch die Qualität und Verfügbarkeit dieser Kurse variiert erheblich zwischen den Regionen.
+
+Der Arbeitsmarkt spielt eine entscheidende Rolle bei der Integration. Menschen mit Migrationshintergrund sind oft mit strukturellen Barrieren konfrontiert: Anerkennung ausländischer Qualifikationen, Diskriminierung bei der Bewerbung und mangelnde Netzwerke erschweren den Zugang zu qualifizierten Arbeitsplätzen. Gleichzeitig sind viele Branchen auf Fachkräfte aus dem Ausland angewiesen.
+
+Bildung ist ein weiterer kritischer Faktor. Kinder mit Migrationshintergrund haben nach wie vor schlechtere Bildungschancen als ihre Altersgenossen ohne Migrationshintergrund. Dies liegt nicht an mangelnden Fähigkeiten, sondern an strukturellen Benachteiligungen im Bildungssystem. Die Förderung von Mehrsprachigkeit als Ressource statt als Defizit könnte hier neue Perspektiven eröffnen.
+
+Gesellschaftliche Akzeptanz und interkulturelle Kompetenz sind für eine erfolgreiche Integration unerlässlich. Stereotype und Vorurteile auf beiden Seiten erschweren den Dialog und die gegenseitige Verständigung. Interkulturelle Trainings für Fachkräfte in Behörden, Schulen und Unternehmen können dazu beitragen, diese Barrieren abzubauen.
+
+Die Integration ist ein wechselseitiger Prozess, der sowohl von den Zugewanderten als auch von der Aufnahmegesellschaft Anpassungsleistungen erfordert. Eine erfolgreiche Integrationspolitik muss daher beide Seiten in den Blick nehmen und langfristige Perspektiven entwickeln.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was gilt als zentraler Schlüssel zur Integration?",
+                            options = listOf("Geld", "Sprache", "Arbeit", "Wohnung"),
+                            correctAnswer = "Sprache",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Welche Barrieren werden im Arbeitsmarkt genannt?",
+                            options = listOf("Nur Sprachprobleme", "Anerkennung von Qualifikationen, Diskriminierung, mangelnde Netzwerke", "Nur fehlende Ausbildung", "Nur kulturelle Unterschiede"),
+                            correctAnswer = "Anerkennung von Qualifikationen, Diskriminierung, mangelnde Netzwerke",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was könnte neue Perspektiven in der Bildung eröffnen?",
+                            options = listOf("Mehr Tests", "Förderung von Mehrsprachigkeit als Ressource", "Striktere Regeln", "Weniger Sprachen"),
+                            correctAnswer = "Förderung von Mehrsprachigkeit als Ressource",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was ist für eine erfolgreiche Integration unerlässlich?",
+                            options = listOf("Nur Geld", "Gesellschaftliche Akzeptanz und interkulturelle Kompetenz", "Nur Bildung", "Nur Arbeit"),
+                            correctAnswer = "Gesellschaftliche Akzeptanz und interkulturelle Kompetenz",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Integration ist nur eine Aufgabe der Zugewanderten.",
+                            options = null,
+                            correctAnswer = "Falsch",
+                            correctAnswers = null,
+                            type = QuestionType.TRUE_FALSE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Migrationshintergrund", "migration background", "Menschen mit Migrationshintergrund brauchen Unterstützung."),
+                        VocabularyItem("Partizipation", "participation", "Sprache ermöglicht Partizipation."),
+                        VocabularyItem("strukturelle Barrieren", "structural barriers", "Strukturelle Barrieren erschweren Integration."),
+                        VocabularyItem("Mehrsprachigkeit", "multilingualism", "Mehrsprachigkeit ist eine Ressource."),
+                        VocabularyItem("wechselseitig", "mutual", "Integration ist ein wechselseitiger Prozess.")
+                    )
+                ))
+
+                // Additional C1 Reading Lessons - Literature and Culture
+                lessons.add(createLesenLesson(
+                    title = "C1 Goethe - Deutsche Literatur der Gegenwart",
+                    description = "Goethe C1 Reading - Contemporary German literature",
+                    level = level,
+                    orderIndex = 9,
+                    text = """Lesen Sie den folgenden Text über zeitgenössische deutsche Literatur und lösen Sie die Aufgaben.
+
+Die Renaissance des politischen Romans in der deutschen Gegenwartsliteratur
+
+Die deutsche Gegenwartsliteratur erlebt eine bemerkenswerte Renaissance des politischen Romans, die sich deutlich von den traditionellen Formen politischer Literatur unterscheidet. Während politische Romane früher oft als didaktische Instrumente fungierten, um bestimmte Ideologien zu vermitteln, zeichnen sich die zeitgenössischen Werke durch ihre Komplexität und Ambivalenz aus.
+
+Autoren wie Juli Zeh, Uwe Tellkamp oder Daniel Kehlmann haben neue Formen des politischen Erzählens entwickelt, die gesellschaftliche Realitäten nicht einfach abbilden, sondern kritisch reflektieren und alternative Perspektiven eröffnen. Ihre Romane beschäftigen sich mit Themen wie Überwachung, Klimawandel, Digitalisierung und gesellschaftlicher Spaltung, ohne dabei in einfache Schwarz-Weiß-Malerei zu verfallen.
+
+Ein charakteristisches Merkmal dieser neuen politischen Literatur ist die Verwendung von Science-Fiction-Elementen und dystopischen Szenarien. Diese literarischen Strategien ermöglichen es den Autoren, aktuelle gesellschaftliche Entwicklungen zu extrapolieren und deren mögliche Konsequenzen zu durchdenken. Gleichzeitig schaffen sie einen kritischen Abstand zur Gegenwart, der eine differenzierte Auseinandersetzung mit politischen Themen ermöglicht.
+
+Die Rezeption dieser Romane zeigt, dass sie nicht nur literarische, sondern auch gesellschaftliche Debatten anstoßen. Leserinnen und Leser werden dazu angeregt, über die dargestellten Themen nachzudenken und ihre eigenen Positionen zu hinterfragen. Dies unterstreicht die wichtige Rolle der Literatur als Medium gesellschaftlicher Selbstverständigung.
+
+Kritiker betonen jedoch auch die Gefahr einer Überpolitisierung der Literatur. Wenn literarische Werke primär als politische Statements verstanden werden, kann dies ihre ästhetische Qualität und ihre Fähigkeit zur Welterfahrung beeinträchtigen. Die Herausforderung besteht darin, politische Relevanz mit literarischer Qualität zu verbinden.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Wie unterscheiden sich zeitgenössische politische Romane von traditionellen?",
+                            options = listOf("Sie sind kürzer", "Sie sind komplexer und ambivalenter", "Sie sind einfacher", "Sie sind weniger politisch"),
+                            correctAnswer = "Sie sind komplexer und ambivalenter",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Welche Themen behandeln die zeitgenössischen politischen Romane?",
+                            options = listOf("Nur Liebe", "Überwachung, Klimawandel, Digitalisierung, gesellschaftliche Spaltung", "Nur Geschichte", "Nur Fantasy"),
+                            correctAnswer = "Überwachung, Klimawandel, Digitalisierung, gesellschaftliche Spaltung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was ermöglichen Science-Fiction-Elemente?",
+                            options = listOf("Nur Unterhaltung", "Kritischen Abstand und differenzierte Auseinandersetzung", "Nur Spannung", "Nur Fantasie"),
+                            correctAnswer = "Kritischen Abstand und differenzierte Auseinandersetzung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was ist die Gefahr einer Überpolitisierung?",
+                            options = listOf("Zu viel Politik", "Beeinträchtigung der ästhetischen Qualität", "Zu wenig Unterhaltung", "Zu komplexe Sprache"),
+                            correctAnswer = "Beeinträchtigung der ästhetischen Qualität",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Politische Romane sind immer didaktisch.",
+                            options = null,
+                            correctAnswer = "Falsch",
+                            correctAnswers = null,
+                            type = QuestionType.TRUE_FALSE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Renaissance", "renaissance", "Die Renaissance des politischen Romans ist bemerkenswert."),
+                        VocabularyItem("Ambivalenz", "ambivalence", "Die Werke zeichnen sich durch Ambivalenz aus."),
+                        VocabularyItem("extrapolieren", "extrapolate", "Autoren extrapolieren gesellschaftliche Entwicklungen."),
+                        VocabularyItem("Rezeption", "reception", "Die Rezeption zeigt gesellschaftliche Wirkung."),
+                        VocabularyItem("Überpolitisierung", "over-politicization", "Überpolitisierung kann problematisch sein.")
+                    )
+                ))
             }
             
             "C2" -> {
@@ -5748,6 +6038,33 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         Question(id = 3, question = "Was hilft uns die Philosophie zu verstehen?", options = null, correctAnswer = "die komplexen Herausforderungen der Moderne", correctAnswers = null, type = QuestionType.FILL_BLANK)
                     )
                 ))
+
+                // Additional C1 Listening Lessons - Advanced Academic and Professional Topics
+                lessons.add(createHoerenLesson(
+                    title = "C1 TELC - Klimawandel und Nachhaltigkeit",
+                    description = "TELC C1 Listening - Climate change and sustainability",
+                    level = level,
+                    orderIndex = 6,
+                    script = "Dr. Müller: Die Klimakrise stellt uns vor beispiellose Herausforderungen. Wir müssen sofort handeln, um die Erderwärmung zu begrenzen.\nProf. Dr. Schmidt: Das sehe ich genauso. Die Wissenschaft ist sich einig: Wir haben nur noch wenige Jahre, um drastische Maßnahmen zu ergreifen.\nDr. Müller: Welche Bereiche sind am wichtigsten?\nProf. Dr. Schmidt: Der Energiesektor ist zentral. Wir müssen schnell von fossilen Brennstoffen auf erneuerbare Energien umsteigen. Aber auch Verkehr, Landwirtschaft und Industrie müssen transformiert werden.\nDr. Müller: Und was ist mit der internationalen Zusammenarbeit?\nProf. Dr. Schmidt: Das ist entscheidend. Klimawandel ist ein globales Problem, das globale Lösungen erfordert. Die Pariser Klimaziele sind ein wichtiger Schritt, aber wir brauchen noch ambitioniertere Maßnahmen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was stellt uns vor beispiellose Herausforderungen?", options = listOf("Die Wirtschaft", "Die Klimakrise", "Die Technologie", "Die Politik"), correctAnswer = "Die Klimakrise", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Welcher Sektor ist zentral?", options = listOf("Der Verkehr", "Der Energiesektor", "Die Landwirtschaft", "Die Industrie"), correctAnswer = "Der Energiesektor", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was erfordert der Klimawandel?", options = null, correctAnswer = "globale Lösungen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C1 Goethe - Digitale Transformation",
+                    description = "Goethe C1 Listening - Digital transformation",
+                    level = level,
+                    orderIndex = 7,
+                    script = "Prof. Dr. Weber: Die digitale Transformation verändert alle Bereiche unserer Gesellschaft. Unternehmen müssen sich anpassen oder riskieren, irrelevant zu werden.\nDr. Fischer: Das stimmt. Aber es geht nicht nur um Technologie, sondern auch um Kultur und Prozesse. Viele Unternehmen scheitern, weil sie nur die Technik ändern, aber nicht ihre Denkweise.\nProf. Dr. Weber: Welche Kompetenzen werden wichtig?\nDr. Fischer: Digitale Kompetenz ist natürlich wichtig, aber auch kritisches Denken, Kreativität und emotionale Intelligenz. Maschinen können viele Aufgaben übernehmen, aber menschliche Fähigkeiten bleiben unersetzlich.\nProf. Dr. Weber: Und was ist mit der Arbeitswelt?\nDr. Fischer: Wir werden hybride Arbeitsmodelle sehen, mehr Flexibilität, aber auch neue Herausforderungen. Die Grenze zwischen Arbeit und Privatleben verschwimmt zunehmend.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was verändert die digitale Transformation?", options = listOf("Nur Technologie", "Alle Bereiche der Gesellschaft", "Nur Wirtschaft", "Nur Bildung"), correctAnswer = "Alle Bereiche der Gesellschaft", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Warum scheitern viele Unternehmen?", options = listOf("Wegen Geldmangel", "Weil sie nur die Technik ändern, aber nicht ihre Denkweise", "Wegen Konkurrenz", "Wegen Regulierung"), correctAnswer = "Weil sie nur die Technik ändern, aber nicht ihre Denkweise", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was bleibt unersetzlich?", options = null, correctAnswer = "menschliche Fähigkeiten", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    )
+                ))
             }
 
             "B1" -> {
@@ -6982,6 +7299,82 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         "Sprachwandelphänomene erklären"
                     )
                 ))
+
+                // Additional C1 Writing Lessons - Advanced Academic and Professional Topics
+                lessons.add(createSchreibenLesson(
+                    title = "C1 TELC - Klimawandel und Gesellschaft",
+                    description = "TELC C1 Writing - Climate change and society",
+                    level = level,
+                    orderIndex = 6,
+                    prompt = "Verfasse einen argumentativen Essay über 'Die gesellschaftlichen Auswirkungen des Klimawandels und notwendige Anpassungsstrategien'. Analysiere verschiedene gesellschaftliche Bereiche und entwickle konkrete Lösungsansätze. (700-1000 Wörter)",
+                    minWords = 700,
+                    maxWords = 1000,
+                    tips = listOf(
+                        "Verschiedene gesellschaftliche Bereiche analysieren",
+                        "Konkrete Anpassungsstrategien entwickeln",
+                        "Argumentative Struktur verwenden"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "C1 Goethe - Digitale Ethik",
+                    description = "Goethe C1 Writing - Digital ethics",
+                    level = level,
+                    orderIndex = 7,
+                    prompt = "Schreibe einen analytischen Essay über 'Ethische Herausforderungen der künstlichen Intelligenz in der modernen Gesellschaft'. Untersuche verschiedene Anwendungsbereiche und diskutiere ethische Dilemmata. (800-1200 Wörter)",
+                    minWords = 800,
+                    maxWords = 1200,
+                    tips = listOf(
+                        "Verschiedene Anwendungsbereiche untersuchen",
+                        "Ethische Dilemmata identifizieren",
+                        "Analytische Herangehensweise verwenden"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "C1 TELC - Bildung der Zukunft",
+                    description = "TELC C1 Writing - Education of the future",
+                    level = level,
+                    orderIndex = 8,
+                    prompt = "Verfasse einen reflektierenden Essay über 'Die Transformation des Bildungssystems im digitalen Zeitalter'. Analysiere Chancen und Herausforderungen der digitalen Bildung. (600-900 Wörter)",
+                    minWords = 600,
+                    maxWords = 900,
+                    tips = listOf(
+                        "Chancen und Herausforderungen abwägen",
+                        "Reflektierende Perspektive einnehmen",
+                        "Konkrete Beispiele verwenden"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "C1 Goethe - Interkulturelle Kommunikation",
+                    description = "Goethe C1 Writing - Intercultural communication",
+                    level = level,
+                    orderIndex = 9,
+                    prompt = "Schreibe einen vergleichenden Essay über 'Interkulturelle Kommunikation in einer globalisierten Welt'. Untersuche verschiedene Kommunikationsmodelle und kulturelle Unterschiede. (700-1000 Wörter)",
+                    minWords = 700,
+                    maxWords = 1000,
+                    tips = listOf(
+                        "Verschiedene Kommunikationsmodelle vergleichen",
+                        "Kulturelle Unterschiede analysieren",
+                        "Vergleichende Struktur verwenden"
+                    )
+                ))
+
+                lessons.add(createSchreibenLesson(
+                    title = "C1 TELC - Nachhaltige Entwicklung",
+                    description = "TELC C1 Writing - Sustainable development",
+                    level = level,
+                    orderIndex = 10,
+                    prompt = "Verfasse einen problemorientierten Essay über 'Nachhaltige Entwicklung als gesellschaftliche Herausforderung'. Analysiere verschiedene Dimensionen der Nachhaltigkeit und entwickle Handlungsempfehlungen. (800-1200 Wörter)",
+                    minWords = 800,
+                    maxWords = 1200,
+                    tips = listOf(
+                        "Verschiedene Dimensionen der Nachhaltigkeit berücksichtigen",
+                        "Handlungsempfehlungen entwickeln",
+                        "Problemorientierte Herangehensweise verwenden"
+                    )
+                ))
             }
             
             "C2" -> {
@@ -7979,6 +8372,57 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                     prompt = "Diskutiere über die Herausforderungen der Moderne und die Rolle der Philosophie in der Gegenwart. Sprich 6-7 Minuten.",
                     modelResponse = "Die Moderne ist geprägt von Individualisierung, Rationalisierung und Globalisierung. Diese Entwicklungen schaffen [Freiheiten] und [Probleme]. Identität ist heute [Entwicklung] und erfordert [Anpassungen]. Die Philosophie hilft uns, [Herausforderungen] zu verstehen und [Lösungen] zu entwickeln.",
                     keywords = listOf("Moderne", "Individualisierung", "Globalisierung", "Identität", "Philosophie", "Herausforderungen")
+                ))
+
+                // Additional C1 Speaking Lessons - Advanced Academic and Professional Topics
+                lessons.add(createSprechenLesson(
+                    title = "C1 TELC - Klimawandel und Politik",
+                    description = "TELC C1 Speaking - Climate change and politics",
+                    level = level,
+                    orderIndex = 6,
+                    prompt = "Analysiere die politischen Herausforderungen des Klimawandels und diskutiere verschiedene Lösungsansätze. Welche Rolle spielen internationale Zusammenarbeit und nationale Maßnahmen? Sprich 5-6 Minuten.",
+                    modelResponse = "Der Klimawandel stellt eine der größten politischen Herausforderungen unserer Zeit dar. Internationale Zusammenarbeit ist [Bedeutung], aber nationale Maßnahmen sind [Wichtigkeit]. Verschiedene Lösungsansätze wie [Beispiele] müssen [Herangehensweise]. Die Politik muss [Anforderungen] erfüllen und [Ziele] verfolgen.",
+                    keywords = listOf("Klimawandel", "politische Herausforderungen", "internationale Zusammenarbeit", "nationale Maßnahmen", "Lösungsansätze", "Politik")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "C1 Goethe - Digitale Gesellschaft",
+                    description = "Goethe C1 Speaking - Digital society",
+                    level = level,
+                    orderIndex = 7,
+                    prompt = "Diskutiere über die Auswirkungen der Digitalisierung auf die Gesellschaft. Welche Chancen und Risiken siehst du? Wie verändert sich das Zusammenleben? Sprich 5-6 Minuten.",
+                    modelResponse = "Die Digitalisierung transformiert unsere Gesellschaft grundlegend. Chancen wie [Beispiele] eröffnen neue [Möglichkeiten], aber Risiken wie [Probleme] erfordern [Maßnahmen]. Das Zusammenleben verändert sich durch [Entwicklungen] und wir müssen [Herausforderungen] bewältigen.",
+                    keywords = listOf("Digitalisierung", "Gesellschaft", "Chancen", "Risiken", "Zusammenleben", "Transformation")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "C1 TELC - Bildung und Zukunft",
+                    description = "TELC C1 Speaking - Education and future",
+                    level = level,
+                    orderIndex = 8,
+                    prompt = "Analysiere die Zukunft der Bildung im digitalen Zeitalter. Welche Kompetenzen werden wichtig? Wie verändert sich das Lernen? Sprich 5-6 Minuten.",
+                    modelResponse = "Die Bildung der Zukunft wird durch [Entwicklungen] geprägt sein. Wichtige Kompetenzen sind [Fähigkeiten] und [Kenntnisse]. Das Lernen verändert sich durch [Technologien] und [Methoden]. Wir müssen [Anpassungen] vornehmen und [Herausforderungen] bewältigen.",
+                    keywords = listOf("Bildung", "Zukunft", "digitale Zeitalter", "Kompetenzen", "Lernen", "Technologien")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "C1 Goethe - Interkulturalität",
+                    description = "Goethe C1 Speaking - Interculturality",
+                    level = level,
+                    orderIndex = 9,
+                    prompt = "Diskutiere über interkulturelle Kommunikation und kulturelle Vielfalt in der modernen Gesellschaft. Welche Herausforderungen und Chancen siehst du? Sprich 5-6 Minuten.",
+                    modelResponse = "Interkulturelle Kommunikation wird in einer globalisierten Welt immer wichtiger. Kulturelle Vielfalt bietet [Chancen] aber auch [Herausforderungen]. Wir müssen [Kompetenzen] entwickeln und [Strategien] anwenden, um [Ziele] zu erreichen.",
+                    keywords = listOf("interkulturelle Kommunikation", "kulturelle Vielfalt", "globalisiert", "Chancen", "Herausforderungen", "Kompetenzen")
+                ))
+
+                lessons.add(createSprechenLesson(
+                    title = "C1 TELC - Nachhaltigkeit und Wirtschaft",
+                    description = "TELC C1 Speaking - Sustainability and economy",
+                    level = level,
+                    orderIndex = 10,
+                    prompt = "Analysiere die Beziehung zwischen Nachhaltigkeit und Wirtschaft. Wie können Unternehmen nachhaltig wirtschaften? Welche Rolle spielt die Politik? Sprich 5-6 Minuten.",
+                    modelResponse = "Nachhaltigkeit und Wirtschaft müssen in Einklang gebracht werden. Unternehmen können durch [Maßnahmen] nachhaltig wirtschaften. Die Politik spielt eine wichtige Rolle bei [Bereichen] und muss [Rahmenbedingungen] schaffen. Wir brauchen [Lösungen] für [Herausforderungen].",
+                    keywords = listOf("Nachhaltigkeit", "Wirtschaft", "Unternehmen", "Politik", "Rahmenbedingungen", "Lösungen")
                 ))
             }
 
