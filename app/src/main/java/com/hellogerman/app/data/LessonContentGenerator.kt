@@ -4815,6 +4815,848 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         VocabularyItem("anthropologische Revolution", "anthropological revolution", "Eine anthropologische Revolution steht bevor.")
                     )
                 ))
+
+                // Additional C2 Reading Lessons (6-25)
+                lessons.add(createLesenLesson(
+                    title = "C2 TELC Prüfung - Leseverstehen Teil 1",
+                    description = "TELC Deutsch C2 Reading Comprehension - Scientific discourse",
+                    level = level,
+                    orderIndex = 6,
+                    text = """Lesen Sie den folgenden wissenschaftstheoretischen Text und lösen Sie die Aufgaben.
+
+Die Paradigmenwechsel in der Wissenschaftsgeschichte: Von Kuhn zu Feyerabend
+
+Thomas Kuhns "Die Struktur wissenschaftlicher Revolutionen" (1962) revolutionierte das Verständnis wissenschaftlicher Entwicklung durch die Einführung des Paradigmenkonzepts. Wissenschaftliche Fortschritte erfolgen demnach nicht kontinuierlich, sondern durch revolutionäre Umbrüche, in denen etablierte Paradigmen durch neue ersetzt werden.
+
+Ein Paradigma umfasst die grundlegenden Annahmen, Methoden und Standards einer wissenschaftlichen Gemeinschaft. Die Normalwissenschaft arbeitet innerhalb eines Paradigmas und löst Rätsel, ohne die Grundannahmen zu hinterfragen. Anomalien, die sich nicht innerhalb des bestehenden Paradigmas erklären lassen, führen zu Krisen und schließlich zu wissenschaftlichen Revolutionen.
+
+Paul Feyerabends "Wider den Methodenzwang" (1975) radikalisiert diese Position durch die These, dass es keine universellen wissenschaftlichen Methoden gibt. Seine anarchistische Erkenntnistheorie betont die Kreativität und den Pluralismus in der Wissenschaft. "Anything goes" bedeutet nicht Beliebigkeit, sondern die Anerkennung, dass verschiedene Forschungsansätze zu unterschiedlichen Erkenntnissen führen können.
+
+Die feministische Wissenschaftskritik erweitert diese Perspektive um die Dimension der Geschlechterverhältnisse. Sandra Harding argumentiert, dass die vermeintliche Objektivität der Wissenschaft oft androzentrische Perspektiven verschleiert. Die Standpunkt-Theorie betont, dass marginalisierte Gruppen oft bessere Erkenntnisse über gesellschaftliche Strukturen haben, da sie diese aus der Perspektive der Unterdrückung erfahren.
+
+Diese Entwicklungen haben weitreichende Konsequenzen für das Verständnis wissenschaftlicher Objektivität. Anstatt einer naiven Korrespondenztheorie der Wahrheit entwickeln sich konstruktivistische Ansätze, die die Rolle des Erkenntnissubjekts bei der Konstitution von Wissen betonen.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was revolutionierte Thomas Kuhns Werk?",
+                            options = listOf("das Verständnis wissenschaftlicher Entwicklung", "nur die Biologie", "nur die Physik", "nur die Chemie"),
+                            correctAnswer = "das Verständnis wissenschaftlicher Entwicklung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was umfasst ein Paradigma?",
+                            options = listOf("grundlegende Annahmen, Methoden und Standards", "nur Experimente", "nur Theorien", "nur Daten"),
+                            correctAnswer = "grundlegende Annahmen, Methoden und Standards",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was bedeutet Feyerabends 'Anything goes'?",
+                            options = listOf("Anerkennung verschiedener Forschungsansätze", "Beliebigkeit in der Wissenschaft", "Ende aller Methoden", "nur Chaos"),
+                            correctAnswer = "Anerkennung verschiedener Forschungsansätze",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was betont die feministische Wissenschaftskritik?",
+                            options = listOf("androzentrische Perspektiven in der Wissenschaft", "nur männliche Wissenschaftler", "nur weibliche Methoden", "nur Geschlechtertrennung"),
+                            correctAnswer = "androzentrische Perspektiven in der Wissenschaft",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was entwickeln sich anstatt einer naiven Korrespondenztheorie?",
+                            options = listOf("konstruktivistische Ansätze", "nur empirische Methoden", "nur logische Strukturen", "nur mathematische Modelle"),
+                            correctAnswer = "konstruktivistische Ansätze",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Paradigmenwechsel", "paradigm shift", "Paradigmenwechsel revolutionieren die Wissenschaft."),
+                        VocabularyItem("Normalwissenschaft", "normal science", "Normalwissenschaft arbeitet innerhalb von Paradigmen."),
+                        VocabularyItem("Anomalien", "anomalies", "Anomalien führen zu wissenschaftlichen Krisen."),
+                        VocabularyItem("androzentrisch", "androcentric", "Androzentrische Perspektiven dominieren die Wissenschaft."),
+                        VocabularyItem("Standpunkt-Theorie", "standpoint theory", "Die Standpunkt-Theorie betont marginalisierte Perspektiven.")
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 Goethe Prüfung - Leseverstehen Teil 3",
+                    description = "Goethe-Zertifikat C2 Reading Comprehension - Literary analysis",
+                    level = level,
+                    orderIndex = 7,
+                    text = """Lesen Sie den folgenden literaturwissenschaftlichen Text und lösen Sie die Aufgaben.
+
+Postmoderne Erzählstrategien in der deutschen Gegenwartsliteratur
+
+Die deutsche Gegenwartsliteratur der letzten Jahrzehnte zeigt eine deutliche Tendenz zur postmodernen Erzähltechnik, die traditionelle narrative Strukturen dekonstruiert und neue Formen der Textualität entwickelt. Autoren wie W.G. Sebald, Judith Hermann und Daniel Kehlmann experimentieren mit hybriden Genres, intertextuellen Verweisen und metafiktionalen Elementen.
+
+Sebalds "Die Ringe des Saturn" (1995) exemplifiziert diese Entwicklung durch seine fragmentarische Struktur, die historische Dokumentation mit fiktionaler Erzählung verschränkt. Der Text oszilliert zwischen Essay, Reisebericht und Roman, wodurch die Grenzen zwischen Fakt und Fiktion verwischt werden. Diese Strategie der Entgrenzung charakterisiert die postmoderne Literatur als Ganzes.
+
+Judith Hermanns "Sommerhaus, später" (1998) demonstriert die postmoderne Tendenz zur Miniaturisierung und Fragmentierung. Ihre Erzählungen verzichten auf traditionelle Handlungsstränge und konzentrieren sich auf atmosphärische Momente und emotionale Zustände. Die Erzählerstimme bleibt oft unbestimmt, was zu einer Mehrdeutigkeit führt, die der Komplexität moderner Erfahrung entspricht.
+
+Daniel Kehlmanns "Die Vermessung der Welt" (2005) zeigt, wie postmoderne Literatur historische Stoffe durch zeitgenössische Erzähltechniken neu interpretiert. Die Parodie und Ironie dienen nicht nur der Unterhaltung, sondern auch der kritischen Reflexion über die Konstruktion von Geschichte und Wissenschaft.
+
+Diese Entwicklungen reflektieren grundlegende Veränderungen in der Wahrnehmung von Realität und Subjektivität. Die postmoderne Literatur reagiert auf die Fragmentierung der modernen Erfahrung durch entsprechende narrative Strategien.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was zeigt die deutsche Gegenwartsliteratur?",
+                            options = listOf("Tendenz zur postmodernen Erzähltechnik", "nur traditionelle Strukturen", "nur einfache Geschichten", "nur historische Themen"),
+                            correctAnswer = "Tendenz zur postmodernen Erzähltechnik",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie charakterisiert Sebalds 'Die Ringe des Saturn' die postmoderne Literatur?",
+                            options = listOf("durch Entgrenzung zwischen Fakt und Fiktion", "nur durch historische Themen", "nur durch einfache Sprache", "nur durch kurze Kapitel"),
+                            correctAnswer = "durch Entgrenzung zwischen Fakt und Fiktion",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was demonstriert Judith Hermanns Werk?",
+                            options = listOf("Tendenz zur Miniaturisierung und Fragmentierung", "nur traditionelle Romane", "nur historische Erzählungen", "nur wissenschaftliche Texte"),
+                            correctAnswer = "Tendenz zur Miniaturisierung und Fragmentierung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wozu dienen Parodie und Ironie bei Kehlmann?",
+                            options = listOf("kritischen Reflexion über Konstruktion von Geschichte", "nur zur Unterhaltung", "nur zur Verwirrung", "nur zur Vereinfachung"),
+                            correctAnswer = "kritischen Reflexion über Konstruktion von Geschichte",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Worauf reagiert die postmoderne Literatur?",
+                            options = listOf("Fragmentierung der modernen Erfahrung", "nur auf historische Ereignisse", "nur auf politische Entwicklungen", "nur auf technische Innovationen"),
+                            correctAnswer = "Fragmentierung der modernen Erfahrung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("postmoderne Erzähltechnik", "postmodern narrative technique", "Postmoderne Erzähltechnik dekonstruiert Traditionen."),
+                        VocabularyItem("intertextuelle Verweise", "intertextual references", "Intertextuelle Verweise verbinden verschiedene Texte."),
+                        VocabularyItem("metafiktional", "metafictional", "Metafiktionale Elemente reflektieren das Erzählen selbst."),
+                        VocabularyItem("fragmentarische Struktur", "fragmentary structure", "Fragmentarische Struktur charakterisiert moderne Literatur."),
+                        VocabularyItem("Mehrdeutigkeit", "ambiguity", "Mehrdeutigkeit entspricht der Komplexität moderner Erfahrung.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 TELC Prüfung - Leseverstehen Teil 2",
+                    description = "TELC Deutsch C2 Reading Comprehension - Economic analysis",
+                    level = level,
+                    orderIndex = 8,
+                    text = """Lesen Sie den folgenden ökonomischen Text und lösen Sie die Aufgaben.
+
+Die Krise der Globalisierung: Protektionismus versus Freihandel
+
+Die gegenwärtige Krise der Globalisierung manifestiert sich in einem wachsenden Spannungsverhältnis zwischen protektionistischen Tendenzen und den Prinzipien des Freihandels. Während die Globalisierung in den 1990er Jahren als unaufhaltsamer Trend galt, der Wohlstand und Demokratie weltweit verbreiten würde, zeigen sich heute die Schattenseiten dieser Entwicklung.
+
+Der Aufstieg populistischer Bewegungen in Europa und den USA ist eng mit der Globalisierungskritik verbunden. Diese Bewegungen artikulieren die Ängste jener Bevölkerungsgruppen, die von den negativen Auswirkungen der Globalisierung betroffen sind: Arbeitsplatzverluste durch Outsourcing, Lohnkonkurrenz durch Billiglohnländer und der Verlust nationaler Souveränität durch internationale Institutionen.
+
+Die ökonomische Theorie des komparativen Vorteils, die seit David Ricardo die Grundlage des Freihandels bildet, wird zunehmend in Frage gestellt. Kritiker argumentieren, dass diese Theorie die Realität unvollständig abbildet, da sie Faktoren wie Kapitalmobilität, Technologietransfer und institutionelle Unterschiede zwischen Ländern vernachlässigt.
+
+Die Digitalisierung verstärkt diese Entwicklungen durch die Entstehung neuer Formen der Wertschöpfung. Plattformökonomien wie Amazon, Google und Facebook dominieren zunehmend den globalen Markt, während traditionelle Industrien unter Druck geraten. Diese Entwicklung wirft Fragen nach der Zukunft der Arbeit und der Verteilung von Wohlstand auf.
+
+Die Herausforderung besteht darin, eine neue Form der Globalisierung zu entwickeln, die sowohl die Vorteile internationaler Kooperation als auch die Bedürfnisse nationaler Gemeinschaften berücksichtigt.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was manifestiert sich in der gegenwärtigen Krise?",
+                            options = listOf("Spannungsverhältnis zwischen Protektionismus und Freihandel", "nur wirtschaftlicher Aufschwung", "nur politische Stabilität", "nur technologische Innovation"),
+                            correctAnswer = "Spannungsverhältnis zwischen Protektionismus und Freihandel",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Womit ist der Aufstieg populistischer Bewegungen verbunden?",
+                            options = listOf("Globalisierungskritik", "nur Wirtschaftswachstum", "nur technologische Entwicklung", "nur kulturelle Vielfalt"),
+                            correctAnswer = "Globalisierungskritik",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was wird zunehmend in Frage gestellt?",
+                            options = listOf("ökonomische Theorie des komparativen Vorteils", "nur mathematische Modelle", "nur statistische Methoden", "nur historische Analysen"),
+                            correctAnswer = "ökonomische Theorie des komparativen Vorteils",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie verstärkt die Digitalisierung diese Entwicklungen?",
+                            options = listOf("durch Entstehung neuer Formen der Wertschöpfung", "nur durch einfachere Kommunikation", "nur durch bessere Datenverarbeitung", "nur durch schnellere Transaktionen"),
+                            correctAnswer = "durch Entstehung neuer Formen der Wertschöpfung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was ist die Herausforderung?",
+                            options = listOf("neue Form der Globalisierung zu entwickeln", "nur alte Strukturen zu bewahren", "nur nationale Interessen zu verfolgen", "nur internationale Kooperation zu beenden"),
+                            correctAnswer = "neue Form der Globalisierung zu entwickeln",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Protektionismus", "protectionism", "Protektionismus schützt nationale Märkte."),
+                        VocabularyItem("komparativer Vorteil", "comparative advantage", "Der komparative Vorteil begründet den Freihandel."),
+                        VocabularyItem("Outsourcing", "outsourcing", "Outsourcing führt zu Arbeitsplatzverlusten."),
+                        VocabularyItem("Plattformökonomien", "platform economies", "Plattformökonomien dominieren den digitalen Markt."),
+                        VocabularyItem("Wertschöpfung", "value creation", "Neue Formen der Wertschöpfung entstehen.")
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 Goethe Prüfung - Leseverstehen Teil 4",
+                    description = "Goethe-Zertifikat C2 Reading Comprehension - Political philosophy",
+                    level = level,
+                    orderIndex = 9,
+                    text = """Lesen Sie den folgenden politisch-philosophischen Text und lösen Sie die Aufgaben.
+
+Demokratie und Populismus: Die Krise der repräsentativen Demokratie
+
+Die gegenwärtige Krise der repräsentativen Demokratie manifestiert sich in einem wachsenden Vertrauensverlust der Bürger gegenüber politischen Institutionen und einer zunehmenden Polarisierung der Gesellschaft. Populistische Bewegungen artikulieren diese Unzufriedenheit und versprechen eine direktere Form der Demokratie, die jedoch oft mit autoritären Tendenzen einhergeht.
+
+Der Begriff des Populismus ist umstritten und wird sowohl als Demokratisierung der Politik als auch als Bedrohung für demokratische Institutionen interpretiert. Jan-Werner Müller definiert Populismus als eine spezifische Form der politischen Imagination, die eine homogene "wahre" Bevölkerung gegen eine korrupte Elite mobilisiert. Diese Dichotomie zwischen Volk und Elite ist charakteristisch für populistische Bewegungen weltweit.
+
+Die Digitalisierung hat diese Entwicklungen verstärkt, indem sie neue Formen der politischen Partizipation ermöglicht, aber auch die Verbreitung von Desinformation und Filterblasen begünstigt. Social Media Plattformen werden zu Echokammern, in denen sich gleichgesinnte Nutzer bestätigen, während gegensätzliche Meinungen ausgeblendet werden.
+
+Die Herausforderung besteht darin, die Vorteile direkter Demokratie mit den Schutzmechanismen der repräsentativen Demokratie zu verbinden. Deliberative Demokratie, die auf rationaler Diskussion und Konsensbildung basiert, bietet einen möglichen Ausweg aus dieser Krise.
+
+Die Zukunft der Demokratie hängt davon ab, ob es gelingt, neue Formen der politischen Partizipation zu entwickeln, die sowohl die Legitimität als auch die Effektivität demokratischer Entscheidungsprozesse erhöhen.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Worin manifestiert sich die Krise der repräsentativen Demokratie?",
+                            options = listOf("Vertrauensverlust und Polarisierung", "nur wirtschaftliche Probleme", "nur technische Herausforderungen", "nur kulturelle Konflikte"),
+                            correctAnswer = "Vertrauensverlust und Polarisierung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie definiert Jan-Werner Müller Populismus?",
+                            options = listOf("als politische Imagination zwischen Volk und Elite", "nur als Demokratisierung", "nur als Autoritarismus", "nur als Protestbewegung"),
+                            correctAnswer = "als politische Imagination zwischen Volk und Elite",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Wie verstärkt die Digitalisierung diese Entwicklungen?",
+                            options = listOf("durch neue Partizipationsformen und Desinformation", "nur durch bessere Kommunikation", "nur durch mehr Transparenz", "nur durch schnellere Entscheidungen"),
+                            correctAnswer = "durch neue Partizipationsformen und Desinformation",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was bietet die deliberative Demokratie?",
+                            options = listOf("möglichen Ausweg aus der Krise", "nur mehr Bürokratie", "nur langsamere Entscheidungen", "nur weniger Partizipation"),
+                            correctAnswer = "möglichen Ausweg aus der Krise",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Wovon hängt die Zukunft der Demokratie ab?",
+                            options = listOf("Entwicklung neuer Partizipationsformen", "nur von technischen Innovationen", "nur von wirtschaftlichem Wachstum", "nur von kulturellen Veränderungen"),
+                            correctAnswer = "Entwicklung neuer Partizipationsformen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("repräsentative Demokratie", "representative democracy", "Repräsentative Demokratie steht in der Krise."),
+                        VocabularyItem("Polarisierung", "polarization", "Polarisierung spaltet die Gesellschaft."),
+                        VocabularyItem("Echokammern", "echo chambers", "Echokammern verstärken bestehende Meinungen."),
+                        VocabularyItem("deliberative Demokratie", "deliberative democracy", "Deliberative Demokratie basiert auf rationaler Diskussion."),
+                        VocabularyItem("Filterblasen", "filter bubbles", "Filterblasen begrenzen die Informationsvielfalt.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 TELC Prüfung - Leseverstehen Teil 3",
+                    description = "TELC Deutsch C2 Reading Comprehension - Environmental ethics",
+                    level = level,
+                    orderIndex = 10,
+                    text = """Lesen Sie den folgenden umweltethischen Text und lösen Sie die Aufgaben.
+
+Klimawandel und Generationengerechtigkeit: Ethische Herausforderungen der Nachhaltigkeit
+
+Der Klimawandel stellt eine der größten ethischen Herausforderungen des 21. Jahrhunderts dar, da er fundamentale Fragen nach Gerechtigkeit zwischen gegenwärtigen und zukünftigen Generationen aufwirft. Die gegenwärtige Generation verbraucht Ressourcen und emittiert Treibhausgase in einem Ausmaß, das die Lebensgrundlagen zukünftiger Generationen gefährdet.
+
+Das Konzept der Generationengerechtigkeit wurde von John Rawls in seiner "Theorie der Gerechtigkeit" entwickelt und später von Hans Jonas in "Das Prinzip Verantwortung" auf ökologische Fragen angewendet. Jonas argumentiert für ein "Prinzip der Vorsicht", das besagt, dass wir so handeln sollen, dass die Wirkungen unserer Handlungen mit der Permanenz echten menschlichen Lebens auf Erden vereinbar sind.
+
+Die Klimaethik unterscheidet zwischen verschiedenen Gerechtigkeitsprinzipien: dem Verursacherprinzip, dem Fähigkeitsprinzip und dem Bedürfnisprinzip. Das Verursacherprinzip besagt, dass diejenigen, die den Klimawandel verursacht haben, auch für die Kosten der Anpassung und Minderung aufkommen sollten. Das Fähigkeitsprinzip betont die Verantwortung der reichen Länder, die über die finanziellen und technologischen Mittel verfügen, um Klimaschutzmaßnahmen zu finanzieren.
+
+Die Herausforderung besteht darin, diese Prinzipien in konkrete politische Maßnahmen umzusetzen. Der Pariser Klimavertrag von 2015 stellt einen ersten Schritt dar, bleibt aber in seinen Verpflichtungen unverbindlich und unzureichend.
+
+Die Zukunft der Menschheit hängt davon ab, ob es gelingt, eine neue Form der globalen Solidarität zu entwickeln, die sowohl die Bedürfnisse der gegenwärtigen als auch die Rechte zukünftiger Generationen berücksichtigt.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was stellt der Klimawandel dar?",
+                            options = listOf("eine der größten ethischen Herausforderungen", "nur ein technisches Problem", "nur ein wirtschaftliches Problem", "nur ein politisches Problem"),
+                            correctAnswer = "eine der größten ethischen Herausforderungen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was entwickelte John Rawls?",
+                            options = listOf("das Konzept der Generationengerechtigkeit", "nur wirtschaftliche Theorien", "nur politische Systeme", "nur soziale Strukturen"),
+                            correctAnswer = "das Konzept der Generationengerechtigkeit",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was besagt das Verursacherprinzip?",
+                            options = listOf("Verursacher sollen für Kosten aufkommen", "nur Reiche sollen zahlen", "nur Arme sollen profitieren", "nur Regierungen sollen handeln"),
+                            correctAnswer = "Verursacher sollen für Kosten aufkommen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was stellt der Pariser Klimavertrag dar?",
+                            options = listOf("einen ersten Schritt", "nur eine vollständige Lösung", "nur ein technisches Dokument", "nur eine politische Erklärung"),
+                            correctAnswer = "einen ersten Schritt",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Wovon hängt die Zukunft der Menschheit ab?",
+                            options = listOf("Entwicklung globaler Solidarität", "nur von technischen Innovationen", "nur von wirtschaftlichem Wachstum", "nur von politischen Reformen"),
+                            correctAnswer = "Entwicklung globaler Solidarität",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Generationengerechtigkeit", "intergenerational justice", "Generationengerechtigkeit betrifft zukünftige Generationen."),
+                        VocabularyItem("Prinzip der Vorsicht", "precautionary principle", "Das Prinzip der Vorsicht leitet unser Handeln."),
+                        VocabularyItem("Verursacherprinzip", "polluter pays principle", "Das Verursacherprinzip regelt die Verantwortung."),
+                        VocabularyItem("Fähigkeitsprinzip", "ability to pay principle", "Das Fähigkeitsprinzip berücksichtigt die Mittel."),
+                        VocabularyItem("globale Solidarität", "global solidarity", "Globale Solidarität ist für die Zukunft wichtig.")
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 Goethe Prüfung - Leseverstehen Teil 5",
+                    description = "Goethe-Zertifikat C2 Reading Comprehension - Cultural studies",
+                    level = level,
+                    orderIndex = 11,
+                    text = """Lesen Sie den folgenden kulturwissenschaftlichen Text und lösen Sie die Aufgaben.
+
+Kulturelle Hybridität in der globalisierten Welt: Identität zwischen Lokalität und Globalität
+
+Die Globalisierung hat zu einer zunehmenden Hybridisierung kultureller Praktiken geführt, die traditionelle Vorstellungen von kultureller Authentizität und nationaler Identität in Frage stellt. Homi Bhabhas Konzept der "kulturellen Hybridität" beschreibt diese Entwicklung als einen produktiven Prozess der kulturellen Übersetzung und Transformation.
+
+Kulturelle Hybridität entsteht durch die Begegnung und Vermischung verschiedener kultureller Traditionen, die zu neuen, hybriden Formen der kulturellen Praxis führen. Diese Entwicklung ist nicht als Verlust ursprünglicher Kulturen zu verstehen, sondern als kreative Aneignung und Transformation kultureller Elemente.
+
+Die postkoloniale Theorie betont die agency der marginalisierten Gruppen, die nicht nur passive Empfänger globaler Kultureinflüsse sind, sondern aktiv an der Gestaltung hybrider Kulturen teilnehmen. Stuart Hall argumentiert, dass kulturelle Identität nicht als feste Essenz, sondern als kontinuierlicher Prozess der Identifikation und Differenzierung verstanden werden sollte.
+
+Die Herausforderung besteht darin, die Spannung zwischen kultureller Vielfalt und gesellschaftlicher Kohäsion zu bewältigen. Während kulturelle Hybridität neue Möglichkeiten der Identifikation eröffnet, kann sie auch zu Verunsicherung und Konflikten führen.
+
+Die Zukunft der kulturellen Entwicklung hängt davon ab, ob es gelingt, hybride Kulturen als Bereicherung zu verstehen und gleichzeitig gemeinsame Werte und Normen zu entwickeln, die gesellschaftlichen Zusammenhalt ermöglichen.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was hat die Globalisierung bewirkt?",
+                            options = listOf("Hybridisierung kultureller Praktiken", "nur Vereinheitlichung", "nur Trennung", "nur Konflikte"),
+                            correctAnswer = "Hybridisierung kultureller Praktiken",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Wie beschreibt Homi Bhabha kulturelle Hybridität?",
+                            options = listOf("als produktiven Prozess der kulturellen Übersetzung", "nur als Verlust", "nur als Chaos", "nur als Konflikt"),
+                            correctAnswer = "als produktiven Prozess der kulturellen Übersetzung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was betont die postkoloniale Theorie?",
+                            options = listOf("die agency der marginalisierten Gruppen", "nur passive Empfänger", "nur dominante Kulturen", "nur traditionelle Strukturen"),
+                            correctAnswer = "die agency der marginalisierten Gruppen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Wie versteht Stuart Hall kulturelle Identität?",
+                            options = listOf("als kontinuierlichen Prozess", "nur als feste Essenz", "nur als biologische Eigenschaft", "nur als statische Struktur"),
+                            correctAnswer = "als kontinuierlichen Prozess",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was ist die Herausforderung?",
+                            options = listOf("Spannung zwischen Vielfalt und Kohäsion zu bewältigen", "nur Vielfalt zu fördern", "nur Einheit zu schaffen", "nur Konflikte zu vermeiden"),
+                            correctAnswer = "Spannung zwischen Vielfalt und Kohäsion zu bewältigen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("kulturelle Hybridität", "cultural hybridity", "Kulturelle Hybridität entsteht durch Vermischung."),
+                        VocabularyItem("kulturelle Authentizität", "cultural authenticity", "Kulturelle Authentizität wird hinterfragt."),
+                        VocabularyItem("agency", "agency", "Agency beschreibt die Handlungsfähigkeit von Gruppen."),
+                        VocabularyItem("postkoloniale Theorie", "postcolonial theory", "Postkoloniale Theorie analysiert Machtverhältnisse."),
+                        VocabularyItem("gesellschaftliche Kohäsion", "social cohesion", "Gesellschaftliche Kohäsion hält Gemeinschaften zusammen.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 TELC Prüfung - Leseverstehen Teil 4",
+                    description = "TELC Deutsch C2 Reading Comprehension - Medical ethics",
+                    level = level,
+                    orderIndex = 12,
+                    text = """Lesen Sie den folgenden medizinethischen Text und lösen Sie die Aufgaben.
+
+Bioethik und die Grenzen der Medizin: Autonomie versus Fürsorge
+
+Die moderne Medizin steht vor fundamentalen ethischen Herausforderungen, die durch technologische Fortschritte und gesellschaftliche Veränderungen entstehen. Die Bioethik als interdisziplinäres Feld zwischen Medizin, Philosophie und Recht versucht, diese Herausforderungen zu bewältigen und ethische Leitlinien für medizinische Entscheidungen zu entwickeln.
+
+Das Prinzip der Patientenautonomie, das in der modernen Medizinethik zentral ist, betont das Recht des Patienten auf Selbstbestimmung über medizinische Behandlungen. Dieses Prinzip steht jedoch oft in Spannung zum Prinzip der Fürsorge, das die Verantwortung des Arztes für das Wohl des Patienten betont. Diese Spannung wird besonders in Fällen deutlich, in denen Patienten Entscheidungen treffen, die medizinisch nicht optimal erscheinen.
+
+Die Entwicklung neuer Technologien wie Gentechnik, künstliche Intelligenz in der Medizin und Telemedizin wirft neue ethische Fragen auf. Die Gentechnik ermöglicht es, genetische Defekte zu korrigieren, wirft aber Fragen nach der Grenze zwischen Therapie und Enhancement auf. Künstliche Intelligenz kann medizinische Diagnosen verbessern, stellt aber auch Fragen nach der Verantwortung für Fehldiagnosen.
+
+Die Ressourcenallokation im Gesundheitswesen stellt eine weitere ethische Herausforderung dar. Bei begrenzten Ressourcen müssen Entscheidungen darüber getroffen werden, welche Behandlungen finanziert werden sollen. Diese Entscheidungen berühren fundamentale Fragen nach Gerechtigkeit und dem Wert menschlichen Lebens.
+
+Die Zukunft der Medizinethik hängt davon ab, ob es gelingt, ethische Prinzipien zu entwickeln, die sowohl die Autonomie des Patienten als auch die Fürsorge des Arztes berücksichtigen und gleichzeitig den Herausforderungen neuer Technologien gerecht werden.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was ist die Bioethik?",
+                            options = listOf("interdisziplinäres Feld zwischen Medizin, Philosophie und Recht", "nur medizinische Praxis", "nur philosophische Theorie", "nur rechtliche Regelung"),
+                            correctAnswer = "interdisziplinäres Feld zwischen Medizin, Philosophie und Recht",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was betont das Prinzip der Patientenautonomie?",
+                            options = listOf("Recht des Patienten auf Selbstbestimmung", "nur die Verantwortung des Arztes", "nur medizinische Expertise", "nur technische Möglichkeiten"),
+                            correctAnswer = "Recht des Patienten auf Selbstbestimmung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was wirft die Gentechnik auf?",
+                            options = listOf("Fragen nach der Grenze zwischen Therapie und Enhancement", "nur technische Probleme", "nur wirtschaftliche Fragen", "nur rechtliche Aspekte"),
+                            correctAnswer = "Fragen nach der Grenze zwischen Therapie und Enhancement",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was stellt die Ressourcenallokation dar?",
+                            options = listOf("ethische Herausforderung", "nur wirtschaftliches Problem", "nur technische Frage", "nur politische Entscheidung"),
+                            correctAnswer = "ethische Herausforderung",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Wovon hängt die Zukunft der Medizinethik ab?",
+                            options = listOf("Entwicklung ethischer Prinzipien", "nur von technischen Innovationen", "nur von wirtschaftlichen Faktoren", "nur von rechtlichen Regelungen"),
+                            correctAnswer = "Entwicklung ethischer Prinzipien",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Bioethik", "bioethics", "Bioethik behandelt ethische Fragen der Medizin."),
+                        VocabularyItem("Patientenautonomie", "patient autonomy", "Patientenautonomie betont Selbstbestimmung."),
+                        VocabularyItem("Ressourcenallokation", "resource allocation", "Ressourcenallokation betrifft die Verteilung von Mitteln."),
+                        VocabularyItem("Enhancement", "enhancement", "Enhancement geht über Therapie hinaus."),
+                        VocabularyItem("Fürsorge", "care", "Fürsorge ist die Verantwortung des Arztes.")
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 Goethe Prüfung - Leseverstehen Teil 6",
+                    description = "Goethe-Zertifikat C2 Reading Comprehension - Technology and society",
+                    level = level,
+                    orderIndex = 13,
+                    text = """Lesen Sie den folgenden techniksoziologischen Text und lösen Sie die Aufgaben.
+
+Die Digitalisierung der Gesellschaft: Chancen und Risiken der technologischen Transformation
+
+Die Digitalisierung durchdringt alle Bereiche der modernen Gesellschaft und verändert grundlegend, wie wir kommunizieren, arbeiten, lernen und leben. Diese Transformation wirft fundamentale Fragen nach der Zukunft der menschlichen Gesellschaft und der Rolle der Technologie in unserem Leben auf.
+
+Die digitale Revolution hat neue Formen der sozialen Interaktion hervorgebracht, die sowohl verbindend als auch trennend wirken können. Social Media Plattformen ermöglichen globale Vernetzung, können aber auch zu sozialer Isolation und Filterblasen führen. Die Algorithmen, die unsere digitalen Erfahrungen prägen, sind oft intransparent und können zu ungewollten Verzerrungen führen.
+
+Die Arbeitswelt wird durch Automatisierung und künstliche Intelligenz grundlegend verändert. Während neue Arbeitsplätze entstehen, werden traditionelle Berufe obsolet. Diese Entwicklung wirft Fragen nach der Zukunft der Arbeit und der Notwendigkeit neuer Formen der sozialen Absicherung auf.
+
+Die digitale Spaltung zwischen denen, die Zugang zu digitalen Technologien haben, und denen, die keinen haben, verstärkt bestehende soziale Ungleichheiten. Diese Spaltung betrifft nicht nur den Zugang zu Technologie, sondern auch die Fähigkeit, diese effektiv zu nutzen.
+
+Die Herausforderung besteht darin, die Vorteile der Digitalisierung zu nutzen, während gleichzeitig ihre negativen Auswirkungen minimiert werden. Dies erfordert sowohl technische als auch gesellschaftliche Innovationen.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Was durchdringt die Digitalisierung?",
+                            options = listOf("alle Bereiche der modernen Gesellschaft", "nur die Wirtschaft", "nur die Bildung", "nur die Kommunikation"),
+                            correctAnswer = "alle Bereiche der modernen Gesellschaft",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was haben Social Media Plattformen hervorgebracht?",
+                            options = listOf("neue Formen der sozialen Interaktion", "nur bessere Kommunikation", "nur mehr Informationen", "nur schnellere Nachrichten"),
+                            correctAnswer = "neue Formen der sozialen Interaktion",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was wird durch Automatisierung verändert?",
+                            options = listOf("die Arbeitswelt grundlegend", "nur die Produktion", "nur die Verwaltung", "nur die Dienstleistungen"),
+                            correctAnswer = "die Arbeitswelt grundlegend",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was verstärkt die digitale Spaltung?",
+                            options = listOf("bestehende soziale Ungleichheiten", "nur technische Probleme", "nur wirtschaftliche Unterschiede", "nur kulturelle Differenzen"),
+                            correctAnswer = "bestehende soziale Ungleichheiten",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was erfordert die Bewältigung der Herausforderung?",
+                            options = listOf("sowohl technische als auch gesellschaftliche Innovationen", "nur technische Lösungen", "nur gesellschaftliche Reformen", "nur wirtschaftliche Maßnahmen"),
+                            correctAnswer = "sowohl technische als auch gesellschaftliche Innovationen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Digitalisierung", "digitalization", "Digitalisierung verändert die Gesellschaft."),
+                        VocabularyItem("technologische Transformation", "technological transformation", "Technologische Transformation ist umfassend."),
+                        VocabularyItem("Automatisierung", "automation", "Automatisierung verändert die Arbeitswelt."),
+                        VocabularyItem("digitale Spaltung", "digital divide", "Die digitale Spaltung verstärkt Ungleichheiten."),
+                        VocabularyItem("Filterblasen", "filter bubbles", "Filterblasen begrenzen die Informationsvielfalt.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 TELC Prüfung - Leseverstehen Teil 5",
+                    description = "TELC Deutsch C2 Reading Comprehension - Legal philosophy",
+                    level = level,
+                    orderIndex = 14,
+                    text = """Lesen Sie den folgenden rechtsphilosophischen Text und lösen Sie die Aufgaben.
+
+Recht und Gerechtigkeit: Die Grundlagen des modernen Rechtsstaats
+
+Das moderne Rechtssystem basiert auf fundamentalen Prinzipien der Gerechtigkeit, die sich über Jahrhunderte entwickelt haben und die Grundlage für ein friedliches Zusammenleben in komplexen Gesellschaften bilden. Die Rechtsphilosophie beschäftigt sich mit den theoretischen Grundlagen des Rechts und den Prinzipien, die rechtliche Entscheidungen leiten sollten.
+
+John Rawls' "Theorie der Gerechtigkeit" hat das moderne Verständnis von Gerechtigkeit maßgeblich geprägt. Rawls argumentiert, dass gerechte Prinzipien diejenigen sind, die Menschen in einer hypothetischen "Urposition" wählen würden, in der sie nicht wissen, welche Position sie in der Gesellschaft einnehmen werden. Diese Gedankenexperiment führt zu zwei Grundprinzipien: dem Prinzip der gleichen Freiheit und dem Differenzprinzip.
+
+Das Prinzip der gleichen Freiheit besagt, dass jeder Mensch das gleiche Recht auf die umfangreichste Freiheit haben soll, die mit der gleichen Freiheit für alle anderen vereinbar ist. Das Differenzprinzip erlaubt soziale und wirtschaftliche Ungleichheiten nur dann, wenn sie zum Vorteil der am wenigsten Begünstigten sind.
+
+Die Rechtsstaatlichkeit als Grundprinzip moderner Demokratien garantiert, dass staatliche Macht durch Recht begrenzt wird und alle Bürger vor dem Gesetz gleich sind. Dieses Prinzip schützt vor Willkür und stellt sicher, dass staatliche Entscheidungen nachvollziehbar und überprüfbar sind.
+
+Die Herausforderung besteht darin, diese abstrakten Prinzipien in konkrete rechtliche Regelungen umzusetzen, die sowohl den Bedürfnissen der Gesellschaft als auch den Rechten des Einzelnen gerecht werden.""",
+                    questions = listOf(
+                        Question(
+                            id = 1,
+                            question = "Worauf basiert das moderne Rechtssystem?",
+                            options = listOf("auf fundamentalen Prinzipien der Gerechtigkeit", "nur auf historischen Traditionen", "nur auf wirtschaftlichen Interessen", "nur auf politischen Entscheidungen"),
+                            correctAnswer = "auf fundamentalen Prinzipien der Gerechtigkeit",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 2,
+                            question = "Was hat John Rawls' Theorie geprägt?",
+                            options = listOf("das moderne Verständnis von Gerechtigkeit", "nur die Wirtschaftstheorie", "nur die politische Theorie", "nur die Sozialtheorie"),
+                            correctAnswer = "das moderne Verständnis von Gerechtigkeit",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 3,
+                            question = "Was besagt das Prinzip der gleichen Freiheit?",
+                            options = listOf("jeder hat das gleiche Recht auf umfangreichste Freiheit", "nur Reiche haben Freiheit", "nur Männer haben Freiheit", "nur Erwachsene haben Freiheit"),
+                            correctAnswer = "jeder hat das gleiche Recht auf umfangreichste Freiheit",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 4,
+                            question = "Was garantiert die Rechtsstaatlichkeit?",
+                            options = listOf("dass staatliche Macht durch Recht begrenzt wird", "nur dass Gesetze existieren", "nur dass Gerichte funktionieren", "nur dass Polizei arbeitet"),
+                            correctAnswer = "dass staatliche Macht durch Recht begrenzt wird",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        ),
+                        Question(
+                            id = 5,
+                            question = "Was ist die Herausforderung?",
+                            options = listOf("abstrakte Prinzipien in konkrete Regelungen umzusetzen", "nur neue Gesetze zu schaffen", "nur alte Gesetze zu ändern", "nur Gerichte zu reformieren"),
+                            correctAnswer = "abstrakte Prinzipien in konkrete Regelungen umzusetzen",
+                            correctAnswers = null,
+                            type = QuestionType.MULTIPLE_CHOICE
+                        )
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Rechtsphilosophie", "legal philosophy", "Rechtsphilosophie beschäftigt sich mit Grundlagen des Rechts."),
+                        VocabularyItem("Urposition", "original position", "Die Urposition ist ein Gedankenexperiment."),
+                        VocabularyItem("Differenzprinzip", "difference principle", "Das Differenzprinzip erlaubt bestimmte Ungleichheiten."),
+                        VocabularyItem("Rechtsstaatlichkeit", "rule of law", "Rechtsstaatlichkeit begrenzt staatliche Macht."),
+                        VocabularyItem("Willkür", "arbitrariness", "Willkür wird durch Recht verhindert.")
+                    ),
+                    source = "TELC"
+                ))
+
+                // Additional C2 Reading Lessons (15-25)
+                lessons.add(createLesenLesson(
+                    title = "C2 Goethe Prüfung - Leseverstehen Teil 7",
+                    description = "Goethe-Zertifikat C2 Reading Comprehension - Art and aesthetics",
+                    level = level,
+                    orderIndex = 15,
+                    text = """Lesen Sie den folgenden kunstphilosophischen Text und lösen Sie die Aufgaben.
+
+Die Ästhetik des Digitalen: Kunst im Zeitalter der Technologie
+
+Die digitale Revolution hat nicht nur die Art und Weise verändert, wie Kunst produziert und rezipiert wird, sondern auch grundlegende Fragen nach dem Wesen der Kunst und ihrer gesellschaftlichen Funktion aufgeworfen. Digitale Kunstformen wie Net Art, Virtual Reality Installationen und algorithmische Kunst erweitern traditionelle Vorstellungen von Kreativität und künstlerischer Autorschaft.
+
+Die Frage nach der Authentizität digitaler Kunstwerke stellt traditionelle Konzepte von Original und Kopie in Frage. Während in der analogen Kunst das Original einen besonderen Status besitzt, sind digitale Werke per Definition reproduzierbar. Diese Entwicklung wirft Fragen nach dem Wert und der Bedeutung von Kunstwerken auf, die nicht mehr an materielle Objekte gebunden sind.
+
+Die Interaktivität digitaler Kunst verändert die Rolle des Betrachters vom passiven Rezipienten zum aktiven Teilnehmer. Diese Entwicklung eröffnet neue Möglichkeiten der künstlerischen Erfahrung, stellt aber auch traditionelle Vorstellungen von künstlerischer Intention und Interpretation in Frage.
+
+Die Algorithmisierung der Kunst durch künstliche Intelligenz wirft fundamentale Fragen nach der Natur der Kreativität auf. Wenn Maschinen Kunstwerke schaffen können, was unterscheidet dann noch menschliche von maschineller Kreativität? Diese Frage berührt das Herzstück unseres Verständnisses von Kunst und Künstlertum.
+
+Die Zukunft der Kunst hängt davon ab, ob es gelingt, die neuen Möglichkeiten digitaler Technologien zu nutzen, ohne die grundlegenden Werte und Funktionen der Kunst zu verlieren.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was hat die digitale Revolution verändert?", options = listOf("Art der Kunstproduktion und -rezeption", "nur die Technik", "nur die Verbreitung", "nur die Kosten"), correctAnswer = "Art der Kunstproduktion und -rezeption", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was stellt die Frage nach Authentizität in Frage?", options = listOf("traditionelle Konzepte von Original und Kopie", "nur die Technik", "nur die Künstler", "nur die Betrachter"), correctAnswer = "traditionelle Konzepte von Original und Kopie", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wie verändert Interaktivität die Rolle des Betrachters?", options = listOf("vom passiven Rezipienten zum aktiven Teilnehmer", "nur vom Zuschauer zum Kritiker", "nur vom Laien zum Experten", "nur vom Konsumenten zum Produzenten"), correctAnswer = "vom passiven Rezipienten zum aktiven Teilnehmer", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 4, question = "Was wirft die Algorithmisierung der Kunst auf?", options = listOf("Fragen nach der Natur der Kreativität", "nur technische Probleme", "nur wirtschaftliche Fragen", "nur rechtliche Aspekte"), correctAnswer = "Fragen nach der Natur der Kreativität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Wovon hängt die Zukunft der Kunst ab?", options = listOf("Nutzung neuer Möglichkeiten ohne Verlust grundlegender Werte", "nur von technischen Innovationen", "nur von wirtschaftlichem Erfolg", "nur von politischer Unterstützung"), correctAnswer = "Nutzung neuer Möglichkeiten ohne Verlust grundlegender Werte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Net Art", "net art", "Net Art ist eine Form digitaler Kunst."),
+                        VocabularyItem("algorithmische Kunst", "algorithmic art", "Algorithmische Kunst wird von Computern erstellt."),
+                        VocabularyItem("Authentizität", "authenticity", "Authentizität ist in der digitalen Kunst problematisch."),
+                        VocabularyItem("Interaktivität", "interactivity", "Interaktivität verändert die Kunstwahrnehmung."),
+                        VocabularyItem("Künstlertum", "artistry", "Künstlertum wird durch KI herausgefordert.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 TELC Prüfung - Leseverstehen Teil 6",
+                    description = "TELC Deutsch C2 Reading Comprehension - Education and society",
+                    level = level,
+                    orderIndex = 16,
+                    text = """Lesen Sie den folgenden bildungssoziologischen Text und lösen Sie die Aufgaben.
+
+Bildung in der Wissensgesellschaft: Herausforderungen und Perspektiven
+
+Die Transformation zur Wissensgesellschaft stellt das Bildungssystem vor fundamentale Herausforderungen. Während traditionelle Bildung auf die Vermittlung von Faktenwissen ausgerichtet war, erfordert die moderne Gesellschaft Kompetenzen wie Kreativität, kritisches Denken und die Fähigkeit zum lebenslangen Lernen.
+
+Die Digitalisierung des Lernens eröffnet neue Möglichkeiten der Wissensvermittlung, stellt aber auch traditionelle pädagogische Konzepte in Frage. Online-Lernplattformen, virtuelle Klassenzimmer und adaptive Lernsysteme personalisieren den Lernprozess, können aber auch zu sozialer Isolation und einer Verschärfung der Bildungsungleichheit führen.
+
+Die Globalisierung des Bildungswesens führt zu einer Internationalisierung von Curricula und Standards. Während dies die Vergleichbarkeit von Abschlüssen verbessert, besteht die Gefahr einer kulturellen Homogenisierung und des Verlusts lokaler Bildungstraditionen.
+
+Die Herausforderung besteht darin, ein Bildungssystem zu entwickeln, das sowohl den Anforderungen der globalisierten Wissensgesellschaft als auch den Bedürfnissen lokaler Gemeinschaften gerecht wird. Dies erfordert eine Balance zwischen Standardisierung und Flexibilität, zwischen globaler Vergleichbarkeit und kultureller Vielfalt.
+
+Die Zukunft der Bildung hängt davon ab, ob es gelingt, die neuen Möglichkeiten der Digitalisierung zu nutzen, ohne die sozialen und kulturellen Funktionen der Bildung zu vernachlässigen.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was erfordert die moderne Gesellschaft?", options = listOf("Kompetenzen wie Kreativität und kritisches Denken", "nur Faktenwissen", "nur technische Fähigkeiten", "nur sprachliche Kompetenzen"), correctAnswer = "Kompetenzen wie Kreativität und kritisches Denken", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was können Online-Lernplattformen bewirken?", options = listOf("Personalisierung des Lernprozesses", "nur bessere Noten", "nur schnellere Abschlüsse", "nur niedrigere Kosten"), correctAnswer = "Personalisierung des Lernprozesses", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was führt die Globalisierung des Bildungswesens zu?", options = listOf("Internationalisierung von Curricula und Standards", "nur zu mehr Konkurrenz", "nur zu höheren Kosten", "nur zu weniger Qualität"), correctAnswer = "Internationalisierung von Curricula und Standards", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 4, question = "Was ist die Herausforderung?", options = listOf("Balance zwischen Standardisierung und Flexibilität", "nur mehr Technologie", "nur weniger Bürokratie", "nur mehr Geld"), correctAnswer = "Balance zwischen Standardisierung und Flexibilität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Wovon hängt die Zukunft der Bildung ab?", options = listOf("Nutzung digitaler Möglichkeiten ohne Vernachlässigung sozialer Funktionen", "nur von technischen Innovationen", "nur von wirtschaftlichen Faktoren", "nur von politischen Entscheidungen"), correctAnswer = "Nutzung digitaler Möglichkeiten ohne Vernachlässigung sozialer Funktionen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Wissensgesellschaft", "knowledge society", "Die Wissensgesellschaft erfordert neue Kompetenzen."),
+                        VocabularyItem("adaptive Lernsysteme", "adaptive learning systems", "Adaptive Lernsysteme passen sich dem Lernenden an."),
+                        VocabularyItem("Bildungsungleichheit", "educational inequality", "Bildungsungleichheit wird durch Digitalisierung verstärkt."),
+                        VocabularyItem("kulturelle Homogenisierung", "cultural homogenization", "Kulturelle Homogenisierung bedroht Vielfalt."),
+                        VocabularyItem("lebenslanges Lernen", "lifelong learning", "Lebenslanges Lernen ist in der Wissensgesellschaft wichtig.")
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 Goethe Prüfung - Leseverstehen Teil 8",
+                    description = "Goethe-Zertifikat C2 Reading Comprehension - Urban studies",
+                    level = level,
+                    orderIndex = 17,
+                    text = """Lesen Sie den folgenden stadtsoziologischen Text und lösen Sie die Aufgaben.
+
+Die Smart City: Technologie und urbane Lebensqualität
+
+Die Entwicklung zur Smart City verspricht, urbane Probleme durch technologische Innovationen zu lösen und die Lebensqualität der Bürger zu verbessern. Sensoren, Datenanalyse und künstliche Intelligenz sollen Verkehrsströme optimieren, Energieverbrauch reduzieren und öffentliche Dienstleistungen effizienter gestalten.
+
+Die Sammlung und Analyse großer Datenmengen (Big Data) ermöglicht es, städtische Prozesse zu verstehen und zu optimieren. Diese Entwicklung wirft jedoch auch Fragen nach Privatsphäre und Datenschutz auf. Die Überwachung öffentlicher Räume durch intelligente Kameras und Sensoren kann die Sicherheit erhöhen, aber auch zu einem Verlust an Anonymität und Freiheit führen.
+
+Die Partizipation der Bürger an der Gestaltung der Smart City ist ein zentrales Element für deren Erfolg. Digitale Plattformen ermöglichen es Bürgern, sich an stadtplanerischen Entscheidungen zu beteiligen, aber auch hier besteht die Gefahr einer digitalen Spaltung zwischen technikaffinen und weniger technikaffinen Bürgern.
+
+Die Nachhaltigkeit der Smart City hängt davon ab, ob technologische Lösungen auch ökologische und soziale Aspekte berücksichtigen. Eine rein technikzentrierte Herangehensweise kann zu neuen Problemen führen, wenn sie die Bedürfnisse und Gewohnheiten der Bürger nicht ausreichend berücksichtigt.
+
+Die Zukunft der Smart City liegt in der Entwicklung integrierter Konzepte, die Technologie, Nachhaltigkeit und soziale Gerechtigkeit miteinander verbinden.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was verspricht die Smart City?", options = listOf("Lösung urbaner Probleme durch Technologie", "nur mehr Sicherheit", "nur weniger Kosten", "nur bessere Verwaltung"), correctAnswer = "Lösung urbaner Probleme durch Technologie", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was wirft Big Data auf?", options = listOf("Fragen nach Privatsphäre und Datenschutz", "nur technische Probleme", "nur wirtschaftliche Fragen", "nur rechtliche Aspekte"), correctAnswer = "Fragen nach Privatsphäre und Datenschutz", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was ist ein zentrales Element für den Erfolg?", options = listOf("Partizipation der Bürger", "nur technische Innovation", "nur wirtschaftliche Effizienz", "nur politische Unterstützung"), correctAnswer = "Partizipation der Bürger", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 4, question = "Wovon hängt die Nachhaltigkeit ab?", options = listOf("Berücksichtigung ökologischer und sozialer Aspekte", "nur von technischen Lösungen", "nur von wirtschaftlichen Faktoren", "nur von politischen Entscheidungen"), correctAnswer = "Berücksichtigung ökologischer und sozialer Aspekte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Wo liegt die Zukunft der Smart City?", options = listOf("in integrierten Konzepten", "nur in mehr Technologie", "nur in weniger Bürokratie", "nur in mehr Überwachung"), correctAnswer = "in integrierten Konzepten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Smart City", "smart city", "Die Smart City nutzt Technologie für urbane Probleme."),
+                        VocabularyItem("Big Data", "big data", "Big Data ermöglicht Optimierung städtischer Prozesse."),
+                        VocabularyItem("digitale Spaltung", "digital divide", "Die digitale Spaltung betrifft auch Smart Cities."),
+                        VocabularyItem("technikzentriert", "technology-centered", "Technikzentrierte Ansätze können problematisch sein."),
+                        VocabularyItem("urbane Lebensqualität", "urban quality of life", "Urbane Lebensqualität ist das Ziel der Smart City.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 TELC Prüfung - Leseverstehen Teil 7",
+                    description = "TELC Deutsch C2 Reading Comprehension - Media studies",
+                    level = level,
+                    orderIndex = 18,
+                    text = """Lesen Sie den folgenden medienwissenschaftlichen Text und lösen Sie die Aufgaben.
+
+Medienwandel und Öffentlichkeit: Die Transformation der Informationsgesellschaft
+
+Die Digitalisierung der Medien hat zu einer fundamentalen Transformation der Öffentlichkeit geführt. Während traditionelle Massenmedien wie Zeitungen, Radio und Fernsehen eine zentrale Rolle bei der Herstellung von Öffentlichkeit spielten, haben sich durch das Internet neue Formen der Kommunikation und Meinungsbildung entwickelt.
+
+Social Media Plattformen haben die Art und Weise verändert, wie Informationen verbreitet und diskutiert werden. Während diese Entwicklung die Demokratisierung der Kommunikation ermöglicht hat, haben sich auch neue Probleme entwickelt: die Verbreitung von Falschinformationen, die Bildung von Echokammern und die Manipulation öffentlicher Meinung durch algorithmische Filter.
+
+Die Personalisierung von Nachrichten durch Algorithmen führt dazu, dass verschiedene Nutzer unterschiedliche Versionen der Realität präsentiert bekommen. Diese Entwicklung wirft Fragen nach der Objektivität von Informationen und der Möglichkeit einer gemeinsamen öffentlichen Debatte auf.
+
+Die Rolle traditioneller Journalisten als Gatekeeper der Information wird durch die Digitalisierung herausgefordert. Während Bürgerjournalismus und alternative Medien neue Perspektiven eröffnen, besteht auch die Gefahr einer Erosion professioneller Standards und der Verbreitung ungeprüfter Informationen.
+
+Die Zukunft der Öffentlichkeit hängt davon ab, ob es gelingt, die Vorteile der digitalen Kommunikation zu nutzen, während gleichzeitig Mechanismen zur Sicherung der Qualität und Vielfalt von Informationen entwickelt werden.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was hat die Digitalisierung der Medien bewirkt?", options = listOf("fundamentale Transformation der Öffentlichkeit", "nur bessere Qualität", "nur schnellere Verbreitung", "nur niedrigere Kosten"), correctAnswer = "fundamentale Transformation der Öffentlichkeit", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was haben Social Media Plattformen verändert?", options = listOf("Art der Informationsverbreitung und -diskussion", "nur die Geschwindigkeit", "nur die Reichweite", "nur die Kosten"), correctAnswer = "Art der Informationsverbreitung und -diskussion", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was führt die Personalisierung von Nachrichten zu?", options = listOf("unterschiedlichen Versionen der Realität", "nur zu besseren Nachrichten", "nur zu schnelleren Nachrichten", "nur zu mehr Nachrichten"), correctAnswer = "unterschiedlichen Versionen der Realität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 4, question = "Was wird durch die Digitalisierung herausgefordert?", options = listOf("Rolle traditioneller Journalisten als Gatekeeper", "nur die Qualität der Nachrichten", "nur die Geschwindigkeit der Berichterstattung", "nur die Kosten der Medien"), correctAnswer = "Rolle traditioneller Journalisten als Gatekeeper", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Wovon hängt die Zukunft der Öffentlichkeit ab?", options = listOf("Entwicklung von Mechanismen zur Sicherung der Qualität", "nur von technischen Innovationen", "nur von wirtschaftlichen Faktoren", "nur von politischen Entscheidungen"), correctAnswer = "Entwicklung von Mechanismen zur Sicherung der Qualität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Öffentlichkeit", "public sphere", "Die Öffentlichkeit wird durch Digitalisierung transformiert."),
+                        VocabularyItem("Echokammern", "echo chambers", "Echokammern verstärken bestehende Meinungen."),
+                        VocabularyItem("algorithmische Filter", "algorithmic filters", "Algorithmische Filter personalisieren Nachrichten."),
+                        VocabularyItem("Gatekeeper", "gatekeeper", "Gatekeeper kontrollieren den Informationsfluss."),
+                        VocabularyItem("Bürgerjournalismus", "citizen journalism", "Bürgerjournalismus eröffnet neue Perspektiven.")
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 Goethe Prüfung - Leseverstehen Teil 9",
+                    description = "Goethe-Zertifikat C2 Reading Comprehension - Psychology and society",
+                    level = level,
+                    orderIndex = 19,
+                    text = """Lesen Sie den folgenden sozialpsychologischen Text und lösen Sie die Aufgaben.
+
+Identität in der digitalen Gesellschaft: Selbstkonzept und soziale Beziehungen
+
+Die digitale Transformation hat nicht nur die Art und Weise verändert, wie wir kommunizieren und Informationen verarbeiten, sondern auch grundlegende Aspekte unserer Identitätsbildung und sozialen Beziehungen beeinflusst. Die Konstruktion des Selbst in digitalen Räumen wirft neue Fragen nach Authentizität, Privatsphäre und sozialer Verbundenheit auf.
+
+Social Media Plattformen ermöglichen es Nutzern, verschiedene Aspekte ihrer Identität zu präsentieren und zu kuratieren. Diese Möglichkeit der Selbstdarstellung kann zu einer Stärkung des Selbstbewusstseins führen, aber auch zu einem Druck, ein idealisiertes Bild von sich zu vermitteln. Die ständige Vergleichbarkeit mit anderen kann zu sozialen Ängsten und einem Gefühl der Unzulänglichkeit führen.
+
+Die Quantifizierung sozialer Beziehungen durch Likes, Follower und Kommentare verändert die Art, wie wir soziale Anerkennung und Zugehörigkeit erfahren. Während diese Metriken ein Gefühl der Verbundenheit vermitteln können, können sie auch zu einer Instrumentalisierung sozialer Beziehungen und einem Verlust an authentischer Kommunikation führen.
+
+Die Fragmentierung der Aufmerksamkeit durch die ständige Verfügbarkeit digitaler Medien kann zu einer Schwächung der Fähigkeit zur tiefen Reflexion und zur Entwicklung eines kohärenten Selbstkonzepts führen. Die Herausforderung besteht darin, die Vorteile digitaler Vernetzung zu nutzen, ohne die Fähigkeit zur Selbstreflexion und authentischen sozialen Beziehungen zu verlieren.
+
+Die Zukunft der Identitätsbildung hängt davon ab, ob es gelingt, eine Balance zwischen digitaler und analoger Kommunikation zu finden, die sowohl die Möglichkeiten der Vernetzung als auch die Notwendigkeit der Selbstreflexion berücksichtigt.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Was hat die digitale Transformation beeinflusst?", options = listOf("Identitätsbildung und soziale Beziehungen", "nur die Kommunikation", "nur die Information", "nur die Technologie"), correctAnswer = "Identitätsbildung und soziale Beziehungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was können Social Media Plattformen ermöglichen?", options = listOf("Präsentation verschiedener Aspekte der Identität", "nur bessere Kommunikation", "nur mehr Informationen", "nur schnellere Verbindungen"), correctAnswer = "Präsentation verschiedener Aspekte der Identität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was verändert die Quantifizierung sozialer Beziehungen?", options = listOf("Art der Erfahrung sozialer Anerkennung", "nur die Anzahl der Kontakte", "nur die Qualität der Beziehungen", "nur die Geschwindigkeit der Kommunikation"), correctAnswer = "Art der Erfahrung sozialer Anerkennung", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 4, question = "Was kann die Fragmentierung der Aufmerksamkeit bewirken?", options = listOf("Schwächung der Fähigkeit zur tiefen Reflexion", "nur bessere Multitasking-Fähigkeiten", "nur schnellere Informationsverarbeitung", "nur mehr Produktivität"), correctAnswer = "Schwächung der Fähigkeit zur tiefen Reflexion", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Wovon hängt die Zukunft der Identitätsbildung ab?", options = listOf("Balance zwischen digitaler und analoger Kommunikation", "nur von technischen Innovationen", "nur von sozialen Trends", "nur von wirtschaftlichen Faktoren"), correctAnswer = "Balance zwischen digitaler und analoger Kommunikation", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Identitätsbildung", "identity formation", "Identitätsbildung wird durch Digitalisierung beeinflusst."),
+                        VocabularyItem("Selbstdarstellung", "self-presentation", "Selbstdarstellung ist in Social Media wichtig."),
+                        VocabularyItem("Quantifizierung", "quantification", "Quantifizierung verändert soziale Beziehungen."),
+                        VocabularyItem("Fragmentierung", "fragmentation", "Fragmentierung der Aufmerksamkeit ist problematisch."),
+                        VocabularyItem("Selbstreflexion", "self-reflection", "Selbstreflexion ist für Identitätsbildung wichtig.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "C2 TELC Prüfung - Leseverstehen Teil 8",
+                    description = "TELC Deutsch C2 Reading Comprehension - Future studies",
+                    level = level,
+                    orderIndex = 20,
+                    text = """Lesen Sie den folgenden zukunftssoziologischen Text und lösen Sie die Aufgaben.
+
+Zukunftsforschung und gesellschaftlicher Wandel: Methoden und Herausforderungen
+
+Die Zukunftsforschung als interdisziplinäres Feld beschäftigt sich mit der Analyse möglicher zukünftiger Entwicklungen und deren gesellschaftlichen Auswirkungen. Während die Zukunft per Definition ungewiss ist, versuchen Zukunftsforscher, durch verschiedene methodische Ansätze plausible Szenarien zu entwickeln und Handlungsoptionen für die Gegenwart zu identifizieren.
+
+Die Szenario-Technik als zentrales Instrument der Zukunftsforschung entwickelt verschiedene mögliche Zukünfte, die auf unterschiedlichen Annahmen über zukünftige Entwicklungen basieren. Diese Methode hilft dabei, sich auf verschiedene mögliche Entwicklungen vorzubereiten und robuste Strategien zu entwickeln, die unter verschiedenen Bedingungen funktionieren.
+
+Die Delphi-Methode nutzt die Expertise von Fachleuten, um Konsens über zukünftige Entwicklungen zu erreichen. Durch wiederholte Befragungen und Feedback-Schleifen werden die Einschätzungen der Experten verfeinert und mögliche blinde Flecken identifiziert.
+
+Die Herausforderung der Zukunftsforschung liegt darin, zwischen wahrscheinlichen und wünschenswerten Zukünften zu unterscheiden. Während die Analyse wahrscheinlicher Entwicklungen wichtig ist, um sich auf mögliche Herausforderungen vorzubereiten, ist die Entwicklung wünschenswerter Zukünfte entscheidend für die Gestaltung einer besseren Gesellschaft.
+
+Die Zukunft der Zukunftsforschung hängt davon ab, ob es gelingt, die Komplexität gesellschaftlicher Entwicklungen angemessen zu erfassen und gleichzeitig handlungsrelevante Erkenntnisse zu generieren.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Womit beschäftigt sich die Zukunftsforschung?", options = listOf("Analyse möglicher zukünftiger Entwicklungen", "nur mit Vergangenheit", "nur mit Gegenwart", "nur mit Technologie"), correctAnswer = "Analyse möglicher zukünftiger Entwicklungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was entwickelt die Szenario-Technik?", options = listOf("verschiedene mögliche Zukünfte", "nur eine Zukunft", "nur Vergangenheit", "nur Gegenwart"), correctAnswer = "verschiedene mögliche Zukünfte", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was nutzt die Delphi-Methode?", options = listOf("Expertise von Fachleuten", "nur statistische Daten", "nur historische Analysen", "nur technische Modelle"), correctAnswer = "Expertise von Fachleuten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 4, question = "Was ist die Herausforderung der Zukunftsforschung?", options = listOf("Unterscheidung zwischen wahrscheinlichen und wünschenswerten Zukünften", "nur technische Probleme", "nur methodische Fragen", "nur finanzielle Aspekte"), correctAnswer = "Unterscheidung zwischen wahrscheinlichen und wünschenswerten Zukünften", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Wovon hängt die Zukunft der Zukunftsforschung ab?", options = listOf("Erfassung der Komplexität und Generierung handlungsrelevanter Erkenntnisse", "nur von technischen Innovationen", "nur von finanziellen Mitteln", "nur von politischer Unterstützung"), correctAnswer = "Erfassung der Komplexität und Generierung handlungsrelevanter Erkenntnisse", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Zukunftsforschung", "futures studies", "Zukunftsforschung analysiert mögliche Entwicklungen."),
+                        VocabularyItem("Szenario-Technik", "scenario technique", "Die Szenario-Technik entwickelt verschiedene Zukünfte."),
+                        VocabularyItem("Delphi-Methode", "Delphi method", "Die Delphi-Methode nutzt Expertenwissen."),
+                        VocabularyItem("robuste Strategien", "robust strategies", "Robuste Strategien funktionieren unter verschiedenen Bedingungen."),
+                        VocabularyItem("handlungsrelevante Erkenntnisse", "action-relevant insights", "Handlungsrelevante Erkenntnisse ermöglichen Gestaltung.")
+                    ),
+                    source = "TELC"
+                ))
             }
 
             "B1" -> {
@@ -7094,6 +7936,249 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         Question(id = 3, question = "Was hilft uns die Philosophie zu verstehen?", options = null, correctAnswer = "die komplexen Herausforderungen der Moderne", correctAnswers = null, type = QuestionType.FILL_BLANK)
                     )
                 ))
+
+                // Additional C2 Listening Lessons (6-25)
+                lessons.add(createHoerenLesson(
+                    title = "C2 TELC Prüfung - Hörverstehen Teil 1",
+                    description = "TELC Deutsch C2 Listening Comprehension - Academic lecture",
+                    level = level,
+                    orderIndex = 6,
+                    script = "Prof. Dr. Weber: Willkommen zu meiner Vorlesung über 'Die Krise der Repräsentation in der postmodernen Philosophie'. Die postmoderne Kritik an der Repräsentation stellt fundamentale Annahmen der westlichen Philosophie in Frage. Jacques Derrida hat gezeigt, dass die Vorstellung einer direkten, unvermittelten Repräsentation der Realität problematisch ist. Die Sprache ist nicht transparent, sondern konstituiert die Realität, die sie zu repräsentieren vorgibt. Diese Einsicht hat weitreichende Konsequenzen für unser Verständnis von Wahrheit, Objektivität und Erkenntnis. Die Dekonstruktion als methodisches Verfahren zielt darauf ab, die verborgenen Hierarchien und Widersprüche in Texten aufzudecken. Dabei wird deutlich, dass jede Repräsentation immer auch eine Konstruktion ist, die bestimmte Perspektiven privilegiert und andere ausschließt.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was stellt die postmoderne Kritik in Frage?", options = listOf("fundamentale Annahmen der westlichen Philosophie", "nur die moderne Kunst", "nur die Wissenschaft", "nur die Politik"), correctAnswer = "fundamentale Annahmen der westlichen Philosophie", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was hat Jacques Derrida gezeigt?", options = listOf("dass direkte Repräsentation problematisch ist", "nur dass Sprache wichtig ist", "nur dass Realität existiert", "nur dass Philosophie schwierig ist"), correctAnswer = "dass direkte Repräsentation problematisch ist", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was ist die Sprache nicht?", options = null, correctAnswer = "transparent", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was zielt die Dekonstruktion darauf ab?", options = listOf("verborgene Hierarchien aufzudecken", "nur Texte zu verstehen", "nur Sprache zu analysieren", "nur Philosophie zu erklären"), correctAnswer = "verborgene Hierarchien aufzudecken", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was wird bei jeder Repräsentation deutlich?", options = listOf("dass sie eine Konstruktion ist", "nur dass sie wahr ist", "nur dass sie objektiv ist", "nur dass sie nützlich ist"), correctAnswer = "dass sie eine Konstruktion ist", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 Goethe Prüfung - Hörverstehen Teil 2",
+                    description = "Goethe-Zertifikat C2 Listening Comprehension - Panel discussion",
+                    level = level,
+                    orderIndex = 7,
+                    script = "Moderator: Herzlich willkommen zu unserer Podiumsdiskussion über 'Künstliche Intelligenz und die Zukunft der Arbeit'. Ich begrüße Prof. Dr. Schmidt von der TU München, Dr. Müller vom Institut für Arbeitsforschung und Frau Weber von der Gewerkschaft.\n\nProf. Schmidt: Die KI-Revolution wird die Arbeitswelt grundlegend verändern. Während repetitive Tätigkeiten automatisiert werden, entstehen neue Berufsfelder, die kreative und soziale Kompetenzen erfordern. Die Herausforderung liegt in der Transformation bestehender Arbeitsplätze.\n\nDr. Müller: Unsere Studien zeigen, dass etwa 40% der Arbeitsplätze durch KI beeinflusst werden. Entscheidend ist die Qualifizierung der Beschäftigten. Wir brauchen lebenslanges Lernen und flexible Weiterbildungsprogramme.\n\nFrau Weber: Die Gewerkschaften fordern einen gerechten Übergang. Arbeitnehmer dürfen nicht die Verlierer der Digitalisierung sein. Wir brauchen neue Formen der sozialen Absicherung und Mitbestimmung bei der Gestaltung der Arbeitsplätze.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wer nimmt an der Diskussion teil?", options = listOf("Prof. Schmidt, Dr. Müller und Frau Weber", "nur Wissenschaftler", "nur Politiker", "nur Unternehmer"), correctAnswer = "Prof. Schmidt, Dr. Müller und Frau Weber", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was wird die KI-Revolution bewirken?", options = listOf("grundlegende Veränderung der Arbeitswelt", "nur mehr Effizienz", "nur weniger Arbeit", "nur bessere Technologie"), correctAnswer = "grundlegende Veränderung der Arbeitswelt", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Wie viel Prozent der Arbeitsplätze werden beeinflusst?", options = null, correctAnswer = "40%", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was fordern die Gewerkschaften?", options = listOf("einen gerechten Übergang", "nur mehr Lohn", "nur weniger Arbeit", "nur bessere Technologie"), correctAnswer = "einen gerechten Übergang", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was ist entscheidend laut Dr. Müller?", options = listOf("die Qualifizierung der Beschäftigten", "nur die Technologie", "nur die Politik", "nur die Wirtschaft"), correctAnswer = "die Qualifizierung der Beschäftigten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 TELC Prüfung - Hörverstehen Teil 2",
+                    description = "TELC Deutsch C2 Listening Comprehension - Academic interview",
+                    level = level,
+                    orderIndex = 8,
+                    script = "Interviewer: Prof. Dr. Hoffmann, Sie sind Experte für Klimawandel und Nachhaltigkeit. Wie bewerten Sie die aktuellen Klimaschutzmaßnahmen?\n\nProf. Hoffmann: Die bisherigen Maßnahmen sind unzureichend. Wir befinden uns auf einem Pfad, der zu einer Erwärmung von 3-4 Grad Celsius führen wird. Das Pariser Abkommen zielt auf 1,5 Grad, aber die nationalen Klimapläne reichen nicht aus.\n\nInterviewer: Was sind die größten Herausforderungen?\n\nProf. Hoffmann: Die Transformation der Energiesysteme ist technisch machbar, aber politisch schwierig. Wir müssen Kohle, Öl und Gas durch erneuerbare Energien ersetzen. Gleichzeitig müssen wir die Energieeffizienz drastisch verbessern und neue Technologien entwickeln.\n\nInterviewer: Welche Rolle spielt die internationale Zusammenarbeit?\n\nProf. Hoffmann: Klimawandel ist ein globales Problem. Ohne internationale Kooperation können wir die Ziele nicht erreichen. Die Industrieländer müssen die Entwicklungsländer finanziell unterstützen und Technologietransfer ermöglichen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Wofür ist Prof. Hoffmann Experte?", options = listOf("Klimawandel und Nachhaltigkeit", "nur für Wirtschaft", "nur für Politik", "nur für Technologie"), correctAnswer = "Klimawandel und Nachhaltigkeit", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wie bewertet er die aktuellen Maßnahmen?", options = listOf("als unzureichend", "als ausreichend", "als übertrieben", "als perfekt"), correctAnswer = "als unzureichend", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Auf welchem Pfad befinden wir uns?", options = null, correctAnswer = "3-4 Grad Celsius Erwärmung", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was ist technisch machbar, aber politisch schwierig?", options = listOf("Transformation der Energiesysteme", "nur neue Technologien", "nur internationale Zusammenarbeit", "nur Finanzierung"), correctAnswer = "Transformation der Energiesysteme", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was müssen die Industrieländer tun?", options = listOf("Entwicklungsländer finanziell unterstützen", "nur ihre eigenen Ziele erreichen", "nur neue Technologien entwickeln", "nur weniger emittieren"), correctAnswer = "Entwicklungsländer finanziell unterstützen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 Goethe Prüfung - Hörverstehen Teil 3",
+                    description = "Goethe-Zertifikat C2 Listening Comprehension - Literary analysis",
+                    level = level,
+                    orderIndex = 9,
+                    script = "Dr. Fischer: In meinem Seminar analysieren wir Thomas Manns 'Der Zauberberg'. Dieser Roman ist ein Meisterwerk der deutschen Literatur, das die Krise der bürgerlichen Gesellschaft vor dem Ersten Weltkrieg thematisiert.\n\nStudentin: Wie verstehen Sie die Figur des Hans Castorp?\n\nDr. Fischer: Castorp repräsentiert den deutschen Bildungsbürger, der zwischen Tradition und Moderne steht. Seine Entwicklung im Sanatorium symbolisiert die Suche nach Identität in einer sich wandelnden Welt. Die Begegnung mit Settembrini und Naphta zeigt die ideologischen Konflikte der Zeit.\n\nStudent: Welche Rolle spielt die Zeit im Roman?\n\nDr. Fischer: Die Zeit wird zu einem zentralen Thema. Im Sanatorium verliert Castorp das Gefühl für die lineare Zeit. Dies spiegelt die Erfahrung der Moderne wider, in der traditionelle Zeitvorstellungen zusammenbrechen. Mann verwendet verschiedene Erzähltechniken, um diese Zeitlosigkeit zu vermitteln.",
+                    questions = listOf(
+                        Question(id = 1, question = "Welchen Roman analysieren sie?", options = listOf("Thomas Manns 'Der Zauberberg'", "nur Goethes 'Faust'", "nur Kafkas 'Der Prozess'", "nur Hesses 'Der Steppenwolf'"), correctAnswer = "Thomas Manns 'Der Zauberberg'", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was thematisiert der Roman?", options = listOf("die Krise der bürgerlichen Gesellschaft", "nur Liebe", "nur Abenteuer", "nur Geschichte"), correctAnswer = "die Krise der bürgerlichen Gesellschaft", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was repräsentiert Hans Castorp?", options = null, correctAnswer = "den deutschen Bildungsbürger", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was zeigen Settembrini und Naphta?", options = listOf("die ideologischen Konflikte der Zeit", "nur Freundschaft", "nur Feindschaft", "nur Liebe"), correctAnswer = "die ideologischen Konflikte der Zeit", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was wird zu einem zentralen Thema?", options = listOf("die Zeit", "nur die Liebe", "nur der Tod", "nur die Krankheit"), correctAnswer = "die Zeit", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 TELC Prüfung - Hörverstehen Teil 3",
+                    description = "TELC Deutsch C2 Listening Comprehension - Scientific debate",
+                    level = level,
+                    orderIndex = 10,
+                    script = "Prof. Dr. Weber: Die Quantenmechanik stellt unser Verständnis der Realität fundamental in Frage. Schrödingers Katze ist ein Gedankenexperiment, das die Absurdität der Quantenmechanik verdeutlicht.\n\nProf. Dr. Schmidt: Ich sehe das anders. Die Quantenmechanik ist nicht absurd, sondern zeigt die Grenzen unserer klassischen Vorstellungen. Die Katze ist nicht gleichzeitig tot und lebendig, sondern in einer Superposition von Zuständen.\n\nProf. Dr. Weber: Aber was bedeutet das für unsere Wahrnehmung der Realität? Wenn die Beobachtung den Zustand bestimmt, dann ist die Realität abhängig vom Beobachter.\n\nProf. Dr. Schmidt: Das ist die Kopenhagener Deutung. Aber es gibt auch andere Interpretationen wie die Viele-Welten-Theorie. Die Realität existiert unabhängig von der Beobachtung, aber in verschiedenen Paralleluniversen.\n\nProf. Dr. Weber: Das ist reine Spekulation. Wir sollten uns auf das konzentrieren, was experimentell nachweisbar ist. Die Quantenmechanik funktioniert, auch wenn wir sie nicht vollständig verstehen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was stellt die Quantenmechanik in Frage?", options = listOf("unser Verständnis der Realität", "nur die Mathematik", "nur die Physik", "nur die Philosophie"), correctAnswer = "unser Verständnis der Realität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ist Schrödingers Katze?", options = listOf("ein Gedankenexperiment", "nur eine echte Katze", "nur ein Symbol", "nur eine Metapher"), correctAnswer = "ein Gedankenexperiment", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was ist die Kopenhagener Deutung?", options = null, correctAnswer = "eine Interpretation der Quantenmechanik", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was besagt die Viele-Welten-Theorie?", options = listOf("dass Paralleluniversen existieren", "nur dass die Realität komplex ist", "nur dass Beobachtung wichtig ist", "nur dass Quanten seltsam sind"), correctAnswer = "dass Paralleluniversen existieren", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Worauf sollten wir uns konzentrieren laut Prof. Weber?", options = listOf("auf experimentell Nachweisbares", "nur auf Theorien", "nur auf Spekulationen", "nur auf Interpretationen"), correctAnswer = "auf experimentell Nachweisbares", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "TELC"
+                ))
+
+                // Additional C2 Listening Lessons (11-25)
+                lessons.add(createHoerenLesson(
+                    title = "C2 Goethe Prüfung - Hörverstehen Teil 4",
+                    description = "Goethe-Zertifikat C2 Listening Comprehension - Political debate",
+                    level = level,
+                    orderIndex = 11,
+                    script = "Moderator: Wir diskutieren heute über 'Demokratie und Populismus'. Herr Prof. Dr. Müller, wie bewerten Sie den Aufstieg populistischer Bewegungen?\n\nProf. Müller: Populismus ist eine Reaktion auf die Krise der repräsentativen Demokratie. Bürger fühlen sich von den etablierten Parteien nicht mehr vertreten. Populisten artikulieren diese Unzufriedenheit, aber ihre Lösungen sind oft vereinfachend und gefährlich.\n\nDr. Schmidt: Ich sehe das anders. Populismus kann auch eine Demokratisierung der Politik bedeuten. Direkte Demokratie und Bürgerbeteiligung sind wichtige Ergänzungen zur repräsentativen Demokratie. Das Problem ist nicht der Populismus, sondern die Entfremdung zwischen Politikern und Bürgern.\n\nProf. Müller: Aber Populisten spalten die Gesellschaft in 'das Volk' und 'die Elite'. Das ist antidemokratisch und gefährlich für den gesellschaftlichen Zusammenhalt.\n\nDr. Schmidt: Die etablierten Parteien haben diese Spaltung selbst geschaffen, indem sie die Bedürfnisse der Bürger ignoriert haben. Wir brauchen eine Erneuerung der Demokratie, nicht deren Abschaffung.",
+                    questions = listOf(
+                        Question(id = 1, question = "Worüber diskutieren sie?", options = listOf("Demokratie und Populismus", "nur Wirtschaft", "nur Umwelt", "nur Bildung"), correctAnswer = "Demokratie und Populismus", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ist Populismus laut Prof. Müller?", options = listOf("eine Reaktion auf die Krise der Demokratie", "nur eine neue Partei", "nur ein Trend", "nur ein Problem"), correctAnswer = "eine Reaktion auf die Krise der Demokratie", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was kann Populismus laut Dr. Schmidt bedeuten?", options = null, correctAnswer = "Demokratisierung der Politik", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was spalten Populisten laut Prof. Müller?", options = listOf("die Gesellschaft in Volk und Elite", "nur die Parteien", "nur die Medien", "nur die Wirtschaft"), correctAnswer = "die Gesellschaft in Volk und Elite", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was brauchen wir laut Dr. Schmidt?", options = listOf("eine Erneuerung der Demokratie", "nur neue Parteien", "nur neue Gesetze", "nur neue Politiker"), correctAnswer = "eine Erneuerung der Demokratie", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 TELC Prüfung - Hörverstehen Teil 4",
+                    description = "TELC Deutsch C2 Listening Comprehension - Medical ethics discussion",
+                    level = level,
+                    orderIndex = 12,
+                    script = "Prof. Dr. Weber: Die moderne Medizin stellt uns vor neue ethische Herausforderungen. Künstliche Intelligenz kann Diagnosen verbessern, aber wer ist verantwortlich für Fehldiagnosen?\n\nDr. Müller: Das ist ein zentrales Problem. KI-Systeme sind Black Boxes - wir verstehen oft nicht, wie sie zu ihren Entscheidungen kommen. Das macht es schwierig, Verantwortung zuzuweisen.\n\nProf. Dr. Weber: Und was ist mit der Patientenautonomie? Wenn KI-Systeme Behandlungsempfehlungen geben, bleibt dann noch Raum für die Entscheidung des Patienten?\n\nDr. Müller: KI sollte den Arzt unterstützen, nicht ersetzen. Der Arzt muss die Empfehlungen interpretieren und dem Patienten erklären. Die finale Entscheidung muss beim Patienten liegen.\n\nProf. Dr. Weber: Aber was ist, wenn der Patient eine Entscheidung trifft, die medizinisch nicht optimal ist? Wo endet die Autonomie und beginnt die Fürsorgepflicht?\n\nDr. Müller: Das ist eine schwierige Balance. Wir müssen den Patienten aufklären und beraten, aber letztendlich respektieren wir seine Entscheidung, solange er urteilsfähig ist.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was stellt die moderne Medizin vor?", options = listOf("neue ethische Herausforderungen", "nur technische Probleme", "nur wirtschaftliche Fragen", "nur rechtliche Aspekte"), correctAnswer = "neue ethische Herausforderungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sind KI-Systeme laut Dr. Müller?", options = listOf("Black Boxes", "nur Hilfsmittel", "nur Werkzeuge", "nur Programme"), correctAnswer = "Black Boxes", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was sollte KI laut Dr. Müller tun?", options = null, correctAnswer = "den Arzt unterstützen, nicht ersetzen", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Wo muss die finale Entscheidung liegen?", options = listOf("beim Patienten", "nur beim Arzt", "nur bei der KI", "nur bei der Familie"), correctAnswer = "beim Patienten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was müssen sie respektieren laut Dr. Müller?", options = listOf("die Entscheidung des urteilsfähigen Patienten", "nur die Empfehlung der KI", "nur die Meinung der Familie", "nur die Vorschriften"), correctAnswer = "die Entscheidung des urteilsfähigen Patienten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 Goethe Prüfung - Hörverstehen Teil 5",
+                    description = "Goethe-Zertifikat C2 Listening Comprehension - Cultural studies lecture",
+                    level = level,
+                    orderIndex = 13,
+                    script = "Prof. Dr. Fischer: In meiner Vorlesung über 'Kulturelle Hybridität in der globalisierten Welt' möchte ich zeigen, wie sich Kulturen durch Migration und Digitalisierung verändern. Homi Bhabha hat das Konzept der kulturellen Hybridität entwickelt, um diese Prozesse zu beschreiben.\n\nStudent: Wie unterscheidet sich Hybridität von Assimilation?\n\nProf. Fischer: Assimilation bedeutet, dass eine Kultur von einer anderen absorbiert wird. Hybridität hingegen beschreibt einen kreativen Prozess, bei dem neue, hybride Formen entstehen. Diese sind weder die ursprüngliche noch die dominante Kultur, sondern etwas Neues.\n\nStudentin: Welche Rolle spielt die Digitalisierung dabei?\n\nProf. Fischer: Die Digitalisierung beschleunigt diese Prozesse. Social Media ermöglicht es Menschen, verschiedene kulturelle Identitäten zu leben und zu präsentieren. Gleichzeitig entstehen neue Formen der kulturellen Praxis, die online und offline verschränkt sind.\n\nStudent: Ist das nicht problematisch für den gesellschaftlichen Zusammenhalt?\n\nProf. Fischer: Das ist eine wichtige Frage. Hybridität kann sowohl verbindend als auch trennend wirken. Entscheidend ist, ob es gelingt, gemeinsame Werte und Normen zu entwickeln, die verschiedene kulturelle Identitäten integrieren.",
+                    questions = listOf(
+                        Question(id = 1, question = "Worüber hält Prof. Fischer eine Vorlesung?", options = listOf("Kulturelle Hybridität in der globalisierten Welt", "nur über Migration", "nur über Digitalisierung", "nur über Kultur"), correctAnswer = "Kulturelle Hybridität in der globalisierten Welt", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wer hat das Konzept der kulturellen Hybridität entwickelt?", options = listOf("Homi Bhabha", "nur Prof. Fischer", "nur ein Student", "nur ein anderer Professor"), correctAnswer = "Homi Bhabha", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was bedeutet Assimilation?", options = null, correctAnswer = "dass eine Kultur von einer anderen absorbiert wird", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was beschreibt Hybridität?", options = listOf("einen kreativen Prozess", "nur Assimilation", "nur Integration", "nur Separation"), correctAnswer = "einen kreativen Prozess", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was ist entscheidend laut Prof. Fischer?", options = listOf("gemeinsame Werte und Normen zu entwickeln", "nur die Technologie", "nur die Politik", "nur die Wirtschaft"), correctAnswer = "gemeinsame Werte und Normen zu entwickeln", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 TELC Prüfung - Hörverstehen Teil 5",
+                    description = "TELC Deutsch C2 Listening Comprehension - Technology and society debate",
+                    level = level,
+                    orderIndex = 14,
+                    script = "Moderator: Wir diskutieren über 'Die Digitalisierung der Gesellschaft'. Prof. Dr. Schmidt, wie verändert die Digitalisierung unser Zusammenleben?\n\nProf. Schmidt: Die Digitalisierung durchdringt alle Lebensbereiche. Sie verändert, wie wir kommunizieren, arbeiten, lernen und konsumieren. Das hat sowohl positive als auch negative Auswirkungen.\n\nDr. Müller: Ich sehe vor allem die Risiken. Die Digitalisierung führt zu sozialer Isolation und einer Fragmentierung der Aufmerksamkeit. Menschen verlieren die Fähigkeit zur tiefen Reflexion und authentischen Kommunikation.\n\nProf. Schmidt: Das ist zu pessimistisch. Die Digitalisierung ermöglicht auch neue Formen der Vernetzung und Partizipation. Menschen können sich global vernetzen und an gesellschaftlichen Diskussionen teilnehmen.\n\nDr. Müller: Aber diese Vernetzung ist oft oberflächlich. Social Media schafft Filterblasen und Echokammern, die die Polarisierung der Gesellschaft verstärken.\n\nProf. Schmidt: Das ist ein Problem, aber nicht unvermeidbar. Wir müssen digitale Kompetenzen entwickeln und kritische Medienbildung fördern. Die Technologie ist neutral - entscheidend ist, wie wir sie nutzen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Worüber diskutieren sie?", options = listOf("Die Digitalisierung der Gesellschaft", "nur über Technologie", "nur über Wirtschaft", "nur über Bildung"), correctAnswer = "Die Digitalisierung der Gesellschaft", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was verändert die Digitalisierung laut Prof. Schmidt?", options = listOf("alle Lebensbereiche", "nur die Arbeit", "nur die Kommunikation", "nur die Bildung"), correctAnswer = "alle Lebensbereiche", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was führt die Digitalisierung laut Dr. Müller zu?", options = null, correctAnswer = "sozialer Isolation", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was schafft Social Media laut Dr. Müller?", options = listOf("Filterblasen und Echokammern", "nur Verbindungen", "nur Informationen", "nur Unterhaltung"), correctAnswer = "Filterblasen und Echokammern", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was ist entscheidend laut Prof. Schmidt?", options = listOf("wie wir die Technologie nutzen", "nur welche Technologie wir haben", "nur wie schnell sie ist", "nur wie teuer sie ist"), correctAnswer = "wie wir die Technologie nutzen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 Goethe Prüfung - Hörverstehen Teil 6",
+                    description = "Goethe-Zertifikat C2 Listening Comprehension - Environmental policy discussion",
+                    level = level,
+                    orderIndex = 15,
+                    script = "Interviewer: Frau Dr. Weber, Sie sind Umweltökonomin. Wie bewerten Sie die Klimapolitik der letzten Jahre?\n\nDr. Weber: Die Klimapolitik war unzureichend. Wir haben zu lange auf freiwillige Maßnahmen gesetzt, anstatt verbindliche Regulierungen zu schaffen. Der CO2-Preis ist zu niedrig, um eine echte Verhaltensänderung zu bewirken.\n\nInterviewer: Was sind die größten Hindernisse für effektiven Klimaschutz?\n\nDr. Weber: Das Hauptproblem ist die kurzfristige Denkweise in der Politik. Klimaschutz erfordert langfristige Investitionen, aber Politiker denken nur bis zur nächsten Wahl. Außerdem gibt es mächtige Interessengruppen, die den Wandel blockieren.\n\nInterviewer: Welche Rolle spielt die internationale Zusammenarbeit?\n\nDr. Weber: Klimawandel ist ein globales Problem, das globale Lösungen erfordert. Das Pariser Abkommen war ein wichtiger Schritt, aber die nationalen Klimapläne reichen nicht aus. Wir brauchen strengere Verpflichtungen und bessere Kontrollmechanismen.\n\nInterviewer: Was können Einzelpersonen tun?\n\nDr. Weber: Individuelle Maßnahmen sind wichtig, aber nicht ausreichend. Wir brauchen systemische Veränderungen in der Energieversorgung, im Verkehr und in der Landwirtschaft. Das kann nur durch politische Maßnahmen erreicht werden.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was ist Dr. Weber?", options = listOf("Umweltökonomin", "nur Politikerin", "nur Wissenschaftlerin", "nur Aktivistin"), correctAnswer = "Umweltökonomin", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wie bewertet sie die Klimapolitik?", options = listOf("als unzureichend", "als ausreichend", "als übertrieben", "als perfekt"), correctAnswer = "als unzureichend", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was ist das Hauptproblem laut Dr. Weber?", options = null, correctAnswer = "kurzfristige Denkweise in der Politik", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was erfordert Klimaschutz?", options = listOf("langfristige Investitionen", "nur kurzfristige Maßnahmen", "nur technische Lösungen", "nur individuelle Anstrengungen"), correctAnswer = "langfristige Investitionen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was können nur durch politische Maßnahmen erreicht werden?", options = listOf("systemische Veränderungen", "nur individuelle Maßnahmen", "nur technische Innovationen", "nur freiwillige Aktionen"), correctAnswer = "systemische Veränderungen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "Goethe"
+                ))
+
+                // Additional C2 Listening Lessons (16-25)
+                lessons.add(createHoerenLesson(
+                    title = "C2 TELC Prüfung - Hörverstehen Teil 6",
+                    description = "TELC Deutsch C2 Listening Comprehension - Legal philosophy lecture",
+                    level = level,
+                    orderIndex = 16,
+                    script = "Prof. Dr. Weber: In meiner Vorlesung über 'Recht und Gerechtigkeit' möchte ich die Grundlagen des modernen Rechtsstaats erläutern. John Rawls' Theorie der Gerechtigkeit hat unser Verständnis von Gerechtigkeit maßgeblich geprägt. Rawls argumentiert, dass gerechte Prinzipien diejenigen sind, die Menschen in einer hypothetischen Urposition wählen würden. Diese Gedankenexperiment führt zu zwei Grundprinzipien: dem Prinzip der gleichen Freiheit und dem Differenzprinzip. Das Prinzip der gleichen Freiheit besagt, dass jeder Mensch das gleiche Recht auf die umfangreichste Freiheit haben soll. Das Differenzprinzip erlaubt soziale Ungleichheiten nur dann, wenn sie zum Vorteil der am wenigsten Begünstigten sind. Die Rechtsstaatlichkeit garantiert, dass staatliche Macht durch Recht begrenzt wird. Dieses Prinzip schützt vor Willkür und stellt sicher, dass staatliche Entscheidungen nachvollziehbar sind.",
+                    questions = listOf(
+                        Question(id = 1, question = "Worüber hält Prof. Weber eine Vorlesung?", options = listOf("Recht und Gerechtigkeit", "nur über Gesetze", "nur über Politik", "nur über Geschichte"), correctAnswer = "Recht und Gerechtigkeit", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Wer hat die Theorie der Gerechtigkeit entwickelt?", options = listOf("John Rawls", "nur Prof. Weber", "nur ein anderer Professor", "nur ein Student"), correctAnswer = "John Rawls", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was ist die hypothetische Urposition?", options = null, correctAnswer = "ein Gedankenexperiment", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was besagt das Prinzip der gleichen Freiheit?", options = listOf("jeder hat das gleiche Recht auf umfangreichste Freiheit", "nur Reiche haben Freiheit", "nur Männer haben Freiheit", "nur Erwachsene haben Freiheit"), correctAnswer = "jeder hat das gleiche Recht auf umfangreichste Freiheit", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was garantiert die Rechtsstaatlichkeit?", options = listOf("dass staatliche Macht durch Recht begrenzt wird", "nur dass Gesetze existieren", "nur dass Gerichte funktionieren", "nur dass Polizei arbeitet"), correctAnswer = "dass staatliche Macht durch Recht begrenzt wird", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 Goethe Prüfung - Hörverstehen Teil 7",
+                    description = "Goethe-Zertifikat C2 Listening Comprehension - Art and aesthetics discussion",
+                    level = level,
+                    orderIndex = 17,
+                    script = "Dr. Müller: Die digitale Revolution hat die Kunst grundlegend verändert. Digitale Kunstformen wie Net Art und Virtual Reality Installationen erweitern traditionelle Vorstellungen von Kreativität. Die Frage nach der Authentizität digitaler Kunstwerke stellt traditionelle Konzepte von Original und Kopie in Frage. Während in der analogen Kunst das Original einen besonderen Status besitzt, sind digitale Werke per Definition reproduzierbar. Die Interaktivität digitaler Kunst verändert die Rolle des Betrachters vom passiven Rezipienten zum aktiven Teilnehmer. Diese Entwicklung eröffnet neue Möglichkeiten der künstlerischen Erfahrung. Die Algorithmisierung der Kunst durch künstliche Intelligenz wirft fundamentale Fragen nach der Natur der Kreativität auf. Wenn Maschinen Kunstwerke schaffen können, was unterscheidet dann noch menschliche von maschineller Kreativität? Diese Frage berührt das Herzstück unseres Verständnisses von Kunst und Künstlertum.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was hat die digitale Revolution verändert?", options = listOf("die Kunst grundlegend", "nur die Technik", "nur die Verbreitung", "nur die Kosten"), correctAnswer = "die Kunst grundlegend", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was erweitern digitale Kunstformen?", options = listOf("traditionelle Vorstellungen von Kreativität", "nur die Technik", "nur die Möglichkeiten", "nur die Reichweite"), correctAnswer = "traditionelle Vorstellungen von Kreativität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was sind digitale Werke per Definition?", options = null, correctAnswer = "reproduzierbar", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Wie verändert Interaktivität die Rolle des Betrachters?", options = listOf("vom passiven Rezipienten zum aktiven Teilnehmer", "nur vom Zuschauer zum Kritiker", "nur vom Laien zum Experten", "nur vom Konsumenten zum Produzenten"), correctAnswer = "vom passiven Rezipienten zum aktiven Teilnehmer", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was wirft die Algorithmisierung der Kunst auf?", options = listOf("Fragen nach der Natur der Kreativität", "nur technische Probleme", "nur wirtschaftliche Fragen", "nur rechtliche Aspekte"), correctAnswer = "Fragen nach der Natur der Kreativität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 TELC Prüfung - Hörverstehen Teil 7",
+                    description = "TELC Deutsch C2 Listening Comprehension - Education and society debate",
+                    level = level,
+                    orderIndex = 18,
+                    script = "Moderator: Wir diskutieren über 'Bildung in der Wissensgesellschaft'. Prof. Dr. Schmidt, wie verändert sich das Bildungssystem?\n\nProf. Schmidt: Die Transformation zur Wissensgesellschaft stellt das Bildungssystem vor fundamentale Herausforderungen. Während traditionelle Bildung auf die Vermittlung von Faktenwissen ausgerichtet war, erfordert die moderne Gesellschaft Kompetenzen wie Kreativität und kritisches Denken. Die Digitalisierung des Lernens eröffnet neue Möglichkeiten der Wissensvermittlung. Online-Lernplattformen und adaptive Lernsysteme personalisieren den Lernprozess. Die Globalisierung des Bildungswesens führt zu einer Internationalisierung von Curricula und Standards.\n\nDr. Müller: Ich sehe auch Risiken. Die Digitalisierung kann zu sozialer Isolation und einer Verschärfung der Bildungsungleichheit führen. Die Gefahr einer kulturellen Homogenisierung besteht. Wir verlieren lokale Bildungstraditionen.\n\nProf. Schmidt: Das ist ein wichtiger Punkt. Wir müssen eine Balance zwischen Standardisierung und Flexibilität finden. Die Zukunft der Bildung hängt davon ab, ob es gelingt, die neuen Möglichkeiten der Digitalisierung zu nutzen, ohne die sozialen und kulturellen Funktionen der Bildung zu vernachlässigen.",
+                    questions = listOf(
+                        Question(id = 1, question = "Worüber diskutieren sie?", options = listOf("Bildung in der Wissensgesellschaft", "nur über Technologie", "nur über Wirtschaft", "nur über Politik"), correctAnswer = "Bildung in der Wissensgesellschaft", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was erfordert die moderne Gesellschaft?", options = listOf("Kompetenzen wie Kreativität und kritisches Denken", "nur Faktenwissen", "nur technische Fähigkeiten", "nur sprachliche Kompetenzen"), correctAnswer = "Kompetenzen wie Kreativität und kritisches Denken", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was personalisieren Online-Lernplattformen?", options = null, correctAnswer = "den Lernprozess", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was führt die Globalisierung des Bildungswesens zu?", options = listOf("Internationalisierung von Curricula und Standards", "nur zu mehr Konkurrenz", "nur zu höheren Kosten", "nur zu weniger Qualität"), correctAnswer = "Internationalisierung von Curricula und Standards", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was müssen sie finden laut Prof. Schmidt?", options = listOf("eine Balance zwischen Standardisierung und Flexibilität", "nur mehr Technologie", "nur weniger Bürokratie", "nur mehr Geld"), correctAnswer = "eine Balance zwischen Standardisierung und Flexibilität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 Goethe Prüfung - Hörverstehen Teil 8",
+                    description = "Goethe-Zertifikat C2 Listening Comprehension - Urban studies lecture",
+                    level = level,
+                    orderIndex = 19,
+                    script = "Prof. Dr. Weber: Die Entwicklung zur Smart City verspricht, urbane Probleme durch technologische Innovationen zu lösen. Sensoren, Datenanalyse und künstliche Intelligenz sollen Verkehrsströme optimieren und Energieverbrauch reduzieren. Die Sammlung und Analyse großer Datenmengen ermöglicht es, städtische Prozesse zu verstehen und zu optimieren. Diese Entwicklung wirft jedoch auch Fragen nach Privatsphäre und Datenschutz auf. Die Überwachung öffentlicher Räume durch intelligente Kameras kann die Sicherheit erhöhen, aber auch zu einem Verlust an Anonymität führen. Die Partizipation der Bürger an der Gestaltung der Smart City ist ein zentrales Element für deren Erfolg. Digitale Plattformen ermöglichen es Bürgern, sich an stadtplanerischen Entscheidungen zu beteiligen. Die Nachhaltigkeit der Smart City hängt davon ab, ob technologische Lösungen auch ökologische und soziale Aspekte berücksichtigen. Die Zukunft der Smart City liegt in der Entwicklung integrierter Konzepte, die Technologie, Nachhaltigkeit und soziale Gerechtigkeit miteinander verbinden.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was verspricht die Smart City?", options = listOf("urbane Probleme durch Technologie zu lösen", "nur mehr Sicherheit", "nur weniger Kosten", "nur bessere Verwaltung"), correctAnswer = "urbane Probleme durch Technologie zu lösen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was sollen Sensoren und KI optimieren?", options = listOf("Verkehrsströme und Energieverbrauch", "nur die Sicherheit", "nur die Verwaltung", "nur die Kommunikation"), correctAnswer = "Verkehrsströme und Energieverbrauch", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was wirft die Sammlung großer Datenmengen auf?", options = null, correctAnswer = "Fragen nach Privatsphäre und Datenschutz", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was ist ein zentrales Element für den Erfolg?", options = listOf("Partizipation der Bürger", "nur technische Innovation", "nur wirtschaftliche Effizienz", "nur politische Unterstützung"), correctAnswer = "Partizipation der Bürger", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Wo liegt die Zukunft der Smart City?", options = listOf("in integrierten Konzepten", "nur in mehr Technologie", "nur in weniger Bürokratie", "nur in mehr Überwachung"), correctAnswer = "in integrierten Konzepten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createHoerenLesson(
+                    title = "C2 TELC Prüfung - Hörverstehen Teil 8",
+                    description = "TELC Deutsch C2 Listening Comprehension - Media studies discussion",
+                    level = level,
+                    orderIndex = 20,
+                    script = "Dr. Müller: Die Digitalisierung der Medien hat zu einer fundamentalen Transformation der Öffentlichkeit geführt. Während traditionelle Massenmedien eine zentrale Rolle bei der Herstellung von Öffentlichkeit spielten, haben sich durch das Internet neue Formen der Kommunikation entwickelt. Social Media Plattformen haben die Art und Weise verändert, wie Informationen verbreitet und diskutiert werden. Während diese Entwicklung die Demokratisierung der Kommunikation ermöglicht hat, haben sich auch neue Probleme entwickelt: die Verbreitung von Falschinformationen und die Bildung von Echokammern. Die Personalisierung von Nachrichten durch Algorithmen führt dazu, dass verschiedene Nutzer unterschiedliche Versionen der Realität präsentiert bekommen. Diese Entwicklung wirft Fragen nach der Objektivität von Informationen auf. Die Rolle traditioneller Journalisten als Gatekeeper der Information wird durch die Digitalisierung herausgefordert. Während Bürgerjournalismus neue Perspektiven eröffnet, besteht auch die Gefahr einer Erosion professioneller Standards. Die Zukunft der Öffentlichkeit hängt davon ab, ob es gelingt, die Vorteile der digitalen Kommunikation zu nutzen, während gleichzeitig Mechanismen zur Sicherung der Qualität entwickelt werden.",
+                    questions = listOf(
+                        Question(id = 1, question = "Was hat die Digitalisierung der Medien bewirkt?", options = listOf("fundamentale Transformation der Öffentlichkeit", "nur bessere Qualität", "nur schnellere Verbreitung", "nur niedrigere Kosten"), correctAnswer = "fundamentale Transformation der Öffentlichkeit", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was haben Social Media Plattformen verändert?", options = listOf("Art der Informationsverbreitung und -diskussion", "nur die Geschwindigkeit", "nur die Reichweite", "nur die Kosten"), correctAnswer = "Art der Informationsverbreitung und -diskussion", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was haben sich durch die Demokratisierung entwickelt?", options = null, correctAnswer = "neue Probleme", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 4, question = "Was führt die Personalisierung von Nachrichten zu?", options = listOf("unterschiedlichen Versionen der Realität", "nur zu besseren Nachrichten", "nur zu schnelleren Nachrichten", "nur zu mehr Nachrichten"), correctAnswer = "unterschiedlichen Versionen der Realität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 5, question = "Was wird durch die Digitalisierung herausgefordert?", options = listOf("Rolle traditioneller Journalisten als Gatekeeper", "nur die Qualität der Nachrichten", "nur die Geschwindigkeit der Berichterstattung", "nur die Kosten der Medien"), correctAnswer = "Rolle traditioneller Journalisten als Gatekeeper", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    source = "TELC"
+                ))
             }
 
             "B1" -> {
@@ -8726,6 +9811,276 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                         "Innovative Forschungsansätze entwickeln"
                     )
                 ))
+                
+                // C2 TELC Prüfung - Schreiben Teil 1
+                lessons.add(createSchreibenLesson(
+                    title = "C2 TELC Prüfung - Schreiben Teil 1",
+                    description = "Wissenschaftlicher Essay: Paradigmenwechsel in der Wissenschaftsgeschichte",
+                    level = level,
+                    orderIndex = 6,
+                    prompt = "Verfasse einen wissenschaftlichen Essay über 'Paradigmenwechsel in der Wissenschaftsgeschichte: Von Kuhn zu Feyerabend'. Analysiere die Entwicklung wissenschaftstheoretischer Konzepte und deren Auswirkungen auf die moderne Forschung. (1200-1800 Wörter)",
+                    minWords = 1200,
+                    maxWords = 1800,
+                    tips = listOf(
+                        "Wissenschaftstheoretische Konzepte präzise darstellen",
+                        "Historische Entwicklung nachzeichnen",
+                        "Kritische Bewertung der Theorien",
+                        "Aktuelle Relevanz aufzeigen"
+                    ),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Schreiben Teil 2
+                lessons.add(createSchreibenLesson(
+                    title = "C2 Goethe Prüfung - Schreiben Teil 2",
+                    description = "Literaturwissenschaftliche Analyse: Postmoderne Erzählstrategien",
+                    level = level,
+                    orderIndex = 7,
+                    prompt = "Schreibe eine literaturwissenschaftliche Analyse über 'Postmoderne Erzählstrategien in der deutschen Gegenwartsliteratur'. Untersuche innovative narrative Techniken bei Autoren wie Juli Zeh, Daniel Kehlmann und Judith Hermann. (1000-1500 Wörter)",
+                    minWords = 1000,
+                    maxWords = 1500,
+                    tips = listOf(
+                        "Literaturtheoretische Ansätze anwenden",
+                        "Textanalysen mit konkreten Beispielen",
+                        "Innovative Interpretationsansätze entwickeln",
+                        "Intertextuelle Bezüge aufzeigen"
+                    ),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Schreiben Teil 2
+                lessons.add(createSchreibenLesson(
+                    title = "C2 TELC Prüfung - Schreiben Teil 2",
+                    description = "Wirtschaftsphilosophischer Essay: Krise der Globalisierung",
+                    level = level,
+                    orderIndex = 8,
+                    prompt = "Verfasse einen wirtschaftsphilosophischen Essay über 'Die Krise der Globalisierung: Zwischen Neoliberalismus und Protektionismus'. Analysiere die ethischen und ökonomischen Dimensionen globaler Wirtschaftsprozesse. (1300-1900 Wörter)",
+                    minWords = 1300,
+                    maxWords = 1900,
+                    tips = listOf(
+                        "Wirtschaftstheoretische Konzepte erläutern",
+                        "Ethische Implikationen diskutieren",
+                        "Historische Entwicklung analysieren",
+                        "Zukunftsperspektiven entwickeln"
+                    ),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Schreiben Teil 3
+                lessons.add(createSchreibenLesson(
+                    title = "C2 Goethe Prüfung - Schreiben Teil 3",
+                    description = "Politisch-philosophische Abhandlung: Demokratie und Populismus",
+                    level = level,
+                    orderIndex = 9,
+                    prompt = "Schreibe eine politisch-philosophische Abhandlung über 'Demokratie und Populismus: Herausforderungen für die repräsentative Demokratie im 21. Jahrhundert'. Untersuche die Spannung zwischen demokratischen Idealen und populistischen Bewegungen. (1400-2000 Wörter)",
+                    minWords = 1400,
+                    maxWords = 2000,
+                    tips = listOf(
+                        "Demokratietheoretische Konzepte anwenden",
+                        "Populismusphänomen analysieren",
+                        "Historische Vergleiche ziehen",
+                        "Lösungsansätze entwickeln"
+                    ),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Schreiben Teil 3
+                lessons.add(createSchreibenLesson(
+                    title = "C2 TELC Prüfung - Schreiben Teil 3",
+                    description = "Umweltethischer Essay: Klimawandel und Generationengerechtigkeit",
+                    level = level,
+                    orderIndex = 10,
+                    prompt = "Verfasse einen umweltethischen Essay über 'Klimawandel und Generationengerechtigkeit: Ethische Verantwortung für zukünftige Generationen'. Analysiere die moralischen Implikationen des Klimawandels und entwickle Gerechtigkeitskonzepte. (1200-1800 Wörter)",
+                    minWords = 1200,
+                    maxWords = 1800,
+                    tips = listOf(
+                        "Umweltethische Theorien anwenden",
+                        "Generationengerechtigkeit definieren",
+                        "Praktische Implikationen diskutieren",
+                        "Handlungsempfehlungen entwickeln"
+                    ),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Schreiben Teil 4
+                lessons.add(createSchreibenLesson(
+                    title = "C2 Goethe Prüfung - Schreiben Teil 4",
+                    description = "Kulturwissenschaftliche Analyse: Kulturelle Hybridität",
+                    level = level,
+                    orderIndex = 11,
+                    prompt = "Schreibe eine kulturwissenschaftliche Analyse über 'Kulturelle Hybridität in der globalisierten Welt: Identitätskonstruktionen zwischen Tradition und Moderne'. Untersuche die Dynamik kultureller Vermischung und deren Auswirkungen auf gesellschaftliche Identitäten. (1300-1900 Wörter)",
+                    minWords = 1300,
+                    maxWords = 1900,
+                    tips = listOf(
+                        "Kulturtheoretische Konzepte anwenden",
+                        "Hybriditätsphänomene analysieren",
+                        "Identitätskonstruktionen untersuchen",
+                        "Gesellschaftliche Implikationen diskutieren"
+                    ),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Schreiben Teil 4
+                lessons.add(createSchreibenLesson(
+                    title = "C2 TELC Prüfung - Schreiben Teil 4",
+                    description = "Medizinethischer Essay: Bioethik und die Grenzen der Medizin",
+                    level = level,
+                    orderIndex = 12,
+                    prompt = "Verfasse einen medizinethischen Essay über 'Bioethik und die Grenzen der Medizin: Ethische Dilemmata in der modernen Medizin'. Analysiere ethische Herausforderungen in Bereichen wie Gentechnik, KI in der Medizin und Patientenautonomie. (1200-1800 Wörter)",
+                    minWords = 1200,
+                    maxWords = 1800,
+                    tips = listOf(
+                        "Medizinethische Prinzipien anwenden",
+                        "Konkrete Dilemmata analysieren",
+                        "Rechtliche und ethische Aspekte diskutieren",
+                        "Lösungsansätze entwickeln"
+                    ),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Schreiben Teil 5
+                lessons.add(createSchreibenLesson(
+                    title = "C2 Goethe Prüfung - Schreiben Teil 5",
+                    description = "Technikphilosophischer Essay: Digitalisierung der Gesellschaft",
+                    level = level,
+                    orderIndex = 13,
+                    prompt = "Schreibe einen technikphilosophischen Essay über 'Digitalisierung der Gesellschaft: Chancen und Risiken der technologischen Transformation'. Untersuche die Auswirkungen digitaler Technologien auf Demokratie, Privatsphäre und soziale Beziehungen. (1400-2000 Wörter)",
+                    minWords = 1400,
+                    maxWords = 2000,
+                    tips = listOf(
+                        "Technikphilosophische Ansätze anwenden",
+                        "Gesellschaftliche Transformationen analysieren",
+                        "Ethische Implikationen diskutieren",
+                        "Zukunftsperspektiven entwickeln"
+                    ),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Schreiben Teil 5
+                lessons.add(createSchreibenLesson(
+                    title = "C2 TELC Prüfung - Schreiben Teil 5",
+                    description = "Rechtsphilosophische Abhandlung: Recht und Gerechtigkeit",
+                    level = level,
+                    orderIndex = 14,
+                    prompt = "Verfasse eine rechtsphilosophische Abhandlung über 'Recht und Gerechtigkeit: Die Spannung zwischen positivem Recht und natürlichem Recht'. Analysiere verschiedene Gerechtigkeitstheorien und deren Anwendung in der modernen Rechtsprechung. (1500-2200 Wörter)",
+                    minWords = 1500,
+                    maxWords = 2200,
+                    tips = listOf(
+                        "Rechtsphilosophische Theorien erläutern",
+                        "Gerechtigkeitskonzepte vergleichen",
+                        "Praktische Anwendungen diskutieren",
+                        "Kritische Bewertung durchführen"
+                    ),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Schreiben Teil 6
+                lessons.add(createSchreibenLesson(
+                    title = "C2 Goethe Prüfung - Schreiben Teil 6",
+                    description = "Ästhetikphilosophischer Essay: Ästhetik des Digitalen",
+                    level = level,
+                    orderIndex = 15,
+                    prompt = "Schreibe einen ästhetikphilosophischen Essay über 'Ästhetik des Digitalen: Neue Formen künstlerischen Ausdrucks in der digitalen Ära'. Untersuche die Transformation ästhetischer Erfahrungen durch digitale Medien und Technologien. (1200-1800 Wörter)",
+                    minWords = 1200,
+                    maxWords = 1800,
+                    tips = listOf(
+                        "Ästhetiktheoretische Konzepte anwenden",
+                        "Digitale Kunstformen analysieren",
+                        "Wahrnehmungstheorien diskutieren",
+                        "Innovative Perspektiven entwickeln"
+                    ),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Schreiben Teil 6
+                lessons.add(createSchreibenLesson(
+                    title = "C2 TELC Prüfung - Schreiben Teil 6",
+                    description = "Bildungsphilosophischer Essay: Bildung in der Wissensgesellschaft",
+                    level = level,
+                    orderIndex = 16,
+                    prompt = "Verfasse einen bildungsphilosophischen Essay über 'Bildung in der Wissensgesellschaft: Herausforderungen und Perspektiven für das Bildungssystem im 21. Jahrhundert'. Analysiere die Transformation von Bildung durch digitale Technologien und gesellschaftliche Veränderungen. (1300-1900 Wörter)",
+                    minWords = 1300,
+                    maxWords = 1900,
+                    tips = listOf(
+                        "Bildungstheoretische Konzepte anwenden",
+                        "Wissensgesellschaft analysieren",
+                        "Digitale Transformation diskutieren",
+                        "Bildungsreformen bewerten"
+                    ),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Schreiben Teil 7
+                lessons.add(createSchreibenLesson(
+                    title = "C2 Goethe Prüfung - Schreiben Teil 7",
+                    description = "Stadtsoziologischer Essay: Die Smart City",
+                    level = level,
+                    orderIndex = 17,
+                    prompt = "Schreibe einen stadtsoziologischen Essay über 'Die Smart City: Technologische Utopie oder dystopische Überwachung?'. Untersuche die Auswirkungen digitaler Stadtentwicklung auf soziale Beziehungen, Privatsphäre und demokratische Partizipation. (1400-2000 Wörter)",
+                    minWords = 1400,
+                    maxWords = 2000,
+                    tips = listOf(
+                        "Stadtsoziologische Theorien anwenden",
+                        "Smart City Konzepte analysieren",
+                        "Soziale Implikationen diskutieren",
+                        "Kritische Perspektiven entwickeln"
+                    ),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Schreiben Teil 7
+                lessons.add(createSchreibenLesson(
+                    title = "C2 TELC Prüfung - Schreiben Teil 7",
+                    description = "Medienwissenschaftlicher Essay: Medienwandel und Öffentlichkeit",
+                    level = level,
+                    orderIndex = 18,
+                    prompt = "Verfasse einen medienwissenschaftlichen Essay über 'Medienwandel und Öffentlichkeit: Die Transformation der Öffentlichkeit durch soziale Medien und digitale Kommunikation'. Analysiere die Auswirkungen auf demokratische Diskurse und gesellschaftliche Meinungsbildung. (1200-1800 Wörter)",
+                    minWords = 1200,
+                    maxWords = 1800,
+                    tips = listOf(
+                        "Medienwissenschaftliche Theorien anwenden",
+                        "Öffentlichkeitstheorien diskutieren",
+                        "Digitale Transformation analysieren",
+                        "Demokratische Implikationen bewerten"
+                    ),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Schreiben Teil 8
+                lessons.add(createSchreibenLesson(
+                    title = "C2 Goethe Prüfung - Schreiben Teil 8",
+                    description = "Psychologisch-philosophischer Essay: Identität in der digitalen Gesellschaft",
+                    level = level,
+                    orderIndex = 19,
+                    prompt = "Schreibe einen psychologisch-philosophischen Essay über 'Identität in der digitalen Gesellschaft: Selbstkonstruktion zwischen Virtualität und Realität'. Untersuche die Auswirkungen digitaler Medien auf Identitätsbildung und Selbstverständnis. (1300-1900 Wörter)",
+                    minWords = 1300,
+                    maxWords = 1900,
+                    tips = listOf(
+                        "Identitätstheorien anwenden",
+                        "Digitale Identität analysieren",
+                        "Psychologische Implikationen diskutieren",
+                        "Philosophische Perspektiven entwickeln"
+                    ),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Schreiben Teil 8
+                lessons.add(createSchreibenLesson(
+                    title = "C2 TELC Prüfung - Schreiben Teil 8",
+                    description = "Zukunftsforschung Essay: Zukunftsforschung und gesellschaftlicher Wandel",
+                    level = level,
+                    orderIndex = 20,
+                    prompt = "Verfasse einen Essay über 'Zukunftsforschung und gesellschaftlicher Wandel: Methoden und Herausforderungen der Antizipation gesellschaftlicher Entwicklungen'. Analysiere verschiedene Ansätze der Zukunftsforschung und deren Anwendung in Politik und Gesellschaft. (1500-2200 Wörter)",
+                    minWords = 1500,
+                    maxWords = 2200,
+                    tips = listOf(
+                        "Zukunftsforschungsmethoden erläutern",
+                        "Gesellschaftliche Trends analysieren",
+                        "Antizipationsstrategien diskutieren",
+                        "Kritische Bewertung durchführen"
+                    ),
+                    source = "TELC"
+                ))
             }
 
             "B1" -> {
@@ -9646,6 +11001,186 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                     prompt = "Diskutiere über die Herausforderungen der Moderne und die Rolle der Philosophie in der Gegenwart. Sprich 6-7 Minuten.",
                     modelResponse = "Die Moderne ist geprägt von Individualisierung, Rationalisierung und Globalisierung. Diese Entwicklungen schaffen [Freiheiten] und [Probleme]. Identität ist heute [Entwicklung] und erfordert [Anpassungen]. Die Philosophie hilft uns, [Herausforderungen] zu verstehen und [Lösungen] zu entwickeln.",
                     keywords = listOf("Moderne", "Individualisierung", "Globalisierung", "Identität", "Philosophie", "Herausforderungen")
+                ))
+                
+                // C2 TELC Prüfung - Sprechen Teil 1
+                lessons.add(createSprechenLesson(
+                    title = "C2 TELC Prüfung - Sprechen Teil 1",
+                    description = "Wissenschaftliche Präsentation: Paradigmenwechsel in der Wissenschaftsgeschichte",
+                    level = level,
+                    orderIndex = 6,
+                    prompt = "Halte eine wissenschaftliche Präsentation über 'Paradigmenwechsel in der Wissenschaftsgeschichte: Von Kuhn zu Feyerabend'. Erläutere die Entwicklung wissenschaftstheoretischer Konzepte und deren Auswirkungen auf die moderne Forschung. Sprich 8-10 Minuten.",
+                    modelResponse = "Paradigmenwechsel in der Wissenschaftsgeschichte markieren fundamentale Umbrüche in unserem Verständnis der Welt. Thomas Kuhns Konzept der wissenschaftlichen Revolutionen zeigt, dass Wissenschaft nicht linear fortschreitet, sondern durch [Paradigmenwechsel] geprägt ist. Feyerabends 'Anything goes' erweitert diese Perspektive und hinterfragt [Methoden]. Diese Theorien haben [Auswirkungen] auf die moderne Forschung und erfordern [Reflexion].",
+                    keywords = listOf("Paradigmenwechsel", "Kuhn", "Feyerabend", "wissenschaftliche Revolutionen", "Methoden", "Reflexion"),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Sprechen Teil 2
+                lessons.add(createSprechenLesson(
+                    title = "C2 Goethe Prüfung - Sprechen Teil 2",
+                    description = "Literaturwissenschaftliche Diskussion: Postmoderne Erzählstrategien",
+                    level = level,
+                    orderIndex = 7,
+                    prompt = "Führe eine literaturwissenschaftliche Diskussion über 'Postmoderne Erzählstrategien in der deutschen Gegenwartsliteratur'. Analysiere innovative narrative Techniken bei Autoren wie Juli Zeh, Daniel Kehlmann und Judith Hermann. Sprich 7-9 Minuten.",
+                    modelResponse = "Postmoderne Erzählstrategien in der deutschen Gegenwartsliteratur zeichnen sich durch [Innovationen] aus. Juli Zehs experimentelle Erzähltechniken hinterfragen [Konventionen], während Daniel Kehlmanns Metafiktion [Grenzen] aufzeigt. Judith Hermanns fragmentarische Erzählweise erzeugt [Wirkungen]. Diese Autoren entwickeln [Strategien] und schaffen [Neue Formen] des literarischen Ausdrucks.",
+                    keywords = listOf("Postmoderne", "Erzählstrategien", "Juli Zeh", "Daniel Kehlmann", "Judith Hermann", "Metafiktion"),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Sprechen Teil 2
+                lessons.add(createSprechenLesson(
+                    title = "C2 TELC Prüfung - Sprechen Teil 2",
+                    description = "Wirtschaftsphilosophische Debatte: Krise der Globalisierung",
+                    level = level,
+                    orderIndex = 8,
+                    prompt = "Führe eine wirtschaftsphilosophische Debatte über 'Die Krise der Globalisierung: Zwischen Neoliberalismus und Protektionismus'. Analysiere die ethischen und ökonomischen Dimensionen globaler Wirtschaftsprozesse. Sprich 8-10 Minuten.",
+                    modelResponse = "Die Krise der Globalisierung offenbart fundamentale Spannungen zwischen [Konzepten]. Der Neoliberalismus betont [Prinzipien], während Protektionismus [Schutz] bietet. Diese Spannung wirft ethische Fragen nach [Gerechtigkeit] auf und erfordert [Lösungsansätze]. Die ökonomischen Dimensionen zeigen [Herausforderungen] und erfordern [Anpassungen] in der globalen Wirtschaftsordnung.",
+                    keywords = listOf("Globalisierung", "Neoliberalismus", "Protektionismus", "Gerechtigkeit", "Wirtschaftsordnung", "Herausforderungen"),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Sprechen Teil 3
+                lessons.add(createSprechenLesson(
+                    title = "C2 Goethe Prüfung - Sprechen Teil 3",
+                    description = "Politisch-philosophische Diskussion: Demokratie und Populismus",
+                    level = level,
+                    orderIndex = 9,
+                    prompt = "Diskutiere über 'Demokratie und Populismus: Herausforderungen für die repräsentative Demokratie im 21. Jahrhundert'. Untersuche die Spannung zwischen demokratischen Idealen und populistischen Bewegungen. Sprich 7-9 Minuten.",
+                    modelResponse = "Die Spannung zwischen Demokratie und Populismus prägt die politische Landschaft des 21. Jahrhunderts. Demokratische Ideale wie [Prinzipien] stehen in Konflikt mit populistischen [Strategien]. Diese Dynamik erfordert [Analyse] und [Lösungsansätze]. Die repräsentative Demokratie muss [Herausforderungen] bewältigen und [Anpassungen] vornehmen, um ihre [Legitimität] zu bewahren.",
+                    keywords = listOf("Demokratie", "Populismus", "repräsentative Demokratie", "Legitimität", "Herausforderungen", "Lösungsansätze"),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Sprechen Teil 3
+                lessons.add(createSprechenLesson(
+                    title = "C2 TELC Prüfung - Sprechen Teil 3",
+                    description = "Umweltethische Diskussion: Klimawandel und Generationengerechtigkeit",
+                    level = level,
+                    orderIndex = 10,
+                    prompt = "Führe eine umweltethische Diskussion über 'Klimawandel und Generationengerechtigkeit: Ethische Verantwortung für zukünftige Generationen'. Analysiere die moralischen Implikationen des Klimawandels. Sprich 8-10 Minuten.",
+                    modelResponse = "Klimawandel und Generationengerechtigkeit stellen fundamentale ethische Herausforderungen dar. Die Verantwortung für zukünftige Generationen erfordert [Reflexion] über [Prinzipien]. Die moralischen Implikationen des Klimawandels zeigen [Dilemmata] und erfordern [Handlungsansätze]. Generationengerechtigkeit bedeutet [Konzepte] und erfordert [Maßnahmen] für eine nachhaltige Zukunft.",
+                    keywords = listOf("Klimawandel", "Generationengerechtigkeit", "ethische Verantwortung", "moralische Implikationen", "nachhaltige Zukunft", "Handlungsansätze"),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Sprechen Teil 4
+                lessons.add(createSprechenLesson(
+                    title = "C2 Goethe Prüfung - Sprechen Teil 4",
+                    description = "Kulturwissenschaftliche Präsentation: Kulturelle Hybridität",
+                    level = level,
+                    orderIndex = 11,
+                    prompt = "Halte eine kulturwissenschaftliche Präsentation über 'Kulturelle Hybridität in der globalisierten Welt: Identitätskonstruktionen zwischen Tradition und Moderne'. Untersuche die Dynamik kultureller Vermischung. Sprich 7-9 Minuten.",
+                    modelResponse = "Kulturelle Hybridität in der globalisierten Welt zeigt komplexe Identitätskonstruktionen zwischen [Tradition] und [Moderne]. Diese Dynamik erzeugt [Neue Formen] kulturellen Ausdrucks und erfordert [Anpassungen]. Identitätskonstruktionen sind heute [Entwicklung] und zeigen [Charakteristika]. Die Vermischung von Kulturen schafft [Möglichkeiten] und [Herausforderungen].",
+                    keywords = listOf("kulturelle Hybridität", "Identitätskonstruktionen", "Tradition", "Moderne", "Vermischung", "Herausforderungen"),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Sprechen Teil 4
+                lessons.add(createSprechenLesson(
+                    title = "C2 TELC Prüfung - Sprechen Teil 4",
+                    description = "Medizinethische Debatte: Bioethik und die Grenzen der Medizin",
+                    level = level,
+                    orderIndex = 12,
+                    prompt = "Führe eine medizinethische Debatte über 'Bioethik und die Grenzen der Medizin: Ethische Dilemmata in der modernen Medizin'. Analysiere ethische Herausforderungen in Bereichen wie Gentechnik und KI in der Medizin. Sprich 8-10 Minuten.",
+                    modelResponse = "Bioethik und die Grenzen der Medizin stellen fundamentale ethische Fragen in der modernen Medizin. Gentechnik, KI in der Medizin und Patientenautonomie erfordern [Reflexion] über [Prinzipien]. Diese Bereiche zeigen [Dilemmata] und erfordern [Lösungsansätze]. Die Grenzen der Medizin müssen [Definiert] werden und erfordern [Ethische Leitlinien].",
+                    keywords = listOf("Bioethik", "Grenzen der Medizin", "Gentechnik", "KI in der Medizin", "Patientenautonomie", "ethische Leitlinien"),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Sprechen Teil 5
+                lessons.add(createSprechenLesson(
+                    title = "C2 Goethe Prüfung - Sprechen Teil 5",
+                    description = "Technikphilosophische Diskussion: Digitalisierung der Gesellschaft",
+                    level = level,
+                    orderIndex = 13,
+                    prompt = "Diskutiere über 'Digitalisierung der Gesellschaft: Chancen und Risiken der technologischen Transformation'. Untersuche die Auswirkungen digitaler Technologien auf Demokratie und Privatsphäre. Sprich 7-9 Minuten.",
+                    modelResponse = "Digitalisierung der Gesellschaft transformiert fundamentale Aspekte unseres Zusammenlebens. Chancen und Risiken der technologischen Transformation zeigen [Dynamiken] und erfordern [Analyse]. Die Auswirkungen auf Demokratie und Privatsphäre sind [Entwicklung] und erfordern [Schutzmaßnahmen]. Diese Transformation erfordert [Anpassungen] und [Regulierung].",
+                    keywords = listOf("Digitalisierung", "technologische Transformation", "Demokratie", "Privatsphäre", "Schutzmaßnahmen", "Regulierung"),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Sprechen Teil 5
+                lessons.add(createSprechenLesson(
+                    title = "C2 TELC Prüfung - Sprechen Teil 5",
+                    description = "Rechtsphilosophische Präsentation: Recht und Gerechtigkeit",
+                    level = level,
+                    orderIndex = 14,
+                    prompt = "Halte eine rechtsphilosophische Präsentation über 'Recht und Gerechtigkeit: Die Spannung zwischen positivem Recht und natürlichem Recht'. Analysiere verschiedene Gerechtigkeitstheorien. Sprich 8-10 Minuten.",
+                    modelResponse = "Recht und Gerechtigkeit zeigen fundamentale Spannungen zwischen [positivem Recht] und [natürlichem Recht]. Verschiedene Gerechtigkeitstheorien bieten [Ansätze] und erfordern [Vergleich]. Diese Theorien haben [Auswirkungen] auf die moderne Rechtsprechung und erfordern [Reflexion]. Die Spannung zwischen Recht und Gerechtigkeit zeigt [Herausforderungen] und erfordert [Lösungsansätze].",
+                    keywords = listOf("Recht", "Gerechtigkeit", "positives Recht", "natürliches Recht", "Gerechtigkeitstheorien", "Rechtsprechung"),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Sprechen Teil 6
+                lessons.add(createSprechenLesson(
+                    title = "C2 Goethe Prüfung - Sprechen Teil 6",
+                    description = "Ästhetikphilosophische Diskussion: Ästhetik des Digitalen",
+                    level = level,
+                    orderIndex = 15,
+                    prompt = "Diskutiere über 'Ästhetik des Digitalen: Neue Formen künstlerischen Ausdrucks in der digitalen Ära'. Untersuche die Transformation ästhetischer Erfahrungen durch digitale Medien. Sprich 7-9 Minuten.",
+                    modelResponse = "Ästhetik des Digitalen eröffnet neue Formen künstlerischen Ausdrucks in der digitalen Ära. Diese Transformation zeigt [Innovationen] und erfordert [Neue Kategorien]. Digitale Medien verändern [Wahrnehmung] und schaffen [Neue Erfahrungen]. Diese Entwicklung erfordert [Reflexion] über [Traditionelle Konzepte] und [Neue Ansätze].",
+                    keywords = listOf("Ästhetik des Digitalen", "künstlerischer Ausdruck", "digitale Medien", "Wahrnehmung", "Transformation", "Innovationen"),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Sprechen Teil 6
+                lessons.add(createSprechenLesson(
+                    title = "C2 TELC Prüfung - Sprechen Teil 6",
+                    description = "Bildungsphilosophische Debatte: Bildung in der Wissensgesellschaft",
+                    level = level,
+                    orderIndex = 16,
+                    prompt = "Führe eine bildungsphilosophische Debatte über 'Bildung in der Wissensgesellschaft: Herausforderungen und Perspektiven für das Bildungssystem im 21. Jahrhundert'. Analysiere die Transformation von Bildung durch digitale Technologien. Sprich 8-10 Minuten.",
+                    modelResponse = "Bildung in der Wissensgesellschaft steht vor fundamentalen Herausforderungen und erfordert neue Perspektiven für das Bildungssystem. Die Transformation durch digitale Technologien zeigt [Entwicklungen] und erfordert [Anpassungen]. Diese Veränderungen haben [Auswirkungen] auf Lernprozesse und erfordern [Neue Methoden]. Das Bildungssystem muss [Herausforderungen] bewältigen und [Innovationen] entwickeln.",
+                    keywords = listOf("Bildung", "Wissensgesellschaft", "digitale Technologien", "Bildungssystem", "Lernprozesse", "Innovationen"),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Sprechen Teil 7
+                lessons.add(createSprechenLesson(
+                    title = "C2 Goethe Prüfung - Sprechen Teil 7",
+                    description = "Stadtsoziologische Präsentation: Die Smart City",
+                    level = level,
+                    orderIndex = 17,
+                    prompt = "Halte eine stadtsoziologische Präsentation über 'Die Smart City: Technologische Utopie oder dystopische Überwachung?'. Untersuche die Auswirkungen digitaler Stadtentwicklung auf soziale Beziehungen. Sprich 7-9 Minuten.",
+                    modelResponse = "Die Smart City steht zwischen technologischer Utopie und dystopischer Überwachung. Diese Ambivalenz zeigt [Spannungen] und erfordert [Kritische Analyse]. Die Auswirkungen auf soziale Beziehungen sind [Entwicklung] und erfordern [Schutzmaßnahmen]. Digitale Stadtentwicklung muss [Herausforderungen] bewältigen und [Menschenrechte] respektieren.",
+                    keywords = listOf("Smart City", "technologische Utopie", "Überwachung", "soziale Beziehungen", "digitale Stadtentwicklung", "Menschenrechte"),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Sprechen Teil 7
+                lessons.add(createSprechenLesson(
+                    title = "C2 TELC Prüfung - Sprechen Teil 7",
+                    description = "Medienwissenschaftliche Diskussion: Medienwandel und Öffentlichkeit",
+                    level = level,
+                    orderIndex = 18,
+                    prompt = "Diskutiere über 'Medienwandel und Öffentlichkeit: Die Transformation der Öffentlichkeit durch soziale Medien und digitale Kommunikation'. Analysiere die Auswirkungen auf demokratische Diskurse. Sprich 8-10 Minuten.",
+                    modelResponse = "Medienwandel und Öffentlichkeit zeigen fundamentale Transformationen durch soziale Medien und digitale Kommunikation. Diese Entwicklung verändert [Öffentlichkeitsstrukturen] und erfordert [Neue Konzepte]. Die Auswirkungen auf demokratische Diskurse sind [Entwicklung] und erfordern [Schutzmaßnahmen]. Diese Transformation erfordert [Anpassungen] und [Regulierung].",
+                    keywords = listOf("Medienwandel", "Öffentlichkeit", "soziale Medien", "digitale Kommunikation", "demokratische Diskurse", "Regulierung"),
+                    source = "TELC"
+                ))
+                
+                // C2 Goethe Prüfung - Sprechen Teil 8
+                lessons.add(createSprechenLesson(
+                    title = "C2 Goethe Prüfung - Sprechen Teil 8",
+                    description = "Psychologisch-philosophische Debatte: Identität in der digitalen Gesellschaft",
+                    level = level,
+                    orderIndex = 19,
+                    prompt = "Führe eine psychologisch-philosophische Debatte über 'Identität in der digitalen Gesellschaft: Selbstkonstruktion zwischen Virtualität und Realität'. Untersuche die Auswirkungen digitaler Medien auf Identitätsbildung. Sprich 7-9 Minuten.",
+                    modelResponse = "Identität in der digitalen Gesellschaft zeigt komplexe Selbstkonstruktionen zwischen Virtualität und Realität. Diese Dynamik erfordert [Reflexion] über [Identitätskonzepte] und zeigt [Neue Formen]. Die Auswirkungen digitaler Medien auf Identitätsbildung sind [Entwicklung] und erfordern [Anpassungen]. Diese Transformation erfordert [Neue Ansätze] und [Schutzmaßnahmen].",
+                    keywords = listOf("Identität", "digitale Gesellschaft", "Selbstkonstruktion", "Virtualität", "Realität", "Identitätsbildung"),
+                    source = "Goethe"
+                ))
+                
+                // C2 TELC Prüfung - Sprechen Teil 8
+                lessons.add(createSprechenLesson(
+                    title = "C2 TELC Prüfung - Sprechen Teil 8",
+                    description = "Zukunftsforschung Präsentation: Zukunftsforschung und gesellschaftlicher Wandel",
+                    level = level,
+                    orderIndex = 20,
+                    prompt = "Halte eine Präsentation über 'Zukunftsforschung und gesellschaftlicher Wandel: Methoden und Herausforderungen der Antizipation gesellschaftlicher Entwicklungen'. Analysiere verschiedene Ansätze der Zukunftsforschung. Sprich 8-10 Minuten.",
+                    modelResponse = "Zukunftsforschung und gesellschaftlicher Wandel erfordern innovative Methoden und bewältigen Herausforderungen der Antizipation. Verschiedene Ansätze der Zukunftsforschung bieten [Methoden] und erfordern [Kritische Bewertung]. Diese Disziplin hilft uns, [Entwicklungen] zu verstehen und [Strategien] zu entwickeln. Die Antizipation gesellschaftlicher Entwicklungen erfordert [Interdisziplinäre Ansätze] und [Innovative Methoden].",
+                    keywords = listOf("Zukunftsforschung", "gesellschaftlicher Wandel", "Antizipation", "Methoden", "gesellschaftliche Entwicklungen", "interdisziplinäre Ansätze"),
+                    source = "TELC"
                 ))
             }
 
