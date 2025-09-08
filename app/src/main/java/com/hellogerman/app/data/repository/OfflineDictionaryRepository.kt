@@ -208,6 +208,7 @@ class OfflineDictionaryRepository @Inject constructor(
                 GermanDictionaryDatabase::class.java,
                 "german_dictionary.db"
             )
+            .createFromAsset("german_dictionary.db")
             .fallbackToDestructiveMigration()
             .build()
             
