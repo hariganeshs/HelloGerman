@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.hellogerman.app.ui.viewmodel.SettingsViewModel
-import com.hellogerman.app.BuildConfig
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -368,8 +367,21 @@ fun SettingsScreen(
                                     fontWeight = FontWeight.Medium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
+                                val contextAbout = LocalContext.current
+                                val versionName = remember {
+                                    val pm = contextAbout.packageManager
+                                    val pkg = contextAbout.packageName
+                                    try {
+                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                                            pm.getPackageInfo(pkg, android.content.pm.PackageManager.PackageInfoFlags.of(0)).versionName
+                                        } else {
+                                            @Suppress("DEPRECATION")
+                                            pm.getPackageInfo(pkg, 0).versionName
+                                        }
+                                    } catch (e: Exception) { "" }
+                                }
                                 Text(
-                                    text = "Version ${BuildConfig.VERSION_NAME}",
+                                    text = "Version ${versionName.ifBlank { "1.1.1" }}",
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
