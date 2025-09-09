@@ -378,10 +378,11 @@ fun SettingsScreen(
                                             @Suppress("DEPRECATION")
                                             pm.getPackageInfo(pkg, 0).versionName
                                         }
-                                    } catch (e: Exception) { "" }
+                                    } catch (e: Exception) { null }
                                 }
+                                val versionDisplay = versionName?.takeIf { it.isNotBlank() } ?: "1.1.1"
                                 Text(
-                                    text = "Version ${versionName.ifBlank { "1.1.1" }}",
+                                    text = "Version $versionDisplay",
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
