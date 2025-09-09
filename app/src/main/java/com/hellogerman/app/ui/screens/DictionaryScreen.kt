@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.hellogerman.app.ui.navigation.Screen
 import com.hellogerman.app.ui.theme.*
 import com.hellogerman.app.ui.viewmodel.DictionaryViewModel
 import com.hellogerman.app.data.models.*
@@ -81,6 +82,34 @@ fun DictionaryScreen(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Close button to navigate back
+                IconButton(
+                    onClick = { navController.popBackStack() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close Dictionary",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                // Home/Dashboard button
+                IconButton(
+                    onClick = {
+                        navController.popBackStack(Screen.Dashboard.route, inclusive = false)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = "Go to Dashboard",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
                 // Dictionary Settings Menu
                 var showSettingsMenu by remember { mutableStateOf(false) }
                 IconButton(onClick = { showSettingsMenu = true }) {

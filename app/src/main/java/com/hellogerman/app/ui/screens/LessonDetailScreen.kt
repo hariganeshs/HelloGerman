@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.hellogerman.app.ui.navigation.Screen
 import com.hellogerman.app.ui.viewmodel.LessonViewModel
 
 import com.hellogerman.app.ui.components.*
@@ -136,6 +138,19 @@ fun LessonDetailScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack(Screen.Dashboard.route, inclusive = false)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = "Go to Dashboard",
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
@@ -874,7 +889,7 @@ fun LessonDetailScreen(
                     onClick = {
                         if (wordToLookup.isNotBlank()) {
                             // Navigate to dictionary with the word as parameter
-                            navController.navigate("dictionary/${wordToLookup.trim()}") {
+                            navController.navigate(Screen.DictionaryWithWord.createRoute(wordToLookup.trim())) {
                                 launchSingleTop = true
                             }
                             showDictionaryDialog = false

@@ -27,15 +27,15 @@ class AdMobManager {
     companion object {
         private const val TAG = "AdMobManager"
         
-        // Ad Unit IDs
-        const val BANNER_AD_1 = "ca-app-pub-3940256099942544/6300978111" // Test ad for now
-        const val BANNER_AD_2 = "ca-app-pub-3940256099942544/6300978111" // Test ad for now
-        const val INTERSTITIAL_AD = "ca-app-pub-3940256099942544/1033173712" // Test ad for now
-        
-        // Production ad unit IDs (uncomment when ready)
-        // const val BANNER_AD_1 = "ca-app-pub-2722920301958819/2577129002"
-        // const val BANNER_AD_2 = "ca-app-pub-2722920301958819/6780081985"
-        // const val INTERSTITIAL_AD = "ca-app-pub-2722920301958819/8950965667"
+        // Ad Unit IDs (Production)
+        const val BANNER_AD_1 = "ca-app-pub-2722920301958819/2577129002"
+        const val BANNER_AD_2 = "ca-app-pub-2722920301958819/6780081985"
+        const val INTERSTITIAL_AD = "ca-app-pub-2722920301958819/8950965667"
+
+        // Test ad unit IDs (commented out)
+        // const val BANNER_AD_1 = "ca-app-pub-3940256099942544/6300978111" // Test ad
+        // const val BANNER_AD_2 = "ca-app-pub-3940256099942544/6300978111" // Test ad
+        // const val INTERSTITIAL_AD = "ca-app-pub-3940256099942544/1033173712" // Test ad
         
         private var interstitialAd: InterstitialAd? = null
         

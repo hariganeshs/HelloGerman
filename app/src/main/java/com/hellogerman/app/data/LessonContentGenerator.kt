@@ -12,81 +12,8 @@ object LessonContentGenerator {
     private val gson = Gson()
     private var offlineCacheManager: OfflineCacheManager? = null
 
-    // Debug function to count lessons by level and skill
-    fun debugCountLessons(): String {
-        val allLessons = generateAllLessons()
-        val result = StringBuilder()
 
-        result.append("=== LESSON COUNT DEBUG ===\n")
 
-        val levels = listOf("A1", "A2", "B1", "B2", "C1", "C2")
-        val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
-
-        levels.forEach { level ->
-            val levelLessons = allLessons.filter { it.level == level }
-            result.append("Level $level: ${levelLessons.size} total\n")
-
-            skills.forEach { skill ->
-                val skillLessons = levelLessons.filter { it.skill == skill }
-                result.append("  $skill: ${skillLessons.size}\n")
-            }
-            result.append("\n")
-        }
-
-        result.append("=== B1 LESSON DETAILS ===\n")
-        val b1Lessons = allLessons.filter { it.level == "B1" }
-        b1Lessons.groupBy { it.skill }.forEach { (skill, lessons) ->
-            result.append("$skill (${lessons.size}):\n")
-            lessons.take(3).forEach { lesson -> // Show first 3 to avoid too much output
-                result.append("  - ${lesson.title} (id: ${lesson.id}, order: ${lesson.orderIndex})\n")
-            }
-            if (lessons.size > 3) {
-                result.append("  ... and ${lessons.size - 3} more\n")
-            }
-            result.append("\n")
-        }
-
-        result.append("=== B1 LESEN SPECIFIC ===\n")
-        val b1LesenLessons = b1Lessons.filter { it.skill == "lesen" }
-        result.append("Found ${b1LesenLessons.size} lesen lessons in B1:\n")
-        b1LesenLessons.forEach { lesson ->
-            result.append("  - ${lesson.title} (skill: ${lesson.skill}, level: ${lesson.level})\n")
-        }
-
-        return result.toString()
-    }
-
-    // Debug function to verify B1 lesson distribution
-    fun debugB1LessonDistribution(): String {
-        val allLessons = generateAllLessons()
-        val b1Lessons = allLessons.filter { it.level == "B1" }
-
-        val result = StringBuilder()
-        result.append("=== B1 LESSON DISTRIBUTION ===\n")
-        result.append("Total B1 lessons: ${b1Lessons.size}\n\n")
-
-        val skills = listOf("lesen", "hoeren", "schreiben", "sprechen", "grammar")
-        skills.forEach { skill ->
-            val skillLessons = b1Lessons.filter { it.skill == skill }
-            result.append("$skill: ${skillLessons.size} lessons\n")
-            skillLessons.forEachIndexed { index, lesson ->
-                result.append("  ${index + 1}. ${lesson.title}\n")
-            }
-            result.append("\n")
-        }
-
-        return result.toString()
-    }
-
-    // Quick count function
-    fun countB1Lessons(): Triple<Int, Map<String, Int>, Int> {
-        val allLessons = generateAllLessons()
-        val b1Lessons = allLessons.filter { it.level == "B1" }
-
-        val skillDistribution = b1Lessons.groupBy { it.skill }.mapValues { it.value.size }
-
-        return Triple(b1Lessons.size, skillDistribution, allLessons.size)
-    }
 
     /**
      * Initialize with offline cache manager for better performance

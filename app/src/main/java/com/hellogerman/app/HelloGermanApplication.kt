@@ -26,8 +26,7 @@ class HelloGermanApplication : Application() {
                 .build()
         )
         
-        // Debug database state first
-        DatabaseInitializer.debugDatabaseState(this)
+        // Initialize database with sample data
 
         // Initialize database with sample data
         DatabaseInitializer.initializeDatabase(this)
@@ -37,7 +36,7 @@ class HelloGermanApplication : Application() {
 
         // Schedule daily grammar challenge worker
         val request = PeriodicWorkRequestBuilder<com.hellogerman.app.work.DailyGrammarChallengeWorker>(
-            java.time.Duration.ofDays(1)
+            1, java.util.concurrent.TimeUnit.DAYS
         ).build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "daily_grammar_challenge",

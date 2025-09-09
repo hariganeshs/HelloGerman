@@ -18,37 +18,6 @@ import kotlinx.coroutines.flow.first
 
 object DatabaseInitializer {
 
-    // Debug function to check current database state
-    fun debugDatabaseState(context: Context) {
-        val repository = HelloGermanRepository(context)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val existingLessons = repository.getAllLessons()
-            val a1Lessons = existingLessons.filter { it.level == "A1" }
-            val b1Lessons = existingLessons.filter { it.level == "B1" }
-
-            android.util.Log.d("DatabaseDebug", "=== DATABASE STATE DEBUG ===")
-            android.util.Log.d("DatabaseDebug", "Total lessons: ${existingLessons.size}")
-            android.util.Log.d("DatabaseDebug", "A1 lessons: ${a1Lessons.size}")
-            android.util.Log.d("DatabaseDebug", "B1 lessons: ${b1Lessons.size}")
-
-            // Count by skill for A1
-            val a1BySkill = a1Lessons.groupBy { it.skill }.mapValues { it.value.size }
-            android.util.Log.d("DatabaseDebug", "A1 by skill: $a1BySkill")
-
-            // Count by skill for B1
-            val b1BySkill = b1Lessons.groupBy { it.skill }.mapValues { it.value.size }
-            android.util.Log.d("DatabaseDebug", "B1 by skill: $b1BySkill")
-
-            // Check sources
-            val sources = existingLessons.groupBy { it.source }.mapValues { it.value.size }
-            android.util.Log.d("DatabaseDebug", "Sources: $sources")
-
-            // Show first few lesson titles
-            val firstLessons = existingLessons.take(5).joinToString(", ") { it.title }
-            android.util.Log.d("DatabaseDebug", "First 5 lessons: $firstLessons")
-        }
-    }
 
     fun initializeDatabase(context: Context) {
         val repository = HelloGermanRepository(context)

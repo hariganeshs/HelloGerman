@@ -80,12 +80,17 @@ private fun SideNavigation(
                 },
                 selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                    if (item.route == Screen.Dashboard.route) {
+                        // Special handling for Home button - pop to dashboard
+                        navController.popBackStack(Screen.Dashboard.route, inclusive = false)
+                    } else {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 },
                 colors = NavigationRailItemDefaults.colors(
@@ -132,12 +137,17 @@ private fun BottomNavigation(
                 },
                 selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                    if (item.route == Screen.Dashboard.route) {
+                        // Special handling for Home button - pop to dashboard
+                        navController.popBackStack(Screen.Dashboard.route, inclusive = false)
+                    } else {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
@@ -183,6 +193,11 @@ private fun getNavigationItems(): List<NavigationItem> {
             route = Screen.Grammar.route,
             icon = Icons.AutoMirrored.Filled.MenuBook,
             label = "Grammar"
+        ),
+        NavigationItem(
+            route = Screen.Sprechen.route,
+            icon = Icons.Default.Mic,
+            label = "Speak"
         )
     )
 }

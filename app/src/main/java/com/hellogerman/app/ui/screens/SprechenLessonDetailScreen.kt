@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Home
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.hellogerman.app.ui.navigation.Screen
 import com.hellogerman.app.ui.viewmodel.LessonViewModel
 import com.hellogerman.app.ui.theme.SprechenColor
 import com.google.gson.Gson
@@ -239,6 +241,19 @@ fun SprechenLessonDetailScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Go back to speaking lessons list"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack(Screen.Dashboard.route, inclusive = false)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = "Go to Dashboard",
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },

@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.hellogerman.app.ui.screens.*
 
-sealed class Screen(val route: String) {
+open class Screen(val route: String) {
     object Splash : Screen("splash")
     object Dashboard : Screen("dashboard")
     object Lesen : Screen("lesen")
@@ -34,6 +34,9 @@ sealed class Screen(val route: String) {
     object Tutorial : Screen("tutorial")
     object Progress : Screen("progress")
     object Dictionary : Screen("dictionary")
+    object DictionaryWithWord : Screen("dictionary/{word}") {
+        fun createRoute(word: String) = "dictionary/$word"
+    }
     object Gamification : Screen("gamification")
 }
 
@@ -103,6 +106,11 @@ fun NavGraph(
         
         composable(Screen.Dictionary.route) {
             DictionaryScreen(navController)
+        }
+
+        composable(Screen.DictionaryWithWord.route) { backStackEntry ->
+            val word = backStackEntry.arguments?.getString("word") ?: ""
+            DictionaryScreen(navController, initialWord = word)
         }
         
         composable(Screen.Gamification.route) {
