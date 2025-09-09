@@ -83,16 +83,28 @@ fun GamificationScreen(
                 modifier = Modifier.padding(16.dp)
             )
             
-            // Tab Row
-            TabRow(
+            // Tab Row (Scrollable to avoid multiline labels)
+            ScrollableTabRow(
                 selectedTabIndex = selectedTab,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                edgePadding = 16.dp,
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface
             ) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
                         selected = selectedTab == index,
                         onClick = { selectedTab = index },
-                        text = { Text(title) }
+                        text = {
+                            Text(
+                                text = title,
+                                maxLines = 1,
+                                softWrap = false,
+                                fontSize = 13.sp,
+                                fontWeight = if (selectedTab == index) FontWeight.Medium else FontWeight.Normal
+                            )
+                        },
+                        modifier = Modifier.padding(horizontal = 4.dp)
                     )
                 }
             }
