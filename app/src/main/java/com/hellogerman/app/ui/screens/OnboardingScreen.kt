@@ -1,6 +1,7 @@
 package com.hellogerman.app.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -73,13 +74,14 @@ fun OnboardingScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     levels.forEach { level ->
                         FilterChip(
                             onClick = { selectedLevel = level },
-                            label = { Text(level) },
+                            label = { Text(level, maxLines = 1, softWrap = false) },
                             selected = selectedLevel == level
                         )
                     }
