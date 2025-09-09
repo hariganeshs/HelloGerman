@@ -45,7 +45,7 @@ fun GamificationScreen(
     val grammarPoints by mainViewModel.grammarTotalPoints.collectAsState()
     
     var selectedTab by remember { mutableStateOf(0) }
-    val tabs = listOf("Achievements", "Daily", "Rewards", "Leaderboard")
+    val tabs = listOf("Achievements", "Daily", "Rewards")
     
     Scaffold(
         topBar = {
@@ -115,7 +115,6 @@ fun GamificationScreen(
                 0 -> AchievementsTab(userProgress, grammarPoints)
                 1 -> DailyChallengesTab()
                 2 -> RewardsTab(mainViewModel, themeViewModel)
-                3 -> LeaderboardTab(userProgress)
             }
         }
     }
@@ -727,124 +726,8 @@ private fun RewardCard(
     }
 }
 
-@Composable
-private fun LeaderboardTab(userProgress: com.hellogerman.app.data.entities.UserProgress?) {
-    // Mock leaderboard data - in real app this would come from a server
-    val leaderboard = listOf(
-        LeaderboardEntry("You", userProgress?.totalLessonsCompleted ?: 0, calculateTotalXP(userProgress, 0), true),
-        LeaderboardEntry("Anna", 85, 2450, false),
-        LeaderboardEntry("Max", 78, 2100, false),
-        LeaderboardEntry("Sophie", 72, 1980, false),
-        LeaderboardEntry("Tim", 65, 1750, false)
-    ).sortedByDescending { it.xp }
-    
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        item {
-            Text(
-                text = "Weekly Leaderboard",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "See how you compare with other learners!",
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        
-        items(leaderboard.take(10)) { entry ->
-            LeaderboardCard(
-                entry = entry,
-                rank = leaderboard.indexOf(entry) + 1
-            )
-        }
-    }
-}
 
-data class LeaderboardEntry(
-    val name: String,
-    val lessonsCompleted: Int,
-    val xp: Int,
-    val isCurrentUser: Boolean
-)
 
-@Composable
-private fun LeaderboardCard(entry: LeaderboardEntry, rank: Int) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (entry.isCurrentUser) 
-                MaterialTheme.colorScheme.primaryContainer
-            else MaterialTheme.colorScheme.surface
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Rank
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(
-                        when (rank) {
-                            1 -> Color(0xFFFFD700)
-                            2 -> Color(0xFFC0C0C0)
-                            3 -> Color(0xFFCD7F32)
-                            else -> MaterialTheme.colorScheme.surfaceVariant
-                        }
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "#$rank",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (rank <= 3) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            
-            Spacer(modifier = Modifier.width(16.dp))
-            
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = entry.name,
-                    fontSize = 16.sp,
-                    fontWeight = if (entry.isCurrentUser) FontWeight.Bold else FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = "${entry.lessonsCompleted} lessons completed",
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            
-            Column(horizontalAlignment = Alignment.End) {
-                Text(
-                    text = "${entry.xp} XP",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = "Level ${RewardSystem.calculateLevel(entry.xp)}",
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    }
-}
 
 // Helper functions
 private fun getCurrentProgress(
