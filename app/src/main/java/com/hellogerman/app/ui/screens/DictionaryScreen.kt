@@ -327,11 +327,6 @@ fun DictionaryScreen(
                         items(result.definitions) { definition ->
                             DefinitionCard(definition)
                         }
-                    } else {
-                        item {
-                            SectionHeader("Definitions")
-                            EmptyStateCard("No definitions available")
-                        }
                     }
 
                     // Examples Section
@@ -342,29 +337,22 @@ fun DictionaryScreen(
                         items(result.examples) { example ->
                             ExampleCard(example, dictionaryViewModel)
                         }
-                    } else {
-                        item {
-                            SectionHeader("Examples")
-                            EmptyStateCard("No examples available")
-                        }
                     }
 
                     // Conjugations Section
-                    item {
-                        SectionHeader("Conjugations")
-                    }
                     result.conjugations?.let { conjugations ->
+                        item {
+                            SectionHeader("Conjugations")
+                        }
                         item { ConjugationCard(conjugations) }
-                    } ?: item { EmptyStateCard("No conjugations available - word may not be a verb") }
+                    }
 
                     // Synonyms Section
-                    item {
-                        SectionHeader("Synonyms")
-                    }
                     if (result.synonyms.isNotEmpty()) {
+                        item {
+                            SectionHeader("Synonyms")
+                        }
                         item { SynonymsCard(result.synonyms, dictionaryViewModel) }
-                    } else {
-                        item { EmptyStateCard("No synonyms available") }
                     }
 
                     // Translations Section
@@ -390,11 +378,6 @@ fun DictionaryScreen(
                                     }
                                 }
                             }
-                        }
-                    } else {
-                        item {
-                            SectionHeader("Translations")
-                            EmptyStateCard("No translations available")
                         }
                     }
 
