@@ -73,6 +73,36 @@ fun DictionaryScreen(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Dictionary Settings Menu
+                var showSettingsMenu by remember { mutableStateOf(false) }
+                IconButton(onClick = { showSettingsMenu = true }) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "Dictionary Settings",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                DropdownMenu(
+                    expanded = showSettingsMenu,
+                    onDismissRequest = { showSettingsMenu = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("Reset Dictionary Database") },
+                        onClick = {
+                            showSettingsMenu = false
+                            dictionaryViewModel.resetDictionaryDatabase()
+                        },
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Refresh,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    )
+                }
+
                 // TTS Controls
                 if (searchQuery.isNotEmpty() && fromLanguage == "de" && isTTSInitialized) {
                     IconButton(

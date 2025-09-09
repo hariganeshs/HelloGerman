@@ -276,6 +276,25 @@ fun SettingsScreen(
                             Text("Force Reload Lessons", fontSize = 14.sp)
                         }
 
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Complete Database Reset Button (for troubleshooting)
+                        Button(
+                            onClick = {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("Resetting entire database... This may take a moment.")
+                                    DatabaseInitializer.resetEntireDatabase(navController.context)
+                                    snackbarHostState.showSnackbar("Database reset complete! Restart the app to see changes.")
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.error
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("🔄 Complete Database Reset", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        }
+
                         // Debug button to check lesson counts from database
                         OutlinedButton(
                             onClick = {

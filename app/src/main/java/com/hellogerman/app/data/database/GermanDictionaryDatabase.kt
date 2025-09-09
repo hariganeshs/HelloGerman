@@ -18,7 +18,10 @@ abstract class GermanDictionaryDatabase : RoomDatabase() {
     abstract fun dictionaryDao(): GermanDictionaryDao
 }
 
-@Entity(tableName = "offline_words")
+@Entity(
+    tableName = "offline_words",
+    indices = [Index(value = ["level"], name = "idx_words_level")]
+)
 data class OfflineWordEntity(
     @PrimaryKey val word: String,
     val definitions: String, // JSON compressed definitions
@@ -30,12 +33,15 @@ data class OfflineWordEntity(
     val etymology: String?
 )
 
-@Entity(tableName = "offline_examples")
+@Entity(
+    tableName = "offline_examples",
+    indices = [Index(value = ["word"], name = "idx_examples_word")]
+)
 data class OfflineExampleEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val word: String,
     val germanSentence: String,
-    val englishTranslation: String,
+    val englishTranslation: String?,
     val difficulty: String // A1, A2, etc.
 )
 

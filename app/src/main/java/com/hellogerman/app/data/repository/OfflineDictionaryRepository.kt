@@ -203,24 +203,69 @@ class OfflineDictionaryRepository @Inject constructor(
             android.util.Log.d("OfflineDict", "Initializing offline dictionary database...")
             
             // Initialize Room database
-            database = Room.databaseBuilder(
-                context,
-                GermanDictionaryDatabase::class.java,
-                "german_dictionary.db"
-            )
-            .createFromAsset("german_dictionary.db")
-            .fallbackToDestructiveMigration()
-            .build()
+            // First try to create from asset (if asset exists and has data)
+            // If asset is empty or missing, create empty database and populate manually
+            val assetExists = try {
+                context.assets.open("german_dictionary.db").use { it.available() > 0 }
+            } catch (e: Exception) {
+                android.util.Log.d("OfflineDict", "Asset file not found or empty: ${e.message}")
+                false
+            }
+
+            database = if (assetExists) {
+                android.util.Log.d("OfflineDict", "Creating database from asset file")
+                try {
+                    val db = Room.databaseBuilder(
+                        context,
+                        GermanDictionaryDatabase::class.java,
+                        "german_dictionary.db"
+                    )
+                    .createFromAsset("german_dictionary.db")
+                    .fallbackToDestructiveMigration()
+                    .build()
+
+                    // Test if database is readable
+                    val testCount = db.dictionaryDao().getWordCount()
+                    android.util.Log.d("OfflineDict", "Asset database loaded successfully, word count: $testCount")
+
+                    db
+                } catch (e: Exception) {
+                    android.util.Log.e("OfflineDict", "Failed to load asset database: ${e.message}, falling back to empty database")
+                    // Fallback to empty database if asset file is corrupted
+                    Room.databaseBuilder(
+                        context,
+                        GermanDictionaryDatabase::class.java,
+                        "german_dictionary.db"
+                    )
+                    .fallbackToDestructiveMigration()
+                    .build()
+                }
+            } else {
+                android.util.Log.d("OfflineDict", "Asset file empty/missing, creating empty database")
+                Room.databaseBuilder(
+                    context,
+                    GermanDictionaryDatabase::class.java,
+                    "german_dictionary.db"
+                )
+                .fallbackToDestructiveMigration()
+                .build()
+            }
             
             // Populate database if empty
             val wordCount = database.dictionaryDao().getWordCount()
             android.util.Log.d("OfflineDict", "Current word count in database: $wordCount")
             
             if (wordCount == 0) {
-                android.util.Log.d("OfflineDict", "Database is empty, populating...")
-                populateDatabase()
-                val newWordCount = database.dictionaryDao().getWordCount()
-                android.util.Log.d("OfflineDict", "After population, word count: $newWordCount")
+                android.util.Log.d("OfflineDict", "Database is empty, populating with essential German words...")
+                try {
+                    populateDatabase()
+                    val newWordCount = database.dictionaryDao().getWordCount()
+                    android.util.Log.d("OfflineDict", "After population, word count: $newWordCount")
+                } catch (e: Exception) {
+                    android.util.Log.e("OfflineDict", "Failed to populate database: ${e.message}", e)
+                }
+            } else {
+                android.util.Log.d("OfflineDict", "Database already contains $wordCount words")
             }
             
             isInitialized = true
@@ -245,8 +290,33 @@ class OfflineDictionaryRepository @Inject constructor(
             android.util.Log.d("OfflineDict", "Offline result hasResults: ${offlineResult.hasResults}, gender: ${offlineResult.gender}")
             
             if (offlineResult.hasResults) {
-                android.util.Log.d("OfflineDict", "Returning offline result for: $word")
-                return Result.success(offlineResult)
+                // If offline has no translations, try to fetch and merge online translations
+                val mergedResult = if (offlineResult.translations.isEmpty()) {
+                    try {
+                        android.util.Log.d("OfflineDict", "Offline hit without translations. Fetching online translations for: $word")
+                        val online = onlineDictionaryRepository.searchWord(
+                            DictionarySearchRequest(
+                                word = word,
+                                fromLang = request.fromLang,
+                                toLang = request.toLang
+                            )
+                        ).getOrNull()
+
+                        val translations = online?.translations ?: emptyList()
+                        if (translations.isNotEmpty()) {
+                            android.util.Log.d("OfflineDict", "Merging ${translations.size} online translations into offline result for: $word")
+                            offlineResult.copy(translations = translations)
+                        } else {
+                            offlineResult
+                        }
+                    } catch (e: Exception) {
+                        android.util.Log.w("OfflineDict", "Failed to fetch online translations: ${e.message}")
+                        offlineResult
+                    }
+                } else offlineResult
+
+                android.util.Log.d("OfflineDict", "Returning merged offline result for: $word")
+                return Result.success(mergedResult)
             }
             
             // 2. Try compound word analysis (German specialty)
@@ -453,7 +523,7 @@ class OfflineDictionaryRepository @Inject constructor(
      */
     suspend fun getDatabaseStats(): DatabaseStats {
         if (!isInitialized) initialize()
-        
+
         return try {
             val totalWords = database.dictionaryDao().getWordCount()
             DatabaseStats(
@@ -463,6 +533,40 @@ class OfflineDictionaryRepository @Inject constructor(
             )
         } catch (e: Exception) {
             DatabaseStats(0, false, 0)
+        }
+    }
+
+    /**
+     * Force reset and repopulate the database
+     * Useful for troubleshooting or updating dictionary data
+     */
+    suspend fun resetDatabase() {
+        android.util.Log.d("OfflineDict", "Forcing database reset...")
+
+        withContext(Dispatchers.IO) {
+            try {
+                // Close current database
+                database.close()
+
+                // Delete the database file
+                val dbFile = context.getDatabasePath("german_dictionary.db")
+                if (dbFile.exists()) {
+                    dbFile.delete()
+                    android.util.Log.d("OfflineDict", "Deleted existing database file")
+                }
+
+                // Reset initialization flag
+                isInitialized = false
+
+                // Re-initialize (this will create a new empty database and populate it)
+                initialize()
+
+                android.util.Log.d("OfflineDict", "Database reset complete")
+
+            } catch (e: Exception) {
+                android.util.Log.e("OfflineDict", "Failed to reset database: ${e.message}", e)
+                throw e
+            }
         }
     }
 }

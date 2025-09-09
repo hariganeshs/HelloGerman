@@ -17,7 +17,7 @@ import com.hellogerman.app.data.entities.*
         GrammarProgress::class,
         Achievement::class
     ],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 abstract class HelloGermanDatabase : RoomDatabase() {
@@ -39,7 +39,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                     HelloGermanDatabase::class.java,
                     "hello_german_database"
                 )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
@@ -123,9 +123,34 @@ abstract class HelloGermanDatabase : RoomDatabase() {
             }
         }
 
-        private val MIGRATION_7_8 = object : Migration(7, 8) {
+        private val MIGRATION_8_9 = object : Migration(8, 9) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Clear lessons to force repopulation with expanded B1 content
+                // Ensure database is ready for expanded content
+                // Add any missing columns if needed
+                try {
+                    // Check if source column exists, add if not
+                    database.execSQL("ALTER TABLE lessons ADD COLUMN source TEXT NOT NULL DEFAULT 'Goethe'")
+                } catch (e: Exception) {
+                    // Column might already exist, ignore
+                }
+
+                try {
+                    // Check if showEnglishExplanations column exists, add if not
+                    database.execSQL("ALTER TABLE user_progress ADD COLUMN showEnglishExplanations INTEGER NOT NULL DEFAULT 1")
+                } catch (e: Exception) {
+                    // Column might already exist, ignore
+                }
+
+                try {
+                    // Check if illustration columns exist, add if not
+                    database.execSQL("ALTER TABLE lessons ADD COLUMN illustrationResId TEXT")
+                    database.execSQL("ALTER TABLE lessons ADD COLUMN characterResId TEXT")
+                    database.execSQL("ALTER TABLE lessons ADD COLUMN animationType TEXT NOT NULL DEFAULT 'NONE'")
+                } catch (e: Exception) {
+                    // Columns might already exist, ignore
+                }
+
+                // Clear lessons to force repopulation with the latest expanded content
                 database.execSQL("DELETE FROM lessons")
             }
         }

@@ -26,6 +26,9 @@ class HelloGermanApplication : Application() {
                 .build()
         )
         
+        // Debug database state first
+        DatabaseInitializer.debugDatabaseState(this)
+
         // Initialize database with sample data
         DatabaseInitializer.initializeDatabase(this)
 

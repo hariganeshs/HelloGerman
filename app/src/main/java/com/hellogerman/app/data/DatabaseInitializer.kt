@@ -17,7 +17,39 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
 
 object DatabaseInitializer {
-    
+
+    // Debug function to check current database state
+    fun debugDatabaseState(context: Context) {
+        val repository = HelloGermanRepository(context)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val existingLessons = repository.getAllLessons()
+            val a1Lessons = existingLessons.filter { it.level == "A1" }
+            val b1Lessons = existingLessons.filter { it.level == "B1" }
+
+            android.util.Log.d("DatabaseDebug", "=== DATABASE STATE DEBUG ===")
+            android.util.Log.d("DatabaseDebug", "Total lessons: ${existingLessons.size}")
+            android.util.Log.d("DatabaseDebug", "A1 lessons: ${a1Lessons.size}")
+            android.util.Log.d("DatabaseDebug", "B1 lessons: ${b1Lessons.size}")
+
+            // Count by skill for A1
+            val a1BySkill = a1Lessons.groupBy { it.skill }.mapValues { it.value.size }
+            android.util.Log.d("DatabaseDebug", "A1 by skill: $a1BySkill")
+
+            // Count by skill for B1
+            val b1BySkill = b1Lessons.groupBy { it.skill }.mapValues { it.value.size }
+            android.util.Log.d("DatabaseDebug", "B1 by skill: $b1BySkill")
+
+            // Check sources
+            val sources = existingLessons.groupBy { it.source }.mapValues { it.value.size }
+            android.util.Log.d("DatabaseDebug", "Sources: $sources")
+
+            // Show first few lesson titles
+            val firstLessons = existingLessons.take(5).joinToString(", ") { it.title }
+            android.util.Log.d("DatabaseDebug", "First 5 lessons: $firstLessons")
+        }
+    }
+
     fun initializeDatabase(context: Context) {
         val repository = HelloGermanRepository(context)
         
@@ -38,18 +70,19 @@ object DatabaseInitializer {
             val b1SchreibenExisting = existingLessons.count { it.level == "B1" && it.skill == "schreiben" }
             val b1SprechenExisting = existingLessons.count { it.level == "B1" && it.skill == "sprechen" }
 
-            // Force reload if we don't have enough A1 lessons (our expanded content should have 104+ A1 lessons)
+            // Force reload if we don't have the expanded content (be more aggressive)
             val shouldForceReload = existingLessons.isEmpty() ||
-                                   a1Lessons.size < 50 || // We should have many more than 50 A1 lessons now
-                                   // Ensure all sources exist
+                                   a1Lessons.size < 100 || // We should have 104+ A1 lessons with expanded content
                                    !existingLessons.any { it.source == "Goethe" } ||
                                    !existingLessons.any { it.source == "TELC" } ||
                                    !existingLessons.any { it.source == "ÖSD" } ||
-                                   // New: ensure expanded B1 content is present (>= 25 per skill)
-                                   b1LesenExisting < 25 ||
-                                   b1HoerenExisting < 25 ||
-                                   b1SchreibenExisting < 25 ||
-                                   b1SprechenExisting < 25
+                                   // Ensure expanded B1 content is present (45 per skill)
+                                   b1LesenExisting < 40 ||
+                                   b1HoerenExisting < 40 ||
+                                   b1SchreibenExisting < 40 ||
+                                   b1SprechenExisting < 40 ||
+                                   // Check total lesson count - should be around 1053 with expanded content
+                                   existingLessons.size < 900
 
             if (shouldForceReload) {
                 // Clear existing lessons and reload with expanded content

@@ -199,10 +199,37 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
         // Offline repository doesn't use cache, it uses database
         android.util.Log.d("DictionaryViewModel", "Cache clear requested but offline repository uses database")
     }
-    
+
     fun getCacheSize(): Int {
         // Offline repository doesn't use cache, return 0
         return 0
+    }
+
+    /**
+     * Reset the offline dictionary database
+     * This will delete all data and repopulate with essential words
+     */
+    fun resetDictionaryDatabase() {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _errorMessage.value = "Resetting dictionary database..."
+
+                repository.resetDatabase()
+
+                _errorMessage.value = "Dictionary database reset successfully!"
+                android.util.Log.d("DictionaryViewModel", "Dictionary database reset completed")
+
+                // Clear current results to force fresh search
+                clearResults()
+
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to reset dictionary: ${e.message}"
+                android.util.Log.e("DictionaryViewModel", "Failed to reset dictionary database", e)
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
     
     fun getLanguageName(code: String): String {
