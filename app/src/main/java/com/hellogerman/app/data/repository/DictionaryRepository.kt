@@ -32,6 +32,7 @@ class DictionaryRepository(private val context: Context) {
     private val wiktionaryApiService: WiktionaryApiService by lazy { createWiktionaryApiService() }
     private val verbApiService: GermanVerbApiService by lazy { createVerbApiService() }
     private val thesaurusApiService: OpenThesaurusApiService by lazy { createThesaurusApiService() }
+    private val reversoApiService: ReversoApiService by lazy { createReversoApiService() }
     
     private fun createHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -89,6 +90,15 @@ class DictionaryRepository(private val context: Context) {
             .build()
         return retrofit.create(OpenThesaurusApiService::class.java)
     }
+
+    private fun createReversoApiService(): ReversoApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(ReversoApiService.BASE_URL)
+            .client(createHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(ReversoApiService::class.java)
+    }
     
     /**
      * Check if device has internet connection
@@ -123,40 +133,49 @@ class DictionaryRepository(private val context: Context) {
                 
                 // Launch parallel API calls for comprehensive data
                 // Only call verb API if word is likely a verb
-                val isLikelyVerb = GermanVerbConjugator.isLikelyVerb(request.word) || 
+                val isLikelyVerb = GermanVerbConjugator.isLikelyVerb(request.word) ||
                                    GermanDictionary.getWordEntry(request.word)?.wordType == "verb"
-                
-                val deferredResults = listOfNotNull(
+
+                // Enhanced parallel API calls with better error handling
+                val deferredResults = listOf(
                     async { getWiktionaryData(request.word) },
-                    if (isLikelyVerb) async { getVerbConjugations(request.word) } else null,
+                    async { getReversoExamples(request) },
+                    if (isLikelyVerb) async { getVerbConjugations(request.word) } else async { null },
                     async { getSynonyms(request.word) },
                     async { getBasicTranslation(request) }
                 )
-                
+
                 val results = deferredResults.awaitAll()
                 val wiktionaryResult = results[0] as? DictionarySearchResult
-                val conjugations = if (isLikelyVerb && results.size > 1) results[1] as? VerbConjugations else null
-                @Suppress("UNCHECKED_CAST")
-                val synonyms = results[if (isLikelyVerb) 2 else 1] as? List<String> ?: emptyList()
-                @Suppress("UNCHECKED_CAST")  
-                val basicTranslation = results[if (isLikelyVerb) 3 else 2] as? List<String> ?: emptyList()
+                val reversoExamples = results[1] as? List<Example> ?: emptyList()
+                val conjugations = if (isLikelyVerb) results[2] as? VerbConjugations else null
+                val synonyms = results[3] as? List<String> ?: emptyList()
+                val basicTranslation = results[4] as? List<String> ?: emptyList()
                 
 
                 
                 // Combine all results with guaranteed offline fallback
                 val offlineEntry = GermanDictionary.getWordEntry(request.word)
+
+                // Merge examples from all sources
+                val allExamples = mutableListOf<Example>()
+                allExamples.addAll(wiktionaryResult?.examples ?: emptyList())
+                allExamples.addAll(reversoExamples)
+                if (allExamples.isEmpty()) {
+                    allExamples.addAll(offlineEntry?.examples ?: emptyList())
+                }
+
                 val combinedResult = DictionarySearchResult(
                     originalWord = request.word,
                     translations = basicTranslation,
                     fromLanguage = request.fromLang,
                     toLanguage = request.toLang,
-                    hasResults = wiktionaryResult?.hasResults == true || basicTranslation.isNotEmpty() || offlineEntry != null,
-                    definitions = (wiktionaryResult?.definitions ?: emptyList()).ifEmpty { 
-                        offlineEntry?.definitions ?: emptyList() 
+                    hasResults = wiktionaryResult?.hasResults == true || basicTranslation.isNotEmpty() ||
+                                reversoExamples.isNotEmpty() || offlineEntry != null,
+                    definitions = (wiktionaryResult?.definitions ?: emptyList()).ifEmpty {
+                        offlineEntry?.definitions ?: emptyList()
                     },
-                    examples = (wiktionaryResult?.examples ?: emptyList()).ifEmpty { 
-                        offlineEntry?.examples ?: emptyList() 
-                    },
+                    examples = allExamples.distinctBy { it.sentence }, // Remove duplicates
                     synonyms = synonyms,
                     pronunciation = wiktionaryResult?.pronunciation,
                     conjugations = conjugations ?: if (offlineEntry?.wordType == "verb") {
@@ -315,12 +334,40 @@ class DictionaryRepository(private val context: Context) {
     }
     
     /**
+     * Get contextual examples from Reverso Context API
+     */
+    private suspend fun getReversoExamples(request: DictionarySearchRequest): List<Example> {
+        return try {
+            val response = reversoApiService.getExamples(
+                fromLang = request.fromLang,
+                toLang = request.toLang,
+                query = request.word,
+                limit = 5
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.map { reversoExample ->
+                    Example(
+                        sentence = reversoExample.sourceText,
+                        translation = reversoExample.targetText,
+                        source = "Reverso Context"
+                    )
+                } ?: emptyList()
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    /**
      * Clear cache (for memory management)
      */
     fun clearCache() {
         cache.clear()
     }
-    
+
     /**
      * Get cached entries count
      */

@@ -309,87 +309,117 @@ fun DictionaryScreen(
             }
         }
         
-        // Tab Row and Results
+        // All Results in One Scrollable Screen (LEO-style)
         searchResult?.let { result ->
             if (result.hasResults) {
-                // Tab Row with ScrollableTabRow for better text visibility
-                ScrollableTabRow(
-                    selectedTabIndex = selectedTab,
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurface,
-                    edgePadding = 16.dp
-                ) {
-                    val tabs = listOf(
-                        "Overview" to Icons.Default.Home,
-                        "Definitions" to Icons.AutoMirrored.Filled.MenuBook,
-                        "Examples" to Icons.Default.FormatQuote,
-                        "Conjugations" to Icons.Default.Transform,
-                        "Synonyms" to Icons.Default.Sync
-                    )
-                    
-                    tabs.forEachIndexed { index, (title, icon) ->
-                        Tab(
-                            selected = selectedTab == index,
-                            onClick = { dictionaryViewModel.setSelectedTab(index) },
-                            text = { 
-                                Text(
-                                    text = title,
-                                    fontSize = 13.sp,
-                                    maxLines = 1,
-                                    fontWeight = if (selectedTab == index) FontWeight.Medium else FontWeight.Normal
-                                )
-                            },
-                            icon = {
-                                Icon(
-                                    imageVector = icon,
-                                    contentDescription = title,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            },
-                            modifier = Modifier.padding(horizontal = 4.dp)
-                        )
-                    }
-                }
-                
-                Spacer(modifier = Modifier.height(8.dp))
-                
-                // Tab Content
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    when (selectedTab) {
-                        0 -> { // Overview
-                            item { OverviewCard(result, dictionaryViewModel) }
+                    // Word Overview Section
+                    item { OverviewCard(result, dictionaryViewModel) }
+
+                    // Definitions Section
+                    if (result.definitions.isNotEmpty()) {
+                        item {
+                            SectionHeader("Definitions")
                         }
-                        1 -> { // Definitions  
-                            items(result.definitions) { definition ->
-                                DefinitionCard(definition)
-                            }
-                            if (result.definitions.isEmpty()) {
-                                item { EmptyStateCard("No definitions available") }
+                        items(result.definitions) { definition ->
+                            DefinitionCard(definition)
+                        }
+                    } else {
+                        item {
+                            SectionHeader("Definitions")
+                            EmptyStateCard("No definitions available")
+                        }
+                    }
+
+                    // Examples Section
+                    if (result.examples.isNotEmpty()) {
+                        item {
+                            SectionHeader("Examples")
+                        }
+                        items(result.examples) { example ->
+                            ExampleCard(example, dictionaryViewModel)
+                        }
+                    } else {
+                        item {
+                            SectionHeader("Examples")
+                            EmptyStateCard("No examples available")
+                        }
+                    }
+
+                    // Conjugations Section
+                    item {
+                        SectionHeader("Conjugations")
+                    }
+                    result.conjugations?.let { conjugations ->
+                        item { ConjugationCard(conjugations) }
+                    } ?: item { EmptyStateCard("No conjugations available - word may not be a verb") }
+
+                    // Synonyms Section
+                    item {
+                        SectionHeader("Synonyms")
+                    }
+                    if (result.synonyms.isNotEmpty()) {
+                        item { SynonymsCard(result.synonyms, dictionaryViewModel) }
+                    } else {
+                        item { EmptyStateCard("No synonyms available") }
+                    }
+
+                    // Translations Section
+                    if (result.translations.isNotEmpty()) {
+                        item {
+                            SectionHeader("Translations")
+                        }
+                        item {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(16.dp)
+                                ) {
+                                    result.translations.forEach { translation ->
+                                        Text(
+                                            text = "• $translation",
+                                            fontSize = 16.sp,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            modifier = Modifier.padding(vertical = 2.dp)
+                                        )
+                                    }
+                                }
                             }
                         }
-                        2 -> { // Examples
-                            items(result.examples) { example ->
-                                ExampleCard(example, dictionaryViewModel)
-                            }
-                            if (result.examples.isEmpty()) {
-                                item { EmptyStateCard("No examples available") }
-                            }
+                    } else {
+                        item {
+                            SectionHeader("Translations")
+                            EmptyStateCard("No translations available")
                         }
-                        3 -> { // Conjugations
-                            result.conjugations?.let { conjugations ->
-                                item { ConjugationCard(conjugations) }
-                            } ?: item { EmptyStateCard("No conjugations available - word may not be a verb") }
+                    }
+
+                    // Etymology Section (if available)
+                    result.etymology?.let { etymology ->
+                        item {
+                            SectionHeader("Etymology")
                         }
-                        4 -> { // Synonyms
-                            if (result.synonyms.isNotEmpty()) {
-                                item { SynonymsCard(result.synonyms, dictionaryViewModel) }
-                            } else {
-                                item { EmptyStateCard("No synonyms available") }
+                        item {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                            ) {
+                                Text(
+                                    text = etymology,
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(16.dp)
+                                )
                             }
                         }
                     }
+
+                    // Add some bottom padding
+                    item { Spacer(modifier = Modifier.height(32.dp)) }
                 }
             }
         } ?: run {

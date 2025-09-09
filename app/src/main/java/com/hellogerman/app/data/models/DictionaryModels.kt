@@ -217,6 +217,29 @@ data class Term(
 )
 
 /**
+ * Reverso Context API response models
+ */
+data class ReversoExample(
+    @SerializedName("src")
+    val sourceText: String,
+
+    @SerializedName("trg")
+    val targetText: String,
+
+    @SerializedName("src_context")
+    val sourceContext: String? = null,
+
+    @SerializedName("trg_context")
+    val targetContext: String? = null,
+
+    @SerializedName("src_lang")
+    val sourceLang: String,
+
+    @SerializedName("trg_lang")
+    val targetLang: String
+)
+
+/**
  * Cached dictionary entry for offline access
  */
 data class CachedDictionaryEntry(
