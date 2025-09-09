@@ -236,14 +236,6 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
         return when (code) {
             "de" -> "German"
             "en" -> "English"
-            "fr" -> "French"
-            "es" -> "Spanish"
-            "it" -> "Italian"
-            "pt" -> "Portuguese"
-            "ru" -> "Russian"
-            "pl" -> "Polish"
-            "nl" -> "Dutch"
-            "sv" -> "Swedish"
             else -> code.uppercase()
         }
     }
@@ -251,15 +243,7 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     fun getSupportedLanguages(): List<Pair<String, String>> {
         return listOf(
             "de" to "German",
-            "en" to "English",
-            "fr" to "French",
-            "es" to "Spanish",
-            "it" to "Italian",
-            "pt" to "Portuguese",
-            "ru" to "Russian",
-            "pl" to "Polish",
-            "nl" to "Dutch",
-            "sv" to "Swedish"
+            "en" to "English"
         )
     }
     
