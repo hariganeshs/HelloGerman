@@ -1,5 +1,9 @@
 package com.hellogerman.app.ui.screens
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,10 +14,12 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -272,6 +278,59 @@ fun SettingsScreen(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
+                    }
+                }
+            }
+
+            item {
+                SettingsCard {
+                    val context = LocalContext.current
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                    data = Uri.parse("mailto:")
+                                    putExtra(Intent.EXTRA_EMAIL, arrayOf("hyperionharigs@gmail.com"))
+                                    putExtra(Intent.EXTRA_SUBJECT, "HelloGerman – Bug report")
+                                    putExtra(
+                                        Intent.EXTRA_TEXT,
+                                        "Describe the issue:\n\nSteps to reproduce:\nDevice/OS:\nApp version:"
+                                    )
+                                }
+                                try {
+                                    context.startActivity(Intent.createChooser(intent, "Report a problem"))
+                                } catch (e: ActivityNotFoundException) {
+                                    Toast.makeText(context, "No email app found", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = "Report a problem",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Report a problem",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = "Send us an email to report an issue",
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.List,
+                            contentDescription = "Send email",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             }

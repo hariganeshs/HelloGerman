@@ -140,6 +140,16 @@ Levels increase exponentially with XP requirements:
 
 ### Data Flow
 
+#### Developer Notes (Persistence and Idempotency)
+- There are two achievement models:
+  - UI-layer `com.hellogerman.app.gamification.Achievement` (icons, rewards, conditions)
+  - DB entity `com.hellogerman.app.data.entities.Achievement` (unlock state, timestamps, progress)
+- On app startup, `DatabaseInitializer.initializeDatabase()` calls `HelloGermanRepository.seedAchievements()` to store all defined achievements into the DB (REPLACE ensures idempotency).
+- Unlock flow is idempotent. `MainViewModel.checkForNewAchievements()` computes candidates from `AchievementManager`, filters by DB state using `repository.isAchievementUnlocked(id)`, then unlocks with `repository.unlockAchievement(id, rewardXP, rewardCoins)`, which persists unlock and applies XP/coins via `UserProgressDao`.
+- Lesson base rewards are granted via `MainViewModel.onLessonCompleted(score)`, which increments lessons completed, adds 25 XP and 5 coins, and tracks perfect lessons for 100% scores before checking achievements.
+- Theme purchases use persisted coins and selection: `MainViewModel.purchaseTheme(themeId, cost)` deducts coins and saves `selectedTheme` with `UserProgressDao.updateSelectedTheme()`.
+- `GamificationScreen` reads `userProgress.totalXP` and `userProgress.coins` directly to display canonical totals.
+
 #### Achievement Checking
 ```kotlin
 // MainViewModel.incrementLessonsCompleted()
@@ -151,12 +161,27 @@ fun incrementLessonsCompleted() {
 }
 ```
 
+```kotlin
+// MainViewModel.onLessonCompleted(score)
+fun onLessonCompleted(score: Int) {
+    viewModelScope.launch {
+        repository.incrementLessonsCompleted()
+        repository.addXP(25)
+        repository.addCoins(5)
+        if (score >= 100) repository.incrementPerfectLessons()
+        checkForNewAchievements()
+    }
+}
+```
+
 #### Achievement Logic
 ```kotlin
 private suspend fun checkForNewAchievements() {
     userProgress.value?.let { progress ->
-        val newAchievements = AchievementManager.checkAchievements(progress, grammarPoints)
-        // Award rewards and trigger popups
+        val candidates = AchievementManager.checkAchievements(progress, grammarPoints)
+        val newAchievements = candidates.filter { !repository.isAchievementUnlocked(it.id) }
+        newAchievements.forEach { repository.unlockAchievement(it.id, it.rewardXP, it.rewardCoins) }
+        // Emit notifications for UI celebration
     }
 }
 ```
@@ -166,7 +191,7 @@ private suspend fun checkForNewAchievements() {
 // Theme selection and application
 fun setSelectedTheme(theme: String) {
     _selectedTheme.value = theme
-    // Update UserProgress in database
+    // Persist in DB via MainViewModel.purchaseTheme(theme, cost)
 }
 
 // Color scheme resolution
@@ -177,6 +202,13 @@ fun getThemeColorScheme(theme: String, isDark: Boolean): ColorScheme {
     }
 }
 ```
+
+### Key APIs (Quick Reference)
+- `MainViewModel.onLessonCompleted(score: Int)` — grant base rewards and check achievements
+- `MainViewModel.purchaseTheme(themeId: String, cost: Int)` — deduct coins and persist theme
+- `MainViewModel.addXP(xp: Int)` / `addCoins(coins: Int)` — manual adjustments
+- `HelloGermanRepository.seedAchievements()` — seed DB achievements on startup
+- `HelloGermanRepository.unlockAchievement(id, xp, coins)` — persist unlock and award
 
 ### Database Schema
 

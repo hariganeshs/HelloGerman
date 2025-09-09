@@ -37,6 +37,7 @@ class HelloGermanRepository(context: Context) {
     private val lessonDao = database.lessonDao()
     private val userSubmissionDao = database.userSubmissionDao()
     private val grammarProgressDao: GrammarProgressDao = database.grammarProgressDao()
+    private val achievementDao: com.hellogerman.app.data.dao.AchievementDao = database.achievementDao()
     
     // User Progress Operations
     fun getUserProgress(): Flow<UserProgress?> = userProgressDao.getUserProgress()
@@ -70,6 +71,11 @@ class HelloGermanRepository(context: Context) {
     suspend fun addCoins(coins: Int) {
         userProgressDao.addCoins(coins)
     }
+
+    suspend fun deductCoins(coins: Int) {
+        if (coins <= 0) return
+        userProgressDao.addCoins(-coins)
+    }
     
     suspend fun incrementPerfectLessons() {
         userProgressDao.incrementPerfectLessons()
@@ -97,6 +103,10 @@ class HelloGermanRepository(context: Context) {
 
     suspend fun markOnboarded() {
         userProgressDao.markOnboarded()
+    }
+
+    suspend fun updateSelectedTheme(theme: String) {
+        userProgressDao.updateSelectedTheme(theme)
     }
     
     // Lesson Operations
@@ -159,6 +169,37 @@ class HelloGermanRepository(context: Context) {
     
     suspend fun getAllLessons(): List<Lesson> {
         return lessonDao.getAllLessons()
+    }
+
+    // Achievement persistence helpers
+    suspend fun isAchievementUnlocked(id: String): Boolean {
+        return achievementDao.getAchievementById(id)?.isUnlocked == true
+    }
+
+    suspend fun unlockAchievement(id: String, rewardXP: Int, rewardCoins: Int) {
+        achievementDao.unlockAchievement(id, System.currentTimeMillis())
+        if (rewardXP != 0) addXP(rewardXP)
+        if (rewardCoins != 0) addCoins(rewardCoins)
+    }
+
+    suspend fun seedAchievements() {
+        val items = com.hellogerman.app.gamification.AchievementManager.getAllAchievements().map { gm ->
+            com.hellogerman.app.data.entities.Achievement(
+                id = gm.id,
+                title = gm.title,
+                description = gm.description,
+                icon = gm.id, // store id as icon key placeholder
+                points = gm.rewardXP,
+                category = com.hellogerman.app.data.entities.AchievementCategory.LEARNING,
+                rarity = when (gm.rarity) {
+                    com.hellogerman.app.gamification.AchievementRarity.COMMON -> com.hellogerman.app.data.entities.AchievementRarity.COMMON
+                    com.hellogerman.app.gamification.AchievementRarity.RARE -> com.hellogerman.app.data.entities.AchievementRarity.RARE
+                    com.hellogerman.app.gamification.AchievementRarity.EPIC -> com.hellogerman.app.data.entities.AchievementRarity.EPIC
+                    com.hellogerman.app.gamification.AchievementRarity.LEGENDARY -> com.hellogerman.app.data.entities.AchievementRarity.LEGENDARY
+                }
+            )
+        }
+        achievementDao.insertAchievements(items)
     }
     
     // User Submission Operations

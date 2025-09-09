@@ -79,8 +79,8 @@ fun GamificationScreen(
         ) {
             // User Level and XP Section
             UserLevelCard(
-                totalXP = calculateTotalXP(userProgress, grammarPoints),
-                coins = calculateCoins(userProgress, grammarPoints),
+                totalXP = userProgress?.totalXP ?: 0,
+                coins = userProgress?.coins ?: 0,
                 modifier = Modifier.padding(16.dp)
             )
             
@@ -706,14 +706,8 @@ private fun RewardCard(
                             // Apply theme
                             themeViewModel.setSelectedTheme(themeId)
 
-                            // Deduct coins
-                            userProgress?.let { progress ->
-                                val updatedProgress = progress.copy(
-                                    coins = progress.coins - reward.cost
-                                )
-                                // Update progress through repository
-                                // This would need to be implemented in the repository
-                            }
+                            // Deduct coins and persist theme selection via ViewModel API
+                            mainViewModel.purchaseTheme(themeId, reward.cost)
                         }
                     },
                     enabled = canAfford && !isUnlocked,

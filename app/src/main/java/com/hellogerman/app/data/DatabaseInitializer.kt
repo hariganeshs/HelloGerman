@@ -30,6 +30,9 @@ object DatabaseInitializer {
                 // Initialize user progress
                 repository.insertUserProgress(com.hellogerman.app.data.entities.UserProgress())
             }
+
+            // Seed achievements into persistence (idempotent via REPLACE)
+            try { repository.seedAchievements() } catch (_: Exception) {}
             
             // Check existing lessons and force reload if we have the new expanded content
             val existingLessons = repository.getAllLessons()

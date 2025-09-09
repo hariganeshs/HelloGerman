@@ -123,23 +123,41 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun onLessonCompleted(score: Int) {
+        viewModelScope.launch {
+            repository.incrementLessonsCompleted()
+            repository.addXP(25)
+            repository.addCoins(5)
+            if (score >= 100) {
+                repository.incrementPerfectLessons()
+            }
+            checkForNewAchievements()
+        }
+    }
+
     private suspend fun checkForNewAchievements() {
         userProgress.value?.let { progress ->
             val grammarPoints = grammarTotalPoints.value
-            val newAchievements = com.hellogerman.app.gamification.AchievementManager.checkAchievements(progress, grammarPoints)
+            val candidates = com.hellogerman.app.gamification.AchievementManager.checkAchievements(progress, grammarPoints)
 
-            // Award achievement rewards
+            // Filter out already unlocked (persisted) achievements
+            val newAchievements = candidates.filter { candidate ->
+                // Try to avoid duplicate rewards by checking DB
+                val unlocked = try {
+                    repository.isAchievementUnlocked(candidate.id)
+                } catch (_: Exception) { false }
+                !unlocked
+            }
+
             if (newAchievements.isNotEmpty()) {
-                var updatedProgress = progress
+                // Persist unlocks and award rewards atomically per item
                 newAchievements.forEach { achievement ->
-                    updatedProgress = updatedProgress.copy(
-                        totalXP = updatedProgress.totalXP + achievement.rewardXP,
-                        coins = updatedProgress.coins + achievement.rewardCoins
-                    )
+                    try {
+                        repository.unlockAchievement(achievement.id, achievement.rewardXP, achievement.rewardCoins)
+                    } catch (_: Exception) { /* ignore individual failure to continue others */ }
                 }
-                repository.updateUserProgress(updatedProgress)
 
-                // Trigger achievement popup notifications
+                // Trigger notifications
                 newAchievements.forEach { achievement ->
                     showAchievementNotification(achievement)
                 }
@@ -160,6 +178,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun updateLastStudyDate() {
         viewModelScope.launch {
             repository.updateLastStudyDate(System.currentTimeMillis())
+        }
+    }
+
+    fun addXP(xp: Int) { viewModelScope.launch { repository.addXP(xp) } }
+    fun addCoins(coins: Int) { viewModelScope.launch { repository.addCoins(coins) } }
+
+    fun purchaseTheme(themeId: String, cost: Int) {
+        viewModelScope.launch {
+            repository.deductCoins(cost)
+            repository.updateSelectedTheme(themeId)
         }
     }
     

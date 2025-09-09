@@ -60,4 +60,7 @@ interface UserProgressDao {
 
     @Query("UPDATE user_progress SET isOnboarded = 1 WHERE id = 1")
     suspend fun markOnboarded()
+
+    @Query("UPDATE user_progress SET selectedTheme = :theme WHERE id = 1")
+    suspend fun updateSelectedTheme(theme: String)
 }
