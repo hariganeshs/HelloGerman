@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.hellogerman.app.ui.viewmodel.SettingsViewModel
+import com.hellogerman.app.BuildConfig
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -368,7 +369,7 @@ fun SettingsScreen(
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = "Version 1.0.0",
+                                    text = "Version ${BuildConfig.VERSION_NAME}",
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
