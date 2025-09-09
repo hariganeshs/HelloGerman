@@ -18,9 +18,11 @@ data class UserProgress(
     val lastStudyDate: Long = 0,
     val dailyGoal: Int = 3, // lessons per day
     val isOnboarded: Boolean = false,
+    val tutorialCompleted: Boolean = false,
     val selectedLanguage: String = "en", // en, de
     val isDarkMode: Boolean = false,
     val textSize: Float = 1.0f,
+    val selectedTheme: String = "default", // default, ocean, forest, sunset, mountain, desert, space, retro, minimalist, autumn, winter
     val showEnglishExplanations: Boolean = true, // Show English translations and explanations
     // Gamification fields
     val totalXP: Int = 0,

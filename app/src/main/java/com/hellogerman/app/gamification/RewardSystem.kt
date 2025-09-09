@@ -2,7 +2,10 @@ package com.hellogerman.app.gamification
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.automirrored.filled.*
+import androidx.compose.material.icons.filled.AcUnit
+import androidx.compose.material.icons.filled.Terrain
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
@@ -53,22 +56,13 @@ data class UserStats(
 )
 
 object RewardSystem {
-    
+
     fun getAllRewards(): List<Reward> = listOf(
-        // Themes
-        Reward(
-            id = "dark_theme",
-            title = "Dark Mode",
-            description = "Elegant dark theme for night studying",
-            icon = Icons.Default.DarkMode,
-            cost = 100,
-            category = RewardCategory.THEMES,
-            rarity = RewardRarity.COMMON
-        ),
+        // Themes - Only theme upgrades available
         Reward(
             id = "ocean_theme",
             title = "Ocean Theme",
-            description = "Calming blue ocean theme",
+            description = "Calming blue ocean theme with waves and aquatic colors",
             icon = Icons.Default.Waves,
             cost = 200,
             category = RewardCategory.THEMES,
@@ -77,7 +71,7 @@ object RewardSystem {
         Reward(
             id = "forest_theme",
             title = "Forest Theme",
-            description = "Natural green forest theme",
+            description = "Natural green forest theme with earthy tones",
             icon = Icons.Default.Forest,
             cost = 200,
             category = RewardCategory.THEMES,
@@ -86,89 +80,74 @@ object RewardSystem {
         Reward(
             id = "sunset_theme",
             title = "Sunset Theme",
-            description = "Warm orange sunset theme",
+            description = "Warm orange and pink sunset theme",
             icon = Icons.Default.WbTwilight,
             cost = 300,
             category = RewardCategory.THEMES,
             rarity = RewardRarity.EPIC
         ),
-        
-        // Power-ups
         Reward(
-            id = "double_xp",
-            title = "Double XP",
-            description = "2x XP for next 3 lessons",
-            icon = Icons.Default.FlashOn,
-            cost = 50,
-            category = RewardCategory.POWER_UPS,
-            rarity = RewardRarity.COMMON
-        ),
-        Reward(
-            id = "streak_freeze",
-            title = "Streak Freeze",
-            description = "Protect your streak for 1 day",
-            icon = Icons.Default.Shield,
-            cost = 150,
-            category = RewardCategory.POWER_UPS,
-            rarity = RewardRarity.RARE
-        ),
-        Reward(
-            id = "hint_boost",
-            title = "Hint Boost",
-            description = "Extra hints for difficult questions",
-            icon = Icons.AutoMirrored.Filled.Help,
-            cost = 30,
-            category = RewardCategory.POWER_UPS,
-            rarity = RewardRarity.COMMON
-        ),
-        Reward(
-            id = "perfect_bonus",
-            title = "Perfect Bonus",
-            description = "Bonus XP for perfect scores",
-            icon = Icons.Default.Stars,
-            cost = 100,
-            category = RewardCategory.POWER_UPS,
-            rarity = RewardRarity.RARE
-        ),
-        
-        // Customization
-        Reward(
-            id = "custom_goal",
-            title = "Custom Goals",
-            description = "Set personalized daily goals",
-            icon = Icons.Default.Flag,
-            cost = 80,
-            category = RewardCategory.CUSTOMIZATION,
-            rarity = RewardRarity.COMMON
-        ),
-        Reward(
-            id = "advanced_stats",
-            title = "Advanced Stats",
-            description = "Detailed progress analytics",
-            icon = Icons.Default.Analytics,
+            id = "mountain_theme",
+            title = "Mountain Theme",
+            description = "Majestic mountain theme with cool blues and whites",
+            icon = Icons.Default.Terrain,
             cost = 250,
-            category = RewardCategory.CUSTOMIZATION,
+            category = RewardCategory.THEMES,
+            rarity = RewardRarity.RARE
+        ),
+        Reward(
+            id = "desert_theme",
+            title = "Desert Theme",
+            description = "Sandy desert theme with golden hues",
+            icon = Icons.Default.WbSunny,
+            cost = 250,
+            category = RewardCategory.THEMES,
+            rarity = RewardRarity.RARE
+        ),
+        Reward(
+            id = "space_theme",
+            title = "Space Theme",
+            description = "Cosmic space theme with stars and galaxies",
+            icon = Icons.Default.Star,
+            cost = 400,
+            category = RewardCategory.THEMES,
             rarity = RewardRarity.EPIC
         ),
-        
-        // Content
         Reward(
-            id = "bonus_lessons",
-            title = "Bonus Lessons",
-            description = "Unlock 10 extra lessons",
-            icon = Icons.Default.Add,
+            id = "retro_theme",
+            title = "Retro Theme",
+            description = "Vintage 80s retro theme with neon colors",
+            icon = Icons.Default.Palette,
+            cost = 350,
+            category = RewardCategory.THEMES,
+            rarity = RewardRarity.EPIC
+        ),
+        Reward(
+            id = "minimalist_theme",
+            title = "Minimalist Theme",
+            description = "Clean and simple minimalist design",
+            icon = Icons.Default.Circle,
+            cost = 150,
+            category = RewardCategory.THEMES,
+            rarity = RewardRarity.COMMON
+        ),
+        Reward(
+            id = "autumn_theme",
+            title = "Autumn Theme",
+            description = "Beautiful autumn colors with warm oranges and reds",
+            icon = Icons.Default.Nature,
             cost = 300,
-            category = RewardCategory.CONTENT,
-            rarity = RewardRarity.EPIC
+            category = RewardCategory.THEMES,
+            rarity = RewardRarity.RARE
         ),
         Reward(
-            id = "advanced_grammar",
-            title = "Advanced Grammar",
-            description = "Unlock C2 level grammar",
-            icon = Icons.Default.School,
-            cost = 500,
-            category = RewardCategory.CONTENT,
-            rarity = RewardRarity.LEGENDARY
+            id = "winter_theme",
+            title = "Winter Theme",
+            description = "Cool winter theme with snow and ice colors",
+            icon = Icons.Default.AcUnit,
+            cost = 350,
+            category = RewardCategory.THEMES,
+            rarity = RewardRarity.EPIC
         )
     )
     

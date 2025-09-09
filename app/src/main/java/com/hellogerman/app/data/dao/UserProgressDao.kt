@@ -54,4 +54,10 @@ interface UserProgressDao {
     
     @Query("UPDATE user_progress SET lastStudyDate = :date WHERE id = 1")
     suspend fun updateLastStudyDate(date: Long)
+
+    @Query("UPDATE user_progress SET tutorialCompleted = 1 WHERE id = 1")
+    suspend fun markTutorialCompleted()
+
+    @Query("UPDATE user_progress SET isOnboarded = 1 WHERE id = 1")
+    suspend fun markOnboarded()
 }

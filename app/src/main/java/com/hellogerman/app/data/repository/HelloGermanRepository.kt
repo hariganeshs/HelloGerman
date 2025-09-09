@@ -90,6 +90,14 @@ class HelloGermanRepository(context: Context) {
     suspend fun updateLastStudyDate(date: Long) {
         userProgressDao.updateLastStudyDate(date)
     }
+
+    suspend fun markTutorialCompleted() {
+        userProgressDao.markTutorialCompleted()
+    }
+
+    suspend fun markOnboarded() {
+        userProgressDao.markOnboarded()
+    }
     
     // Lesson Operations
     fun getLessonsBySkillAndLevel(skill: String, level: String): Flow<List<Lesson>> {

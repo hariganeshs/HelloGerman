@@ -17,7 +17,7 @@ import com.hellogerman.app.data.entities.*
         GrammarProgress::class,
         Achievement::class
     ],
-    version = 9,
+    version = 11,
     exportSchema = false
 )
 abstract class HelloGermanDatabase : RoomDatabase() {
@@ -39,7 +39,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                     HelloGermanDatabase::class.java,
                     "hello_german_database"
                 )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
@@ -152,6 +152,20 @@ abstract class HelloGermanDatabase : RoomDatabase() {
 
                 // Clear lessons to force repopulation with the latest expanded content
                 database.execSQL("DELETE FROM lessons")
+            }
+        }
+
+        private val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add selectedTheme column to user_progress table for theme customization
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN selectedTheme TEXT NOT NULL DEFAULT 'default'")
+            }
+        }
+
+        private val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add tutorialCompleted column to user_progress table for tutorial tracking
+                database.execSQL("ALTER TABLE user_progress ADD COLUMN tutorialCompleted INTEGER NOT NULL DEFAULT 0")
             }
         }
     }

@@ -34,6 +34,7 @@ import com.hellogerman.app.data.models.*
 @Composable
 fun DictionaryScreen(
     navController: NavController,
+    initialWord: String = "",
     dictionaryViewModel: DictionaryViewModel = viewModel()
 ) {
     val searchQuery by dictionaryViewModel.searchQuery.collectAsState()
@@ -50,6 +51,13 @@ fun DictionaryScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     var showLanguageDialog by remember { mutableStateOf(false) }
     var isSelectingFromLanguage by remember { mutableStateOf(true) }
+
+    // Handle initial word search from lesson content
+    LaunchedEffect(initialWord) {
+        if (initialWord.isNotBlank()) {
+            dictionaryViewModel.setInitialSearchQuery(initialWord)
+        }
+    }
     
     Column(
         modifier = Modifier

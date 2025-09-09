@@ -8,10 +8,12 @@ import com.hellogerman.app.data.repository.HelloGermanRepository
 import com.hellogerman.app.data.repository.LevelUnlockStatus
 import com.hellogerman.app.data.repository.LevelCompletionInfo
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -39,6 +41,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _levelCompletionInfo = MutableStateFlow<Map<String, LevelCompletionInfo>>(emptyMap())
     val levelCompletionInfo: StateFlow<Map<String, LevelCompletionInfo>> = _levelCompletionInfo.asStateFlow()
+
+    private val _achievementNotifications = MutableSharedFlow<com.hellogerman.app.gamification.Achievement>()
+    val achievementNotifications: SharedFlow<com.hellogerman.app.gamification.Achievement> = _achievementNotifications.asSharedFlow()
 
     init {
         loadUserProgress()
@@ -91,6 +96,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _currentLevel.value = level
         }
     }
+
+    fun markTutorialCompleted() {
+        viewModelScope.launch {
+            repository.markTutorialCompleted()
+        }
+    }
+
+    fun markOnboarded() {
+        viewModelScope.launch {
+            repository.markOnboarded()
+        }
+    }
     
     fun updateSkillScore(skill: String, score: Int) {
         viewModelScope.launch {
@@ -101,7 +118,37 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun incrementLessonsCompleted() {
         viewModelScope.launch {
             repository.incrementLessonsCompleted()
+            // Check for new achievements after completing a lesson
+            checkForNewAchievements()
         }
+    }
+
+    private suspend fun checkForNewAchievements() {
+        userProgress.value?.let { progress ->
+            val grammarPoints = grammarTotalPoints.value
+            val newAchievements = com.hellogerman.app.gamification.AchievementManager.checkAchievements(progress, grammarPoints)
+
+            // Award achievement rewards
+            if (newAchievements.isNotEmpty()) {
+                var updatedProgress = progress
+                newAchievements.forEach { achievement ->
+                    updatedProgress = updatedProgress.copy(
+                        totalXP = updatedProgress.totalXP + achievement.rewardXP,
+                        coins = updatedProgress.coins + achievement.rewardCoins
+                    )
+                }
+                repository.updateUserProgress(updatedProgress)
+
+                // Trigger achievement popup notifications
+                newAchievements.forEach { achievement ->
+                    showAchievementNotification(achievement)
+                }
+            }
+        }
+    }
+
+    private suspend fun showAchievementNotification(achievement: com.hellogerman.app.gamification.Achievement) {
+        _achievementNotifications.emit(achievement)
     }
     
     fun updateStreak(streak: Int) {

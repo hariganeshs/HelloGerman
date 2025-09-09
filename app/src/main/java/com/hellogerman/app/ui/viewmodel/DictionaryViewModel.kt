@@ -68,6 +68,14 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
         _searchQuery.value = query
         _errorMessage.value = null
     }
+
+    // Function to set initial search query and perform search automatically
+    fun setInitialSearchQuery(query: String) {
+        if (query.isNotBlank()) {
+            _searchQuery.value = query.trim()
+            searchWord() // Automatically perform the search
+        }
+    }
     
     fun swapLanguages() {
         val temp = _fromLanguage.value

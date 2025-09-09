@@ -4,15 +4,26 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,6 +56,10 @@ fun LessonDetailScreen(
     var userAnswers by remember { mutableStateOf(mutableMapOf<String, String>()) }
     var quizCompleted by remember { mutableStateOf(false) }
     var timeSpentInSeconds by remember { mutableStateOf(0) }
+
+    // Dictionary lookup state
+    var showDictionaryDialog by remember { mutableStateOf(false) }
+    var wordToLookup by remember { mutableStateOf("") }
     
 
 
@@ -193,17 +208,28 @@ fun LessonDetailScreen(
                                             Column(
                                                 modifier = Modifier.padding(16.dp)
                                             ) {
-                                                Text(
-                                                    text = "Reading Text",
-                                                    fontSize = 18.sp,
-                                                    fontWeight = FontWeight.Bold,
-                                                    color = MaterialTheme.colorScheme.onSurface
-                                                )
+                                                Row(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Text(
+                                                        text = "Reading Text",
+                                                        fontSize = 18.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = MaterialTheme.colorScheme.onSurface
+                                                    )
+                                                    Text(
+                                                        text = "Long-press words to look them up",
+                                                        fontSize = 12.sp,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
+                                                }
                                                 Spacer(modifier = Modifier.height(12.dp))
-                                                Text(
+                                                DictionaryEnabledText(
                                                     text = lesenContent?.text ?: "",
                                                     fontSize = 16.sp,
-                                                    color = MaterialTheme.colorScheme.onSurface
+                                                    onDictionaryLookup = { showDictionaryDialog = true }
                                                 )
                                             }
                                         }
@@ -221,17 +247,28 @@ fun LessonDetailScreen(
                                             Column(
                                                 modifier = Modifier.padding(16.dp)
                                             ) {
-                                                Text(
-                                                    text = "Listening Script",
-                                                    fontSize = 18.sp,
-                                                    fontWeight = FontWeight.Bold,
-                                                    color = MaterialTheme.colorScheme.onSurface
-                                                )
+                                                Row(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Text(
+                                                        text = "Listening Script",
+                                                        fontSize = 18.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = MaterialTheme.colorScheme.onSurface
+                                                    )
+                                                    Text(
+                                                        text = "Long-press words to look them up",
+                                                        fontSize = 12.sp,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
+                                                }
                                                 Spacer(modifier = Modifier.height(12.dp))
-                                                Text(
+                                                DictionaryEnabledText(
                                                     text = hoerenContent?.script ?: "",
                                                     fontSize = 16.sp,
-                                                    color = MaterialTheme.colorScheme.onSurface
+                                                    onDictionaryLookup = { showDictionaryDialog = true }
                                                 )
                                             }
                                         }
@@ -244,43 +281,35 @@ fun LessonDetailScreen(
                                 val lesenContent = lessonContent as? LesenContent
                                 lesenContent?.vocabulary?.let { vocabulary ->
                                     item {
-                                        Text(
-                                            text = "Vocabulary",
-                                            fontSize = 20.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = "Vocabulary",
+                                                fontSize = 20.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.onSurface
+                                            )
+                                            Text(
+                                                text = "Long-press words to look them up",
+                                                fontSize = 12.sp,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
                                     }
                                     
                                     items(vocabulary) { vocabItem ->
-                                        Card(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            colors = CardDefaults.cardColors(
-                                                containerColor = MaterialTheme.colorScheme.surface
-                                            )
-                                        ) {
-                                            Column(
-                                                modifier = Modifier.padding(16.dp)
-                                            ) {
-                                                Text(
-                                                    text = vocabItem.word,
-                                                    fontSize = 18.sp,
-                                                    fontWeight = FontWeight.Bold,
-                                                    color = MaterialTheme.colorScheme.onSurface
-                                                )
-                                                Text(
-                                                    text = vocabItem.translation,
-                                                    fontSize = 16.sp,
-                                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                                )
-                                                Text(
-                                                    text = vocabItem.example,
-                                                    fontSize = 14.sp,
-                                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                    modifier = Modifier.padding(top = 4.dp)
-                                                )
+                                        DictionaryEnabledVocabularyItem(
+                                            word = vocabItem.word,
+                                            translation = vocabItem.translation,
+                                            example = vocabItem.example,
+                                            onDictionaryLookup = { word ->
+                                                wordToLookup = word
+                                                showDictionaryDialog = true
                                             }
-                                        }
+                                        )
                                     }
                                 }
                             }
@@ -813,6 +842,127 @@ fun LessonDetailScreen(
             }
         }
     }
-    
 
+    // Dictionary Lookup Dialog
+    if (showDictionaryDialog) {
+        AlertDialog(
+            onDismissRequest = { showDictionaryDialog = false },
+            title = {
+                Text(
+                    text = "Look up word in dictionary",
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Column {
+                    Text(
+                        text = "Enter the German word you want to look up:",
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                    OutlinedTextField(
+                        value = wordToLookup,
+                        onValueChange = { wordToLookup = it },
+                        label = { Text("German word") },
+                        placeholder = { Text("e.g., Haus, gehen, schön") },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (wordToLookup.isNotBlank()) {
+                            // Navigate to dictionary with the word as parameter
+                            navController.navigate("dictionary/${wordToLookup.trim()}") {
+                                launchSingleTop = true
+                            }
+                            showDictionaryDialog = false
+                            wordToLookup = ""
+                        }
+                    },
+                    enabled = wordToLookup.isNotBlank()
+                ) {
+                    Text("Look up")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDictionaryDialog = false
+                    wordToLookup = ""
+                }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+}
+
+// Composable for lesson text with dictionary lookup via long-press
+@Composable
+fun DictionaryEnabledText(
+    text: String,
+    fontSize: androidx.compose.ui.unit.TextUnit = 16.sp,
+    onDictionaryLookup: () -> Unit
+) {
+    Text(
+        text = text,
+        fontSize = fontSize,
+        color = MaterialTheme.colorScheme.onSurface,
+        lineHeight = 24.sp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = { onDictionaryLookup() }
+                )
+            }
+    )
+}
+
+// Alternative composable for vocabulary items
+@Composable
+fun DictionaryEnabledVocabularyItem(
+    word: String,
+    translation: String,
+    example: String,
+    onDictionaryLookup: (String) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = { onDictionaryLookup(word) }
+                )
+            },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = word,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = translation,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            if (example.isNotBlank()) {
+                Text(
+                    text = example,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
+        }
+    }
 }

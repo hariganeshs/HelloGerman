@@ -31,6 +31,7 @@ sealed class Screen(val route: String) {
     }
     object Settings : Screen("settings")
     object Onboarding : Screen("onboarding")
+    object Tutorial : Screen("tutorial")
     object Progress : Screen("progress")
     object Dictionary : Screen("dictionary")
     object Gamification : Screen("gamification")
@@ -93,7 +94,11 @@ fun NavGraph(
         }
         
         composable(Screen.Onboarding.route) {
-            // OnboardingScreen(navController)
+            OnboardingScreen(navController)
+        }
+
+        composable(Screen.Tutorial.route) {
+            TutorialScreen(navController)
         }
         
         composable(Screen.Dictionary.route) {

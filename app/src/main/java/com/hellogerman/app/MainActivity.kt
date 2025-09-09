@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hellogerman.app.ui.components.AchievementCelebration
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -46,8 +47,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             val themeViewModel: ThemeViewModel = viewModel()
             val isDarkMode by themeViewModel.isDarkMode.collectAsState()
-            
-            HelloGermanTheme(darkTheme = isDarkMode) {
+            val selectedTheme by themeViewModel.selectedTheme.collectAsState()
+
+            HelloGermanTheme(
+                darkTheme = isDarkMode,
+                theme = selectedTheme
+            ) {
                 ResponsiveTheme(darkTheme = isDarkMode) {
                     HelloGermanApp()
                 }
@@ -67,9 +72,19 @@ class MainActivity : ComponentActivity() {
 fun HelloGermanApp() {
     val navController = rememberNavController()
     val mainViewModel: MainViewModel = viewModel()
-    
+
     val userProgress by mainViewModel.userProgress.collectAsState()
     val isLoading by mainViewModel.isLoading.collectAsState()
+
+    // Achievement notification handling
+    var currentAchievement by remember { mutableStateOf<com.hellogerman.app.gamification.Achievement?>(null) }
+
+    // Listen for achievement notifications
+    LaunchedEffect(Unit) {
+        mainViewModel.achievementNotifications.collect { achievement ->
+            currentAchievement = achievement
+        }
+    }
     
     if (isLoading) {
         SplashScreen(navController)
@@ -79,7 +94,7 @@ fun HelloGermanApp() {
         
         ResponsiveNavigationLayout(
             bottomBar = {
-                if (currentDestination?.route !in listOf(Screen.Splash.route, Screen.Onboarding.route)) {
+                if (currentDestination?.route !in listOf(Screen.Splash.route, Screen.Onboarding.route, Screen.Tutorial.route)) {
                     ResponsiveNavigation(
                         navController = navController,
                         currentDestination = currentDestination
@@ -92,7 +107,11 @@ fun HelloGermanApp() {
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = if (userProgress?.isOnboarded == true) Screen.Dashboard.route else Screen.Onboarding.route,
+                    startDestination = when {
+                        userProgress?.isOnboarded != true -> Screen.Onboarding.route
+                        userProgress?.tutorialCompleted != true -> Screen.Tutorial.route
+                        else -> Screen.Dashboard.route
+                    },
                     modifier = Modifier.fillMaxSize()
                 ) {
                 composable(
@@ -105,18 +124,34 @@ fun HelloGermanApp() {
                 
                 composable(
                     route = Screen.Onboarding.route,
-                    enterTransition = { 
+                    enterTransition = {
                         slideInHorizontally(
                             animationSpec = tween(400, easing = FastOutSlowInEasing)
                         ) { it } + fadeIn(animationSpec = tween(300))
                     },
-                    exitTransition = { 
+                    exitTransition = {
                         slideOutHorizontally(
                             animationSpec = tween(300, easing = FastOutLinearInEasing)
                         ) { -it / 3 } + fadeOut(animationSpec = tween(200))
                     }
                 ) {
                     OnboardingScreen(navController, mainViewModel)
+                }
+
+                composable(
+                    route = Screen.Tutorial.route,
+                    enterTransition = {
+                        slideInHorizontally(
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) { it } + fadeIn(animationSpec = tween(300))
+                    },
+                    exitTransition = {
+                        slideOutHorizontally(
+                            animationSpec = tween(300, easing = FastOutLinearInEasing)
+                        ) { -it / 3 } + fadeOut(animationSpec = tween(200))
+                    }
+                ) {
+                    TutorialScreen(navController, mainViewModel)
                 }
                 
                 composable(
@@ -246,18 +281,23 @@ fun HelloGermanApp() {
                 
                 composable(
                     route = Screen.Dictionary.route,
-                    enterTransition = { 
+                    enterTransition = {
                         slideInHorizontally(
                             animationSpec = tween(400, easing = FastOutSlowInEasing)
                         ) { it / 2 } + fadeIn(animationSpec = tween(300))
                     },
-                    exitTransition = { 
+                    exitTransition = {
                         slideOutHorizontally(
                             animationSpec = tween(300, easing = FastOutLinearInEasing)
                         ) { -it / 3 } + fadeOut(animationSpec = tween(200))
                     }
                 ) {
                     DictionaryScreen(navController)
+                }
+
+                composable("dictionary/{word}") { backStackEntry ->
+                    val word = backStackEntry.arguments?.getString("word") ?: ""
+                    DictionaryScreen(navController, initialWord = word)
                 }
                 
                 composable(
@@ -277,6 +317,14 @@ fun HelloGermanApp() {
                 }
             }
         }
+    }
+
+    // Achievement Celebration Popup
+    if (currentAchievement != null) {
+        AchievementCelebration(
+            achievement = currentAchievement,
+            onDismiss = { currentAchievement = null }
+        )
     }
 }
 }

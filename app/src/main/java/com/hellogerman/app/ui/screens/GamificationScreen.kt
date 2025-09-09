@@ -38,7 +38,8 @@ import com.hellogerman.app.ui.viewmodel.MainViewModel
 @Composable
 fun GamificationScreen(
     navController: NavController,
-    mainViewModel: MainViewModel = viewModel()
+    mainViewModel: MainViewModel = viewModel(),
+    themeViewModel: com.hellogerman.app.ui.viewmodel.ThemeViewModel = viewModel()
 ) {
     val userProgress by mainViewModel.userProgress.collectAsState()
     val grammarPoints by mainViewModel.grammarTotalPoints.collectAsState()
@@ -113,7 +114,7 @@ fun GamificationScreen(
             when (selectedTab) {
                 0 -> AchievementsTab(userProgress, grammarPoints)
                 1 -> DailyChallengesTab()
-                2 -> RewardsTab()
+                2 -> RewardsTab(mainViewModel, themeViewModel)
                 3 -> LeaderboardTab(userProgress)
             }
         }
@@ -579,10 +580,10 @@ private fun DailyChallengeCard(challenge: DailyChallenge) {
 }
 
 @Composable
-private fun RewardsTab() {
+private fun RewardsTab(mainViewModel: MainViewModel, themeViewModel: com.hellogerman.app.ui.viewmodel.ThemeViewModel) {
     val rewards = RewardSystem.getAllRewards()
     val groupedRewards = rewards.groupBy { it.category }
-    
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -601,7 +602,7 @@ private fun RewardsTab() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        
+
         groupedRewards.forEach { (category, categoryRewards) ->
             item {
                 Text(
@@ -611,16 +612,25 @@ private fun RewardsTab() {
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
-            
+
             items(categoryRewards) { reward ->
-                RewardCard(reward)
+                RewardCard(reward, mainViewModel, themeViewModel)
             }
         }
     }
 }
 
 @Composable
-private fun RewardCard(reward: Reward) {
+private fun RewardCard(
+    reward: Reward,
+    mainViewModel: MainViewModel,
+    themeViewModel: com.hellogerman.app.ui.viewmodel.ThemeViewModel
+) {
+    val userProgress by mainViewModel.userProgress.collectAsState()
+    val userCoins = userProgress?.coins ?: 0
+    val canAfford = userCoins >= reward.cost
+    val isUnlocked = reward.isUnlocked
+
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -641,9 +651,9 @@ private fun RewardCard(reward: Reward) {
                     RewardRarity.COMMON -> MaterialTheme.colorScheme.primary
                 }
             )
-            
+
             Spacer(modifier = Modifier.width(16.dp))
-            
+
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = reward.title,
@@ -657,9 +667,9 @@ private fun RewardCard(reward: Reward) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            
+
             Spacer(modifier = Modifier.width(8.dp))
-            
+
             Column(horizontalAlignment = Alignment.End) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
@@ -675,13 +685,42 @@ private fun RewardCard(reward: Reward) {
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
-                
+
                 Button(
-                    onClick = { /* Handle purchase */ },
-                    enabled = !reward.isUnlocked,
+                    onClick = {
+                        if (canAfford && !isUnlocked) {
+                            // Handle theme purchase
+                            val themeId = when (reward.id) {
+                                "ocean_theme" -> "ocean"
+                                "forest_theme" -> "forest"
+                                "sunset_theme" -> "sunset"
+                                "mountain_theme" -> "mountain"
+                                "desert_theme" -> "desert"
+                                "space_theme" -> "space"
+                                "retro_theme" -> "retro"
+                                "minimalist_theme" -> "minimalist"
+                                "autumn_theme" -> "autumn"
+                                "winter_theme" -> "winter"
+                                else -> "default"
+                            }
+
+                            // Apply theme
+                            themeViewModel.setSelectedTheme(themeId)
+
+                            // Deduct coins
+                            userProgress?.let { progress ->
+                                val updatedProgress = progress.copy(
+                                    coins = progress.coins - reward.cost
+                                )
+                                // Update progress through repository
+                                // This would need to be implemented in the repository
+                            }
+                        }
+                    },
+                    enabled = canAfford && !isUnlocked,
                     modifier = Modifier.padding(top = 8.dp)
                 ) {
-                    Text(if (reward.isUnlocked) "Owned" else "Buy")
+                    Text(if (isUnlocked) "Owned" else if (canAfford) "Buy" else "Can't Afford")
                 }
             }
         }

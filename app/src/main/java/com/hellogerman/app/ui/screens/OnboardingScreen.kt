@@ -96,7 +96,9 @@ fun OnboardingScreen(
                 onClick = {
                     // Update user progress with onboarding data
                     mainViewModel.updateCurrentLevel(selectedLevel)
-                    navController.navigate("dashboard") {
+                    // Mark user as onboarded
+                    mainViewModel.markOnboarded()
+                    navController.navigate("tutorial") {
                         popUpTo("onboarding") { inclusive = true }
                     }
                 },
