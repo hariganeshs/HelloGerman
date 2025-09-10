@@ -125,8 +125,8 @@ object LessonContentGenerator {
     
     private fun generateLessonsForSkillAndLevel(skill: String, level: String): List<Lesson> {
         return when (skill) {
-            // Route B1 to lightweight generators to avoid very large methods being ignored by the runtime
-            "lesen" -> if (level == "B1") generateLesenLessonsB1Lite() else generateLesenLessons(level)
+            // Use full B1 reading content to provide richer texts
+            "lesen" -> generateLesenLessons(level)
             "hoeren" -> if (level == "B1") generateHoerenLessonsB1Lite() else generateHoerenLessons(level)
             "schreiben" -> if (level == "B1") generateSchreibenLessonsB1Lite() else generateSchreibenLessons(level)
             "sprechen" -> if (level == "B1") generateSprechenLessonsB1Lite() else generateSprechenLessons(level)
@@ -135,60 +135,7 @@ object LessonContentGenerator {
         }
     }
 
-    // Lightweight B1 generators to guarantee expanded content even if large methods hit instruction limits
-    private fun generateLesenLessonsB1Lite(): List<Lesson> {
-        val lessons = mutableListOf<Lesson>()
-        // Core Goethe-style 5
-        val titles = listOf(
-            "B1 Goethe Prüfung - Leseverstehen Teil 1" to "Authentic exam style",
-            "B1 Goethe Prüfung - Leseverstehen Teil 2" to "Text with gaps",
-            "B1 Goethe Prüfung - Leseverstehen Teil 3" to "Advanced texts",
-            "B1 Goethe Prüfung - Leseverstehen Teil 4" to "Formal correspondence",
-            "B1 Goethe Prüfung - Leseverstehen Teil 5" to "Job market"
-        )
-        titles.forEachIndexed { idx, (title, desc) ->
-            lessons.add(
-                createLesenLesson(
-                    title = title,
-                    description = "Goethe-Zertifikat B1 Reading Comprehension - ${desc}",
-                    level = "B1",
-                    orderIndex = idx + 1,
-                    text = "Lesen Sie den Text und beantworten Sie die Fragen.",
-                    questions = listOf(
-                        Question(1, "Worum geht es?", listOf("Arbeit", "Umwelt", "Gesundheit", "Technologie"), "Arbeit", null, QuestionType.MULTIPLE_CHOICE),
-                        Question(2, "Nennen Sie ein Detail.", null, "Beispiel", null, QuestionType.FILL_BLANK)
-                    ),
-                    vocabulary = listOf(
-                        VocabularyItem("Detail", "detail", "Nennen Sie ein Detail."),
-                        VocabularyItem("Beispiel", "example", "Geben Sie ein Beispiel.")
-                    ),
-                    source = "Goethe"
-                )
-            )
-        }
-        // Extended set 6..45
-        for (i in 6..45) {
-            lessons.add(
-                createLesenLesson(
-                    title = "B1 Lesen Thema ${i}",
-                    description = "B1 reading comprehension practice ${i}",
-                    level = "B1",
-                    orderIndex = i,
-                    text = "Dies ist ein B1-Leseverständnis-Text zum Thema ${if (i % 4 == 0) "Arbeit" else if (i % 4 == 1) "Umwelt" else if (i % 4 == 2) "Gesundheit" else "Technologie"}.",
-                    questions = listOf(
-                        Question(1, "Was ist das Hauptthema?", listOf("Arbeit", "Umwelt", "Gesundheit", "Technologie"), if (i % 4 == 0) "Arbeit" else if (i % 4 == 1) "Umwelt" else if (i % 4 == 2) "Gesundheit" else "Technologie", null, QuestionType.MULTIPLE_CHOICE),
-                        Question(2, "Welches Schlüsselwort passt?", null, if (i % 4 == 0) "Bewerbung" else if (i % 4 == 1) "CO2" else if (i % 4 == 2) "Prävention" else "KI", null, QuestionType.FILL_BLANK)
-                    ),
-                    vocabulary = listOf(
-                        VocabularyItem("Schlüsselwort", "keyword", "Finde das Schlüsselwort."),
-                        VocabularyItem("Argument", "argument", "Formuliere ein Argument.")
-                    ),
-                    source = if (i % 3 == 0) "Goethe" else if (i % 3 == 1) "TELC" else "ÖSD"
-                )
-            )
-        }
-        return lessons
-    }
+    // Removed unused generateLesenLessonsB1Lite() function - B1 reading uses the regular generateLesenLessons() function
 
     private fun generateHoerenLessonsB1Lite(): List<Lesson> {
         val lessons = mutableListOf<Lesson>()
@@ -210,22 +157,7 @@ object LessonContentGenerator {
                 )
             )
         }
-        for (i in 6..45) {
-            lessons.add(
-                createHoerenLesson(
-                    title = "B1 Hören Thema ${i}",
-                    description = "B1 listening comprehension practice ${i}",
-                    level = "B1",
-                    orderIndex = i,
-                    script = "Moderator: ${if (i % 4 == 0) "Beruf und Karriere" else if (i % 4 == 1) "Umweltmaßnahmen" else if (i % 4 == 2) "Gesundheitsprävention" else "Digitale Trends"}.",
-                    questions = listOf(
-                        Question(1, "Welches Thema?", listOf("Arbeit", "Umwelt", "Gesundheit", "Technologie"), if (i % 4 == 0) "Arbeit" else if (i % 4 == 1) "Umwelt" else if (i % 4 == 2) "Gesundheit" else "Technologie", null, QuestionType.MULTIPLE_CHOICE),
-                        Question(2, "Schlüsselwort?", null, if (i % 4 == 0) "Bewerbung" else if (i % 4 == 1) "Klimaziel" else if (i % 4 == 2) "Vorsorge" else "KI", null, QuestionType.FILL_BLANK)
-                    ),
-                    source = if (i % 3 == 0) "Goethe" else if (i % 3 == 1) "TELC" else "ÖSD"
-                )
-            )
-        }
+        // Removed placeholder lessons 6-45, keeping only the first 5 quality lessons
         return lessons
     }
 
@@ -253,21 +185,7 @@ object LessonContentGenerator {
                 )
             )
         }
-        for (i in 6..45) {
-            lessons.add(
-                createSchreibenLesson(
-                    title = "B1 Schreiben Thema ${i}",
-                    description = "B1 writing practice ${i}",
-                    level = "B1",
-                    orderIndex = i,
-                    prompt = "Verfasse einen Text zum Thema ${if (i % 4 == 0) "Bewerbung und Arbeit" else if (i % 4 == 1) "Klimaschutz im Alltag" else if (i % 4 == 2) "Gesundheit und Prävention" else "Digitale Welt"}.",
-                    minWords = 160 + (i % 3) * 20,
-                    maxWords = 200 + (i % 3) * 20,
-                    tips = listOf("Einleitung/Hauptteil/Schluss", "Konnektoren nutzen", "Sachlich argumentieren"),
-                    source = if (i % 3 == 0) "Goethe" else if (i % 3 == 1) "TELC" else "ÖSD"
-                )
-            )
-        }
+        // Removed placeholder lessons 6-45, keeping only the first 5 quality lessons
         return lessons
     }
 
@@ -293,19 +211,7 @@ object LessonContentGenerator {
                 )
             )
         }
-        for (i in 6..45) {
-            lessons.add(
-                createSprechenLesson(
-                    title = "B1 Sprechen Thema ${i}",
-                    description = "B1 speaking practice ${i}",
-                    level = "B1",
-                    orderIndex = i,
-                    prompt = "Stellen Sie Ihr Thema vor: ${if (i % 4 == 0) "Arbeit/Karriere" else if (i % 4 == 1) "Umwelt/Klima" else if (i % 4 == 2) "Gesundheit/Lifestyle" else "Technologie/Zukunft"}.",
-                    modelResponse = "Mein Thema ist ...",
-                    keywords = listOf("Argument", "Beispiel", "Fazit")
-                )
-            )
-        }
+        // Removed placeholder lessons 6-45, keeping only the first 5 quality lessons
         return lessons
     }
     
@@ -5074,72 +4980,116 @@ Diskussionsphase: Argumente austauschen, Fragen stellen und beantworten, Positio
                     source = "Goethe"
                 ))
 
-                // Add 18+ more B1 lesen lessons to reach 20+ total
-                for (i in 3..25) {
-                    lessons.add(createLesenLesson(
-                        title = "B1 Lesen Thema ${i}",
-                        description = "B1 reading comprehension practice ${i}",
-                        level = level,
-                        orderIndex = i,
-                        text = "Dies ist ein B1-Leseverständnis-Text zum Thema ${if (i % 4 == 0) "Arbeit" else if (i % 4 == 1) "Umwelt" else if (i % 4 == 2) "Gesundheit" else "Technologie"}. Der Text behandelt wichtige Aspekte des modernen Lebens. Viele Menschen beschäftigen sich mit diesen Fragen. Experten geben Ratschläge und Meinungen ab. Es ist wichtig, verschiedene Perspektiven zu berücksichtigen.",
-                        questions = listOf(
-                            Question(id = 1, question = "Was ist das Hauptthema?", options = listOf("Sport", "Arbeit", "Umwelt", "Gesellschaft"), correctAnswer = if (i % 4 == 0) "Arbeit" else if (i % 4 == 1) "Umwelt" else if (i % 4 == 2) "Gesundheit" else "Technologie", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                            Question(id = 2, question = "Wer gibt Ratschläge?", options = listOf("Kinder", "Experten", "Tiere", "Maschinen"), correctAnswer = "Experten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
-                            Question(id = 3, question = "Was sollte man berücksichtigen?", options = null, correctAnswer = "verschiedene Perspektiven", correctAnswers = null, type = QuestionType.FILL_BLANK)
-                        ),
-                        vocabulary = listOf(
-                            VocabularyItem("beschäftigen", "occupy", "Viele beschäftigen sich mit diesem Thema."),
-                            VocabularyItem("berücksichtigen", "consider", "Man sollte verschiedene Meinungen berücksichtigen."),
-                            VocabularyItem("Perspektiven", "perspectives", "Verschiedene Perspektiven sind wichtig.")
-                        ),
-                        source = if (i % 3 == 0) "Goethe" else if (i % 3 == 1) "TELC" else "ÖSD"
-                    ))
-                }
+                // Removed placeholder lessons 3-25, keeping only the first 2 quality lessons
 
-                // Add 20 more B1 lesen lessons (extended set 26–45)
-                for (i in 26..45) {
-                    lessons.add(
-                        createLesenLesson(
-                            title = "B1 Lesen Thema ${i}",
-                            description = "B1 reading comprehension practice ${i}",
-                            level = level,
-                            orderIndex = i,
-                            text = "Dies ist ein weiterer B1-Leseverständnis-Text im Stil ${if (i % 3 == 0) "Goethe" else if (i % 3 == 1) "TELC" else "ÖSD"}. Thema: ${if (i % 4 == 0) "Arbeit und Beruf" else if (i % 4 == 1) "Umwelt und Nachhaltigkeit" else if (i % 4 == 2) "Gesundheit und Lifestyle" else "Technologie und Zukunft"}. Lesen Sie aufmerksam und beantworten Sie die Fragen.",
-                            questions = listOf(
-                                Question(
-                                    id = 1,
-                                    question = "Welches Thema wird behandelt?",
-                                    options = listOf("Arbeit", "Umwelt", "Gesundheit", "Technologie"),
-                                    correctAnswer = if (i % 4 == 0) "Arbeit" else if (i % 4 == 1) "Umwelt" else if (i % 4 == 2) "Gesundheit" else "Technologie",
-                                    correctAnswers = null,
-                                    type = QuestionType.MULTIPLE_CHOICE
-                                ),
-                                Question(
-                                    id = 2,
-                                    question = "Welche Haltung vertreten die Experten?",
-                                    options = listOf("Positiv", "Negativ", "Gemischt", "Keine"),
-                                    correctAnswer = if (i % 2 == 0) "Gemischt" else "Positiv",
-                                    correctAnswers = null,
-                                    type = QuestionType.MULTIPLE_CHOICE
-                                ),
-                                Question(
-                                    id = 3,
-                                    question = "Nennen Sie einen konkreten Aspekt aus dem Text.",
-                                    options = null,
-                                    correctAnswer = if (i % 4 == 0) "flexible Arbeitszeiten" else if (i % 4 == 1) "CO2-Reduktion" else if (i % 4 == 2) "Prävention" else "Digitalisierung",
-                                    correctAnswers = null,
-                                    type = QuestionType.FILL_BLANK
-                                )
-                            ),
-                            vocabulary = listOf(
-                                VocabularyItem("Aspekt", "aspect", "Der Text behandelt einen wichtigen Aspekt."),
-                                VocabularyItem("Argument", "argument", "Gib ein starkes Argument an."),
-                                VocabularyItem("Beispiel", "example", "Führe Beispiele an.")
-                            ),
-                            source = if (i % 3 == 0) "Goethe" else if (i % 3 == 1) "TELC" else "ÖSD"
-                        )
-                    )
-                }
+                // Removed placeholder lessons 26-45, keeping only the first 2 quality lessons
+
+                // Additional full-sized B1 lessons (46–50)
+                lessons.add(createLesenLesson(
+                    title = "B1 Lesen: Nachhaltige Stadtentwicklung",
+                    description = "Urban planning, mobility and green spaces",
+                    level = level,
+                    orderIndex = 46,
+                    text = """In vielen deutschen Städten wird intensiv darüber diskutiert, wie die Lebensqualität trotz steigender Bevölkerungszahlen erhalten oder sogar verbessert werden kann. Ein zentrales Thema ist dabei die nachhaltige Stadtentwicklung. Dazu gehören unter anderem kurze Wege, gut ausgebaute Rad- und Fußwegenetze sowie ein zuverlässiger öffentlicher Nahverkehr. Gleichzeitig soll mehr Grün in die Stadt kommen – Dachgärten, Parks und Bäume an Straßen sorgen für kühlere Temperaturen im Sommer und verbessern die Luftqualität.
+
+Kritiker bemängeln jedoch, dass solche Projekte oft teuer sind und nicht alle Bewohner gleichermaßen profitieren. So werden durch neue, attraktive Viertel manchmal Mieten erhöht, was einkommensschwächere Menschen an den Stadtrand drängt. Befürworter halten dagegen, dass langfristig alle gewinnen: Weniger Staus, weniger Lärm, mehr Aufenthaltsqualität. Entscheidend ist, dass Bürger frühzeitig beteiligt werden und soziale Aspekte berücksichtigt werden.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Welches Hauptziel verfolgt nachhaltige Stadtentwicklung?", options = listOf("Schnellere Autos", "Verbesserte Lebensqualität", "Höhere Mieten", "Mehr Hochhäuser"), correctAnswer = "Verbesserte Lebensqualität", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Nennen Sie eine Maßnahme zur Abkühlung der Städte.", options = null, correctAnswer = "Dachgärten/Parks/Bäume", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 3, question = "Was kritisieren Gegner?", options = listOf("Zu viel Bürgerbeteiligung", "Zu hohe Kosten und steigende Mieten", "Zu wenig Radwege", "Zu viele Grünflächen"), correctAnswer = "Zu hohe Kosten und steigende Mieten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Nahverkehr", "public transport", "Zuverlässiger Nahverkehr reduziert Autoverkehr."),
+                        VocabularyItem("Aufenthaltsqualität", "quality of stay", "Mehr Bänke und Grün erhöhen die Aufenthaltsqualität."),
+                        VocabularyItem("Bürgerbeteiligung", "citizen participation", "Frühzeitige Bürgerbeteiligung verhindert Konflikte.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B1 Lesen: Digitale Bildung an Schulen",
+                    description = "Chancen und Risiken moderner Lernformen",
+                    level = level,
+                    orderIndex = 47,
+                    text = """Tablets im Unterricht, Lernplattformen und Videokonferenzen – die Digitalisierung hat den Schulalltag deutlich verändert. Befürworter betonen, dass digitale Tools individualisiertes Lernen ermöglichen: Schülerinnen und Schüler können in ihrem Tempo üben, erhalten sofort Feedback und haben Zugang zu vielfältigen Materialien. Außerdem bereitet der Umgang mit Technik auf die Arbeitswelt vor.
+
+Andererseits warnen Pädagogen vor Ablenkung und sozialer Ungleichheit. Nicht alle Familien können sich moderne Endgeräte leisten; auch fehlt mancherorts stabiles Internet. Entscheidend ist daher ein didaktisches Konzept: Technik soll den Unterricht sinnvoll ergänzen, nicht ersetzen. Lehrkräfte brauchen Fortbildungen, und Schulen benötigen langfristige Investitionen in Infrastruktur.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Welcher Vorteil wird genannt?", options = listOf("Mehr Hausaufgaben", "Individualisiertes Lernen", "Weniger Unterricht", "Kein Feedback"), correctAnswer = "Individualisiertes Lernen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Was ist eine genannte Herausforderung?", options = listOf("Zu viele Bücher", "Kein Interesse an Technik", "Ablenkung und ungleiche Ausstattung", "Zu kleine Klassen"), correctAnswer = "Ablenkung und ungleiche Ausstattung", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Was brauchen Lehrkräfte?", options = null, correctAnswer = "Fortbildungen", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("didaktisches Konzept", "didactic concept", "Ohne Konzept bleibt Technik wirkungslos."),
+                        VocabularyItem("Infrastruktur", "infrastructure", "Schulen benötigen zuverlässige Infrastruktur."),
+                        VocabularyItem("Ausstattung", "equipment", "Ungleiche Ausstattung kann zu Nachteilen führen.")
+                    ),
+                    source = "TELC"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B1 Lesen: Regionales Einkaufen und kurze Lieferketten",
+                    description = "Klimaschutz im Alltag",
+                    level = level,
+                    orderIndex = 48,
+                    text = """Immer mehr Menschen achten beim Einkauf auf die Herkunft ihrer Lebensmittel. Produkte aus der Region haben oft kürzere Transportwege und sind dadurch klimafreundlicher. Zudem stärken sie lokale Betriebe und sichern Arbeitsplätze. Auf Wochenmärkten lässt sich direkt mit den Erzeugern sprechen – Transparenz schafft Vertrauen.
+
+Gleichzeitig sind regionale Produkte nicht immer günstiger oder ganzjährig verfügbar. Wer nachhaltig einkaufen möchte, muss daher Kompromisse eingehen: saisonal kochen, Vorräte anlegen und bewusst planen. Manche Kommunen unterstützen dies durch Informationskampagnen und regionale Siegel.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Warum gelten regionale Produkte als klimafreundlicher?", options = listOf("Mehr Plastikverpackung", "Längere Haltbarkeit", "Kürzere Transportwege", "Bessere Werbung"), correctAnswer = "Kürzere Transportwege", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Nennen Sie einen Nachteil.", options = null, correctAnswer = "Höherer Preis/nicht ganzjährig verfügbar", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 3, question = "Was fördert das Vertrauen?", options = listOf("Anonyme Produktion", "Direkter Kontakt auf dem Markt", "Importe", "Großbetriebe"), correctAnswer = "Direkter Kontakt auf dem Markt", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("Lieferkette", "supply chain", "Kurze Lieferketten sparen CO2."),
+                        VocabularyItem("Transparenz", "transparency", "Transparenz schafft Vertrauen."),
+                        VocabularyItem("saisonal", "seasonal", "Saisonal kochen reduziert Emissionen.")
+                    ),
+                    source = "ÖSD"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B1 Lesen: Ehrenamt und gesellschaftlicher Zusammenhalt",
+                    description = "Freiwilliges Engagement in Vereinen und Initiativen",
+                    level = level,
+                    orderIndex = 49,
+                    text = """Ob in der Feuerwehr, im Sportverein oder bei der Hausaufgabenhilfe – Millionen Menschen engagieren sich in Deutschland freiwillig. Sie leisten einen wichtigen Beitrag zum gesellschaftlichen Zusammenhalt, denn sie unterstützen andere, fördern Begegnungen und stärken das Vertrauen innerhalb der Gemeinschaft. Für viele Ehrenamtliche ist die Tätigkeit zudem persönlich bereichernd: Man lernt Neues, übernimmt Verantwortung und knüpft Kontakte.
+
+Allerdings kostet freiwilliges Engagement Zeit, und nicht jede Aufgabe ist leicht. Deshalb brauchen Initiativen klare Strukturen, gute Begleitung und Wertschätzung. Kommunen und Unternehmen können Ehrenamt fördern, etwa durch Freistellungen, Fortbildungen oder kleine Budgets.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Welchen Nutzen hat Ehrenamt?", options = listOf("Nur für Unternehmen", "Fördert Zusammenhalt und hilft anderen", "Erhöht Löhne", "Reduziert Freizeit"), correctAnswer = "Fördert Zusammenhalt und hilft anderen", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Warum ist Begleitung wichtig?", options = listOf("Wegen Werbung", "Wegen Bürokratie", "Weil Aufgaben herausfordernd sein können", "Wegen Steuern"), correctAnswer = "Weil Aufgaben herausfordernd sein können", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 3, question = "Nennen Sie eine Fördermaßnahme.", options = null, correctAnswer = "Freistellungen/Fortbildungen/Budgets", correctAnswers = null, type = QuestionType.FILL_BLANK)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("gesellschaftlicher Zusammenhalt", "social cohesion", "Ehrenamt stärkt den Zusammenhalt."),
+                        VocabularyItem("Wertschätzung", "appreciation", "Wertschätzung motiviert Freiwillige."),
+                        VocabularyItem("verantwortung übernehmen", "take responsibility", "Im Ehrenamt übernimmt man Verantwortung.")
+                    ),
+                    source = "Goethe"
+                ))
+
+                lessons.add(createLesenLesson(
+                    title = "B1 Lesen: Gesundheit – Bewegung im Alltag",
+                    description = "Praktische Tipps für mehr Aktivität",
+                    level = level,
+                    orderIndex = 50,
+                    text = """Mediziner empfehlen, sich täglich mindestens 30 Minuten zu bewegen. Doch vielen Menschen fällt es schwer, Sport in den Alltag zu integrieren. Kleine Veränderungen können helfen: Treppe statt Aufzug, kurze Wege zu Fuß, das Fahrrad für Einkäufe, Pausenübungen im Büro. Wer sich mit Freunden verabredet oder feste Termine plant, bleibt eher dran.
+
+Wichtig ist, realistische Ziele zu setzen und auf den eigenen Körper zu hören. Übertreibung führt schnell zu Verletzungen und Frust. Besser sind regelmäßige, moderate Einheiten. Viele Städte bieten zudem günstige Sportangebote im Park an – ideal für Einsteiger.""",
+                    questions = listOf(
+                        Question(id = 1, question = "Wie lange sollte man sich laut Ärzten bewegen?", options = listOf("10 Minuten", "30 Minuten", "60 Minuten", "120 Minuten"), correctAnswer = "30 Minuten", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE),
+                        Question(id = 2, question = "Nennen Sie eine alltagstaugliche Maßnahme.", options = null, correctAnswer = "Treppe statt Aufzug/Fahrrad nutzen/Pausenübungen", correctAnswers = null, type = QuestionType.FILL_BLANK),
+                        Question(id = 3, question = "Was ist bei Zielen wichtig?", options = listOf("Sehr hohe Ansprüche", "Realistische Ziele", "Keine Planung", "Täglich Marathon"), correctAnswer = "Realistische Ziele", correctAnswers = null, type = QuestionType.MULTIPLE_CHOICE)
+                    ),
+                    vocabulary = listOf(
+                        VocabularyItem("moderate Einheiten", "moderate sessions", "Regelmäßige, moderate Einheiten sind gesund."),
+                        VocabularyItem("verabreden", "to arrange/meet", "Mit Freunden verabreden motiviert."),
+                        VocabularyItem("Einsteiger", "beginner", "Im Park gibt es Angebote für Einsteiger.")
+                    ),
+                    source = "TELC"
+                ))
+
             }
         }
         

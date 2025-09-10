@@ -18,6 +18,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.hellogerman.app.ui.navigation.Screen
 import com.hellogerman.app.ui.utils.ResponsiveUtils
+import com.hellogerman.app.ads.AdMobManager
+import androidx.compose.ui.platform.LocalContext
 
 /**
  * Responsive navigation that adapts to different screen sizes
@@ -55,6 +57,8 @@ private fun SideNavigation(
     currentDestination: androidx.navigation.NavDestination?,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    
     NavigationRail(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.surface,
@@ -80,6 +84,11 @@ private fun SideNavigation(
                 },
                 selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                 onClick = {
+                    // Show interstitial ad when switching between main tabs (except dashboard)
+                    if (item.route != Screen.Dashboard.route && context is android.app.Activity) {
+                        AdMobManager.showInterstitialAd(context)
+                    }
+                    
                     if (item.route == Screen.Dashboard.route) {
                         // Special handling for Home button - pop to dashboard
                         navController.popBackStack(Screen.Dashboard.route, inclusive = false)
@@ -111,6 +120,8 @@ private fun BottomNavigation(
     currentDestination: androidx.navigation.NavDestination?,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    
     NavigationBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.surface,
@@ -137,6 +148,11 @@ private fun BottomNavigation(
                 },
                 selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                 onClick = {
+                    // Show interstitial ad when switching between main tabs (except dashboard)
+                    if (item.route != Screen.Dashboard.route && context is android.app.Activity) {
+                        AdMobManager.showInterstitialAd(context)
+                    }
+                    
                     if (item.route == Screen.Dashboard.route) {
                         // Special handling for Home button - pop to dashboard
                         navController.popBackStack(Screen.Dashboard.route, inclusive = false)

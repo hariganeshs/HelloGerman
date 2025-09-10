@@ -26,6 +26,8 @@ import androidx.compose.ui.graphics.Color
 import com.hellogerman.app.ui.components.AnimatedProgressBar
 import com.hellogerman.app.ui.components.CharacterDisplay
 import com.hellogerman.app.data.entities.AnimationType
+import com.hellogerman.app.ads.AdMobManager
+import androidx.compose.ui.platform.LocalContext
 
 
 
@@ -38,6 +40,7 @@ fun ProgressScreen(
     val userProgress by mainViewModel.userProgress.collectAsState()
     val levelUnlockStatus by mainViewModel.levelUnlockStatus.collectAsState()
     val levelCompletionInfo by mainViewModel.levelCompletionInfo.collectAsState()
+    val context = LocalContext.current
 
     var progressText by remember { mutableStateOf("") }
 
@@ -45,6 +48,11 @@ fun ProgressScreen(
         levelUnlockStatus?.let {
             progressText = mainViewModel.getLevelProgressText()
         }
+    }
+    
+    // Load interstitial ad when progress screen is accessed
+    LaunchedEffect(Unit) {
+        AdMobManager.loadInterstitialAd(context)
     }
     
     Scaffold(

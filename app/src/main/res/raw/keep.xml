@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Resource shrink keep list: prevent removal/renaming of drawables referenced by name
+  via Resources.getIdentifier in LessonIllustration/CharacterDisplay.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="
+        @drawable/ic_house_illustration,
+        @drawable/ic_person_character,
+        @drawable/ic_owl_character,
+        @drawable/ic_travel_plane,
+        @drawable/ic_pretzel,
+        @drawable/ic_grammar_masculine,
+        @drawable/ic_grammar_feminine,
+        @drawable/ic_grammar_neuter
+    " />
+
+

@@ -160,6 +160,22 @@ fun LessonDetailScreen(
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
+        },
+        floatingActionButton = {
+            if (!isLoading) {
+                currentLesson?.let { lesson ->
+                    if (currentStep == 0 && (lesson.skill == "lesen" || lesson.skill == "hoeren")) {
+                        ExtendedFloatingActionButton(
+                            onClick = { currentStep = 1 },
+                            icon = { Icon(imageVector = Icons.Default.PlayArrow, contentDescription = null) },
+                            text = { Text("Start Quiz") },
+                            modifier = Modifier
+                                .navigationBarsPadding()
+                                .padding(bottom = 72.dp)
+                        )
+                    }
+                }
+            }
         }
     ) { padding ->
         if (isLoading) {
@@ -187,7 +203,8 @@ fun LessonDetailScreen(
                         .fillMaxSize()
                         .padding(padding)
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(bottom = 120.dp)
                 ) {
                     when (currentStep) {
                         0 -> {
@@ -604,7 +621,10 @@ fun LessonDetailScreen(
                                                                         userAnswers = userAnswers.toMutableMap().apply {
                                                                             put(question.id.toString(), option)
                                                                         }
-                                                                    }
+                                                                    },
+                                                                    colors = RadioButtonDefaults.colors(
+                                                                        selectedColor = MaterialTheme.colorScheme.primary
+                                                                    )
                                                                 )
                                                                 Spacer(modifier = Modifier.width(12.dp))
                                                                 Text(

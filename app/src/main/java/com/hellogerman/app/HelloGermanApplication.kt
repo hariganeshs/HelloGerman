@@ -18,6 +18,9 @@ class HelloGermanApplication : Application() {
         // Initialize AdMob
         AdMobManager.initialize(this)
         
+        // Pre-load interstitial ad for better user experience
+        AdMobManager.loadInterstitialAd(this)
+        
         // Initialize WorkManager
         WorkManager.initialize(
             this,

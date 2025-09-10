@@ -42,6 +42,19 @@ object DatabaseInitializer {
             val b1SchreibenExisting = existingLessons.count { it.level == "B1" && it.skill == "schreiben" }
             val b1SprechenExisting = existingLessons.count { it.level == "B1" && it.skill == "sprechen" }
 
+            // Detect missing reading quizzes in existing lessons (legacy data without questions)
+            val missingReadingQuizzes = try {
+                val gson = Gson()
+                val lesenSamples = existingLessons.filter { it.skill == "lesen" }.take(10)
+                lesenSamples.any { lesson ->
+                    val raw = lesson.content
+                    if (!raw.contains("\"questions\"")) true else {
+                        val parsed = try { gson.fromJson(raw, LesenContent::class.java) } catch (_: Exception) { null }
+                        parsed?.questions.isNullOrEmpty()
+                    }
+                }
+            } catch (_: Exception) { true }
+
             // Force reload if we don't have the expanded content (be more aggressive)
             val shouldForceReload = existingLessons.isEmpty() ||
                                    a1Lessons.size < 100 || // We should have 104+ A1 lessons with expanded content
@@ -49,12 +62,14 @@ object DatabaseInitializer {
                                    !existingLessons.any { it.source == "TELC" } ||
                                    !existingLessons.any { it.source == "ÖSD" } ||
                                    // Ensure expanded B1 content is present (45 per skill)
-                                   b1LesenExisting < 40 ||
+                                   b1LesenExisting < 40 || // ensure full B1 lesen set
                                    b1HoerenExisting < 40 ||
                                    b1SchreibenExisting < 40 ||
                                    b1SprechenExisting < 40 ||
                                    // Check total lesson count - should be around 1053 with expanded content
-                                   existingLessons.size < 900
+                                   existingLessons.size < 900 ||
+                                   // Ensure reading lessons include quizzes
+                                   missingReadingQuizzes
 
             if (shouldForceReload) {
                 // Clear existing lessons and reload with expanded content

@@ -48,6 +48,7 @@ import androidx.compose.material.icons.filled.Translate
 import androidx.compose.ui.res.stringResource
 import com.hellogerman.app.R
 import com.hellogerman.app.ads.BannerAd1
+import com.hellogerman.app.ads.AdMobManager
 import com.hellogerman.app.data.DatabaseInitializer
 import com.hellogerman.app.utils.NetworkUtils
 import com.hellogerman.app.ui.utils.ResponsiveUtils
@@ -59,6 +60,7 @@ fun DashboardScreen(
     mainViewModel: MainViewModel = viewModel()
 ) {
     val userProgress by mainViewModel.userProgress.collectAsState()
+    val context = LocalContext.current
     
     LazyColumn(
         modifier = Modifier
@@ -129,6 +131,10 @@ fun DashboardScreen(
             SkillsProgressSection(
                 userProgress = userProgress,
                 onSkillClick = { skill ->
+                    // Show interstitial ad before navigating to lesson screen
+                    if (context is android.app.Activity) {
+                        AdMobManager.showInterstitialAd(context)
+                    }
                     navController.navigate(skill)
                 }
             )
@@ -145,7 +151,7 @@ fun DashboardScreen(
         }
         
         item {
-            QuickActionsSection(navController)
+            QuickActionsSection(navController, context)
         }
         
         item {
@@ -322,7 +328,7 @@ fun SkillProgressCard(
 }
 
 @Composable
-fun QuickActionsSection(navController: NavController) {
+fun QuickActionsSection(navController: NavController, context: android.content.Context) {
     val quickActions = listOf(
         QuickAction("Dictionary", Icons.Default.Translate, "dictionary"),
         QuickAction("Achievements", Icons.Default.EmojiEvents, "gamification"),
@@ -341,7 +347,13 @@ fun QuickActionsSection(navController: NavController) {
             quickActions.take(2).forEach { action ->
                 QuickActionCard(
                     action = action,
-                    onClick = { navController.navigate(action.route) },
+                    onClick = { 
+                        // Show interstitial ad before navigating to quick action
+                        if (context is android.app.Activity) {
+                            AdMobManager.showInterstitialAd(context)
+                        }
+                        navController.navigate(action.route) 
+                    },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -355,7 +367,13 @@ fun QuickActionsSection(navController: NavController) {
             quickActions.drop(2).forEach { action ->
                 QuickActionCard(
                     action = action,
-                    onClick = { navController.navigate(action.route) },
+                    onClick = { 
+                        // Show interstitial ad before navigating to quick action
+                        if (context is android.app.Activity) {
+                            AdMobManager.showInterstitialAd(context)
+                        }
+                        navController.navigate(action.route) 
+                    },
                     modifier = Modifier.weight(1f)
                 )
             }

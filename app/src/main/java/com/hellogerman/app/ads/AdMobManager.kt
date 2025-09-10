@@ -108,14 +108,24 @@ fun BannerAd(
     val context = LocalContext.current
     var adLoaded by remember { mutableStateOf(false) }
     var adError by remember { mutableStateOf<String?>(null) }
+    var adViewInitError by remember { mutableStateOf<String?>(null) }
     val adView = remember {
-        AdView(context).apply {
-            setAdSize(AdSize.BANNER)
-            this.adUnitId = adUnitId
+        try {
+            AdView(context).apply {
+                setAdSize(AdSize.BANNER)
+                this.adUnitId = adUnitId
+            }
+        } catch (t: Throwable) {
+            Log.e("AdMobManager", "Failed to create AdView", t)
+            adViewInitError = t.message ?: "Ad init error"
+            null
         }
     }
     
     DisposableEffect(adUnitId) {
+        if (adView == null) {
+            return@DisposableEffect onDispose { }
+        }
         adView.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 Log.d("AdMobManager", "Banner ad loaded successfully: $adUnitId")
@@ -138,24 +148,33 @@ fun BannerAd(
             }
         }
 
-        adView.loadAd(AdRequest.Builder().build())
-        Log.d("AdMobManager", "Loading banner ad with ID: $adUnitId")
+        try {
+            adView.loadAd(AdRequest.Builder().build())
+            Log.d("AdMobManager", "Loading banner ad with ID: $adUnitId")
+        } catch (t: Throwable) {
+            Log.e("AdMobManager", "AdView loadAd crashed", t)
+            adError = t.message
+        }
 
         onDispose {
-            adView.destroy()
+            try { adView.destroy() } catch (_: Throwable) {}
         }
     }
     
-    AndroidView(
-        modifier = modifier,
-        factory = { adView },
-        update = { adView ->
-            // Update if needed
-        }
-    )
+    if (adView != null) {
+        AndroidView(
+            modifier = modifier,
+            factory = { adView },
+            update = { _ -> }
+        )
+    }
     
     // Show loading or error state overlay
-    if (!adLoaded && adError == null) {
+    if (adViewInitError != null) {
+        Box(modifier = modifier, contentAlignment = Alignment.Center) {
+            Text(text = "Ad init error", fontSize = 12.sp, color = androidx.compose.ui.graphics.Color.Gray)
+        }
+    } else if (!adLoaded && adError == null) {
         Box(
             modifier = modifier,
             contentAlignment = Alignment.Center
