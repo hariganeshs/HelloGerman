@@ -342,9 +342,13 @@ fun HelloGermanTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            // Use WindowCompat for status bar handling instead of deprecated statusBarColor
+            // Modern edge-to-edge implementation for Android 15 compatibility
             WindowCompat.setDecorFitsSystemWindows(window, false)
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            
+            // Handle system bar appearance using WindowInsetsController
+            val insetsController = WindowCompat.getInsetsController(window, view)
+            insetsController.isAppearanceLightStatusBars = !darkTheme
+            insetsController.isAppearanceLightNavigationBars = !darkTheme
         }
     }
 

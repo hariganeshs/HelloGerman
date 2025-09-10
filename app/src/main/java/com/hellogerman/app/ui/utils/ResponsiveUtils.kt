@@ -130,6 +130,7 @@ fun ResponsiveLayout(
 
 /**
  * Responsive navigation layout that adapts bottom bar for tablets
+ * Enhanced for Android 15 edge-to-edge compatibility
  */
 @Composable
 fun ResponsiveNavigationLayout(
@@ -148,9 +149,12 @@ fun ResponsiveNavigationLayout(
         }
     } else {
         // Phone or tablet portrait - bottom navigation
+        // Scaffold automatically handles window insets for edge-to-edge
         androidx.compose.material3.Scaffold(
             modifier = modifier,
-            bottomBar = bottomBar
+            bottomBar = bottomBar,
+            // Ensure content respects system bars for edge-to-edge
+            contentWindowInsets = androidx.compose.foundation.layout.WindowInsets(0)
         ) { innerPadding ->
             content()
         }

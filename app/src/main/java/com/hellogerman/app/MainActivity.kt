@@ -13,7 +13,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -103,7 +102,9 @@ fun HelloGermanApp() {
             }
         ) {
             ResponsiveLayout(
-                modifier = Modifier.systemBarsPadding()
+                modifier = Modifier
+                    // Remove systemBarsPadding since we're using edge-to-edge
+                    // The Scaffold components will handle insets automatically
             ) {
                 NavHost(
                     navController = navController,

@@ -2,12 +2,10 @@
 <resources>
 
     <style name="Theme.HelloGerman" parent="android:Theme.Material.NoActionBar">
-        <!-- Edge-to-edge support for Android 15 - Dark theme -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
-        <item name="android:enforceStatusBarContrast">false</item>
-        <item name="android:enforceNavigationBarContrast">false</item>
+        <!-- Edge-to-edge support for Android 15 - Dark theme - Modern approach -->
+        <!-- Removed deprecated attributes: statusBarColor, navigationBarColor, 
+             windowLightStatusBar, windowLightNavigationBar, 
+             enforceStatusBarContrast, enforceNavigationBarContrast -->
+        <!-- These are now handled programmatically via WindowCompat in Theme.kt -->
     </style>
 </resources>
