@@ -380,7 +380,7 @@ fun SettingsScreen(
                                         }
                                     } catch (e: Exception) { null }
                                 }
-                                val versionDisplay = versionName?.takeIf { it.isNotBlank() } ?: "1.1.1"
+                                val versionDisplay = versionName?.takeIf { it.isNotBlank() } ?: "1.1.3"
                                 Text(
                                     text = "Version $versionDisplay",
                                     fontSize = 14.sp,
