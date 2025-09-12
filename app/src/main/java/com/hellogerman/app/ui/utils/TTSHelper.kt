@@ -24,6 +24,7 @@ class TTSHelper(private val context: Context) : TextToSpeech.OnInitListener {
     companion object {
         private const val TAG = "TTSHelper"
         private const val GERMAN_LANGUAGE_CODE = "de"
+        private const val ENGLISH_LANGUAGE_CODE = "en"
         private const val DEFAULT_SPEECH_RATE = 0.8f
         private const val DEFAULT_PITCH = 1.0f
     }
@@ -44,22 +45,22 @@ class TTSHelper(private val context: Context) : TextToSpeech.OnInitListener {
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             tts?.let { textToSpeech ->
-                // Set German as the language
-                val result = textToSpeech.setLanguage(Locale.GERMAN)
-                
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Log.w(TAG, "German language not supported, falling back to default")
-                    // Try alternative German locales
-                    val altResult = textToSpeech.setLanguage(Locale.Builder().setLanguage("de").setRegion("DE").build())
-                    if (altResult == TextToSpeech.LANG_MISSING_DATA || altResult == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Log.e(TAG, "German language not available")
+                // Try to set German as default language
+                val germanResult = textToSpeech.setLanguage(Locale.GERMAN)
+
+                if (germanResult == TextToSpeech.LANG_MISSING_DATA || germanResult == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.w(TAG, "German language not supported, trying English as default")
+                    // Try English if German is not available
+                    val englishResult = textToSpeech.setLanguage(Locale.ENGLISH)
+                    if (englishResult == TextToSpeech.LANG_MISSING_DATA || englishResult == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e(TAG, "Neither German nor English language available")
                     }
                 }
-                
+
                 // Configure speech parameters
                 textToSpeech.setSpeechRate(DEFAULT_SPEECH_RATE)
                 textToSpeech.setPitch(DEFAULT_PITCH)
-                
+
                 _isInitialized.value = true
                 Log.d(TAG, "TTS initialized successfully")
             }
@@ -118,6 +119,64 @@ class TTSHelper(private val context: Context) : TextToSpeech.OnInitListener {
         tts?.setSpeechRate(0.5f) // Slower for pronunciation learning
         speakGerman(word)
         // Reset to normal speed after a delay
+        tts?.setSpeechRate(DEFAULT_SPEECH_RATE)
+    }
+
+    /**
+     * Speak the given English text
+     */
+    fun speakEnglish(text: String) {
+        if (!_isInitialized.value || text.isBlank()) {
+            Log.w(TAG, "TTS not initialized or empty text")
+            return
+        }
+
+        tts?.let { textToSpeech ->
+            // Set English language
+            val result = textToSpeech.setLanguage(Locale.ENGLISH)
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.w(TAG, "English language not supported, using current language")
+            }
+
+            _isPlaying.value = true
+
+            val speakResult = textToSpeech.speak(
+                text,
+                TextToSpeech.QUEUE_FLUSH,
+                null,
+                "TTS_ENGLISH_UTTERANCE_ID"
+            )
+
+            if (speakResult == TextToSpeech.ERROR) {
+                Log.e(TAG, "Failed to speak English text: $text")
+                _isPlaying.value = false
+            } else {
+                // Set up listener to track when speaking finishes
+                textToSpeech.setOnUtteranceProgressListener(object : android.speech.tts.UtteranceProgressListener() {
+                    override fun onStart(utteranceId: String?) {
+                        _isPlaying.value = true
+                    }
+
+                    override fun onDone(utteranceId: String?) {
+                        _isPlaying.value = false
+                    }
+
+                    override fun onError(utteranceId: String?) {
+                        _isPlaying.value = false
+                        Log.e(TAG, "TTS error for English utteranceId: $utteranceId")
+                    }
+                })
+            }
+        }
+    }
+
+    /**
+     * Speak an English word with slower speed for learning
+     */
+    fun speakEnglishSlowly(word: String) {
+        tts?.setSpeechRate(0.5f) // Slower for pronunciation learning
+        speakEnglish(word)
+        // Reset to normal speed
         tts?.setSpeechRate(DEFAULT_SPEECH_RATE)
     }
     

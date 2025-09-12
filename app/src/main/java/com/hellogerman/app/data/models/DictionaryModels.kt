@@ -248,3 +248,54 @@ data class CachedDictionaryEntry(
     val result: DictionarySearchResult,
     val timestamp: Long = System.currentTimeMillis()
 )
+
+/**
+ * English Dictionary API response models (Free Dictionary API)
+ */
+data class EnglishWordDefinition(
+    val word: String,
+    val phonetic: String? = null,
+    val phonetics: List<Phonetic>? = null,
+    val meanings: List<EnglishMeaning>,
+    val license: License? = null,
+    val sourceUrls: List<String>? = null
+)
+
+data class Phonetic(
+    val text: String? = null,
+    val audio: String? = null,
+    val sourceUrl: String? = null,
+    val license: License? = null
+)
+
+data class EnglishMeaning(
+    val partOfSpeech: String,
+    val definitions: List<EnglishDefinition>,
+    val synonyms: List<String>? = null,
+    val antonyms: List<String>? = null
+)
+
+data class EnglishDefinition(
+    val definition: String,
+    val synonyms: List<String>? = null,
+    val antonyms: List<String>? = null,
+    val example: String? = null
+)
+
+data class License(
+    val name: String,
+    val url: String
+)
+
+/**
+ * LibreTranslate API response models
+ */
+data class LibreTranslateResponse(
+    val translatedText: String,
+    val detectedLanguage: DetectedLanguage? = null
+)
+
+data class DetectedLanguage(
+    val confidence: Double,
+    val language: String
+)

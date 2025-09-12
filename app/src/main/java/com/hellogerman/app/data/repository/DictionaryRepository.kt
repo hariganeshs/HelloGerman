@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.hellogerman.app.data.api.*
+import com.hellogerman.app.data.api.LibreTranslateRequest
+import com.hellogerman.app.data.models.EnglishWordDefinition
 import com.hellogerman.app.data.models.*
 import com.hellogerman.app.data.parser.WiktionaryParser
 import com.hellogerman.app.data.conjugation.GermanVerbConjugator
@@ -33,6 +35,8 @@ class DictionaryRepository(private val context: Context) {
     private val verbApiService: GermanVerbApiService by lazy { createVerbApiService() }
     private val thesaurusApiService: OpenThesaurusApiService by lazy { createThesaurusApiService() }
     private val reversoApiService: ReversoApiService by lazy { createReversoApiService() }
+    private val englishDictionaryApiService: EnglishDictionaryApiService by lazy { createEnglishDictionaryApiService() }
+    private val libreTranslateApiService: LibreTranslateApiService by lazy { createLibreTranslateApiService() }
     
     private fun createHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -66,7 +70,7 @@ class DictionaryRepository(private val context: Context) {
     
     private fun createWiktionaryApiService(): WiktionaryApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl(WiktionaryApiService.BASE_URL)
+            .baseUrl("https://en.wiktionary.org/") // Default base URL, will be overridden by @Url parameter
             .client(createHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -98,6 +102,24 @@ class DictionaryRepository(private val context: Context) {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(ReversoApiService::class.java)
+    }
+
+    private fun createEnglishDictionaryApiService(): EnglishDictionaryApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(EnglishDictionaryApiService.BASE_URL)
+            .client(createHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(EnglishDictionaryApiService::class.java)
+    }
+
+    private fun createLibreTranslateApiService(): LibreTranslateApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(LibreTranslateApiService.BASE_URL)
+            .client(createHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(LibreTranslateApiService::class.java)
     }
     
     /**
@@ -132,58 +154,99 @@ class DictionaryRepository(private val context: Context) {
                 }
                 
                 // Launch parallel API calls for comprehensive data
-                // Only call verb API if word is likely a verb
-                val isLikelyVerb = GermanVerbConjugator.isLikelyVerb(request.word) ||
-                                   GermanDictionary.getWordEntry(request.word)?.wordType == "verb"
+                // Only call verb API if word is likely a verb and we're dealing with German
+                val isLikelyVerb = (request.fromLang == "de" || request.fromLang == "german") &&
+                                   (GermanVerbConjugator.isLikelyVerb(request.word) ||
+                                    GermanDictionary.getWordEntry(request.word)?.wordType == "verb")
 
                 // Enhanced parallel API calls with better error handling
                 val deferredResults = listOf(
-                    async { getWiktionaryData(request.word) },
+                    async { getWiktionaryData(request) },
+                    async { getEnglishWordData(request) },
                     async { getReversoExamples(request) },
                     if (isLikelyVerb) async { getVerbConjugations(request.word) } else async { null },
-                    async { getSynonyms(request.word) },
+                    async { getSynonyms(request) },
                     async { getBasicTranslation(request) }
                 )
 
                 val results = deferredResults.awaitAll()
                 val wiktionaryResult = results[0] as? DictionarySearchResult
-                val reversoExamples = results[1] as? List<Example> ?: emptyList()
-                val conjugations = if (isLikelyVerb) results[2] as? VerbConjugations else null
-                val synonyms = results[3] as? List<String> ?: emptyList()
-                val basicTranslation = results[4] as? List<String> ?: emptyList()
+                val englishWordResult = results[1] as? DictionarySearchResult
+                val reversoExamples = results[2] as? List<Example> ?: emptyList()
+                val conjugations = if (isLikelyVerb) results[3] as? VerbConjugations else null
+                val synonyms = results[4] as? List<String> ?: emptyList()
+                val basicTranslation = results[5] as? List<String> ?: emptyList()
                 
 
-                
+
                 // Combine all results with guaranteed offline fallback
                 val offlineEntry = GermanDictionary.getWordEntry(request.word)
 
-                // Merge examples from all sources
-                val allExamples = mutableListOf<Example>()
-                allExamples.addAll(wiktionaryResult?.examples ?: emptyList())
-                allExamples.addAll(reversoExamples)
-                if (allExamples.isEmpty()) {
-                    allExamples.addAll(offlineEntry?.examples ?: emptyList())
+                // Choose the best result based on language and availability
+                // For English searches, prefer Wiktionary (which has German sections) over English-only API
+                val primaryResult = when (request.fromLang.lowercase()) {
+                    "en", "english" -> {
+                        // For English words, prefer Wiktionary which has German translations and examples
+                        // Only use English API as fallback if Wiktionary fails
+                        wiktionaryResult ?: englishWordResult
+                    }
+                    else -> wiktionaryResult ?: englishWordResult
                 }
+
+                // Merge examples from all sources, prioritizing translated examples
+                val allExamples = mutableListOf<Example>()
+
+                // For English to German searches, only include examples that have translations
+                val isEnglishToGerman = request.fromLang.lowercase() in listOf("en", "english") &&
+                                       request.toLang.lowercase() in listOf("de", "german")
+
+                if (isEnglishToGerman) {
+                    // Only include examples with translations for English-to-German searches
+                    allExamples.addAll(reversoExamples.filter { it.translation != null })
+                    allExamples.addAll(primaryResult?.examples?.filter { it.translation != null } ?: emptyList())
+                    allExamples.addAll(wiktionaryResult?.examples?.filter { it.translation != null } ?: emptyList())
+                    allExamples.addAll(englishWordResult?.examples?.filter { it.translation != null } ?: emptyList())
+
+                    // If we still don't have examples, fall back to offline German examples
+                    if (allExamples.isEmpty()) {
+                        allExamples.addAll(offlineEntry?.examples ?: emptyList())
+                    }
+                } else {
+                    // For other language combinations, include all examples
+                    allExamples.addAll(reversoExamples)
+                    allExamples.addAll(primaryResult?.examples ?: emptyList())
+                    allExamples.addAll(wiktionaryResult?.examples ?: emptyList())
+                    allExamples.addAll(englishWordResult?.examples ?: emptyList())
+                    if (allExamples.isEmpty()) {
+                        allExamples.addAll(offlineEntry?.examples ?: emptyList())
+                    }
+                }
+
+                // Merge synonyms from all sources
+                val allSynonyms = mutableListOf<String>()
+                allSynonyms.addAll(primaryResult?.synonyms ?: emptyList())
+                allSynonyms.addAll(synonyms)
+                val mergedSynonyms = allSynonyms.distinct()
 
                 val combinedResult = DictionarySearchResult(
                     originalWord = request.word,
                     translations = basicTranslation,
                     fromLanguage = request.fromLang,
                     toLanguage = request.toLang,
-                    hasResults = wiktionaryResult?.hasResults == true || basicTranslation.isNotEmpty() ||
+                    hasResults = primaryResult?.hasResults == true || basicTranslation.isNotEmpty() ||
                                 reversoExamples.isNotEmpty() || offlineEntry != null,
-                    definitions = (wiktionaryResult?.definitions ?: emptyList()).ifEmpty {
+                    definitions = (primaryResult?.definitions ?: emptyList()).ifEmpty {
                         offlineEntry?.definitions ?: emptyList()
                     },
                     examples = allExamples.distinctBy { it.sentence }, // Remove duplicates
-                    synonyms = synonyms,
-                    pronunciation = wiktionaryResult?.pronunciation,
+                    synonyms = mergedSynonyms,
+                    pronunciation = primaryResult?.pronunciation ?: wiktionaryResult?.pronunciation,
                     conjugations = conjugations ?: if (offlineEntry?.wordType == "verb") {
                         GermanVerbConjugator.getConjugation(request.word)
                     } else null,
-                    etymology = wiktionaryResult?.etymology,
-                    wordType = wiktionaryResult?.wordType ?: offlineEntry?.wordType,
-                    gender = wiktionaryResult?.gender ?: offlineEntry?.gender
+                    etymology = primaryResult?.etymology ?: wiktionaryResult?.etymology,
+                    wordType = primaryResult?.wordType ?: offlineEntry?.wordType,
+                    gender = primaryResult?.gender ?: offlineEntry?.gender
                 )
                 
                 // Cache result
@@ -204,38 +267,42 @@ class DictionaryRepository(private val context: Context) {
     /**
      * Get comprehensive word data from Wiktionary with offline fallback
      */
-    private suspend fun getWiktionaryData(word: String): DictionarySearchResult? {
+    private suspend fun getWiktionaryData(request: DictionarySearchRequest): DictionarySearchResult? {
         return try {
+            // Get the appropriate Wiktionary base URL for the source language
+            val baseUrl = WiktionaryApiService.getBaseUrlForLanguage(request.fromLang)
+            val apiUrl = WiktionaryApiService.createApiUrl(baseUrl)
+
             // Try Wiktionary API first
-            val response = wiktionaryApiService.getWordDefinition(page = word)
+            val response = wiktionaryApiService.getWordDefinition(url = apiUrl, page = request.word)
             if (response.isSuccessful) {
                 val wikitext = response.body()?.parse?.wikitext?.content
                 if (wikitext != null) {
-                    wiktionaryParser.parseWiktionaryContent(word, wikitext)
+                    wiktionaryParser.parseWiktionaryContent(request.word, wikitext, request.fromLang)
                 } else {
                     // Use offline dictionary as fallback
-                    createOfflineResult(word)
+                    createOfflineResult(request.word, request.fromLang, request.toLang)
                 }
             } else {
                 // Use offline dictionary for 403/404 errors
-                createOfflineResult(word)
+                createOfflineResult(request.word, request.fromLang, request.toLang)
             }
         } catch (e: Exception) {
             // Use offline dictionary on any error
-            createOfflineResult(word)
+            createOfflineResult(request.word, request.fromLang, request.toLang)
         }
     }
     
     /**
      * Create result from offline dictionary
      */
-    private fun createOfflineResult(word: String): DictionarySearchResult? {
+    private fun createOfflineResult(word: String, fromLang: String, toLang: String): DictionarySearchResult? {
         val entry = GermanDictionary.getWordEntry(word)
         return if (entry != null) {
             DictionarySearchResult(
                 originalWord = word,
-                fromLanguage = "de",
-                toLanguage = "en", 
+                fromLanguage = fromLang,
+                toLanguage = toLang,
                 hasResults = true,
                 definitions = entry.definitions,
                 examples = entry.examples,
@@ -265,47 +332,187 @@ class DictionaryRepository(private val context: Context) {
     }
     
     /**
-     * Get synonyms from OpenThesaurus
+     * Get synonyms from appropriate thesaurus service based on language
      */
-    private suspend fun getSynonyms(word: String): List<String> {
+    private suspend fun getSynonyms(request: DictionarySearchRequest): List<String> {
         return try {
-            val response = thesaurusApiService.getSynonyms(word)
+            when (request.fromLang.lowercase()) {
+                "de", "german" -> {
+                    // Use OpenThesaurus for German words
+                    val response = thesaurusApiService.getSynonyms(request.word)
+                    if (response.isSuccessful) {
+                        val synonyms = mutableListOf<String>()
+                        response.body()?.synsets?.forEach { synset ->
+                            synset.terms.forEach { term ->
+                                if (term.term != request.word && !synonyms.contains(term.term)) {
+                                    synonyms.add(term.term)
+                                }
+                            }
+                        }
+                        synonyms.take(10) // Limit to 10 synonyms
+                    } else emptyList()
+                }
+                "en", "english" -> {
+                    // Get synonyms from English Dictionary API
+                    getEnglishSynonyms(request.word)
+                }
+                else -> emptyList()
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    /**
+     * Get comprehensive English word definitions and related data
+     */
+    private suspend fun getEnglishWordData(request: DictionarySearchRequest): DictionarySearchResult? {
+        return try {
+            val response = englishDictionaryApiService.getWordDefinition(request.word)
+            if (response.isSuccessful) {
+                val definitions = response.body()
+                if (!definitions.isNullOrEmpty()) {
+                    convertEnglishApiResponseToDictionaryResult(definitions.first(), request)
+                } else null
+            } else null
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * Get English synonyms from the English Dictionary API
+     */
+    private suspend fun getEnglishSynonyms(word: String): List<String> {
+        return try {
+            val response = englishDictionaryApiService.getWordDefinition(word)
             if (response.isSuccessful) {
                 val synonyms = mutableListOf<String>()
-                response.body()?.synsets?.forEach { synset ->
-                    synset.terms.forEach { term ->
-                        if (term.term != word && !synonyms.contains(term.term)) {
-                            synonyms.add(term.term)
+                response.body()?.forEach { definition ->
+                    definition.meanings.forEach { meaning ->
+                        meaning.synonyms?.let { synonyms.addAll(it) }
+                        meaning.definitions.forEach { def ->
+                            def.synonyms?.let { synonyms.addAll(it) }
                         }
                     }
                 }
-                synonyms.take(10) // Limit to 10 synonyms
+                synonyms.distinct().take(10)
             } else emptyList()
         } catch (e: Exception) {
             emptyList()
         }
     }
+
+    /**
+     * Convert English Dictionary API response to our DictionarySearchResult format
+     * For English-to-German searches, we skip examples since they won't have German translations
+     */
+    private fun convertEnglishApiResponseToDictionaryResult(
+        englishDefinition: EnglishWordDefinition,
+        request: DictionarySearchRequest
+    ): DictionarySearchResult {
+        val definitions = mutableListOf<Definition>()
+        val examples = mutableListOf<Example>()
+        val synonyms = mutableListOf<String>()
+
+        englishDefinition.meanings.forEach { meaning ->
+            // Convert definitions
+            meaning.definitions.forEach { def ->
+                definitions.add(Definition(
+                    meaning = def.definition,
+                    partOfSpeech = meaning.partOfSpeech,
+                    context = null,
+                    level = null
+                ))
+
+                // Only add examples if we're searching within English (English to English)
+                // For English to German searches, skip examples as they won't have translations
+                if (request.toLang.lowercase() in listOf("en", "english")) {
+                    def.example?.let { example ->
+                        examples.add(Example(
+                            sentence = example,
+                            source = "Free Dictionary API"
+                        ))
+                    }
+                }
+
+                // Collect synonyms
+                def.synonyms?.let { synonyms.addAll(it) }
+            }
+
+            // Collect synonyms from meaning level
+            meaning.synonyms?.let { synonyms.addAll(it) }
+        }
+
+        // Get pronunciation
+        val pronunciation = englishDefinition.phonetic?.let { phonetic ->
+            Pronunciation(
+                ipa = phonetic,
+                audioUrl = englishDefinition.phonetics?.firstOrNull()?.audio,
+                region = "English"
+            )
+        }
+
+        return DictionarySearchResult(
+            originalWord = englishDefinition.word,
+            fromLanguage = request.fromLang,
+            toLanguage = request.toLang,
+            hasResults = definitions.isNotEmpty(),
+            definitions = definitions.take(5),
+            examples = examples.take(5),
+            synonyms = synonyms.distinct().take(8),
+            pronunciation = pronunciation,
+            wordType = englishDefinition.meanings.firstOrNull()?.partOfSpeech
+        )
+    }
     
     /**
-     * Get basic translation from MyMemory API (fallback)
+     * Get basic translation from multiple APIs (MyMemory + LibreTranslate as fallback)
      */
     private suspend fun getBasicTranslation(request: DictionarySearchRequest): List<String> {
-        return try {
+        val translations = mutableListOf<String>()
+
+        // Try MyMemory API first
+        try {
             val langPair = TranslationApiService.createLanguagePair(request.fromLang, request.toLang)
             val response = translationApiService.getTranslation(
                 query = request.word,
                 langPair = langPair
             )
-            
+
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null && body.responseStatus == 200) {
-                    extractTranslations(body)
-                } else emptyList()
-            } else emptyList()
+                    translations.addAll(extractTranslations(body))
+                }
+            }
         } catch (e: Exception) {
-            emptyList()
+            // MyMemory failed, continue to LibreTranslate
         }
+
+        // Try LibreTranslate as fallback if MyMemory didn't work or returned few results
+        if (translations.size < 3) {
+            try {
+                val libreResponse = libreTranslateApiService.translate(
+                    LibreTranslateRequest(
+                        q = request.word,
+                        source = request.fromLang,
+                        target = request.toLang
+                    )
+                )
+
+                if (libreResponse.isSuccessful) {
+                    val translatedText = libreResponse.body()?.translatedText
+                    if (!translatedText.isNullOrBlank() && !translations.contains(translatedText)) {
+                        translations.add(translatedText)
+                    }
+                }
+            } catch (e: Exception) {
+                // Both translation services failed
+            }
+        }
+
+        return translations.take(8)
     }
     
     /**

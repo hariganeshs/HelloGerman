@@ -104,7 +104,7 @@ class WiktionaryParser {
     /**
      * Parse Wiktionary wikitext content and extract dictionary information
      */
-    fun parseWiktionaryContent(word: String, wikitext: String): DictionarySearchResult {
+    fun parseWiktionaryContent(word: String, wikitext: String, language: String = "de"): DictionarySearchResult {
         return try {
             val definitions = extractDefinitions(wikitext)
             val examples = extractExamples(wikitext)
@@ -112,22 +112,29 @@ class WiktionaryParser {
             val pronunciation = extractPronunciation(wikitext)
             val synonyms = extractSynonyms(wikitext)
             val wordType = extractWordType(wikitext)
-            val gender = extractGender(wikitext)
-            
+            val gender = if (language.lowercase() in listOf("de", "german")) extractGender(wikitext) else null
+
             // Enhanced extraction - try simpler patterns if main ones fail
             val enhancedDefinitions = if (definitions.isEmpty()) {
                 extractSimpleDefinitions(wikitext)
             } else definitions
-            
+
             val enhancedExamples = if (examples.isEmpty()) {
                 extractSimpleExamples(wikitext)
             } else examples
-            
+
+            // Determine target language based on source language
+            val targetLang = when (language.lowercase()) {
+                "de", "german" -> "en"
+                "en", "english" -> "de"
+                else -> "en" // Default fallback
+            }
+
             DictionarySearchResult(
                 originalWord = word,
-                fromLanguage = "de",
-                toLanguage = "en",
-                hasResults = enhancedDefinitions.isNotEmpty() || enhancedExamples.isNotEmpty() || 
+                fromLanguage = language,
+                toLanguage = targetLang,
+                hasResults = enhancedDefinitions.isNotEmpty() || enhancedExamples.isNotEmpty() ||
                            synonyms.isNotEmpty() || pronunciation != null,
                 definitions = enhancedDefinitions,
                 examples = enhancedExamples,
@@ -141,11 +148,18 @@ class WiktionaryParser {
             // Even on parsing error, try basic extraction
             val basicDefinitions = extractSimpleDefinitions(wikitext)
             val basicExamples = extractSimpleExamples(wikitext)
-            
+
+            // Determine target language based on source language
+            val targetLang = when (language.lowercase()) {
+                "de", "german" -> "en"
+                "en", "english" -> "de"
+                else -> "en" // Default fallback
+            }
+
             DictionarySearchResult(
                 originalWord = word,
-                fromLanguage = "de",
-                toLanguage = "en",
+                fromLanguage = language,
+                toLanguage = targetLang,
                 hasResults = basicDefinitions.isNotEmpty() || basicExamples.isNotEmpty(),
                 definitions = basicDefinitions,
                 examples = basicExamples

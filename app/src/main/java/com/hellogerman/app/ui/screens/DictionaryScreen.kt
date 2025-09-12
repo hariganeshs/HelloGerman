@@ -141,7 +141,7 @@ fun DictionaryScreen(
                 }
 
                 // TTS Controls
-                if (searchQuery.isNotEmpty() && fromLanguage == "de" && isTTSInitialized) {
+                if (searchQuery.isNotEmpty() && (fromLanguage == "de" || fromLanguage == "en") && isTTSInitialized) {
                     IconButton(
                         onClick = { 
                             if (isTTSPlaying) {

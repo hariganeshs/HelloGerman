@@ -141,27 +141,37 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
      */
     fun speakWord() {
         val word = _searchQuery.value.trim()
-        if (word.isNotEmpty() && _fromLanguage.value == "de") {
-            ttsHelper.speakGerman(word)
+        if (word.isNotEmpty()) {
+            when (_fromLanguage.value.lowercase()) {
+                "de", "german" -> ttsHelper.speakGerman(word)
+                "en", "english" -> ttsHelper.speakEnglish(word)
+                else -> ttsHelper.speakGerman(word) // Default to German
+            }
         }
     }
-    
+
     /**
      * Speak word slowly for pronunciation learning
      */
     fun speakWordSlowly() {
         val word = _searchQuery.value.trim()
-        if (word.isNotEmpty() && _fromLanguage.value == "de") {
-            ttsHelper.speakWordSlowly(word)
+        if (word.isNotEmpty()) {
+            when (_fromLanguage.value.lowercase()) {
+                "de", "german" -> ttsHelper.speakWordSlowly(word)
+                "en", "english" -> ttsHelper.speakEnglishSlowly(word)
+                else -> ttsHelper.speakWordSlowly(word) // Default to German
+            }
         }
     }
-    
+
     /**
      * Speak an example sentence
      */
     fun speakExample(text: String) {
-        if (_fromLanguage.value == "de") {
-            ttsHelper.speakGerman(text)
+        when (_fromLanguage.value.lowercase()) {
+            "de", "german" -> ttsHelper.speakGerman(text)
+            "en", "english" -> ttsHelper.speakEnglish(text)
+            else -> ttsHelper.speakGerman(text) // Default to German
         }
     }
     
