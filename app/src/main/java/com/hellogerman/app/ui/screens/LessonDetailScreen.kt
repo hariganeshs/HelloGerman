@@ -111,10 +111,14 @@ fun LessonDetailScreen(
                     }
                 } ?: false
             }
-                                                                else -> {
-                                                        // Default case-insensitive comparison for open text questions
-                                                        userAnswer?.trim()?.lowercase() == question.correctAnswer.trim().lowercase()
-                                                    }
+            QuestionType.OPEN_ENDED -> {
+                // Case-insensitive and trimmed comparison for open-ended text answers
+                userAnswer?.trim()?.lowercase() == question.correctAnswer.trim().lowercase()
+            }
+            else -> {
+                // Default case-insensitive comparison for other text questions
+                userAnswer?.trim()?.lowercase() == question.correctAnswer.trim().lowercase()
+            }
         }
     }
 
@@ -738,6 +742,23 @@ fun LessonDetailScreen(
                                                             }
                                                         }
                                                     } ?: Text("Matching items not available", color = MaterialTheme.colorScheme.error)
+                                                }
+                                                QuestionType.OPEN_ENDED -> {
+                                                    OutlinedTextField(
+                                                        value = userAnswers[question.id.toString()] ?: "",
+                                                        onValueChange = { newValue ->
+                                                            userAnswers = userAnswers.toMutableMap().apply {
+                                                                put(question.id.toString(), newValue)
+                                                            }
+                                                        },
+                                                        label = { Text("Your answer") },
+                                                        placeholder = { Text("Enter your answer here...") },
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        colors = OutlinedTextFieldDefaults.colors(
+                                                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                                                        )
+                                                    )
                                                 }
                                                 else -> {
                                                     Text(
