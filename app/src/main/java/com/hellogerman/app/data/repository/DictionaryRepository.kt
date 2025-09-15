@@ -181,6 +181,7 @@ class DictionaryRepository(private val context: Context) {
                 )
                 
                 if (cachedEntry != null) {
+                    android.util.Log.d("DictionaryRepository", "Using cached result for '${request.word}': gender='${cachedEntry.searchResult.gender}'")
                     return@withContext Result.success(cachedEntry.searchResult)
                 }
                 
@@ -227,7 +228,9 @@ class DictionaryRepository(private val context: Context) {
 
 
                 // Combine all results with guaranteed offline fallback
-                val offlineEntry = GermanDictionary.getWordEntry(request.word)
+                val offlineEntry = GermanDictionary.getWordEntry(request.word).also { entry ->
+                    android.util.Log.d("DictionaryRepository", "Offline lookup for '${request.word}': found=${entry != null}, gender='${entry?.gender}', wordType='${entry?.wordType}'")
+                }
 
                 // Choose the best result based on language and availability
                 // For English searches, prefer Wiktionary (which has German sections) over English-only API
@@ -299,7 +302,9 @@ class DictionaryRepository(private val context: Context) {
                     wordType = wikidataLexemeData?.lexicalCategory ?: primaryResult?.wordType ?: offlineEntry?.wordType,
                     // Prefer offline dictionary gender (verified correct) over Wikidata/parsed values
                     // Wikidata Q-codes need proper resolution, so trust offline data first
-                    gender = offlineEntry?.gender ?: wikidataLexemeData?.gender ?: primaryResult?.gender,
+                    gender = offlineEntry?.gender ?: wikidataLexemeData?.gender ?: primaryResult?.gender.also { finalGender ->
+                        android.util.Log.d("DictionaryRepository", "Gender assignment for '${request.word}': offline='${offlineEntry?.gender}', wikidata='${wikidataLexemeData?.gender}', primary='${primaryResult?.gender}', final='$finalGender'")
+                    },
                     wikidataLexemeData = wikidataLexemeData
                 )
                 

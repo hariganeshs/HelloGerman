@@ -112,7 +112,9 @@ class WiktionaryParser {
             val pronunciation = extractPronunciation(wikitext)
             val synonyms = extractSynonyms(wikitext)
             val wordType = extractWordType(wikitext)
-            val gender = if (language.lowercase() in listOf("de", "german")) extractGender(wikitext, word) else null
+            val gender = if (language.lowercase() in listOf("de", "german")) extractGender(wikitext, word).also { extractedGender ->
+                android.util.Log.d("WiktionaryParser", "Gender extraction for '$word': extracted='$extractedGender'")
+            } else null
 
             // Enhanced extraction - try simpler patterns if main ones fail
             val enhancedDefinitions = if (definitions.isEmpty()) {
