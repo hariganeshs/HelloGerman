@@ -94,7 +94,7 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - **Expected Outcome**: Identify which data source is providing "die" gender
 - **Result**: ❌ **FAILED** - Cache clearing did not fix the issue. "apfel" still shows "die" in main UI
 
-#### **Attempt 8: Wikidata Investigation** ✅ SUCCESS - ROOT CAUSE FOUND
+#### **Attempt 8: Wikidata Investigation** ❌ FAILED - FORMAT CONVERSION
 - **Hypothesis**: Wikidata lexeme data may contain incorrect gender for "Apfel"
 - **Investigation**:
   - Checked Wikidata parsing logic in `parseWikidataLexemeEntity`
@@ -104,7 +104,7 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - **Solution Applied**: 
   - Added conversion logic: `masculine -> der`, `feminine -> die`, `neuter -> das`
   - Updated gender assignment to convert Wikidata format before using
-- **Result**: ✅ **SUCCESS** - Compilation successful, format conversion implemented
+- **Result**: ❌ **FAILED** - Format conversion did not fix the issue. "apfel" still shows "die" in main UI
 
 #### **Attempt 9: Primary Result Investigation** 🔄 IN PROGRESS
 - **Hypothesis**: Primary result from Wiktionary/other APIs may contain incorrect gender
@@ -115,12 +115,28 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - **Expected Outcome**: Identify if primary result provides incorrect "die" gender
 - **Result**: 🔄 **IN PROGRESS** - Testing primary result data source
 
-### **Next Investigation Steps**
-1. **Check Wikidata API**: Verify Wikidata lexeme data for "Apfel"
-2. **Check Primary Results**: Verify primary result gender for "apfel"
-3. **Test Different Words**: Check if issue affects other masculine nouns
-4. **Check UI Display Logic**: Verify how `result.gender` is processed in `DictionaryScreen.kt`
-5. **Analyze Debug Logs**: Review log output to trace data flow
+### **Investigation Status: PAUSED - TO RESUME TOMORROW**
+
+**Current Status**: All major data sources investigated, issue persists
+- ✅ Offline Dictionary: Correct (`gender = "der"`)
+- ✅ Wiktionary Content: Correct (`{{m}}`, `Genus=m`)
+- ✅ Example Sentences: Correct ("Der Apfel")
+- ❌ Main UI Display: Still shows "die" instead of "der"
+
+**Failed Attempts**:
+1. Wikidata priority adjustment
+2. Q-code parsing enhancement  
+3. Debug logging addition
+4. Cache clearing
+5. Wikidata format conversion
+
+### **Next Investigation Steps for Tomorrow**
+1. **Primary Result Investigation**: Check what `primaryResult?.gender` contains for "apfel"
+2. **UI Display Logic**: Verify how `result.gender` is processed in `DictionaryScreen.kt`
+3. **Debug Log Analysis**: Review actual log output to trace data flow
+4. **Test Different Words**: Check if issue affects other masculine nouns
+5. **Data Flow Tracing**: Step through entire gender assignment pipeline
+6. **Alternative Data Sources**: Check if other APIs are providing incorrect gender
 
 ### **Files Involved**
 - `app/src/main/java/com/hellogerman/app/data/repository/DictionaryRepository.kt` (lines 301, 684-708)
