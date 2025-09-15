@@ -15,9 +15,10 @@ import com.hellogerman.app.data.entities.*
         Lesson::class,
         UserSubmission::class,
         GrammarProgress::class,
-        Achievement::class
+        Achievement::class,
+        DictionaryCacheEntry::class
     ],
-    version = 13,
+    version = 14,
     exportSchema = false
 )
 abstract class HelloGermanDatabase : RoomDatabase() {
@@ -27,6 +28,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
     abstract fun userSubmissionDao(): UserSubmissionDao
     abstract fun grammarProgressDao(): GrammarProgressDao
     abstract fun achievementDao(): AchievementDao
+    abstract fun dictionaryCacheDao(): DictionaryCacheDao
     
     companion object {
         @Volatile
@@ -39,7 +41,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                     HelloGermanDatabase::class.java,
                     "hello_german_database"
                 )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
@@ -180,6 +182,24 @@ abstract class HelloGermanDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Clear lessons to force repopulation with new B1 reading lessons
                 database.execSQL("DELETE FROM lessons")
+            }
+        }
+
+        private val MIGRATION_13_14 = object : Migration(13, 14) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create dictionary cache table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `dictionary_cache` (
+                        `word` TEXT NOT NULL PRIMARY KEY,
+                        `fromLanguage` TEXT NOT NULL,
+                        `toLanguage` TEXT NOT NULL,
+                        `searchResult` TEXT NOT NULL,
+                        `sources` TEXT NOT NULL,
+                        `fetchedAt` INTEGER NOT NULL,
+                        `expiresAt` INTEGER NOT NULL,
+                        `cacheVersion` INTEGER NOT NULL
+                    )
+                """)
             }
         }
     }

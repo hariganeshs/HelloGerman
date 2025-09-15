@@ -100,7 +100,8 @@ data class DictionarySearchResult(
     val etymology: String? = null,
     val wordType: String? = null, // noun, verb, adjective, etc.
     val gender: String? = null, // for German nouns (der, die, das)
-    val difficulty: String? = null // CEFR level (A1, A2, etc.)
+    val difficulty: String? = null, // CEFR level (A1, A2, etc.)
+    val wikidataLexemeData: WikidataLexemeData? = null // Enhanced grammatical information
 )
 
 
@@ -178,7 +179,18 @@ data class VerbConjugations(
     val imperative: Map<String, String> = emptyMap(),
     
     @SerializedName("subjunctive")
-    val subjunctive: Map<String, String> = emptyMap()
+    val subjunctive: Map<String, String> = emptyMap(),
+    
+    // Enhanced conjugation features
+    val perfect: Map<String, String> = emptyMap(), // Perfect tense (haben/sein + past participle)
+    val pluperfect: Map<String, String> = emptyMap(), // Pluperfect tense
+    val futurePerfect: Map<String, String> = emptyMap(), // Future perfect tense
+    val conditional: Map<String, String> = emptyMap(), // Conditional mood
+    val auxiliary: String? = null, // haben or sein for perfect tenses
+    val separablePrefix: String? = null, // For separable verbs like "anfangen"
+    val infinitive: String? = null, // Base form of the verb
+    val isIrregular: Boolean = false, // Whether the verb has irregular forms
+    val isSeparable: Boolean = false // Whether the verb has a separable prefix
 )
 
 data class Participle(
@@ -298,4 +310,30 @@ data class LibreTranslateResponse(
 data class DetectedLanguage(
     val confidence: Double,
     val language: String
+)
+
+/**
+ * Wikidata Lexeme data model for enhanced grammatical information
+ */
+data class WikidataLexemeData(
+    val lexemeId: String? = null,
+    val lexicalCategory: String? = null, // noun, verb, adjective, etc.
+    val language: String? = null,
+    val grammaticalFeatures: List<String> = emptyList(),
+    val forms: List<WikidataForm> = emptyList(),
+    val senses: List<WikidataSense> = emptyList(),
+    val gender: String? = null, // for German nouns (masculine, feminine, neuter)
+    val plural: String? = null,
+    val declensions: Map<String, String> = emptyMap() // case -> form
+)
+
+data class WikidataForm(
+    val id: String,
+    val representation: String,
+    val grammaticalFeatures: List<String> = emptyList()
+)
+
+data class WikidataSense(
+    val id: String,
+    val gloss: String? = null
 )

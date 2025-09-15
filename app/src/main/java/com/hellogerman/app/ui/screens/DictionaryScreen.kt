@@ -361,8 +361,8 @@ fun DictionaryScreen(
                         item {
                             SectionHeader("Definitions")
                         }
-                        items(result.definitions) { definition ->
-                            DefinitionCard(definition)
+                        item {
+                            SenseGroupedDefinitionsCard(result.definitions)
                         }
                     }
 
@@ -374,6 +374,12 @@ fun DictionaryScreen(
                         items(result.examples) { example ->
                             ExampleCard(example, dictionaryViewModel)
                         }
+                        item {
+                            AttributionCard(
+                                sources = result.examples.mapNotNull { it.source }.distinct(),
+                                section = "Examples"
+                            )
+                        }
                     }
 
                     // Conjugations Section
@@ -384,12 +390,28 @@ fun DictionaryScreen(
                         item { ConjugationCard(conjugations) }
                     }
 
+                    // Declensions Section (for nouns)
+                    result.wikidataLexemeData?.let { lexemeData ->
+                        if (lexemeData.lexicalCategory == "noun" && lexemeData.declensions.isNotEmpty()) {
+                            item {
+                                SectionHeader("Declensions")
+                            }
+                            item { DeclensionCard(lexemeData) }
+                        }
+                    }
+
                     // Synonyms Section
                     if (result.synonyms.isNotEmpty()) {
                         item {
                             SectionHeader("Synonyms")
                         }
                         item { SynonymsCard(result.synonyms, dictionaryViewModel) }
+                        item {
+                            AttributionCard(
+                                sources = listOf("OpenThesaurus"),
+                                section = "Synonyms"
+                            )
+                        }
                     }
 
                     // Translations Section
@@ -416,6 +438,12 @@ fun DictionaryScreen(
                                 }
                             }
                         }
+                        item {
+                            AttributionCard(
+                                sources = listOf("MyMemory", "LibreTranslate"),
+                                section = "Translations"
+                            )
+                        }
                     }
 
                     // Etymology Section (if available)
@@ -436,6 +464,17 @@ fun DictionaryScreen(
                                 )
                             }
                         }
+                        item {
+                            AttributionCard(
+                                sources = listOf("Wiktionary"),
+                                section = "Etymology"
+                            )
+                        }
+                    }
+
+                    // Comprehensive Attribution Footer
+                    item {
+                        AttributionFooter(result)
                     }
 
                     // Add some bottom padding
@@ -503,29 +542,36 @@ private fun OverviewCard(result: DictionarySearchResult, viewModel: DictionaryVi
                     )
                     
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         result.wordType?.let { type ->
-                            Text(
+                            GrammarChip(
                                 text = type,
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier
-                                    .background(
-                                        MaterialTheme.colorScheme.primaryContainer,
-                                        RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                                backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
                         
                         result.gender?.let { gender ->
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = gender,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = MaterialTheme.colorScheme.primary
+                            val article = when (gender.lowercase()) {
+                                "masculine" -> "der"
+                                "feminine" -> "die"
+                                "neuter" -> "das"
+                                else -> gender
+                            }
+                            GrammarChip(
+                                text = article,
+                                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                                textColor = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
+                        
+                        result.wikidataLexemeData?.plural?.let { plural ->
+                            GrammarChip(
+                                text = "Plural: $plural",
+                                backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         }
                     }
@@ -539,6 +585,34 @@ private fun OverviewCard(result: DictionarySearchResult, viewModel: DictionaryVi
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Quick Actions Row
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                QuickActionButton(
+                    icon = Icons.Default.ContentCopy,
+                    label = "Copy",
+                    onClick = { /* TODO: Implement copy to clipboard */ }
+                )
+                
+                QuickActionButton(
+                    icon = Icons.Default.Share,
+                    label = "Share",
+                    onClick = { /* TODO: Implement share */ }
+                )
+                
+                QuickActionButton(
+                    icon = Icons.Default.BookmarkAdd,
+                    label = "Add to Vocab",
+                    onClick = { /* TODO: Implement add to vocabulary */ }
+                )
+                
+                Spacer(modifier = Modifier.weight(1f))
             }
             
             Spacer(modifier = Modifier.height(16.dp))
@@ -646,6 +720,82 @@ private fun DefinitionCard(definition: Definition) {
 }
 
 @Composable
+private fun SenseGroupedDefinitionsCard(definitions: List<Definition>) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            // Group definitions by part of speech
+            val groupedDefinitions = definitions.groupBy { it.partOfSpeech ?: "other" }
+            
+            groupedDefinitions.forEach { (pos, defs) ->
+                if (pos != "other") {
+                    Text(
+                        text = pos.replaceFirstChar { it.uppercase() },
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                }
+                
+                defs.forEachIndexed { index, definition ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Top
+                    ) {
+                        Text(
+                            text = "${index + 1}.",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(end = 8.dp, top = 2.dp)
+                        )
+                        
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = definition.meaning,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            
+                            definition.context?.let { context ->
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = "Context: $context",
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                                )
+                            }
+                            
+                            definition.level?.let { level ->
+                                Spacer(modifier = Modifier.height(4.dp))
+                                GrammarChip(
+                                    text = level,
+                                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                                    textColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            }
+                        }
+                    }
+                    
+                    if (index < defs.size - 1) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+                }
+                
+                if (pos != groupedDefinitions.keys.last()) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun ExampleCard(example: Example, viewModel: DictionaryViewModel) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -712,6 +862,74 @@ private fun ConjugationCard(conjugations: VerbConjugations) {
         ) {
             SectionHeader("Verb Conjugations")
             
+            // Verb info chips
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                conjugations.infinitive?.let { infinitive ->
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                        )
+                    ) {
+                        Text(
+                            text = "Infinitive: $infinitive",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.padding(6.dp)
+                        )
+                    }
+                }
+                
+                conjugations.auxiliary?.let { auxiliary ->
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        )
+                    ) {
+                        Text(
+                            text = "Auxiliary: $auxiliary",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier.padding(6.dp)
+                        )
+                    }
+                }
+                
+                if (conjugations.isSeparable) {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                        )
+                    ) {
+                        Text(
+                            text = "Separable",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
+                            modifier = Modifier.padding(6.dp)
+                        )
+                    }
+                }
+                
+                if (conjugations.isIrregular) {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer
+                        )
+                    ) {
+                        Text(
+                            text = "Irregular",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            modifier = Modifier.padding(6.dp)
+                        )
+                    }
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
             // Present tense
             if (conjugations.present.isNotEmpty()) {
                 ConjugationSection("Present", conjugations.present)
@@ -724,9 +942,21 @@ private fun ConjugationCard(conjugations: VerbConjugations) {
                 Spacer(modifier = Modifier.height(12.dp))
             }
             
+            // Perfect tense
+            if (conjugations.perfect.isNotEmpty()) {
+                ConjugationSection("Perfect", conjugations.perfect)
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            
             // Future tense
             if (conjugations.future.isNotEmpty()) {
                 ConjugationSection("Future", conjugations.future)
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            
+            // Imperative
+            if (conjugations.imperative.isNotEmpty()) {
+                ConjugationSection("Imperative", conjugations.imperative)
                 Spacer(modifier = Modifier.height(12.dp))
             }
             
@@ -738,19 +968,43 @@ private fun ConjugationCard(conjugations: VerbConjugations) {
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
+                Spacer(modifier = Modifier.height(8.dp))
+                
                 participle.present?.let { present ->
-                    Text(
-                        text = "Present: $present",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Present:",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            text = present,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
                 participle.past?.let { past ->
-                    Text(
-                        text = "Past: $past",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Past:",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            text = past,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
             }
         }
@@ -782,6 +1036,128 @@ private fun ConjugationSection(title: String, conjugations: Map<String, String>)
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
+        }
+    }
+}
+
+@Composable
+private fun DeclensionCard(lexemeData: WikidataLexemeData) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            SectionHeader("Noun Declensions")
+            
+            // Gender and Plural info
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                lexemeData.gender?.let { gender ->
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                        )
+                    ) {
+                        Text(
+                            text = "Gender: $gender",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                }
+                
+                lexemeData.plural?.let { plural ->
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        )
+                    ) {
+                        Text(
+                            text = "Plural: $plural",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Declension table
+            if (lexemeData.declensions.isNotEmpty()) {
+                Text(
+                    text = "Case Declensions",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Create a table-like layout
+                lexemeData.declensions.forEach { (case, form) ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = case.replaceFirstChar { it.uppercase() },
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = form,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.weight(1f),
+                            textAlign = TextAlign.End
+                        )
+                    }
+                }
+            }
+            
+            // Additional forms if available
+            if (lexemeData.forms.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Text(
+                    text = "Additional Forms",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                lexemeData.forms.take(5).forEach { form ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = form.representation,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Medium
+                        )
+                        if (form.grammaticalFeatures.isNotEmpty()) {
+                            Text(
+                                text = form.grammaticalFeatures.joinToString(", "),
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -973,4 +1349,175 @@ private fun LanguageSelectionDialog(
             }
         }
     )
+}
+
+@Composable
+private fun GrammarChip(
+    text: String,
+    backgroundColor: Color,
+    textColor: Color,
+    onClick: (() -> Unit)? = null
+) {
+    val modifier = if (onClick != null) {
+        Modifier.clickable { onClick() }
+    } else {
+        Modifier
+    }
+    
+    Text(
+        text = text,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Medium,
+        color = textColor,
+        modifier = modifier
+            .background(
+                backgroundColor,
+                RoundedCornerShape(12.dp)
+            )
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+    )
+}
+
+@Composable
+private fun QuickActionButton(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier.clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = label,
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+private fun AttributionCard(
+    sources: List<String>,
+    section: String
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = "Source",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "$section data from: ${sources.joinToString(", ")}",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+            )
+        }
+    }
+}
+
+@Composable
+private fun AttributionFooter(result: DictionarySearchResult) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Data Sources & Licensing",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            val allSources = mutableSetOf<String>()
+            if (result.definitions.isNotEmpty()) allSources.add("Wiktionary")
+            if (result.examples.isNotEmpty()) {
+                result.examples.forEach { it.source?.let { source -> allSources.add(source) } }
+            }
+            if (result.synonyms.isNotEmpty()) allSources.add("OpenThesaurus")
+            if (result.translations.isNotEmpty()) allSources.addAll(listOf("MyMemory", "LibreTranslate"))
+            if (result.conjugations != null) allSources.add("German Verb API")
+            if (result.wikidataLexemeData != null) allSources.add("Wikidata")
+            
+            allSources.forEach { source ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "• $source:",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.width(100.dp)
+                    )
+                    Text(
+                        text = getSourceLicense(source),
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                text = "This dictionary aggregates data from multiple free and open sources. Please respect the licensing terms of each source.",
+                fontSize = 11.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+            )
+        }
+    }
+}
+
+private fun getSourceLicense(source: String): String {
+    return when (source) {
+        "Wiktionary" -> "CC BY-SA 3.0"
+        "Tatoeba" -> "CC BY 2.0"
+        "OpenThesaurus" -> "GPL 2.0"
+        "MyMemory" -> "Free for non-commercial use"
+        "LibreTranslate" -> "MIT License"
+        "German Verb API" -> "Open source"
+        "Wikidata" -> "CC0 1.0"
+        "Reverso Context" -> "Terms of service apply"
+        else -> "Please check source website"
+    }
 }

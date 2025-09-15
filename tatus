@@ -1,1 +1,6 @@
 [33mfcf8c2b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #8 from hariganeshs/cursor/fix-screen-compatibility-issues-for-broad-support-86ec
+[33ma962eea[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix English-to-German dictionary examples and translations
+[33m95dcd31[m v1.1.3: Update version numbers for production release
+[33m32329f6[m Fix Android 15 edge-to-edge compatibility issues
+[33mcf67108[m v1.1.2: Remove B1 placeholder lessons and enhance ad integration
+[33ma2b537d[m Settings: null-safe package version lookup for About screen

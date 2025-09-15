@@ -5,11 +5,16 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.hellogerman.app.data.api.*
 import com.hellogerman.app.data.api.LibreTranslateRequest
+import com.hellogerman.app.data.api.WikidataLexemeEntity
+import com.hellogerman.app.data.api.WikidataForm
+import com.hellogerman.app.data.api.WikidataSense
 import com.hellogerman.app.data.models.EnglishWordDefinition
 import com.hellogerman.app.data.models.*
 import com.hellogerman.app.data.parser.WiktionaryParser
 import com.hellogerman.app.data.conjugation.GermanVerbConjugator
 import com.hellogerman.app.data.dictionary.GermanDictionary
+import com.hellogerman.app.data.HelloGermanDatabase
+import com.hellogerman.app.data.entities.DictionaryCacheEntry
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -25,9 +30,16 @@ import java.util.concurrent.TimeUnit
  * - MyMemory for fallback translations
  */
 class DictionaryRepository(private val context: Context) {
+    companion object {
+        // Bump this to invalidate in-memory cache when parsing/merge logic changes
+        private const val CACHE_VERSION = 2
+        private const val CACHE_TTL_HOURS = 72L // 72 hours TTL
+    }
     
     private val cache = mutableMapOf<String, CachedDictionaryEntry>()
     private val wiktionaryParser = WiktionaryParser()
+    private val database = HelloGermanDatabase.getDatabase(context)
+    private val dictionaryCacheDao = database.dictionaryCacheDao()
     
     // API Services
     private val translationApiService: TranslationApiService by lazy { createTranslationApiService() }
@@ -37,6 +49,8 @@ class DictionaryRepository(private val context: Context) {
     private val reversoApiService: ReversoApiService by lazy { createReversoApiService() }
     private val englishDictionaryApiService: EnglishDictionaryApiService by lazy { createEnglishDictionaryApiService() }
     private val libreTranslateApiService: LibreTranslateApiService by lazy { createLibreTranslateApiService() }
+    private val tatoebaApiService: TatoebaApiService by lazy { createTatoebaApiService() }
+    private val wikidataLexemeService: WikidataLexemeService by lazy { createWikidataLexemeService() }
     
     private fun createHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -121,6 +135,24 @@ class DictionaryRepository(private val context: Context) {
             .build()
         return retrofit.create(LibreTranslateApiService::class.java)
     }
+
+    private fun createTatoebaApiService(): TatoebaApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(TatoebaApiService.BASE_URL)
+            .client(createHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(TatoebaApiService::class.java)
+    }
+
+    private fun createWikidataLexemeService(): WikidataLexemeService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(WikidataLexemeService.BASE_URL)
+            .client(createHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(WikidataLexemeService::class.java)
+    }
     
     /**
      * Check if device has internet connection
@@ -141,8 +173,19 @@ class DictionaryRepository(private val context: Context) {
     suspend fun searchWord(request: DictionarySearchRequest): Result<DictionarySearchResult> {
         return withContext(Dispatchers.IO) {
             try {
-                // Check cache first
-                val cacheKey = "${request.word}_${request.fromLang}"
+                // Check database cache first
+                val cachedEntry = dictionaryCacheDao.getCachedEntry(
+                    word = request.word,
+                    fromLanguage = request.fromLang,
+                    toLanguage = request.toLang
+                )
+                
+                if (cachedEntry != null) {
+                    return@withContext Result.success(cachedEntry.searchResult)
+                }
+                
+                // Check in-memory cache as fallback
+                val cacheKey = "$CACHE_VERSION:${request.word}_${request.fromLang}"
                 cache[cacheKey]?.let { cached ->
                     if (System.currentTimeMillis() - cached.timestamp < 3600000) { // 1 hour cache
                         return@withContext Result.success(cached.result)
@@ -163,7 +206,9 @@ class DictionaryRepository(private val context: Context) {
                 val deferredResults = listOf(
                     async { getWiktionaryData(request) },
                     async { getEnglishWordData(request) },
+                    async { getTatoebaExamples(request) },
                     async { getReversoExamples(request) },
+                    async { getWikidataLexemeData(request) },
                     if (isLikelyVerb) async { getVerbConjugations(request.word) } else async { null },
                     async { getSynonyms(request) },
                     async { getBasicTranslation(request) }
@@ -172,10 +217,12 @@ class DictionaryRepository(private val context: Context) {
                 val results = deferredResults.awaitAll()
                 val wiktionaryResult = results[0] as? DictionarySearchResult
                 val englishWordResult = results[1] as? DictionarySearchResult
-                val reversoExamples = results[2] as? List<Example> ?: emptyList()
-                val conjugations = if (isLikelyVerb) results[3] as? VerbConjugations else null
-                val synonyms = results[4] as? List<String> ?: emptyList()
-                val basicTranslation = results[5] as? List<String> ?: emptyList()
+                val tatoebaExamples = results[2] as? List<Example> ?: emptyList()
+                val reversoExamples = results[3] as? List<Example> ?: emptyList()
+                val wikidataLexemeData = results[4] as? WikidataLexemeData ?: null
+                val conjugations = if (isLikelyVerb) results[5] as? VerbConjugations else null
+                val synonyms = results[6] as? List<String> ?: emptyList()
+                val basicTranslation = results[7] as? List<String> ?: emptyList()
                 
 
 
@@ -202,6 +249,8 @@ class DictionaryRepository(private val context: Context) {
 
                 if (isEnglishToGerman) {
                     // Only include examples with translations for English-to-German searches
+                    // Prioritize Tatoeba examples (licensed and reliable)
+                    allExamples.addAll(tatoebaExamples.filter { it.translation != null })
                     allExamples.addAll(reversoExamples.filter { it.translation != null })
                     allExamples.addAll(primaryResult?.examples?.filter { it.translation != null } ?: emptyList())
                     allExamples.addAll(wiktionaryResult?.examples?.filter { it.translation != null } ?: emptyList())
@@ -213,6 +262,8 @@ class DictionaryRepository(private val context: Context) {
                     }
                 } else {
                     // For other language combinations, include all examples
+                    // Prioritize Tatoeba examples (licensed and reliable)
+                    allExamples.addAll(tatoebaExamples)
                     allExamples.addAll(reversoExamples)
                     allExamples.addAll(primaryResult?.examples ?: emptyList())
                     allExamples.addAll(wiktionaryResult?.examples ?: emptyList())
@@ -245,11 +296,35 @@ class DictionaryRepository(private val context: Context) {
                         GermanVerbConjugator.getConjugation(request.word)
                     } else null,
                     etymology = primaryResult?.etymology ?: wiktionaryResult?.etymology,
-                    wordType = primaryResult?.wordType ?: offlineEntry?.wordType,
-                    gender = primaryResult?.gender ?: offlineEntry?.gender
+                    wordType = wikidataLexemeData?.lexicalCategory ?: primaryResult?.wordType ?: offlineEntry?.wordType,
+                    // Prefer Wikidata gender (most accurate) over offline/parsed values
+                    gender = wikidataLexemeData?.gender ?: offlineEntry?.gender ?: primaryResult?.gender,
+                    wikidataLexemeData = wikidataLexemeData
                 )
                 
-                // Cache result
+                // Cache result in database
+                val sources = mutableListOf<String>()
+                if (wiktionaryResult != null) sources.add("Wiktionary")
+                if (tatoebaExamples.isNotEmpty()) sources.add("Tatoeba")
+                if (reversoExamples.isNotEmpty()) sources.add("Reverso")
+                if (wikidataLexemeData != null) sources.add("Wikidata")
+                if (conjugations != null) sources.add("German Verb API")
+                if (synonyms.isNotEmpty()) sources.add("OpenThesaurus")
+                if (basicTranslation.isNotEmpty()) sources.add("MyMemory/LibreTranslate")
+                
+                val cacheEntry = DictionaryCacheEntry(
+                    word = request.word,
+                    fromLanguage = request.fromLang,
+                    toLanguage = request.toLang,
+                    searchResult = combinedResult,
+                    sources = sources,
+                    expiresAt = System.currentTimeMillis() + (CACHE_TTL_HOURS * 60 * 60 * 1000),
+                    cacheVersion = CACHE_VERSION
+                )
+                
+                dictionaryCacheDao.insertCacheEntry(cacheEntry)
+                
+                // Also cache in memory for immediate access
                 cache[cacheKey] = CachedDictionaryEntry(
                     word = request.word,
                     language = request.fromLang,
@@ -541,6 +616,155 @@ class DictionaryRepository(private val context: Context) {
     }
     
     /**
+     * Get Wikidata lexeme data for enhanced grammatical information
+     */
+    private suspend fun getWikidataLexemeData(request: DictionarySearchRequest): WikidataLexemeData? {
+        return try {
+            // Only search for German words
+            if (request.fromLang.lowercase() !in listOf("de", "german")) {
+                return null
+            }
+
+            val response = wikidataLexemeService.searchLexemes(
+                search = request.word,
+                language = "de",
+                limit = 5
+            )
+
+            if (response.isSuccessful) {
+                val searchResults = response.body()?.search
+                if (!searchResults.isNullOrEmpty()) {
+                    // Get the first lexeme's detailed data
+                    val lexemeId = searchResults.first().id
+                    val lexemeResponse = wikidataLexemeService.getLexemeData(lexemeId)
+                    
+                    if (lexemeResponse.isSuccessful) {
+                        val lexemeEntity = lexemeResponse.body()?.entities?.values?.firstOrNull()
+                        if (lexemeEntity != null) {
+                            parseWikidataLexemeEntity(lexemeEntity)
+                        } else null
+                    } else null
+                } else null
+            } else null
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * Parse Wikidata lexeme entity into our data model
+     */
+    private fun parseWikidataLexemeEntity(entity: WikidataLexemeEntity): WikidataLexemeData {
+        val lexicalCategory = entity.lexicalCategory?.id?.let { categoryId ->
+            when {
+                categoryId.contains("noun") -> "noun"
+                categoryId.contains("verb") -> "verb"
+                categoryId.contains("adjective") -> "adjective"
+                categoryId.contains("adverb") -> "adverb"
+                else -> null
+            }
+        }
+
+        val forms = entity.forms?.map { form ->
+            com.hellogerman.app.data.models.WikidataForm(
+                id = form.id,
+                representation = form.representations?.values?.firstOrNull()?.value ?: "",
+                grammaticalFeatures = form.grammaticalFeatures ?: emptyList()
+            )
+        } ?: emptyList()
+
+        val senses = entity.senses?.map { sense ->
+            com.hellogerman.app.data.models.WikidataSense(
+                id = sense.id,
+                gloss = sense.glosses?.values?.firstOrNull()?.value
+            )
+        } ?: emptyList()
+
+        // Extract gender for nouns
+        val gender = entity.grammaticalFeatures?.find { feature ->
+            feature.contains("masculine") || feature.contains("feminine") || feature.contains("neuter")
+        }?.let { feature ->
+            when {
+                feature.contains("masculine") -> "masculine"
+                feature.contains("feminine") -> "feminine"
+                feature.contains("neuter") -> "neuter"
+                else -> null
+            }
+        }
+
+        // Extract plural form
+        val plural = forms.find { form ->
+            form.grammaticalFeatures.any { feature -> feature.contains("plural") }
+        }?.representation
+
+        // Build declension map
+        val declensions = forms.associate { form ->
+            val case = form.grammaticalFeatures.find { feature ->
+                feature.contains("nominative") || feature.contains("genitive") || 
+                feature.contains("dative") || feature.contains("accusative")
+            } ?: "nominative"
+            case to form.representation
+        }
+
+        return WikidataLexemeData(
+            lexemeId = entity.id,
+            lexicalCategory = lexicalCategory,
+            language = entity.language,
+            grammaticalFeatures = entity.grammaticalFeatures ?: emptyList(),
+            forms = forms,
+            senses = senses,
+            gender = gender,
+            plural = plural,
+            declensions = declensions
+        )
+    }
+
+    /**
+     * Get contextual examples from Tatoeba API (licensed bilingual sentences)
+     */
+    private suspend fun getTatoebaExamples(request: DictionarySearchRequest): List<Example> {
+        return try {
+            // Map language codes to Tatoeba format
+            val fromLang = when (request.fromLang.lowercase()) {
+                "de", "german" -> "deu"
+                "en", "english" -> "eng"
+                else -> "deu" // Default to German
+            }
+            
+            val toLang = when (request.toLang.lowercase()) {
+                "de", "german" -> "deu"
+                "en", "english" -> "eng"
+                else -> "eng" // Default to English
+            }
+
+            val response = tatoebaApiService.searchSentences(
+                query = request.word,
+                from = fromLang,
+                to = toLang,
+                limit = 8
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.mapNotNull { sentence ->
+                    // Only include sentences that have translations
+                    val translation = sentence.translations?.firstOrNull()
+                    if (translation != null) {
+                        Example(
+                            sentence = sentence.text,
+                            translation = translation.text,
+                            source = "Tatoeba"
+                        )
+                    } else null
+                } ?: emptyList()
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    /**
      * Get contextual examples from Reverso Context API
      */
     private suspend fun getReversoExamples(request: DictionarySearchRequest): List<Example> {
@@ -579,4 +803,47 @@ class DictionaryRepository(private val context: Context) {
      * Get cached entries count
      */
     fun getCacheSize(): Int = cache.size
+    
+    /**
+     * Clear database cache
+     */
+    suspend fun clearDatabaseCache() {
+        dictionaryCacheDao.clearAllCache()
+    }
+    
+    /**
+     * Delete expired cache entries
+     */
+    suspend fun cleanupExpiredCache() {
+        dictionaryCacheDao.deleteExpiredEntries()
+    }
+    
+    /**
+     * Get cache statistics
+     */
+    suspend fun getCacheStats(): CacheStats {
+        val totalEntries = dictionaryCacheDao.getCacheSize()
+        val recentEntries = dictionaryCacheDao.getRecentEntries(10)
+        return CacheStats(
+            totalEntries = totalEntries,
+            recentEntries = recentEntries.size,
+            memoryCacheSize = cache.size
+        )
+    }
+    
+    /**
+     * Search cached entries
+     */
+    suspend fun searchCachedEntries(query: String): List<DictionaryCacheEntry> {
+        return dictionaryCacheDao.searchCacheEntries(query)
+    }
 }
+
+/**
+ * Cache statistics data class
+ */
+data class CacheStats(
+    val totalEntries: Int,
+    val recentEntries: Int,
+    val memoryCacheSize: Int
+)

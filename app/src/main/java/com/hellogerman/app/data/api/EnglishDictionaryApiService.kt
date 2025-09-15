@@ -18,3 +18,4 @@ interface EnglishDictionaryApiService {
         const val BASE_URL = "https://api.dictionaryapi.dev/"
     }
 }
+

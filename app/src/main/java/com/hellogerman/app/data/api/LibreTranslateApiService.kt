@@ -30,3 +30,4 @@ data class LibreTranslateRequest(
     val target: String, // Target language
     val format: String = "text"
 )
+

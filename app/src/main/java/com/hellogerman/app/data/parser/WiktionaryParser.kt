@@ -112,7 +112,7 @@ class WiktionaryParser {
             val pronunciation = extractPronunciation(wikitext)
             val synonyms = extractSynonyms(wikitext)
             val wordType = extractWordType(wikitext)
-            val gender = if (language.lowercase() in listOf("de", "german")) extractGender(wikitext) else null
+            val gender = if (language.lowercase() in listOf("de", "german")) extractGender(wikitext, word) else null
 
             // Enhanced extraction - try simpler patterns if main ones fail
             val enhancedDefinitions = if (definitions.isEmpty()) {
@@ -349,59 +349,78 @@ class WiktionaryParser {
         return null
     }
     
-    private fun extractGender(wikitext: String): String? {
-        for (pattern in GENDER_PATTERNS) {
-            val matcher = pattern.matcher(wikitext)
-            if (matcher.find()) {
-                // Handle different pattern groups
-                val genderText = when {
-                    matcher.groupCount() >= 2 -> matcher.group(2)?.lowercase() ?: ""
-                    matcher.groupCount() >= 1 -> matcher.group(1)?.lowercase() ?: ""
-                    else -> matcher.group(0)?.lowercase() ?: ""
-                }
-                
-                // Enhanced gender detection logic
-                val result = when {
-                    genderText.contains("maskulin") || genderText.contains("männlich") -> "der"
-                    genderText.contains("feminin") || genderText.contains("weiblich") -> "die"
-                    genderText.contains("neutrum") || genderText.contains("sächlich") -> "das"
-                    genderText == "der" || genderText == "die" || genderText == "das" -> genderText
-                    genderText == "m" || genderText.contains("mask") -> "der"
-                    genderText == "f" || genderText.contains("fem") -> "die"
-                    genderText == "n" || genderText.contains("neut") -> "das"
-                    else -> {
-                        // Try to extract article from the full match
-                        val fullMatch = matcher.group(0)?.lowercase() ?: ""
-                        when {
-                            fullMatch.contains(" der ") || fullMatch.startsWith("der ") -> "der"
-                            fullMatch.contains(" die ") || fullMatch.startsWith("die ") -> "die"
-                            fullMatch.contains(" das ") || fullMatch.startsWith("das ") -> "das"
-                            else -> null
-                        }
-                    }
-                }
-                
-                if (result != null) return result
+    private fun extractGender(wikitext: String, headword: String): String? {
+        // 1) Prefer explicit Genus markers/templates
+        Regex("Genus\\s*=\\s*([mfn])", RegexOption.IGNORE_CASE).find(wikitext)?.let { m ->
+            return when (m.groupValues[1].lowercase()) {
+                "m" -> "der"
+                "f" -> "die"
+                "n" -> "das"
+                else -> null
             }
         }
-        
-        // Last resort: try simple article detection in the whole text
-        val simplePatterns = listOf(
-            "\\bder\\s+[A-ZÄÖÜa-zäöüß]+".toRegex(RegexOption.IGNORE_CASE),
-            "\\bdie\\s+[A-ZÄÖÜa-zäöüß]+".toRegex(RegexOption.IGNORE_CASE),
-            "\\bdas\\s+[A-ZÄÖÜa-zäöüß]+".toRegex(RegexOption.IGNORE_CASE)
+
+        Regex("\\{\\{Genus\\|([mfn])\\}}", RegexOption.IGNORE_CASE).find(wikitext)?.let { m ->
+            return when (m.groupValues[1].lowercase()) {
+                "m" -> "der"
+                "f" -> "die"
+                "n" -> "das"
+                else -> null
+            }
+        }
+
+        Regex("\\{\\{de-?noun\\|([^}]*)}}", RegexOption.IGNORE_CASE).find(wikitext)?.let { m ->
+            val params = m.groupValues[1].split('|').map { it.trim().lowercase() }
+            params.firstOrNull { it in setOf("m", "f", "n", "m.", "f.", "n.") }?.let { token ->
+                return when (token.first()) {
+                    'm' -> "der"
+                    'f' -> "die"
+                    'n' -> "das"
+                    else -> null
+                }
+            }
+            params.firstOrNull { it.startsWith("genus=") }?.substringAfter('=')?.let { g ->
+                return when (g.firstOrNull()?.lowercaseChar()) {
+                    'm' -> "der"
+                    'f' -> "die"
+                    'n' -> "das"
+                    else -> null
+                }
+            }
+        }
+
+        // 2) Anchored article detection (must reference the headword in nominative singular contexts)
+        val escaped = Regex.escape(headword)
+        val anchored = listOf(
+            Regex("'''(der|die|das)\\s+" + escaped + "'''", RegexOption.IGNORE_CASE),
+            Regex("Nominativ\\s+Singular\\s+(der|die|das)\\s+" + escaped, RegexOption.IGNORE_CASE),
+            Regex("\\b(der|die|das)\\s+(" + escaped + ")\\b", RegexOption.IGNORE_CASE)
         )
-        
-        for (pattern in simplePatterns) {
-            val match = pattern.find(wikitext)
-            match?.let { matchResult ->
-                val article = matchResult.value.split("\\s+".toRegex())[0].lowercase()
-                if (article in listOf("der", "die", "das")) {
-                    return article
-                }
+        for (rx in anchored) {
+            rx.find(wikitext)?.let { m ->
+                val article = m.groupValues[1].lowercase()
+                if (article in listOf("der", "die", "das")) return article
             }
         }
-        
+
+        // 3) As a last resort, run legacy patterns but reject plural lines by requiring the following token to match headword
+        val broad = Regex("\\b(der|die|das)\\s+([A-ZÄÖÜa-zäöüß]+)", RegexOption.IGNORE_CASE)
+        broad.find(wikitext)?.let { m ->
+            val article = m.groupValues[1].lowercase()
+            val following = m.groupValues[2].lowercase()
+            if (following == headword.lowercase()) return article
+        }
+
+        // Fallback to semantic keywords only (avoid direct 'der/die/das' matches that may come from plural lines)
+        val semantics = listOf(
+            Regex("maskulin|männlich", RegexOption.IGNORE_CASE) to "der",
+            Regex("feminin|weiblich", RegexOption.IGNORE_CASE) to "die",
+            Regex("neutrum|sächlich", RegexOption.IGNORE_CASE) to "das"
+        )
+        for ((rx, article) in semantics) {
+            if (rx.containsMatchIn(wikitext)) return article
+        }
+
         return null
     }
     

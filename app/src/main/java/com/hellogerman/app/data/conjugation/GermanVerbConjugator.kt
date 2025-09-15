@@ -26,6 +26,15 @@ class GermanVerbConjugator {
             "wohnen" to createRegularConjugation("wohn"),
             "zeigen" to createRegularConjugation("zeig"),
             
+            // Separable verbs
+            "anfangen" to createSeparableConjugation("an", "fangen"),
+            "aufhören" to createSeparableConjugation("auf", "hören"),
+            "ausgehen" to createSeparableConjugation("aus", "gehen"),
+            "einkaufen" to createSeparableConjugation("ein", "kaufen"),
+            "mitmachen" to createSeparableConjugation("mit", "machen"),
+            "vorbereiten" to createSeparableConjugation("vor", "bereiten"),
+            "zurückkommen" to createSeparableConjugation("zurück", "kommen"),
+            
             // Strong verbs
             "sprechen" to VerbConjugations(
                 present = mapOf(
@@ -47,7 +56,23 @@ class GermanVerbConjugator {
                 participle = Participle(
                     present = "sprechend",
                     past = "gesprochen"
-                )
+                ),
+                perfect = mapOf(
+                    "ich" to "habe gesprochen",
+                    "du" to "hast gesprochen",
+                    "er/sie/es" to "hat gesprochen",
+                    "wir" to "haben gesprochen",
+                    "ihr" to "habt gesprochen",
+                    "sie/Sie" to "haben gesprochen"
+                ),
+                imperative = mapOf(
+                    "du" to "sprich",
+                    "ihr" to "sprecht",
+                    "Sie" to "sprechen Sie"
+                ),
+                auxiliary = "haben",
+                infinitive = "sprechen",
+                isIrregular = true
             ),
             
             "gehen" to VerbConjugations(
@@ -70,7 +95,23 @@ class GermanVerbConjugator {
                 participle = Participle(
                     present = "gehend",
                     past = "gegangen"
-                )
+                ),
+                perfect = mapOf(
+                    "ich" to "bin gegangen",
+                    "du" to "bist gegangen",
+                    "er/sie/es" to "ist gegangen",
+                    "wir" to "sind gegangen",
+                    "ihr" to "seid gegangen",
+                    "sie/Sie" to "sind gegangen"
+                ),
+                imperative = mapOf(
+                    "du" to "geh",
+                    "ihr" to "geht",
+                    "Sie" to "gehen Sie"
+                ),
+                auxiliary = "sein",
+                infinitive = "gehen",
+                isIrregular = true
             ),
             
             "kommen" to VerbConjugations(
@@ -352,6 +393,7 @@ class GermanVerbConjugator {
         
         private fun createRegularConjugation(stem: String, addEt: Boolean = false): VerbConjugations {
             val etSuffix = if (addEt) "et" else "t"
+            val pastParticiple = "ge${stem}t"
             return VerbConjugations(
                 present = mapOf(
                     "ich" to "${stem}e",
@@ -371,8 +413,54 @@ class GermanVerbConjugator {
                 ),
                 participle = Participle(
                     present = "${stem}end",
-                    past = "ge${stem}t"
-                )
+                    past = pastParticiple
+                ),
+                perfect = mapOf(
+                    "ich" to "habe $pastParticiple",
+                    "du" to "hast $pastParticiple",
+                    "er/sie/es" to "hat $pastParticiple",
+                    "wir" to "haben $pastParticiple",
+                    "ihr" to "habt $pastParticiple",
+                    "sie/Sie" to "haben $pastParticiple"
+                ),
+                auxiliary = "haben",
+                infinitive = "${stem}en",
+                isIrregular = false
+            )
+        }
+        
+        private fun createSeparableConjugation(prefix: String, verb: String): VerbConjugations {
+            // Create base conjugation directly to avoid circular dependency during initialization
+            val baseConjugation = createRegularConjugation(verb.dropLast(2))
+            val fullVerb = "$prefix$verb"
+            
+            return baseConjugation.copy(
+                present = baseConjugation.present.mapValues { (person, form) ->
+                    when (person) {
+                        "ich", "du", "er/sie/es" -> "$prefix$form"
+                        else -> "$form $prefix"
+                    }
+                },
+                past = baseConjugation.past.mapValues { (person, form) ->
+                    when (person) {
+                        "ich", "du", "er/sie/es" -> "$prefix$form"
+                        else -> "$form $prefix"
+                    }
+                },
+                participle = baseConjugation.participle?.copy(
+                    past = "$prefix${baseConjugation.participle.past}"
+                ),
+                perfect = baseConjugation.perfect.mapValues { (person, form) ->
+                    "$person $prefix$form"
+                },
+                imperative = mapOf(
+                    "du" to "$prefix${baseConjugation.present["du"]?.dropLast(1) ?: ""}",
+                    "ihr" to "${baseConjugation.present["ihr"] ?: ""} $prefix",
+                    "Sie" to "${baseConjugation.present["Sie"] ?: ""} $prefix"
+                ),
+                separablePrefix = prefix,
+                infinitive = fullVerb,
+                isSeparable = true
             )
         }
         
