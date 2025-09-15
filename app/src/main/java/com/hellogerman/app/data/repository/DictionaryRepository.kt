@@ -828,6 +828,16 @@ class DictionaryRepository(private val context: Context) {
      * Clear database cache
      */
     suspend fun clearDatabaseCache() {
+        android.util.Log.d("DictionaryRepository", "Clearing database cache")
+        dictionaryCacheDao.clearAllCache()
+    }
+    
+    /**
+     * Clear cache for specific word
+     */
+    suspend fun clearCacheForWord(word: String, fromLang: String, toLang: String) {
+        android.util.Log.d("DictionaryRepository", "Clearing cache for word: '$word' ($fromLang -> $toLang)")
+        // Note: This would require a delete method in the DAO, but for now we'll clear all cache
         dictionaryCacheDao.clearAllCache()
     }
     

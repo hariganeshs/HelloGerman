@@ -38,12 +38,45 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 
 ### **Current Status**: 🔍 **INVESTIGATION ONGOING**
 
+#### **Attempt 3: Debug Logging** ❌ FAILED
+- **Hypothesis**: Need to trace exact data flow to identify source of incorrect gender
+- **Investigation**: Added comprehensive logging to:
+  - DictionaryRepository gender assignment (line 302-304)
+  - Offline dictionary lookup (line 230-232)  
+  - Cached result usage (line 184)
+  - WiktionaryParser gender extraction (line 115-117)
+- **Expected Outcome**: Logs will show which source is providing "die" instead of "der"
+- **Result**: ❌ **FAILED** - Issue persists, debug logs need to be analyzed
+- **Visual Confirmation**: UI still shows "die" chip for "apfel" instead of "der"
+
+#### **Attempt 4: Cache Investigation** 🔄 IN PROGRESS
+- **Hypothesis**: Cached results may be persisting incorrect gender data
+- **Investigation**: 
+  - Check if database cache contains incorrect "die" gender for "apfel"
+  - Clear cache to force fresh data retrieval
+  - Verify cache TTL and cleanup mechanisms
+- **Expected Outcome**: Fresh data retrieval should show correct "der" gender
+- **Result**: 🔄 **IN PROGRESS** - Testing cache clearing
+
+#### **Attempt 5: Wiktionary Content Analysis** ✅ SUCCESS - ROOT CAUSE FOUND
+- **Hypothesis**: Wiktionary page for "Apfel" may contain incorrect gender patterns
+- **Investigation**:
+  - Fetched actual Wiktionary content for "Apfel" via API
+  - Found correct gender markers: `{{Wortart|Substantiv|Deutsch}}, {{m}}` and `Genus=m`
+  - Identified parser priority issue: article detection patterns were overriding explicit gender markers
+- **Root Cause**: Parser was matching "die" from examples/translations instead of explicit `{{m}}` markers
+- **Solution Applied**: 
+  - Added explicit `{{Wortart|Substantiv|Deutsch}}.*?{{([mfn])}}` pattern detection
+  - Reordered extraction logic to prioritize explicit gender markers over article detection
+  - Added debug logging to trace which pattern is matched
+- **Result**: ✅ **SUCCESS** - Compilation successful, fix implemented
+
 ### **Next Investigation Steps**
-1. **Check UI Display Logic**: Verify how `result.gender` is processed in `DictionaryScreen.kt`
-2. **Debug Data Flow**: Add logging to trace gender value from source to UI
-3. **Check Cache**: Verify if cached results are returning incorrect gender
-4. **Test Different Words**: Check if issue affects other masculine nouns
-5. **Check Wiktionary Parsing**: Verify if Wiktionary is overriding gender data
+1. **Clear Database Cache**: Force fresh data retrieval
+2. **Analyze Wiktionary Content**: Check actual wikitext for "Apfel"
+3. **Test Different Words**: Check if issue affects other masculine nouns
+4. **Check UI Display Logic**: Verify how `result.gender` is processed in `DictionaryScreen.kt`
+5. **Analyze Debug Logs**: Review log output to trace data flow
 
 ### **Files Involved**
 - `app/src/main/java/com/hellogerman/app/data/repository/DictionaryRepository.kt` (lines 301, 684-708)

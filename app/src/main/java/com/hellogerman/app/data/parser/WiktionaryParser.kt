@@ -352,8 +352,9 @@ class WiktionaryParser {
     }
     
     private fun extractGender(wikitext: String, headword: String): String? {
-        // 1) Prefer explicit Genus markers/templates
+        // 1) Prefer explicit Genus markers/templates (highest priority)
         Regex("Genus\\s*=\\s*([mfn])", RegexOption.IGNORE_CASE).find(wikitext)?.let { m ->
+            android.util.Log.d("WiktionaryParser", "Found Genus=m pattern for '$headword'")
             return when (m.groupValues[1].lowercase()) {
                 "m" -> "der"
                 "f" -> "die"
@@ -363,6 +364,18 @@ class WiktionaryParser {
         }
 
         Regex("\\{\\{Genus\\|([mfn])\\}}", RegexOption.IGNORE_CASE).find(wikitext)?.let { m ->
+            android.util.Log.d("WiktionaryParser", "Found {{Genus|m}} pattern for '$headword'")
+            return when (m.groupValues[1].lowercase()) {
+                "m" -> "der"
+                "f" -> "die"
+                "n" -> "das"
+                else -> null
+            }
+        }
+        
+        // 1.5) Check for explicit gender markers in word type templates
+        Regex("\\{\\{Wortart\\|Substantiv\\|Deutsch\\}\\}.*?\\{\\{([mfn])\\}\\}", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)).find(wikitext)?.let { m ->
+            android.util.Log.d("WiktionaryParser", "Found Wortart {{m}} pattern for '$headword'")
             return when (m.groupValues[1].lowercase()) {
                 "m" -> "der"
                 "f" -> "die"
