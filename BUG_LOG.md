@@ -58,7 +58,7 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - **Expected Outcome**: Fresh data retrieval should show correct "der" gender
 - **Result**: 🔄 **IN PROGRESS** - Testing cache clearing
 
-#### **Attempt 5: Wiktionary Content Analysis** ✅ SUCCESS - ROOT CAUSE FOUND
+#### **Attempt 5: Wiktionary Content Analysis** ❌ FAILED - PARTIAL SUCCESS
 - **Hypothesis**: Wiktionary page for "Apfel" may contain incorrect gender patterns
 - **Investigation**:
   - Fetched actual Wiktionary content for "Apfel" via API
@@ -69,11 +69,34 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
   - Added explicit `{{Wortart|Substantiv|Deutsch}}.*?{{([mfn])}}` pattern detection
   - Reordered extraction logic to prioritize explicit gender markers over article detection
   - Added debug logging to trace which pattern is matched
-- **Result**: ✅ **SUCCESS** - Compilation successful, fix implemented
+- **Result**: ❌ **FAILED** - Issue persists in main UI display
+- **Visual Confirmation**: 
+  - Example sentence correctly shows "Der Apfel" (masculine)
+  - Main gender chip still shows "die" instead of "der"
+  - Top Definition shows `[die]; Pl: die Apfels; Gen: des Apfel` (incorrect)
+
+#### **Attempt 6: Offline Dictionary Investigation** ✅ SUCCESS - OFFLINE DATA CORRECT
+- **Hypothesis**: Offline dictionary data may contain incorrect gender for "Apfel"
+- **Investigation**:
+  - Checked `GermanDictionary.getWordEntry("apfel")` for gender value
+  - Found: `gender = "der"` (line 805) - **OFFLINE DATA IS CORRECT**
+  - Verified offline data should override online parsing results
+- **Expected Outcome**: Identify if offline dictionary has incorrect "die" gender
+- **Result**: ✅ **SUCCESS** - Offline dictionary has correct "der" gender
+
+#### **Attempt 7: Data Flow Analysis** 🔄 IN PROGRESS - CACHE THEORY
+- **Hypothesis**: Gender assignment logic in DictionaryRepository may have priority issues
+- **Investigation**:
+  - Trace gender assignment: `offlineEntry?.gender ?: wikidataLexemeData?.gender ?: primaryResult?.gender`
+  - **NEW THEORY**: Cached result with incorrect "die" gender is being returned before fresh parsing
+  - Added temporary cache clearing for "apfel" to test fresh parsing
+  - Verified offline data is correct: `gender = "der"`
+- **Expected Outcome**: Identify which data source is providing "die" gender
+- **Result**: 🔄 **IN PROGRESS** - Testing cache clearing theory
 
 ### **Next Investigation Steps**
-1. **Clear Database Cache**: Force fresh data retrieval
-2. **Analyze Wiktionary Content**: Check actual wikitext for "Apfel"
+1. **Check Offline Dictionary**: Verify `GermanDictionary.getWordEntry("apfel")` gender value
+2. **Clear Database Cache**: Force fresh data retrieval
 3. **Test Different Words**: Check if issue affects other masculine nouns
 4. **Check UI Display Logic**: Verify how `result.gender` is processed in `DictionaryScreen.kt`
 5. **Analyze Debug Logs**: Review log output to trace data flow

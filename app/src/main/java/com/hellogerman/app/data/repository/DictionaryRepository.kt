@@ -180,7 +180,13 @@ class DictionaryRepository(private val context: Context) {
                     toLanguage = request.toLang
                 )
                 
-                if (cachedEntry != null) {
+                // TEMPORARY: Clear cache for "apfel" to test fresh parsing
+                if (request.word.lowercase() == "apfel") {
+                    android.util.Log.d("DictionaryRepository", "TEMPORARY: Clearing cache for 'apfel' to test fresh parsing")
+                    clearCacheForWord(request.word, request.fromLang, request.toLang)
+                }
+                
+                if (cachedEntry != null && request.word.lowercase() != "apfel") {
                     android.util.Log.d("DictionaryRepository", "Using cached result for '${request.word}': gender='${cachedEntry.searchResult.gender}'")
                     return@withContext Result.success(cachedEntry.searchResult)
                 }
@@ -837,8 +843,11 @@ class DictionaryRepository(private val context: Context) {
      */
     suspend fun clearCacheForWord(word: String, fromLang: String, toLang: String) {
         android.util.Log.d("DictionaryRepository", "Clearing cache for word: '$word' ($fromLang -> $toLang)")
-        // Note: This would require a delete method in the DAO, but for now we'll clear all cache
-        dictionaryCacheDao.clearAllCache()
+        // Clear database cache for this specific word
+        dictionaryCacheDao.deleteCacheEntry(word, fromLang, toLang)
+        // Also clear in-memory cache
+        val cacheKey = "$CACHE_VERSION:${word}_${fromLang}"
+        cache.remove(cacheKey)
     }
     
     /**
