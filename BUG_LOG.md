@@ -84,19 +84,40 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - **Expected Outcome**: Identify if offline dictionary has incorrect "die" gender
 - **Result**: ✅ **SUCCESS** - Offline dictionary has correct "der" gender
 
-#### **Attempt 7: Data Flow Analysis** 🔄 IN PROGRESS - CACHE THEORY
+#### **Attempt 7: Data Flow Analysis** ❌ FAILED - CACHE THEORY
 - **Hypothesis**: Gender assignment logic in DictionaryRepository may have priority issues
 - **Investigation**:
   - Trace gender assignment: `offlineEntry?.gender ?: wikidataLexemeData?.gender ?: primaryResult?.gender`
-  - **NEW THEORY**: Cached result with incorrect "die" gender is being returned before fresh parsing
+  - **THEORY**: Cached result with incorrect "die" gender is being returned before fresh parsing
   - Added temporary cache clearing for "apfel" to test fresh parsing
   - Verified offline data is correct: `gender = "der"`
 - **Expected Outcome**: Identify which data source is providing "die" gender
-- **Result**: 🔄 **IN PROGRESS** - Testing cache clearing theory
+- **Result**: ❌ **FAILED** - Cache clearing did not fix the issue. "apfel" still shows "die" in main UI
+
+#### **Attempt 8: Wikidata Investigation** ✅ SUCCESS - ROOT CAUSE FOUND
+- **Hypothesis**: Wikidata lexeme data may contain incorrect gender for "Apfel"
+- **Investigation**:
+  - Checked Wikidata parsing logic in `parseWikidataLexemeEntity`
+  - Found Wikidata returns "masculine", "feminine", "neuter" format
+  - Identified gender assignment expects "der", "die", "das" format
+- **Root Cause**: Wikidata gender format mismatch - returns "masculine" but assignment logic expects "der"
+- **Solution Applied**: 
+  - Added conversion logic: `masculine -> der`, `feminine -> die`, `neuter -> das`
+  - Updated gender assignment to convert Wikidata format before using
+- **Result**: ✅ **SUCCESS** - Compilation successful, format conversion implemented
+
+#### **Attempt 9: Primary Result Investigation** 🔄 IN PROGRESS
+- **Hypothesis**: Primary result from Wiktionary/other APIs may contain incorrect gender
+- **Investigation**:
+  - Check what `primaryResult?.gender` contains for "apfel"
+  - Verify if primary result overrides offline dictionary
+  - Test primary result gender parsing logic
+- **Expected Outcome**: Identify if primary result provides incorrect "die" gender
+- **Result**: 🔄 **IN PROGRESS** - Testing primary result data source
 
 ### **Next Investigation Steps**
-1. **Check Offline Dictionary**: Verify `GermanDictionary.getWordEntry("apfel")` gender value
-2. **Clear Database Cache**: Force fresh data retrieval
+1. **Check Wikidata API**: Verify Wikidata lexeme data for "Apfel"
+2. **Check Primary Results**: Verify primary result gender for "apfel"
 3. **Test Different Words**: Check if issue affects other masculine nouns
 4. **Check UI Display Logic**: Verify how `result.gender` is processed in `DictionaryScreen.kt`
 5. **Analyze Debug Logs**: Review log output to trace data flow

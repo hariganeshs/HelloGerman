@@ -308,7 +308,15 @@ class DictionaryRepository(private val context: Context) {
                     wordType = wikidataLexemeData?.lexicalCategory ?: primaryResult?.wordType ?: offlineEntry?.wordType,
                     // Prefer offline dictionary gender (verified correct) over Wikidata/parsed values
                     // Wikidata Q-codes need proper resolution, so trust offline data first
-                    gender = offlineEntry?.gender ?: wikidataLexemeData?.gender ?: primaryResult?.gender.also { finalGender ->
+                    gender = offlineEntry?.gender ?: wikidataLexemeData?.gender?.let { wikidataGender ->
+                        // Convert Wikidata gender format (masculine/feminine/neuter) to article format (der/die/das)
+                        when (wikidataGender.lowercase()) {
+                            "masculine" -> "der"
+                            "feminine" -> "die"
+                            "neuter" -> "das"
+                            else -> wikidataGender
+                        }
+                    } ?: primaryResult?.gender.also { finalGender ->
                         android.util.Log.d("DictionaryRepository", "Gender assignment for '${request.word}': offline='${offlineEntry?.gender}', wikidata='${wikidataLexemeData?.gender}', primary='${primaryResult?.gender}', final='$finalGender'")
                     },
                     wikidataLexemeData = wikidataLexemeData
