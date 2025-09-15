@@ -297,8 +297,9 @@ class DictionaryRepository(private val context: Context) {
                     } else null,
                     etymology = primaryResult?.etymology ?: wiktionaryResult?.etymology,
                     wordType = wikidataLexemeData?.lexicalCategory ?: primaryResult?.wordType ?: offlineEntry?.wordType,
-                    // Prefer Wikidata gender (most accurate) over offline/parsed values
-                    gender = wikidataLexemeData?.gender ?: offlineEntry?.gender ?: primaryResult?.gender,
+                    // Prefer offline dictionary gender (verified correct) over Wikidata/parsed values
+                    // Wikidata Q-codes need proper resolution, so trust offline data first
+                    gender = offlineEntry?.gender ?: wikidataLexemeData?.gender ?: primaryResult?.gender,
                     wikidataLexemeData = wikidataLexemeData
                 )
                 
@@ -681,13 +682,27 @@ class DictionaryRepository(private val context: Context) {
         } ?: emptyList()
 
         // Extract gender for nouns
+        // Wikidata uses Q-codes for grammatical features, so we need to map them
         val gender = entity.grammaticalFeatures?.find { feature ->
-            feature.contains("masculine") || feature.contains("feminine") || feature.contains("neuter")
+            // Common Wikidata Q-codes for German gender
+            when (feature) {
+                "Q499327", // masculine
+                "Q110786", // masculine (alternative)
+                "Q131105"  // masculine (alternative)
+                -> true
+                "Q1775415", // feminine
+                "Q145599"   // feminine (alternative)
+                -> true
+                "Q1775461", // neuter
+                "Q146786"   // neuter (alternative)
+                -> true
+                else -> feature.contains("masculine") || feature.contains("feminine") || feature.contains("neuter")
+            }
         }?.let { feature ->
             when {
-                feature.contains("masculine") -> "masculine"
-                feature.contains("feminine") -> "feminine"
-                feature.contains("neuter") -> "neuter"
+                feature == "Q499327" || feature == "Q110786" || feature == "Q131105" || feature.contains("masculine") -> "masculine"
+                feature == "Q1775415" || feature == "Q145599" || feature.contains("feminine") -> "feminine"
+                feature == "Q1775461" || feature == "Q146786" || feature.contains("neuter") -> "neuter"
                 else -> null
             }
         }
