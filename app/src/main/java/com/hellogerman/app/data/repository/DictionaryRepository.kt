@@ -239,12 +239,45 @@ class DictionaryRepository(private val context: Context) {
                 }
 
                 // Choose the best result based on language and availability
-                // For English searches, prefer Wiktionary (which has German sections) over English-only API
+                // For English-to-German searches, prioritize German translations over English definitions
                 val primaryResult = when (request.fromLang.lowercase()) {
                     "en", "english" -> {
-                        // For English words, prefer Wiktionary which has German translations and examples
-                        // Only use English API as fallback if Wiktionary fails
-                        wiktionaryResult ?: englishWordResult
+                        // For English words, prioritize translation results over English definitions
+                        android.util.Log.d("DictionaryRepository", "English-to-German search for '${request.word}': basicTranslation=${basicTranslation.size}, wiktionaryResult=${wiktionaryResult?.hasResults}, englishWordResult=${englishWordResult?.hasResults}")
+                        
+                        // Try multiple sources for German translations
+                        val allGermanTranslations = mutableListOf<String>()
+                        allGermanTranslations.addAll(basicTranslation)
+                        
+                        // Add translations from Wiktionary if available
+                        wiktionaryResult?.translations?.let { allGermanTranslations.addAll(it) }
+                        
+                        // Add translations from examples that have German content (will be processed later)
+                        // Note: allExamples is defined later, so we'll handle this in the final result combination
+                        
+                        // Remove duplicates and filter for German content
+                        val germanTranslations = allGermanTranslations.distinct().filter { translation ->
+                            translation.contains(Regex("[äöüßÄÖÜ]")) || 
+                            translation.contains(Regex("\\b(der|die|das|ein|eine|einen|einem|einer)\\b", RegexOption.IGNORE_CASE))
+                        }
+                        
+                        android.util.Log.d("DictionaryRepository", "Filtered German translations: $germanTranslations")
+                        
+                        if (germanTranslations.isNotEmpty()) {
+                            // Create a result focused on German translations
+                            createTranslationFocusedResult(request, germanTranslations, wiktionaryResult, englishWordResult)
+                        } else {
+                            // Try hardcoded fallback translations for common words
+                            val fallbackTranslation = getFallbackGermanTranslation(request.word)
+                            if (fallbackTranslation != null) {
+                                android.util.Log.d("DictionaryRepository", "Using fallback German translation: $fallbackTranslation")
+                                createTranslationFocusedResult(request, listOf(fallbackTranslation), wiktionaryResult, englishWordResult)
+                            } else {
+                                // Fallback to English definitions if no translations available
+                                android.util.Log.d("DictionaryRepository", "No German translations found, falling back to English definitions")
+                                wiktionaryResult ?: englishWordResult
+                            }
+                        }
                     }
                     else -> wiktionaryResult ?: englishWordResult
                 }
@@ -257,13 +290,17 @@ class DictionaryRepository(private val context: Context) {
                                        request.toLang.lowercase() in listOf("de", "german")
 
                 if (isEnglishToGerman) {
-                    // Only include examples with translations for English-to-German searches
+                    // Only include examples with German translations for English-to-German searches
                     // Prioritize Tatoeba examples (licensed and reliable)
-                    allExamples.addAll(tatoebaExamples.filter { it.translation != null })
-                    allExamples.addAll(reversoExamples.filter { it.translation != null })
-                    allExamples.addAll(primaryResult?.examples?.filter { it.translation != null } ?: emptyList())
-                    allExamples.addAll(wiktionaryResult?.examples?.filter { it.translation != null } ?: emptyList())
-                    allExamples.addAll(englishWordResult?.examples?.filter { it.translation != null } ?: emptyList())
+                    allExamples.addAll(tatoebaExamples.filter { it.translation != null && it.translation.contains(Regex("[äöüßÄÖÜ]")) })
+                    allExamples.addAll(reversoExamples.filter { it.translation != null && it.translation.contains(Regex("[äöüßÄÖÜ]")) })
+                    
+                    // Only include Wiktionary examples if they have German translations
+                    allExamples.addAll(primaryResult?.examples?.filter { it.translation != null && it.translation.contains(Regex("[äöüßÄÖÜ]")) } ?: emptyList())
+                    allExamples.addAll(wiktionaryResult?.examples?.filter { it.translation != null && it.translation.contains(Regex("[äöüßÄÖÜ]")) } ?: emptyList())
+                    
+                    // Skip English-only examples from English Dictionary API
+                    // allExamples.addAll(englishWordResult?.examples?.filter { it.translation != null } ?: emptyList())
 
                     // If we still don't have examples, fall back to offline German examples
                     if (allExamples.isEmpty()) {
@@ -360,12 +397,161 @@ class DictionaryRepository(private val context: Context) {
     }
     
     /**
+     * Get fallback German translation for common English words
+     * Used when translation APIs fail or return no results
+     */
+    private fun getFallbackGermanTranslation(englishWord: String): String? {
+        val fallbackTranslations = mapOf(
+            "mother" to "die Mutter",
+            "father" to "der Vater",
+            "brother" to "der Bruder",
+            "sister" to "die Schwester",
+            "son" to "der Sohn",
+            "daughter" to "die Tochter",
+            "family" to "die Familie",
+            "house" to "das Haus",
+            "car" to "das Auto",
+            "book" to "das Buch",
+            "water" to "das Wasser",
+            "food" to "das Essen",
+            "time" to "die Zeit",
+            "day" to "der Tag",
+            "night" to "die Nacht",
+            "sun" to "die Sonne",
+            "moon" to "der Mond",
+            "tree" to "der Baum",
+            "flower" to "die Blume",
+            "cat" to "die Katze",
+            "dog" to "der Hund",
+            "bird" to "der Vogel",
+            "fish" to "der Fisch",
+            "bread" to "das Brot",
+            "milk" to "die Milch",
+            "coffee" to "der Kaffee",
+            "tea" to "der Tee",
+            "apple" to "der Apfel",
+            "orange" to "die Orange",
+            "banana" to "die Banane",
+            "red" to "rot",
+            "blue" to "blau",
+            "green" to "grün",
+            "yellow" to "gelb",
+            "black" to "schwarz",
+            "white" to "weiß",
+            "table" to "der Tisch",
+            "chair" to "der Stuhl",
+            "door" to "die Tür",
+            "window" to "das Fenster",
+            "bed" to "das Bett",
+            "phone" to "das Telefon",
+            "computer" to "der Computer",
+            "school" to "die Schule",
+            "work" to "die Arbeit",
+            "friend" to "der Freund",
+            "family" to "die Familie",
+            "love" to "die Liebe",
+            "happy" to "glücklich",
+            "sad" to "traurig",
+            "big" to "groß",
+            "small" to "klein",
+            "good" to "gut",
+            "bad" to "schlecht",
+            "new" to "neu",
+            "old" to "alt",
+            "young" to "jung",
+            "beautiful" to "schön",
+            "ugly" to "hässlich",
+            "fast" to "schnell",
+            "slow" to "langsam",
+            "hot" to "heiß",
+            "cold" to "kalt",
+            "warm" to "warm",
+            "cool" to "kühl"
+        )
+        
+        return fallbackTranslations[englishWord.lowercase()]
+    }
+
+    /**
+     * Create a translation-focused result for English-to-German searches
+     * Prioritizes German translations and German grammar information
+     */
+    private fun createTranslationFocusedResult(
+        request: DictionarySearchRequest,
+        translations: List<String>,
+        wiktionaryResult: DictionarySearchResult?,
+        englishWordResult: DictionarySearchResult?
+    ): DictionarySearchResult {
+        // Start with basic translation information
+        val germanTranslations = translations.filter { translation ->
+            // Filter out English words, keep German translations
+            translation.matches(Regex(".*[äöüßÄÖÜ].*")) || // Contains German characters
+            translation.matches(Regex(".*\\b(der|die|das|ein|eine|einen|einem|einer)\\b.*", RegexOption.IGNORE_CASE)) || // Contains German articles
+            translation.length > 3 && !translation.matches(Regex("[a-zA-Z\\s]+")) // Not purely English
+        }
+        
+        // Create German definitions from translations with proper German context
+        val germanDefinitions = germanTranslations.mapIndexed { index, translation ->
+            val cleanTranslation = translation.replace(Regex("\\b(der|die|das)\\b\\s*"), "").trim()
+            Definition(
+                meaning = if (cleanTranslation.isNotEmpty()) cleanTranslation else translation,
+                partOfSpeech = if (translation.contains(Regex("\\b(der|die|das)\\b"))) "noun" else "word",
+                level = if (index == 0) "primary" else "alternative"
+            )
+        }
+        
+        // Extract German grammar information from the first translation
+        val firstTranslation = germanTranslations.firstOrNull()
+        val germanGender = firstTranslation?.let { translation ->
+            when {
+                translation.contains(Regex("\\bder\\b", RegexOption.IGNORE_CASE)) -> "der"
+                translation.contains(Regex("\\bdie\\b", RegexOption.IGNORE_CASE)) -> "die"
+                translation.contains(Regex("\\bdas\\b", RegexOption.IGNORE_CASE)) -> "das"
+                else -> null
+            }
+        }
+        
+        // Determine word type based on translation patterns
+        val wordType = firstTranslation?.let { translation ->
+            when {
+                translation.contains(Regex("\\b(der|die|das)\\b", RegexOption.IGNORE_CASE)) -> "noun"
+                translation.endsWith("en") && !translation.endsWith("gen") -> "verb"
+                translation.endsWith("ig") || translation.endsWith("isch") -> "adjective"
+                translation.endsWith("lich") -> "adjective"
+                translation.endsWith("los") -> "adjective"
+                translation.length <= 4 && !translation.contains(" ") -> "adjective" // Short words likely adjectives
+                else -> "word"
+            }
+        }
+        
+        return DictionarySearchResult(
+            originalWord = request.word,
+            translations = germanTranslations,
+            fromLanguage = request.fromLang,
+            toLanguage = request.toLang,
+            hasResults = germanTranslations.isNotEmpty(),
+            definitions = germanDefinitions,
+            examples = listOf(), // Will be filled by example merging logic
+            wordType = wordType,
+            gender = germanGender,
+            pronunciation = null // Will be filled if available from other sources
+        )
+    }
+
+    /**
      * Get comprehensive word data from Wiktionary with offline fallback
      */
     private suspend fun getWiktionaryData(request: DictionarySearchRequest): DictionarySearchResult? {
         return try {
-            // Get the appropriate Wiktionary base URL for the source language
-            val baseUrl = WiktionaryApiService.getBaseUrlForLanguage(request.fromLang)
+            // For English-to-German searches, use German Wiktionary to get German translations
+            val baseUrl = if (request.fromLang.lowercase() in listOf("en", "english") && 
+                               request.toLang.lowercase() in listOf("de", "german")) {
+                // Use German Wiktionary for English words to get German translations
+                WiktionaryApiService.GERMAN_BASE_URL
+            } else {
+                // Use appropriate Wiktionary base URL for the source language
+                WiktionaryApiService.getBaseUrlForLanguage(request.fromLang)
+            }
             val apiUrl = WiktionaryApiService.createApiUrl(baseUrl)
 
             // Try Wiktionary API first

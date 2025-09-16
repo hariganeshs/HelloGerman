@@ -320,11 +320,15 @@ class OfflineDictionaryRepository @Inject constructor(
                 return Result.success(mergedResult)
             }
             
-            // 2. Try compound word analysis (German specialty)
-            val compoundResult = analyzeCompoundWord(word)
-            if (compoundResult.hasResults) {
-                android.util.Log.d("OfflineDict", "Returning compound result for: $word")
-                return Result.success(compoundResult)
+            // 2. Try compound word analysis (German specialty) - only for German words
+            if (request.fromLang.lowercase() in listOf("de", "german")) {
+                val compoundResult = analyzeCompoundWord(word)
+                if (compoundResult.hasResults) {
+                    android.util.Log.d("OfflineDict", "Returning compound result for German word: $word")
+                    return Result.success(compoundResult)
+                }
+            } else {
+                android.util.Log.d("OfflineDict", "Skipping compound analysis for non-German word: $word (${request.fromLang})")
             }
             
             // 3. Fallback to online APIs only if offline fails

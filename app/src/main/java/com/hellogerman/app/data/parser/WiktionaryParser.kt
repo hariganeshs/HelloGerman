@@ -89,7 +89,11 @@ class WiktionaryParser {
         private val DEFINITION_LINE_PATTERNS = listOf(
             Pattern.compile(":\\[\\d+\\]\\s*(.+)"),
             Pattern.compile("#\\s*(.+)"),
-            Pattern.compile("\\d+\\.\\s*(.+)")
+            Pattern.compile("\\d+\\.\\s*(.+)"),
+            // German translation patterns for English words on German Wiktionary
+            Pattern.compile("\\{\\{Ü\\|([^}]+)\\}\\}"), // {{Ü|German translation}}
+            Pattern.compile("\\{\\{Übersetzung\\|([^}]+)\\}\\}"), // {{Übersetzung|German translation}}
+            Pattern.compile("\\{\\{de\\|([^}]+)\\}\\}") // {{de|German translation}}
         )
         
         // Example line patterns
@@ -172,6 +176,12 @@ class WiktionaryParser {
     private fun extractDefinitions(wikitext: String): List<Definition> {
         val definitions = mutableListOf<Definition>()
         
+        // First, try to extract German translations for English words
+        val germanTranslations = extractGermanTranslations(wikitext)
+        if (germanTranslations.isNotEmpty()) {
+            return germanTranslations
+        }
+        
         // Try multiple definition patterns
         for (pattern in DEFINITION_PATTERNS) {
             val matcher = pattern.matcher(wikitext)
@@ -204,6 +214,52 @@ class WiktionaryParser {
         }
         
         return definitions.take(5) // Limit to 5 definitions
+    }
+    
+    /**
+     * Extract German translations from German Wiktionary pages for English words
+     */
+    private fun extractGermanTranslations(wikitext: String): List<Definition> {
+        val translations = mutableListOf<Definition>()
+        
+        // Pattern for German translation templates
+        val translationPatterns = listOf(
+            Pattern.compile("\\{\\{Ü\\|([^}]+)\\}\\}"), // {{Ü|German translation}}
+            Pattern.compile("\\{\\{Übersetzung\\|([^}]+)\\}\\}"), // {{Übersetzung|German translation}}
+            Pattern.compile("\\{\\{de\\|([^}]+)\\}\\}"), // {{de|German translation}}
+            Pattern.compile("\\{\\{Übersetzungen\\}\\}\\s*([^\\n]+)"), // {{Übersetzungen}} followed by translations
+            Pattern.compile("Deutsch:\\s*([^\\n]+)"), // Deutsch: German translation
+            Pattern.compile("\\[\\[([^\\]]*[äöüßÄÖÜ][^\\]]*)\\]\\]") // German words in brackets
+        )
+        
+        for (pattern in translationPatterns) {
+            val matcher = pattern.matcher(wikitext)
+            while (matcher.find()) {
+                val translation = cleanWikitext(matcher.group(1) ?: "")
+                if (translation.isNotBlank() && translation.length > 2) {
+                    // Check if it contains German characters or articles
+                    if (translation.contains(Regex("[äöüßÄÖÜ]")) || 
+                        translation.contains(Regex("\\b(der|die|das|ein|eine|einen|einem|einer)\\b", RegexOption.IGNORE_CASE))) {
+                        
+                        // Extract gender if present
+                        val gender = when {
+                            translation.contains(Regex("\\bder\\b", RegexOption.IGNORE_CASE)) -> "der"
+                            translation.contains(Regex("\\bdie\\b", RegexOption.IGNORE_CASE)) -> "die"
+                            translation.contains(Regex("\\bdas\\b", RegexOption.IGNORE_CASE)) -> "das"
+                            else -> null
+                        }
+                        
+                        translations.add(Definition(
+                            meaning = translation,
+                            partOfSpeech = "noun",
+                            level = if (translations.isEmpty()) "primary" else "alternative"
+                        ))
+                    }
+                }
+            }
+        }
+        
+        return translations.take(5) // Limit to 5 translations
     }
     
     private fun extractExamples(wikitext: String): List<Example> {
@@ -330,21 +386,14 @@ class WiktionaryParser {
             val matcher = pattern.matcher(wikitext)
             if (matcher.find()) {
                 return when (matcher.group(1)) {
-                    "Substantiv" -> "noun"
+                    "Substantiv", "Noun" -> "noun"
                     "Verb" -> "verb"
-                    "Adjektiv" -> "adjective"
+                    "Adjektiv", "Adjective" -> "adjective"
                     "Adverb" -> "adverb"
-                    "Pronomen" -> "pronoun"
-                    "Präposition" -> "preposition"
-                    "Konjunktion" -> "conjunction"
-                    "Noun" -> "noun"
-                    "Verb" -> "verb"
-                    "Adjective" -> "adjective"
-                    "Adverb" -> "adverb"
-                    "Pronoun" -> "pronoun"
-                    "Preposition" -> "preposition"
-                    "Conjunction" -> "conjunction"
-                    else -> matcher.group(1).lowercase()
+                    "Pronomen", "Pronoun" -> "pronoun"
+                    "Präposition", "Preposition" -> "preposition"
+                    "Konjunktion", "Conjunction" -> "conjunction"
+                    else -> matcher.group(1)?.lowercase() ?: "unknown"
                 }
             }
         }
