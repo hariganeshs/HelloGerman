@@ -45,10 +45,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _achievementNotifications = MutableSharedFlow<com.hellogerman.app.gamification.Achievement>()
     val achievementNotifications: SharedFlow<com.hellogerman.app.gamification.Achievement> = _achievementNotifications.asSharedFlow()
 
+    private val _vocabularyCount = MutableStateFlow(0)
+    val vocabularyCount: StateFlow<Int> = _vocabularyCount.asStateFlow()
+
     init {
         loadUserProgress()
         observeGrammarStats()
         loadAdaptiveProgress()
+        loadVocabularyCount()
     }
     
     private fun loadUserProgress() {
@@ -250,6 +254,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun getSkillProgressDetails(skill: String): LevelCompletionInfo? {
         return _levelCompletionInfo.value[skill]
     }
-
+    
+    private fun loadVocabularyCount() {
+        viewModelScope.launch {
+            try {
+                val count = repository.getVocabularyCount()
+                _vocabularyCount.value = count
+            } catch (e: Exception) {
+                _vocabularyCount.value = 0
+            }
+        }
+    }
+    
+    fun refreshVocabularyCount() {
+        loadVocabularyCount()
+    }
 
 }

@@ -16,9 +16,10 @@ import com.hellogerman.app.data.entities.*
         UserSubmission::class,
         GrammarProgress::class,
         Achievement::class,
-        DictionaryCacheEntry::class
+        DictionaryCacheEntry::class,
+        UserVocabulary::class
     ],
-    version = 14,
+    version = 15,
     exportSchema = false
 )
 abstract class HelloGermanDatabase : RoomDatabase() {
@@ -29,6 +30,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
     abstract fun grammarProgressDao(): GrammarProgressDao
     abstract fun achievementDao(): AchievementDao
     abstract fun dictionaryCacheDao(): DictionaryCacheDao
+    abstract fun userVocabularyDao(): UserVocabularyDao
     
     companion object {
         @Volatile
@@ -41,7 +43,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                     HelloGermanDatabase::class.java,
                     "hello_german_database"
                 )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
@@ -198,6 +200,29 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                         `fetchedAt` INTEGER NOT NULL,
                         `expiresAt` INTEGER NOT NULL,
                         `cacheVersion` INTEGER NOT NULL
+                    )
+                """)
+            }
+        }
+
+        private val MIGRATION_14_15 = object : Migration(14, 15) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create user vocabulary table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `user_vocabulary` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `word` TEXT NOT NULL,
+                        `translation` TEXT NOT NULL,
+                        `gender` TEXT,
+                        `level` TEXT,
+                        `category` TEXT,
+                        `notes` TEXT,
+                        `addedAt` INTEGER NOT NULL,
+                        `lastReviewed` INTEGER,
+                        `reviewCount` INTEGER NOT NULL,
+                        `masteryLevel` INTEGER NOT NULL,
+                        `isFavorite` INTEGER NOT NULL,
+                        `source` TEXT NOT NULL
                     )
                 """)
             }

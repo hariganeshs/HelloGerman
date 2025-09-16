@@ -302,6 +302,22 @@ fun HelloGermanApp() {
                 }
                 
                 composable(
+                    route = Screen.Vocabulary.route,
+                    enterTransition = { 
+                        slideInHorizontally(
+                            animationSpec = tween(400, easing = FastOutSlowInEasing)
+                        ) { it / 2 } + fadeIn(animationSpec = tween(300))
+                    },
+                    exitTransition = { 
+                        slideOutHorizontally(
+                            animationSpec = tween(300, easing = FastOutLinearInEasing)
+                        ) { -it / 2 } + fadeOut(animationSpec = tween(200))
+                    }
+                ) {
+                    VocabularyScreen(navController)
+                }
+                
+                composable(
                     route = Screen.Gamification.route,
                     enterTransition = { 
                         slideInVertically(

@@ -110,6 +110,62 @@ fun DashboardScreen(
         }
         
         item {
+            // Vocabulary Stats
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                val vocabularyCount by mainViewModel.vocabularyCount.collectAsState()
+                
+                Card(
+                    modifier = Modifier.weight(1f),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Bookmark,
+                            contentDescription = "Vocabulary",
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column {
+                            Text(
+                                text = vocabularyCount.toString(),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            Text(
+                                text = "Words Saved",
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        IconButton(
+                            onClick = { navController.navigate("vocabulary") }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowForward,
+                                contentDescription = "View Vocabulary",
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        
+        item {
             GamificationStatsSection(mainViewModel, navController)
         }
         
@@ -331,6 +387,7 @@ fun SkillProgressCard(
 fun QuickActionsSection(navController: NavController, context: android.content.Context) {
     val quickActions = listOf(
         QuickAction("Dictionary", Icons.Default.Translate, "dictionary"),
+        QuickAction("My Vocabulary", Icons.Default.Bookmark, "vocabulary"),
         QuickAction("Achievements", Icons.Default.EmojiEvents, "gamification"),
         QuickAction("Progress Analytics", Icons.Default.Info, "progress"),
         QuickAction("Settings", Icons.Default.Settings, "settings")
@@ -339,7 +396,7 @@ fun QuickActionsSection(navController: NavController, context: android.content.C
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // First row with Dictionary and Achievements
+        // First row with Dictionary and My Vocabulary
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -359,12 +416,32 @@ fun QuickActionsSection(navController: NavController, context: android.content.C
             }
         }
         
-        // Second row with Progress Analytics and Settings
+        // Second row with Achievements and Progress Analytics
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            quickActions.drop(2).forEach { action ->
+            quickActions.drop(2).take(2).forEach { action ->
+                QuickActionCard(
+                    action = action,
+                    onClick = { 
+                        // Show interstitial ad before navigating to quick action
+                        if (context is android.app.Activity) {
+                            AdMobManager.showInterstitialAd(context)
+                        }
+                        navController.navigate(action.route) 
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+        
+        // Third row with Settings
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            quickActions.drop(4).forEach { action ->
                 QuickActionCard(
                     action = action,
                     onClick = { 

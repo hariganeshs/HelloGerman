@@ -48,6 +48,8 @@ fun DictionaryScreen(
     val selectedTab by dictionaryViewModel.selectedTab.collectAsState()
     val isTTSInitialized by dictionaryViewModel.isTTSInitialized.collectAsState()
     val isTTSPlaying by dictionaryViewModel.isTTSPlaying.collectAsState()
+    val isWordInVocabulary by dictionaryViewModel.isWordInVocabulary.collectAsState()
+    val vocabularyMessage by dictionaryViewModel.vocabularyMessage.collectAsState()
     
     val keyboardController = LocalSoftwareKeyboardController.current
     var showLanguageDialog by remember { mutableStateOf(false) }
@@ -319,6 +321,44 @@ fun DictionaryScreen(
             }
         }
         
+        // Vocabulary Message
+        vocabularyMessage?.let { message ->
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = if (isWordInVocabulary) Icons.Default.BookmarkRemove else Icons.Default.BookmarkAdd,
+                        contentDescription = "Vocabulary",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = message,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.weight(1f)
+                    )
+                    IconButton(
+                        onClick = { dictionaryViewModel.clearVocabularyMessage() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close",
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                }
+            }
+        }
+        
         // Loading Indicator
         if (isLoading) {
             Card(
@@ -354,7 +394,7 @@ fun DictionaryScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     // Word Overview Section
-                    item { OverviewCard(result, dictionaryViewModel) }
+                    item { OverviewCard(result, dictionaryViewModel, isWordInVocabulary) }
 
                     // Definitions Section
                     if (result.definitions.isNotEmpty()) {
@@ -519,7 +559,11 @@ fun DictionaryScreen(
 // Enhanced Dictionary UI Components
 
 @Composable
-private fun OverviewCard(result: DictionarySearchResult, viewModel: DictionaryViewModel) {
+private fun OverviewCard(
+    result: DictionarySearchResult, 
+    viewModel: DictionaryViewModel,
+    isWordInVocabulary: Boolean
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -607,9 +651,15 @@ private fun OverviewCard(result: DictionarySearchResult, viewModel: DictionaryVi
                 )
                 
                 QuickActionButton(
-                    icon = Icons.Default.BookmarkAdd,
-                    label = "Add to Vocab",
-                    onClick = { /* TODO: Implement add to vocabulary */ }
+                    icon = if (isWordInVocabulary) Icons.Default.BookmarkRemove else Icons.Default.BookmarkAdd,
+                    label = if (isWordInVocabulary) "Remove from Vocab" else "Add to Vocab",
+                    onClick = { 
+                        if (isWordInVocabulary) {
+                            viewModel.removeWordFromVocabulary()
+                        } else {
+                            viewModel.addWordToVocabulary()
+                        }
+                    }
                 )
                 
                 Spacer(modifier = Modifier.weight(1f))

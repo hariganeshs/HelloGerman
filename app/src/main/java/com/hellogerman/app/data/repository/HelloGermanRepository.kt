@@ -38,6 +38,7 @@ class HelloGermanRepository(context: Context) {
     private val userSubmissionDao = database.userSubmissionDao()
     private val grammarProgressDao: GrammarProgressDao = database.grammarProgressDao()
     private val achievementDao: com.hellogerman.app.data.dao.AchievementDao = database.achievementDao()
+    private val userVocabularyDao: com.hellogerman.app.data.dao.UserVocabularyDao = database.userVocabularyDao()
     
     // User Progress Operations
     fun getUserProgress(): Flow<UserProgress?> = userProgressDao.getUserProgress()
@@ -368,4 +369,87 @@ class HelloGermanRepository(context: Context) {
         }
         return false
     }
+    
+    // User Vocabulary Operations
+    fun getAllUserVocabulary(): Flow<List<UserVocabulary>> = userVocabularyDao.getAllVocabulary()
+    
+    fun getFavoriteVocabulary(): Flow<List<UserVocabulary>> = userVocabularyDao.getFavoriteVocabulary()
+    
+    fun getVocabularyByLevel(level: String): Flow<List<UserVocabulary>> = userVocabularyDao.getVocabularyByLevel(level)
+    
+    fun getVocabularyByCategory(category: String): Flow<List<UserVocabulary>> = userVocabularyDao.getVocabularyByCategory(category)
+    
+    fun getVocabularyForReview(threshold: Int = 3): Flow<List<UserVocabulary>> = userVocabularyDao.getVocabularyForReview(threshold)
+    
+    suspend fun getVocabularyByWord(word: String): UserVocabulary? = userVocabularyDao.getVocabularyByWord(word)
+    
+    suspend fun addVocabularyToUserList(
+        word: String,
+        translation: String,
+        gender: String? = null,
+        level: String? = null,
+        category: String? = null,
+        notes: String? = null,
+        source: String = "dictionary"
+    ): Boolean {
+        return try {
+            // Check if word already exists
+            val existing = userVocabularyDao.getVocabularyByWord(word)
+            if (existing != null) {
+                return false // Word already exists
+            }
+            
+            val vocabulary = UserVocabulary(
+                word = word,
+                translation = translation,
+                gender = gender,
+                level = level,
+                category = category,
+                notes = notes,
+                source = source
+            )
+            userVocabularyDao.insertVocabulary(vocabulary)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    suspend fun updateVocabulary(vocabulary: UserVocabulary) {
+        userVocabularyDao.updateVocabulary(vocabulary)
+    }
+    
+    suspend fun deleteVocabulary(vocabulary: UserVocabulary) {
+        userVocabularyDao.deleteVocabulary(vocabulary)
+    }
+    
+    suspend fun deleteVocabularyByWord(word: String) {
+        userVocabularyDao.deleteVocabularyByWord(word)
+    }
+    
+    suspend fun updateMasteryLevel(word: String, level: Int) {
+        userVocabularyDao.updateMasteryLevel(word, level)
+    }
+    
+    suspend fun toggleFavoriteStatus(word: String): Boolean {
+        val vocabulary = userVocabularyDao.getVocabularyByWord(word)
+        vocabulary?.let {
+            val newStatus = !it.isFavorite
+            userVocabularyDao.updateFavoriteStatus(word, newStatus)
+            return newStatus
+        }
+        return false
+    }
+    
+    suspend fun markAsReviewed(word: String) {
+        userVocabularyDao.markAsReviewed(word)
+    }
+    
+    suspend fun getVocabularyCount(): Int = userVocabularyDao.getVocabularyCount()
+    
+    suspend fun getFavoriteCount(): Int = userVocabularyDao.getFavoriteCount()
+    
+    suspend fun getAvailableCategories(): List<String> = userVocabularyDao.getAvailableCategories()
+    
+    suspend fun getAvailableLevels(): List<String> = userVocabularyDao.getAvailableLevels()
 }

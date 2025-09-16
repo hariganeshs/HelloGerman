@@ -7,6 +7,7 @@ import com.hellogerman.app.data.models.DictionarySearchRequest
 import com.hellogerman.app.data.models.DictionarySearchResult
 import com.hellogerman.app.data.repository.OfflineDictionaryRepository
 import com.hellogerman.app.data.repository.DictionaryRepository
+import com.hellogerman.app.data.repository.HelloGermanRepository
 import com.hellogerman.app.ui.utils.TTSHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +22,7 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     
     private val onlineRepository = DictionaryRepository(application)
     private val repository = OfflineDictionaryRepository(application, onlineRepository)
+    private val helloGermanRepository = HelloGermanRepository(application)
     private val ttsHelper = TTSHelper(application)
     
     init {
@@ -63,6 +65,13 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     // TTS states
     val isTTSInitialized: StateFlow<Boolean> = ttsHelper.isInitialized
     val isTTSPlaying: StateFlow<Boolean> = ttsHelper.isPlaying
+    
+    // Vocabulary states
+    private val _isWordInVocabulary = MutableStateFlow(false)
+    val isWordInVocabulary: StateFlow<Boolean> = _isWordInVocabulary.asStateFlow()
+    
+    private val _vocabularyMessage = MutableStateFlow<String?>(null)
+    val vocabularyMessage: StateFlow<String?> = _vocabularyMessage.asStateFlow()
     
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
@@ -123,6 +132,8 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
                         addToSearchHistory(query)
                         // Reset to overview tab when new search is performed
                         _selectedTab.value = 0
+                        // Check if word is in vocabulary
+                        checkWordInVocabulary()
                     } else {
                         _errorMessage.value = "No information found for '$query'. Try a different word or check spelling."
                     }
@@ -263,6 +274,105 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
             "de" to "German",
             "en" to "English"
         )
+    }
+    
+    /**
+     * Check if the current word is already in user's vocabulary
+     */
+    fun checkWordInVocabulary() {
+        val word = _searchQuery.value.trim()
+        if (word.isNotEmpty()) {
+            viewModelScope.launch {
+                val existing = helloGermanRepository.getVocabularyByWord(word)
+                _isWordInVocabulary.value = existing != null
+            }
+        }
+    }
+    
+    /**
+     * Add current word to user's vocabulary
+     */
+    fun addWordToVocabulary() {
+        val word = _searchQuery.value.trim()
+        val result = _searchResult.value
+        
+        if (word.isEmpty()) {
+            _vocabularyMessage.value = "No word to add"
+            return
+        }
+        
+        if (result == null || !result.hasResults) {
+            _vocabularyMessage.value = "Word not found - cannot add to vocabulary"
+            return
+        }
+        
+        viewModelScope.launch {
+            try {
+                val translation = result.translations.firstOrNull() ?: "No translation available"
+                val gender = result.gender
+                val level = determineWordLevel(result)
+                
+                val success = helloGermanRepository.addVocabularyToUserList(
+                    word = word,
+                    translation = translation,
+                    gender = gender,
+                    level = level,
+                    category = "General",
+                    source = "dictionary"
+                )
+                
+                if (success) {
+                    _isWordInVocabulary.value = true
+                    _vocabularyMessage.value = "'$word' added to vocabulary!"
+                } else {
+                    _vocabularyMessage.value = "'$word' is already in your vocabulary"
+                }
+            } catch (e: Exception) {
+                _vocabularyMessage.value = "Failed to add word: ${e.message}"
+            }
+        }
+    }
+    
+    /**
+     * Remove current word from user's vocabulary
+     */
+    fun removeWordFromVocabulary() {
+        val word = _searchQuery.value.trim()
+        
+        if (word.isEmpty()) {
+            _vocabularyMessage.value = "No word to remove"
+            return
+        }
+        
+        viewModelScope.launch {
+            try {
+                helloGermanRepository.deleteVocabularyByWord(word)
+                _isWordInVocabulary.value = false
+                _vocabularyMessage.value = "'$word' removed from vocabulary"
+            } catch (e: Exception) {
+                _vocabularyMessage.value = "Failed to remove word: ${e.message}"
+            }
+        }
+    }
+    
+    /**
+     * Clear vocabulary message
+     */
+    fun clearVocabularyMessage() {
+        _vocabularyMessage.value = null
+    }
+    
+    /**
+     * Determine word level based on search result complexity
+     */
+    private fun determineWordLevel(result: DictionarySearchResult): String? {
+        // Simple heuristic based on available information
+        return when {
+            result.conjugations != null -> "B1" // Verbs with conjugations
+            result.examples.size > 2 -> "A2" // Words with many examples
+            result.translations.size > 1 -> "A1" // Basic words with multiple translations
+            else -> null // Unknown level
+        }
     }
     
     override fun onCleared() {

@@ -37,6 +37,7 @@ open class Screen(val route: String) {
     object DictionaryWithWord : Screen("dictionary/{word}") {
         fun createRoute(word: String) = "dictionary/$word"
     }
+    object Vocabulary : Screen("vocabulary")
     object Gamification : Screen("gamification")
 }
 
