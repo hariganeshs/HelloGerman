@@ -3,6 +3,7 @@ package com.hellogerman.app.data.repository
 import android.content.Context
 import androidx.room.Room
 import com.hellogerman.app.data.database.*
+import com.hellogerman.app.data.dictionary.GermanDictionary
 import com.hellogerman.app.data.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -352,6 +353,24 @@ class OfflineDictionaryRepository @Inject constructor(
                 Example(it.germanSentence, it.englishTranslation) 
             }
             
+            // Normalize and validate gender using static offline dictionary as source of truth
+            val dbGender = wordEntity.gender
+            val normalizedDbGender = when (dbGender?.lowercase()) {
+                "masculine", "m", "m." -> "der"
+                "feminine", "f", "f." -> "die"
+                "neuter", "n", "n." -> "das"
+                "der", "die", "das" -> dbGender
+                else -> dbGender
+            }
+            val staticGender = GermanDictionary.getWordEntry(word)?.gender
+            val finalGender = staticGender ?: normalizedDbGender
+            if (staticGender != null && normalizedDbGender != null && staticGender != normalizedDbGender) {
+                android.util.Log.w(
+                    "OfflineDict",
+                    "Gender mismatch for '$word': db='$normalizedDbGender' vs static='$staticGender'. Using static."
+                )
+            }
+            
             DictionarySearchResult(
                 originalWord = word,
                 fromLanguage = "de",
@@ -360,7 +379,7 @@ class OfflineDictionaryRepository @Inject constructor(
                 definitions = definitions,
                 examples = examplesList,
                 wordType = wordEntity.wordType,
-                gender = wordEntity.gender,
+                gender = finalGender,
                 pronunciation = wordEntity.pronunciation?.let { 
                     Pronunciation(it, "de")
                 },

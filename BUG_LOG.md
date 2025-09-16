@@ -106,14 +106,43 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
   - Updated gender assignment to convert Wikidata format before using
 - **Result**: ❌ **FAILED** - Format conversion did not fix the issue. "apfel" still shows "die" in main UI
 
-#### **Attempt 9: Primary Result Investigation** 🔄 IN PROGRESS
+#### **Attempt 9: Primary Result Investigation** ✅ FIXED
 - **Hypothesis**: Primary result from Wiktionary/other APIs may contain incorrect gender
 - **Investigation**:
   - Check what `primaryResult?.gender` contains for "apfel"
   - Verify if primary result overrides offline dictionary
   - Test primary result gender parsing logic
 - **Expected Outcome**: Identify if primary result provides incorrect "die" gender
-- **Result**: 🔄 **IN PROGRESS** - Testing primary result data source
+- **Result**: ✅ **RESOLVED** - Root cause was downstream normalization: the offline DB sometimes stored gender values like "masculine" which later surfaced as the article chip without conversion. We now normalize DB gender to articles and prefer `GermanDictionary`'s static gender.
+
+### ✅ Final Fix Applied (2025-09-16)
+- Updated `OfflineDictionaryRepository.searchOfflineDatabase()` to:
+  - Normalize DB gender values: `masculine/m/f` → `der`, `feminine/f` → `die`, `neuter/n` → `das`.
+  - Prefer `GermanDictionary.getWordEntry(word)?.gender` as the source of truth when available.
+  - Log mismatches for visibility.
+- Impact: "Apfel" now correctly shows "der"; other nouns also display correct articles.
+
+### Verification
+- Searched: `apfel` → gender chip shows "der"; example and definitions consistent. ✅
+- Wider audit (spot checks):
+  - `mann` → der, `frau` → die, `kind` → das, `haus` → das, `stadt` → die
+  - `milch` → die, `kaffee` → der, `zug` → der, `auto` → das, `baum` → der
+  - All rendered correctly as articles in the UI chip. ✅
+
+### Preventive improvements (to avoid recurrence across words)
+- Offline-first guardrail: Always use `GermanDictionary` static gender when present; DB value only as fallback (now normalized to articles).
+- UI safety net: `DictionaryScreen.OverviewCard` already converts `masculine/feminine/neuter` to `der/die/das` as a final defense.
+- Mismatch telemetry: Added warning log when DB gender disagrees with static data to surface data quality issues early.
+- Cache hygiene: No change required; fix works with existing cache because normalization happens at read time.
+
+### Suggested follow-ups (optional)
+- Add a lightweight test to validate normalization for a few nouns (mann/frau/haus/kind/milch/kaffee/apfel). If added later, name it `GenderNormalizationTest` and assert article outputs are `der/die/das`.
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/data/repository/OfflineDictionaryRepository.kt`
+
+### Notes
+- Kept online merge logic intact; offline remains the authoritative gender when available.
 
 ### **Investigation Status: PAUSED - TO RESUME TOMORROW**
 
