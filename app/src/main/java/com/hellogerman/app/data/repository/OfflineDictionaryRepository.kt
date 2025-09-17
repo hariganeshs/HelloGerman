@@ -1,16 +1,13 @@
 package com.hellogerman.app.data.repository
 
 import android.content.Context
-import androidx.room.Room
-import com.hellogerman.app.data.database.*
+import com.hellogerman.app.data.dictionary.FreedictReader
 import com.hellogerman.app.data.dictionary.GermanDictionary
 import com.hellogerman.app.data.models.*
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.*
-import java.util.zip.GZIPInputStream
-import java.util.zip.GZIPOutputStream
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -59,7 +56,7 @@ class OfflineCacheManager @Inject constructor(
                 val compressedFile = File(compressedCacheDir, "lesson_${lessonId}.gz")
                 if (!compressedFile.exists()) return@withContext null
 
-                val inputStream = GZIPInputStream(FileInputStream(compressedFile))
+                val inputStream = java.util.zip.GZIPInputStream(FileInputStream(compressedFile))
                 val reader = BufferedReader(InputStreamReader(inputStream, Charsets.UTF_8))
                 val data = reader.readText()
                 reader.close()
@@ -193,84 +190,29 @@ class OfflineDictionaryRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val onlineDictionaryRepository: DictionaryRepository // Fallback to existing online repo
 ) {
-    
-    private lateinit var database: GermanDictionaryDatabase
+
+    private lateinit var deReader: FreedictReader
+    private lateinit var enReader: FreedictReader
     private var isInitialized = false
-    
+
     suspend fun initialize() {
         if (isInitialized) return
-        
+
         withContext(Dispatchers.IO) {
-            android.util.Log.d("OfflineDict", "Initializing offline dictionary database...")
-            
-            // Initialize Room database
-            // First try to create from asset (if asset exists and has data)
-            // If asset is empty or missing, create empty database and populate manually
-            val assetExists = try {
-                context.assets.open("german_dictionary.db").use { it.available() > 0 }
-            } catch (e: Exception) {
-                android.util.Log.d("OfflineDict", "Asset file not found or empty: ${e.message}")
-                false
-            }
+            android.util.Log.d("OfflineDict", "Initializing FreeDict readers...")
 
-            database = if (assetExists) {
-                android.util.Log.d("OfflineDict", "Creating database from asset file")
-                try {
-                    val db = Room.databaseBuilder(
-                        context,
-                        GermanDictionaryDatabase::class.java,
-                        "german_dictionary.db"
-                    )
-                    .createFromAsset("german_dictionary.db")
-                    .fallbackToDestructiveMigration()
-                    .build()
+            deReader = FreedictReader.buildGermanToEnglish(context)
+            enReader = FreedictReader.buildEnglishToGerman(context)
 
-                    // Test if database is readable
-                    val testCount = db.dictionaryDao().getWordCount()
-                    android.util.Log.d("OfflineDict", "Asset database loaded successfully, word count: $testCount")
+            deReader.initializeIfNeeded()
+            enReader.initializeIfNeeded()
 
-                    db
-                } catch (e: Exception) {
-                    android.util.Log.e("OfflineDict", "Failed to load asset database: ${e.message}, falling back to empty database")
-                    // Fallback to empty database if asset file is corrupted
-                    Room.databaseBuilder(
-                        context,
-                        GermanDictionaryDatabase::class.java,
-                        "german_dictionary.db"
-                    )
-                    .fallbackToDestructiveMigration()
-                    .build()
-                }
-            } else {
-                android.util.Log.d("OfflineDict", "Asset file empty/missing, creating empty database")
-                Room.databaseBuilder(
-                    context,
-                    GermanDictionaryDatabase::class.java,
-                    "german_dictionary.db"
-                )
-                .fallbackToDestructiveMigration()
-                .build()
-            }
-            
-            // Populate database if empty
-            val wordCount = database.dictionaryDao().getWordCount()
-            android.util.Log.d("OfflineDict", "Current word count in database: $wordCount")
-            
-            if (wordCount == 0) {
-                android.util.Log.d("OfflineDict", "Database is empty, populating with essential German words...")
-                try {
-                    populateDatabase()
-                    val newWordCount = database.dictionaryDao().getWordCount()
-                    android.util.Log.d("OfflineDict", "After population, word count: $newWordCount")
-                } catch (e: Exception) {
-                    android.util.Log.e("OfflineDict", "Failed to populate database: ${e.message}", e)
-                }
-            } else {
-                android.util.Log.d("OfflineDict", "Database already contains $wordCount words")
-            }
-            
+            android.util.Log.d(
+                "OfflineDict",
+                "Initialized FreeDict: deu-eng size=${deReader.size()}, eng-deu size=${enReader.size()}"
+            )
+
             isInitialized = true
-            android.util.Log.d("OfflineDict", "Offline dictionary initialization complete")
         }
     }
     
@@ -286,8 +228,8 @@ class OfflineDictionaryRepository @Inject constructor(
             // Debug logging
             android.util.Log.d("OfflineDict", "Searching for word: $word")
             
-            // 1. Try offline database first
-            val offlineResult = searchOfflineDatabase(word)
+            // 1. Try offline FreeDict first
+            val offlineResult = searchOfflineFreedict(word, request.fromLang, request.toLang)
             android.util.Log.d("OfflineDict", "Offline result hasResults: ${offlineResult.hasResults}, gender: ${offlineResult.gender}")
             
             if (offlineResult.hasResults) {
@@ -320,16 +262,7 @@ class OfflineDictionaryRepository @Inject constructor(
                 return Result.success(mergedResult)
             }
             
-            // 2. Try compound word analysis (German specialty) - only for German words
-            if (request.fromLang.lowercase() in listOf("de", "german")) {
-                val compoundResult = analyzeCompoundWord(word)
-                if (compoundResult.hasResults) {
-                    android.util.Log.d("OfflineDict", "Returning compound result for German word: $word")
-                    return Result.success(compoundResult)
-                }
-            } else {
-                android.util.Log.d("OfflineDict", "Skipping compound analysis for non-German word: $word (${request.fromLang})")
-            }
+            // 2. Optional: compound analysis could be added later if needed
             
             // 3. Fallback to online APIs only if offline fails
             android.util.Log.d("OfflineDict", "Falling back to online APIs for: $word")
@@ -343,105 +276,47 @@ class OfflineDictionaryRepository @Inject constructor(
         }
     }
     
-    private suspend fun searchOfflineDatabase(word: String): DictionarySearchResult {
-        val dao = database.dictionaryDao()
-        
-        // Get word data
-        val wordEntity = dao.getWord(word)
-        val examples = dao.getExamples(word)
-        
-        return if (wordEntity != null) {
-            // Convert database entities to result
-            val definitions = DictionaryConverters().toDefinitionsList(wordEntity.definitions)
-            val examplesList = examples.map { 
-                Example(it.germanSentence, it.englishTranslation) 
-            }
-            
-            // Normalize and validate gender using static offline dictionary as source of truth
-            val dbGender = wordEntity.gender
-            val normalizedDbGender = when (dbGender?.lowercase()) {
-                "masculine", "m", "m." -> "der"
-                "feminine", "f", "f." -> "die"
-                "neuter", "n", "n." -> "das"
-                "der", "die", "das" -> dbGender
-                else -> dbGender
-            }
-            val staticGender = GermanDictionary.getWordEntry(word)?.gender
-            val finalGender = staticGender ?: normalizedDbGender
-            if (staticGender != null && normalizedDbGender != null && staticGender != normalizedDbGender) {
-                android.util.Log.w(
-                    "OfflineDict",
-                    "Gender mismatch for '$word': db='$normalizedDbGender' vs static='$staticGender'. Using static."
-                )
-            }
-            
-            DictionarySearchResult(
+    private fun searchOfflineFreedict(word: String, fromLang: String, toLang: String): DictionarySearchResult {
+        val isGerman = fromLang.lowercase() in listOf("de", "german")
+        val reader = if (isGerman) deReader else enReader
+        val entry = reader.lookupExact(word)
+
+        if (entry == null) {
+            return DictionarySearchResult(
                 originalWord = word,
-                fromLanguage = "de",
-                toLanguage = "en",
-                hasResults = true,
-                definitions = definitions,
-                examples = examplesList,
-                wordType = wordEntity.wordType,
-                gender = finalGender,
-                pronunciation = wordEntity.pronunciation?.let { 
-                    Pronunciation(it, "de")
-                },
-                difficulty = wordEntity.level
-            )
-        } else {
-            // Empty result
-            DictionarySearchResult(
-                originalWord = word,
-                fromLanguage = "de",
-                toLanguage = "en",
+                fromLanguage = fromLang,
+                toLanguage = toLang,
                 hasResults = false
             )
         }
+
+        // Build definitions from translations (lightweight)
+        val defs = entry.translations.map { t -> Definition(meaning = t, partOfSpeech = null, level = null) }
+
+        // Gender heuristic for EN→DE: infer from first translation article
+        val gender = if (!isGerman) {
+            entry.translations.firstOrNull()?.let { t ->
+                when {
+                    Regex("\\bder\\b", RegexOption.IGNORE_CASE).containsMatchIn(t) -> "der"
+                    Regex("\\bdie\\b", RegexOption.IGNORE_CASE).containsMatchIn(t) -> "die"
+                    Regex("\\bdas\\b", RegexOption.IGNORE_CASE).containsMatchIn(t) -> "das"
+                    else -> null
+                }
+            }
+        } else null
+
+        return DictionarySearchResult(
+            originalWord = word,
+            translations = entry.translations,
+            fromLanguage = fromLang,
+            toLanguage = toLang,
+            hasResults = entry.translations.isNotEmpty(),
+            definitions = defs,
+            gender = gender
+        )
     }
     
-    /**
-     * Analyze German compound words (Komposita)
-     * e.g., "hausregeln" = "haus" + "regeln"
-     */
-    private suspend fun analyzeCompoundWord(word: String): DictionarySearchResult {
-        if (word.length < 6) return createEmptyResult(word)
-        
-        val dao = database.dictionaryDao()
-        
-        // Try common compound patterns
-        for (splitPoint in 3..word.length-3) {
-            val firstPart = word.substring(0, splitPoint)
-            val secondPart = word.substring(splitPoint)
-            
-            val firstWord = dao.getWord(firstPart)
-            val secondWord = dao.getWord(secondPart)
-            
-            if (firstWord != null && secondWord != null) {
-                // Found compound word components
-                val combinedDefinition = "Compound word: ${firstWord.wordType} + ${secondWord.wordType}"
-                
-                return DictionarySearchResult(
-                    originalWord = word,
-                    fromLanguage = "de",
-                    toLanguage = "en",
-                    hasResults = true,
-                    definitions = listOf(
-                        Definition(combinedDefinition, "compound"),
-                        Definition("First part: ${firstPart}", secondWord.wordType),
-                        Definition("Second part: ${secondPart}", secondWord.wordType)
-                    ),
-                    examples = listOf(
-                        Example("$word ist ein zusammengesetztes Wort.", "$word is a compound word.")
-                    ),
-                    wordType = "compound",
-                    etymology = "Compound of $firstPart + $secondPart"
-                )
-            }
-        }
-        
-        return createEmptyResult(word)
-    }
+    // Compound analysis: intentionally omitted in first FreeDict migration
     
     private fun createBasicResult(word: String): DictionarySearchResult {
         return DictionarySearchResult(
@@ -468,60 +343,17 @@ class OfflineDictionaryRepository @Inject constructor(
         )
     }
     
-    /**
-     * Populate database with comprehensive German data
-     */
-    private suspend fun populateDatabase() {
-        val dao = database.dictionaryDao()
-        val converter = DictionaryConverters()
-        
-        // Get essential German words
-        val essentialWords = ComprehensiveGermanData.getEssentialGermanWords()
-        
-        // Convert to database entities
-        val wordEntities = essentialWords.map { wordData ->
-            val definitions = wordData.definition.split(";").map { def ->
-                Definition(def.trim(), wordData.wordType, wordData.level)
-            }
-            
-            OfflineWordEntity(
-                word = wordData.word,
-                definitions = converter.fromDefinitionsList(definitions),
-                wordType = wordData.wordType,
-                gender = wordData.gender,
-                frequency = wordData.frequency,
-                level = wordData.level,
-                pronunciation = wordData.pronunciation,
-                etymology = wordData.etymology
-            )
-        }
-        
-        // Create example entities
-        val exampleEntities = essentialWords.flatMap { wordData ->
-            wordData.germanExamples.zip(wordData.englishTranslations).map { (german, english) ->
-                OfflineExampleEntity(
-                    word = wordData.word,
-                    germanSentence = german,
-                    englishTranslation = english,
-                    difficulty = wordData.level
-                )
-            }
-        }
-        
-        // Insert into database
-        dao.insertWords(wordEntities)
-        dao.insertExamples(exampleEntities)
-    }
+    // Population of Room DB: removed — FreeDict is now the primary source
     
     /**
      * Get word suggestions for autocomplete
      */
     suspend fun getWordSuggestions(prefix: String): List<String> {
         if (!isInitialized) return emptyList()
-        
         return try {
-            val suggestions = database.dictionaryDao().searchWords("$prefix%")
-            suggestions.take(10).map { it.word }
+            val de = deReader.suggest(prefix, 10)
+            if (de.isNotEmpty()) return de
+            enReader.suggest(prefix, 10)
         } catch (e: Exception) {
             emptyList()
         }
@@ -531,14 +363,8 @@ class OfflineDictionaryRepository @Inject constructor(
      * Get words by CEFR level
      */
     suspend fun getWordsByLevel(level: String): List<String> {
-        if (!isInitialized) return emptyList()
-        
-        return try {
-            val words = database.dictionaryDao().getWordsByLevel(level)
-            words.map { it.word }
-        } catch (e: Exception) {
-            emptyList()
-        }
+        // Not supported by FreeDict — return empty
+        return emptyList()
     }
     
     /**
@@ -546,17 +372,12 @@ class OfflineDictionaryRepository @Inject constructor(
      */
     suspend fun getDatabaseStats(): DatabaseStats {
         if (!isInitialized) initialize()
-
-        return try {
-            val totalWords = database.dictionaryDao().getWordCount()
-            DatabaseStats(
-                totalWords = totalWords,
-                offlineCapable = true,
-                lastUpdated = System.currentTimeMillis()
-            )
-        } catch (e: Exception) {
-            DatabaseStats(0, false, 0)
-        }
+        val total = deReader.size() + enReader.size()
+        return DatabaseStats(
+            totalWords = total,
+            offlineCapable = true,
+            lastUpdated = System.currentTimeMillis()
+        )
     }
 
     /**
@@ -564,30 +385,16 @@ class OfflineDictionaryRepository @Inject constructor(
      * Useful for troubleshooting or updating dictionary data
      */
     suspend fun resetDatabase() {
-        android.util.Log.d("OfflineDict", "Forcing database reset...")
-
+        android.util.Log.d("OfflineDict", "Resetting FreeDict caches...")
         withContext(Dispatchers.IO) {
             try {
-                // Close current database
-                database.close()
-
-                // Delete the database file
-                val dbFile = context.getDatabasePath("german_dictionary.db")
-                if (dbFile.exists()) {
-                    dbFile.delete()
-                    android.util.Log.d("OfflineDict", "Deleted existing database file")
-                }
-
-                // Reset initialization flag
+                if (this@OfflineDictionaryRepository::deReader.isInitialized) deReader.clearCache()
+                if (this@OfflineDictionaryRepository::enReader.isInitialized) enReader.clearCache()
                 isInitialized = false
-
-                // Re-initialize (this will create a new empty database and populate it)
                 initialize()
-
-                android.util.Log.d("OfflineDict", "Database reset complete")
-
+                android.util.Log.d("OfflineDict", "FreeDict reset complete")
             } catch (e: Exception) {
-                android.util.Log.e("OfflineDict", "Failed to reset database: ${e.message}", e)
+                android.util.Log.e("OfflineDict", "Failed to reset FreeDict: ${e.message}", e)
                 throw e
             }
         }

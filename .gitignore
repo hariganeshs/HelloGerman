@@ -176,6 +176,14 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# FreeDict decompressed caches and large dictionary files
+*.dict
+*.dict.dz
+*.dict.unzipped
+*.dict.cache
+*.index
+app/src/main/assets/*.db
+
 # Gradle
 .gradle/
 build/
