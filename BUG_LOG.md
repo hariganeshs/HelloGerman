@@ -296,6 +296,31 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - `app/src/main/java/com/hellogerman/app/data/repository/OfflineDictionaryRepository.kt` (German fallback)
 - `app/src/main/java/com/hellogerman/app/data/dictionary/FreedictReader.kt` (gender parsing; tokenization improvements)
 
+---
+
+## Bug #008: Recurrent GC churn causing dictionary to hang on "Searching…"
+
+### Problem Description (2025-09-18)
+- Logcat shows repeated background concurrent mark-compact GC freeing ~86–95MB every ~300–400ms while the Dictionary screen is stuck on "Searching…".
+
+### Root Cause
+- Both FreeDict readers were being fully initialized during repository initialization, decompressing and loading index structures eagerly. This created high memory pressure at search time and on startup. Additionally, suggestions index was created eagerly; heavy allocations triggered back-to-back GC cycles.
+
+### Fix
+- Deferred FreeDict reader initialization per direction (lazy). Each reader initializes on first use only.
+- Ensured initialization happens right before lookup rather than during repository `initialize()`.
+- Retained earlier optimization: build `sortedKeys` lazily and keep only the compact map in memory.
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/data/repository/OfflineDictionaryRepository.kt` (lazy initialize readers on-demand)
+- `app/src/main/java/com/hellogerman/app/data/dictionary/FreedictReader.kt` (previous optimization keeps `sortedKeys` nullable and built on-demand)
+
+### Verification
+- After change, searching proceeds without continuous GC spam; UI no longer hangs on "Searching…".
+
+### Note
+- If future GC spikes appear, consider chunked index loading and restricting suggestion list length per keystroke.
+
 
 ## Bug #002: Runtime Crash in GermanVerbConjugator
 
