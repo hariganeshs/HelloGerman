@@ -158,7 +158,7 @@ class FreedictReader(
             // Strip markup-like braces or brackets if any minimal cleanup
             val cleaned = t
                 .replace("\t", " ")
-                .replace(Regex("\s+"), " ")
+                .replace(Regex("\\s+"), " ")
                 .trim()
             // Split by common separators to enumerate translations
             cleaned.split(';', '|', '/').map { it.trim() }.forEach { part ->

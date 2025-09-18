@@ -7,7 +7,9 @@ import com.hellogerman.app.data.models.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
+import java.io.*
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 import javax.inject.Inject
 import javax.inject.Singleton
 
