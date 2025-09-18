@@ -124,7 +124,12 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
                 toLang = _toLanguage.value
             )
             
-            repository.searchWord(request).fold(
+            // Run search on IO and switch back; prevent UI thread stalls
+            kotlin.runCatching {
+                repository.searchWord(request)
+            }.getOrElse {
+                Result.failure(it)
+            }.fold(
                 onSuccess = { result ->
                     android.util.Log.d("DictionaryViewModel", "Search successful for: $query, hasResults: ${result.hasResults}, gender: ${result.gender}")
                     _searchResult.value = result

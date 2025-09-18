@@ -97,6 +97,12 @@ A comprehensive Android application designed to help users learn German through 
 - Wait for real-time transcription
 - Review feedback on pronunciation and vocabulary
 
+### AdMob Test Ads (Development)
+- In DEBUG builds, the app automatically uses Google test ad unit IDs.
+- The emulator is configured as a test device via `RequestConfiguration`.
+- No changes are required to switch; build a debug variant to see test ads.
+- In release builds, production ad unit IDs are used automatically.
+
 ## 📁 Project Structure
 
 ```

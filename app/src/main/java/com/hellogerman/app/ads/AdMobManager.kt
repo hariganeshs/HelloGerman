@@ -3,6 +3,7 @@ package com.hellogerman.app.ads
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.content.pm.ApplicationInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -27,19 +28,35 @@ class AdMobManager {
     companion object {
         private const val TAG = "AdMobManager"
         
-        // Ad Unit IDs (Production)
-        const val BANNER_AD_1 = "ca-app-pub-2722920301958819/2577129002"
-        const val BANNER_AD_2 = "ca-app-pub-2722920301958819/6780081985"
-        const val INTERSTITIAL_AD = "ca-app-pub-2722920301958819/8950965667"
+        // Production ad unit IDs
+        private const val PROD_BANNER_AD_1 = "ca-app-pub-2722920301958819/2577129002"
+        private const val PROD_BANNER_AD_2 = "ca-app-pub-2722920301958819/6780081985"
+        private const val PROD_INTERSTITIAL_AD = "ca-app-pub-2722920301958819/8950965667"
 
-        // Test ad unit IDs (commented out)
-        // const val BANNER_AD_1 = "ca-app-pub-3940256099942544/6300978111" // Test ad
-        // const val BANNER_AD_2 = "ca-app-pub-3940256099942544/6300978111" // Test ad
-        // const val INTERSTITIAL_AD = "ca-app-pub-3940256099942544/1033173712" // Test ad
+        // Google test ad unit IDs
+        private const val TEST_BANNER_AD = "ca-app-pub-3940256099942544/6300978111"
+        private const val TEST_INTERSTITIAL_AD = "ca-app-pub-3940256099942544/1033173712"
+
+        // Resolved ad unit IDs (switch based on runtime debuggable flag)
+        private var isDebugBuild: Boolean = false
+        val BANNER_AD_1: String
+            get() = if (isDebugBuild) TEST_BANNER_AD else PROD_BANNER_AD_1
+        val BANNER_AD_2: String
+            get() = if (isDebugBuild) TEST_BANNER_AD else PROD_BANNER_AD_2
+        val INTERSTITIAL_AD: String
+            get() = if (isDebugBuild) TEST_INTERSTITIAL_AD else PROD_INTERSTITIAL_AD
         
         private var interstitialAd: InterstitialAd? = null
         
         fun initialize(context: Context) {
+            isDebugBuild = (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+            if (isDebugBuild) {
+                val requestConfig = RequestConfiguration.Builder()
+                    .setTestDeviceIds(listOf(AdRequest.DEVICE_ID_EMULATOR))
+                    .build()
+                MobileAds.setRequestConfiguration(requestConfig)
+                Log.d(TAG, "AdMob configured for test ads (DEBUG build)")
+            }
             MobileAds.initialize(context) { initializationStatus ->
                 Log.d(TAG, "AdMob initialization status: $initializationStatus")
             }

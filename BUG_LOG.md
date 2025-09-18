@@ -633,3 +633,40 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 ---
 
 *This log will be updated as new bugs are discovered and resolved.*
+
+---
+
+## Bug #006: FreeDict gender tags not rendered; raw tags leak into translations
+
+### Problem Description
+- Date: 2025-09-18
+- Evidence from screenshots:
+  - Translations list shows entries like `Apfel <masc> [bot.] [cook.]` and IPA-like fragments
+  - Gender chip not shown for nouns (missing `der/die/das`), e.g., "Apfel", "brother", "mother"
+  - UI otherwise populated, indicating data is loaded but not normalized
+
+### Root Cause
+- `FreedictReader.parseTranslations()` performed only minimal cleanup and did not parse `<masc>/<fem>/<neut>` tags or strip domain tags like `[bot.]`, `[cook.]` and IPA.
+- `OfflineDictionaryRepository.searchOfflineFreedict()` inferred gender only heuristically from leading article in the first translation and ignored explicit gender tags present in FreeDict raw entries.
+
+### Fix
+- Parser update in `FreedictReader.kt`:
+  - Added robust cleanup for FreeDict lines: remove HTML-like tags `<...>`, bracketed labels `[ ... ]`, and parentheses content; collapse whitespace; strip leading German articles; drop IPA-like fragments.
+  - Added `extractGenderFromRaw()` to read gender from `<masc>/<fem>/<neut>`; avoids misreading POS abbreviations like `n.` as neuter.
+  - Extended `Entry` to include `gender: String?` and `lookupExact()` to populate it.
+- Repository update in `OfflineDictionaryRepository.kt`:
+  - Prefer explicit gender from `entry.gender`; fallback to previous article-heuristic only when explicit is absent.
+  - Definitions built from cleaned translations so UI no longer shows raw tags.
+
+### Result
+- Gender chips now display correctly for German nouns, e.g., `Apfel` → `der`, `Bruder` → `der`, `Mutter` → `die`.
+- Translations no longer contain raw tags like `<masc>` or domain labels; IPA noise filtered out.
+- EN→DE header now shows the German lemma with the article (e.g., `der Apfel`) instead of the English query word.
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/data/dictionary/FreedictReader.kt`
+- `app/src/main/java/com/hellogerman/app/data/repository/OfflineDictionaryRepository.kt`
+
+### Notes for Future Agents
+- FreeDict datasets use lightweight markup; always normalize before display.
+- Keep explicit gender parsing as source of truth and retain the article-heuristic as a safety fallback for ENG→DE.

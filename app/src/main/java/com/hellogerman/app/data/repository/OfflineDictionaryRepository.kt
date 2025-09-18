@@ -295,8 +295,12 @@ class OfflineDictionaryRepository @Inject constructor(
         // Build definitions from translations (lightweight)
         val defs = entry.translations.map { t -> Definition(meaning = t, partOfSpeech = null, level = null) }
 
-        // Gender heuristic for EN→DE: infer from first translation article
-        val gender = if (!isGerman) {
+        // Prefer explicit gender parsed from FreeDict raw entry when available
+        // This captures <masc>/<fem>/<neut> tags present in both deu→eng and eng→deu datasets
+        val explicitGender = entry.gender
+
+        // Fallback heuristic for EN→DE: infer from first translation article (if explicit not found)
+        val heuristicGender = if (!isGerman && explicitGender == null) {
             entry.translations.firstOrNull()?.let { t ->
                 when {
                     Regex("\\bder\\b", RegexOption.IGNORE_CASE).containsMatchIn(t) -> "der"
@@ -307,6 +311,14 @@ class OfflineDictionaryRepository @Inject constructor(
             }
         } else null
 
+        // Determine basic word type
+        val inferredWordType: String? = when {
+            (explicitGender ?: heuristicGender) != null -> "noun"
+            // Rough heuristic: many German infinitives end with "en" (gehen, machen)
+            isGerman && word.length > 3 && word.endsWith("en") -> "verb"
+            else -> null
+        }
+
         return DictionarySearchResult(
             originalWord = word,
             translations = entry.translations,
@@ -314,7 +326,8 @@ class OfflineDictionaryRepository @Inject constructor(
             toLanguage = toLang,
             hasResults = entry.translations.isNotEmpty(),
             definitions = defs,
-            gender = gender
+            gender = explicitGender ?: heuristicGender,
+            wordType = inferredWordType
         )
     }
     

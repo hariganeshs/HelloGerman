@@ -578,8 +578,23 @@ private fun OverviewCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
+                    val articlePrefix = result.gender?.let {
+                        when (it.lowercase()) {
+                            "masculine" -> "der "
+                            "feminine" -> "die "
+                            "neuter" -> "das "
+                            "der", "die", "das" -> "$it "
+                            else -> ""
+                        }
+                    } ?: ""
+                    // Prefer showing the first German translation when searching EN→DE
+                    val headerWord = if (result.fromLanguage.lowercase() in listOf("en", "english") && result.translations.isNotEmpty()) {
+                        // pick the first single-word German candidate; fallback to first
+                        val single = result.translations.firstOrNull { it.split(" ").size == 1 }
+                        single ?: result.translations.first()
+                    } else result.originalWord
                     Text(
-                        text = result.originalWord,
+                        text = articlePrefix + headerWord,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         color = AccentBlue

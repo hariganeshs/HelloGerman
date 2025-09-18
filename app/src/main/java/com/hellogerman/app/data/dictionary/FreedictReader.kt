@@ -21,8 +21,9 @@ class FreedictReader(
 
     private val cacheDir: File = File(context.filesDir, "freedict")
     private val dictFile: File = File(cacheDir, "$id.dict")
-    private val index: MutableMap<String, IndexEntry> = HashMap(200_000)
-    private val sortedKeys: MutableList<String> = ArrayList(200_000)
+    // Keep memory footprint low; build suggestions index lazily on demand
+    private val index: MutableMap<String, IndexEntry> = HashMap()
+    @Volatile private var sortedKeys: List<String>? = null
     @Volatile private var initialized: Boolean = false
 
     data class IndexEntry(val offset: Long, val length: Int)
@@ -30,7 +31,8 @@ class FreedictReader(
     data class Entry(
         val headword: String,
         val raw: String,
-        val translations: List<String>
+        val translations: List<String>,
+        val gender: String? = null
     )
 
     @Synchronized
@@ -45,7 +47,7 @@ class FreedictReader(
     fun clearCache() {
         if (dictFile.exists()) dictFile.delete()
         index.clear()
-        sortedKeys.clear()
+        sortedKeys = null
         initialized = false
     }
 
@@ -58,18 +60,24 @@ class FreedictReader(
         if (!initialized) initializeIfNeeded()
         if (prefix.isBlank()) return emptyList()
         val p = prefix.lowercase()
-        // Binary search on sortedKeys
+        // Build sorted keys lazily only when suggestions are requested
+        var keys = sortedKeys
+        if (keys == null) {
+            keys = index.keys.map { it }.sorted()
+            sortedKeys = keys
+        }
+        // Binary search on sorted key snapshot
         var lo = 0
-        var hi = sortedKeys.size
+        var hi = keys.size
         while (lo < hi) {
             val mid = (lo + hi) ushr 1
-            val cmp = sortedKeys[mid].compareTo(p)
+            val cmp = keys[mid].compareTo(p)
             if (cmp < 0) lo = mid + 1 else hi = mid
         }
         val suggestions = ArrayList<String>(limit)
         var i = lo
-        while (i < sortedKeys.size && suggestions.size < limit) {
-            val key = sortedKeys[i]
+        while (i < keys.size && suggestions.size < limit) {
+            val key = keys[i]
             if (!key.startsWith(p)) break
             suggestions.add(key)
             i++
@@ -82,8 +90,9 @@ class FreedictReader(
         val key = word.trim().lowercase()
         val entry = index[key] ?: return null
         val raw = readBlock(entry.offset, entry.length)
-        val translations = parseTranslations(raw)
-        return Entry(headword = word, raw = raw, translations = translations)
+        val translations = parseTranslations(raw, word)
+        val gender = extractGenderFromRaw(raw)
+        return Entry(headword = word, raw = raw, translations = translations, gender = gender)
     }
 
     private fun ensureDecompressedDict() {
@@ -106,11 +115,10 @@ class FreedictReader(
 
     private fun loadIndex() {
         index.clear()
-        sortedKeys.clear()
+        sortedKeys = null
         val idxName = if (id.startsWith("deu")) "deu-eng.index" else "eng-deu.index"
         context.assets.open("$assetDir/$idxName").use { isr ->
             BufferedReader(InputStreamReader(isr, Charsets.UTF_8)).useLines { lines ->
-                var count = 0
                 lines.forEach { line ->
                     // Expected format: headword \t offset64 \t length64
                     // Skip metadata lines starting with "00database" and empty headwords
@@ -126,11 +134,9 @@ class FreedictReader(
                     val key = head.lowercase()
                     if (!index.containsKey(key)) {
                         index[key] = IndexEntry(offset, length)
-                        sortedKeys.add(key)
-                        count++
                     }
                 }
-                if (count > 1) sortedKeys.sort()
+                // suggestions index (sortedKeys) will be built lazily on first suggest()
             }
         }
     }
@@ -149,23 +155,53 @@ class FreedictReader(
         }
     }
 
-    private fun parseTranslations(raw: String): List<String> {
-        // FreeDict entries are usually one or multiple lines; apply simple heuristics
+    private fun parseTranslations(raw: String, headword: String): List<String> {
+        // FreeDict entries are usually one or multiple lines; apply robust cleanup
         val candidates = mutableListOf<String>()
+
         raw.split('\n').forEach { line ->
-            val t = line.trim()
+            var t = line.trim()
             if (t.isEmpty()) return@forEach
-            // Strip markup-like braces or brackets if any minimal cleanup
-            val cleaned = t
-                .replace("\t", " ")
+
+            // Remove dict-specific markup and labels
+            t = t
+                .replace('\t', ' ')
+                .replace(Regex("<[^>]+>"), "") // remove <masc>, <fem>, domain tags
+                .replace(Regex("\\[[^\\]]+\\]"), "") // remove [bot.], [cook.], etc.
+                .replace(Regex("\\([^)]*\\)"), "") // remove parenthetical notes
+                .replace(Regex("(?i)^see:.*$"), "") // drop see: cross-refs
+                .replace(Regex("(?i)^synonym:.*$"), "") // drop synonym lines
+                .replace(Regex("(?i)^antonym:.*$"), "") // drop antonym lines
+                .replace(Regex("\\{[^}]+\\}"), "") // remove {forms}
                 .replace(Regex("\\s+"), " ")
                 .trim()
+
             // Split by common separators to enumerate translations
-            cleaned.split(';', '|', '/').map { it.trim() }.forEach { part ->
-                if (part.isNotEmpty()) candidates.add(part)
+            t.split(';', '|', '/').map { it.trim() }.forEach { part ->
+                var p = part
+                if (p.isEmpty()) return@forEach
+
+                // Drop leading German article if present
+                p = p.replace(Regex("^(?i)(der|die|das)\\s+"), "").trim()
+
+                // Remove quotes and trailing punctuation
+                p = p.trim('"', '\'', ',', ';', '.', '–', '—', '•').trim()
+
+                // Skip the headword itself if it leaked into payload (common in ENG→DE)
+                if (p.equals(headword, ignoreCase = true)) return@forEach
+
+                // Skip IPA-like fragments (characters in IPA Unicode blocks)
+                val looksLikeIpa = Regex("[\\u0250-\\u02AF\\u02B0-\\u02FF]").containsMatchIn(p)
+                if (looksLikeIpa) return@forEach
+
+                // Very short tokens (1–2 chars) are usually labels; skip them
+                if (p.length <= 2) return@forEach
+
+                candidates.add(p)
             }
         }
-        // Deduplicate, keep order
+
+        // Deduplicate while preserving order
         val seen = HashSet<String>(candidates.size)
         val out = ArrayList<String>(candidates.size)
         for (c in candidates) {
@@ -173,6 +209,17 @@ class FreedictReader(
             if (seen.add(k)) out.add(c)
         }
         return out.take(16)
+    }
+
+    private fun extractGenderFromRaw(raw: String): String? {
+        val l = raw.lowercase()
+        // Only trust explicit tag markers to avoid false matches with abbreviations like "n." (noun)
+        return when {
+            Regex("<(masc|m)>").containsMatchIn(l) -> "der"
+            Regex("<(fem|f)>").containsMatchIn(l) -> "die"
+            Regex("<(neut|n)>").containsMatchIn(l) -> "das"
+            else -> null
+        }
     }
 
     private fun decodeBase64Number(s: String): Long {
