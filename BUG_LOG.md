@@ -321,6 +321,32 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 ### Note
 - If future GC spikes appear, consider chunked index loading and restricting suggestion list length per keystroke.
 
+---
+
+## Bug #009: EN→DE header shows single article for multiple German words
+
+### Problem Description (2025-09-18)
+- User requested separate gender articles for each German translation word in EN→DE searches.
+- Current behavior: "der Begründer, Vater" (one article for both words)
+- Desired behavior: "der Begründer, der Vater" (separate articles for each word)
+
+### Root Cause
+- The `OverviewCard` was applying a single article prefix to the entire joined string of German translations.
+- The logic used `articlePrefix + headerWord` where `headerWord` was already a comma-separated list.
+
+### Fix
+- Modified the EN→DE header construction in `OverviewCard` to apply the article to each individual German word.
+- For EN→DE searches: Each single-word German translation gets its own article prefix (e.g., "der Begründer, der Vater").
+- For DE→EN searches: Original behavior maintained (single article for the original German word).
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/ui/screens/DictionaryScreen.kt` (separate article logic in OverviewCard)
+
+### Verification
+- EN→DE searches now display "der Begründer, der Vater" instead of "der Begründer, Vater"
+- DE→EN searches continue to work as before
+- Gender detection and display remain accurate
+
 
 ## Bug #002: Runtime Crash in GermanVerbConjugator
 

@@ -578,26 +578,44 @@ private fun OverviewCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    val articlePrefix = result.gender?.let {
-                        when (it.lowercase()) {
-                            "masculine" -> "der "
-                            "feminine" -> "die "
-                            "neuter" -> "das "
-                            "der", "die", "das" -> "$it "
-                            else -> ""
-                        }
-                    } ?: ""
                     // Prefer showing the first German translation when searching EN→DE
                     val headerWord = if (result.fromLanguage.lowercase() in listOf("en", "english") && result.translations.isNotEmpty()) {
-                        // Build a concise lemma-like header: join up to first 2 single-word nouns
+                        // Build a concise lemma-like header: join up to first 2 single-word nouns with separate articles
                         val parts = result.translations
                             .map { it.replace(Regex("^(?i)(der|die|das)\\s+"), "").trim() }
                             .filter { it.isNotEmpty() }
                         val singles = parts.filter { !it.contains(" ") }
-                        if (singles.isNotEmpty()) singles.take(2).joinToString(", ") else parts.first()
-                    } else result.originalWord
+                        if (singles.isNotEmpty()) {
+                            val article = result.gender?.let {
+                                when (it.lowercase()) {
+                                    "masculine" -> "der"
+                                    "feminine" -> "die"
+                                    "neuter" -> "das"
+                                    "der", "die", "das" -> it
+                                    else -> ""
+                                }
+                            } ?: ""
+                            if (article.isNotEmpty()) {
+                                singles.take(2).joinToString(", ") { "$article $it" }
+                            } else {
+                                singles.take(2).joinToString(", ")
+                            }
+                        } else parts.first()
+                    } else {
+                        // For DE→EN, show original word with article
+                        val articlePrefix = result.gender?.let {
+                            when (it.lowercase()) {
+                                "masculine" -> "der "
+                                "feminine" -> "die "
+                                "neuter" -> "das "
+                                "der", "die", "das" -> "$it "
+                                else -> ""
+                            }
+                        } ?: ""
+                        articlePrefix + result.originalWord
+                    }
                     Text(
-                        text = articlePrefix + headerWord,
+                        text = headerWord,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         color = AccentBlue
