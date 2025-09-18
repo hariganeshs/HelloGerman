@@ -435,6 +435,41 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - Layout and functionality remain identical
 - Compilation successful with no errors
 
+---
+
+## Bug #012: UI Layout Improvements - Primary Word Display and Pronunciation
+
+### Problem Description (2025-09-18)
+- User requested the German word with gender (like "der apple") to be displayed at the top of results
+- Pronunciation functionality should be available for all queries
+- Current layout shows the main word in the middle of the results
+
+### Root Cause
+- Layout structure had the main German word with gender displayed in the middle of the results
+- No prominent pronunciation buttons for the primary word
+- Cross-reference indicator was at the bottom instead of top
+
+### Fix
+- Restructured `UnifiedResultsCard` layout to prioritize the main German word with gender
+- Created `PrimaryWordDisplay` component showing:
+  - German word with gender article at the top (e.g., "der apple")
+  - Word type and gender chips
+  - Pronunciation buttons (speak normally and slowly)
+  - Action buttons (Copy, Share, Add to Vocab)
+  - Translations section
+- Moved cross-reference indicator to the very top
+- Added language detection indicator below the main word
+- Removed duplicate components and cleaned up code structure
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/ui/screens/UnifiedResultsCard.kt` (complete layout restructure)
+
+### Verification
+- German word with gender now appears at the top of results
+- Pronunciation buttons are prominently displayed
+- Layout matches user's requested structure
+- All functionality preserved and enhanced
+
 
 ## Bug #002: Runtime Crash in GermanVerbConjugator
 

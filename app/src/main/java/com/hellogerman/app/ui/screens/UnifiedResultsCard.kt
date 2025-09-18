@@ -38,23 +38,37 @@ fun UnifiedResultsCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // Header with word and language detection
-            WordHeader(
-                word = result.originalWord,
+            // Cross-reference indicator at the very top
+            if (result.isCrossReference) {
+                CrossReferenceIndicator()
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            
+            // Main German word with gender at the top
+            if (result.combinedTranslations.isNotEmpty()) {
+                val primaryTranslation = result.combinedTranslations.first()
+                PrimaryWordDisplay(
+                    translationGroup = primaryTranslation,
+                    viewModel = viewModel
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            
+            // Language detection indicator
+            LanguageDetectionIndicator(
                 detectedLanguage = result.detectedLanguage,
-                confidence = result.confidence,
-                viewModel = viewModel,
-                modifier = Modifier.fillMaxWidth()
+                confidence = result.confidence
             )
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            // Translation groups
-            if (result.combinedTranslations.isNotEmpty()) {
+            // Translation groups (remaining translations)
+            if (result.combinedTranslations.size > 1) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    result.combinedTranslations.forEach { translationGroup ->
+                    result.combinedTranslations.drop(1).forEach { translationGroup ->
                         TranslationGroupCard(
                             translationGroup = translationGroup,
                             viewModel = viewModel
@@ -62,75 +76,194 @@ fun UnifiedResultsCard(
                     }
                 }
             }
-            
-            // Cross-reference indicator
-            if (result.isCrossReference) {
-                Spacer(modifier = Modifier.height(12.dp))
-                CrossReferenceIndicator()
-            }
         }
     }
 }
 
+/**
+ * Primary word display showing the main German word with gender and pronunciation
+ */
 @Composable
-private fun WordHeader(
-    word: String,
-    detectedLanguage: LanguageHint,
-    confidence: SearchConfidence,
+private fun PrimaryWordDisplay(
+    translationGroup: TranslationGroup,
     viewModel: DictionaryViewModel,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column {
+    Column(modifier = modifier) {
+        // German word with gender
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            val formattedGermanWord = translationGroup.gender?.let { gender ->
+                val article = when (gender.lowercase()) {
+                    "der", "masculine" -> "der"
+                    "die", "feminine" -> "die"
+                    "das", "neuter" -> "das"
+                    else -> gender
+                }
+                "$article ${translationGroup.germanWord}"
+            } ?: translationGroup.germanWord
+            
             Text(
-                text = word,
+                text = formattedGermanWord,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = AccentBlue
             )
             
-            // Language detection indicator
-            LanguageIndicator(
-                detectedLanguage = detectedLanguage,
-                confidence = confidence
-            )
+            // Action buttons
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                IconButton(
+                    onClick = { viewModel.speakWord() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.VolumeUp,
+                        contentDescription = "Speak word",
+                        tint = AccentBlue
+                    )
+                }
+                
+                IconButton(
+                    onClick = { viewModel.speakWordSlowly() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.SlowMotionVideo,
+                        contentDescription = "Speak slowly",
+                        tint = AccentBlue
+                    )
+                }
+            }
         }
         
-        // Action buttons
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        // Word type and gender chips
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            IconButton(
-                onClick = { viewModel.speakWord() }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.VolumeUp,
-                    contentDescription = "Speak word",
-                    tint = AccentBlue
-                )
+            translationGroup.wordType?.let { wordType ->
+                Surface(
+                    color = AccentBlue.copy(alpha = 0.1f),
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text(
+                        text = wordType,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = AccentBlue,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
             }
             
-            IconButton(
-                onClick = { viewModel.speakWordSlowly() }
+            translationGroup.gender?.let { gender ->
+                val article = when (gender.lowercase()) {
+                    "der", "masculine" -> "der"
+                    "die", "feminine" -> "die"
+                    "das", "neuter" -> "das"
+                    else -> gender
+                }
+                
+                Surface(
+                    color = AccentBlue.copy(alpha = 0.1f),
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text(
+                        text = article,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = AccentBlue,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(12.dp))
+        
+        // Action buttons row
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            OutlinedButton(
+                onClick = { /* Copy functionality */ },
+                modifier = Modifier.weight(1f)
             ) {
                 Icon(
-                    imageVector = Icons.Default.SlowMotionVideo,
-                    contentDescription = "Speak slowly",
-                    tint = AccentBlue
+                    imageVector = Icons.Default.ContentCopy,
+                    contentDescription = "Copy",
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Copy")
+            }
+            
+            OutlinedButton(
+                onClick = { /* Share functionality */ },
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Share",
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Share")
+            }
+            
+            OutlinedButton(
+                onClick = { /* Add to vocab functionality */ },
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.BookmarkAdd,
+                    contentDescription = "Add to Vocab",
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Add to Vocab")
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(12.dp))
+        
+        // Translations section
+        Text(
+            text = "Translations",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            translationGroup.englishTranslations.forEach { translation ->
+                Text(
+                    text = "• $translation",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(start = 8.dp)
                 )
             }
         }
     }
 }
 
+/**
+ * Language detection indicator component
+ */
 @Composable
-private fun LanguageIndicator(
+private fun LanguageDetectionIndicator(
     detectedLanguage: LanguageHint,
-    confidence: SearchConfidence
+    confidence: SearchConfidence,
+    modifier: Modifier = Modifier
 ) {
     val (text, color) = when (detectedLanguage) {
         LanguageHint.GERMAN -> "German" to Color(0xFF4CAF50)
@@ -146,6 +279,7 @@ private fun LanguageIndicator(
     }
     
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -167,6 +301,33 @@ private fun LanguageIndicator(
             fontSize = 10.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+@Composable
+private fun CrossReferenceIndicator() {
+    Surface(
+        color = AccentBlue.copy(alpha = 0.1f),
+        shape = MaterialTheme.shapes.small
+    ) {
+        Row(
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.SwapHoriz,
+                contentDescription = null,
+                tint = AccentBlue,
+                modifier = Modifier.size(16.dp)
+            )
+            Text(
+                text = "Found in both dictionaries",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                color = AccentBlue
+            )
+        }
     }
 }
 
@@ -256,33 +417,6 @@ private fun TranslationGroupCard(
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun CrossReferenceIndicator() {
-    Surface(
-        color = AccentBlue.copy(alpha = 0.1f),
-        shape = MaterialTheme.shapes.small
-    ) {
-        Row(
-            modifier = Modifier.padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.SwapHoriz,
-                contentDescription = null,
-                tint = AccentBlue,
-                modifier = Modifier.size(16.dp)
-            )
-            Text(
-                text = "Found in both dictionaries",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Medium,
-                color = AccentBlue
-            )
         }
     }
 }
