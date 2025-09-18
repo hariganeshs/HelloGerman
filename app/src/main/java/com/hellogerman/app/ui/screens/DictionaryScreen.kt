@@ -30,6 +30,7 @@ import com.hellogerman.app.ui.navigation.Screen
 import com.hellogerman.app.ui.theme.*
 import com.hellogerman.app.ui.viewmodel.DictionaryViewModel
 import com.hellogerman.app.data.models.*
+import com.hellogerman.app.data.dictionary.LanguageHint
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +41,8 @@ fun DictionaryScreen(
 ) {
     val searchQuery by dictionaryViewModel.searchQuery.collectAsState()
     val searchResult by dictionaryViewModel.searchResult.collectAsState()
+    val unifiedSearchResult by dictionaryViewModel.unifiedSearchResult.collectAsState()
+    val detectedLanguage by dictionaryViewModel.detectedLanguage.collectAsState()
     val isLoading by dictionaryViewModel.isLoading.collectAsState()
     val errorMessage by dictionaryViewModel.errorMessage.collectAsState()
     val fromLanguage by dictionaryViewModel.fromLanguage.collectAsState()
@@ -386,139 +389,146 @@ fun DictionaryScreen(
             }
         }
         
-        // All Results in One Scrollable Screen (LEO-style)
-        searchResult?.let { result ->
-            if (result.hasResults) {
+        // Unified Results Display (LEO-style)
+        unifiedSearchResult?.let { unifiedResult ->
+            if (unifiedResult.hasResults) {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    // Word Overview Section
-                    item { OverviewCard(result, dictionaryViewModel, isWordInVocabulary) }
-
-                    // Definitions Section
-                    if (result.definitions.isNotEmpty()) {
-                        item {
-                            SectionHeader("Definitions")
-                        }
-                        item {
-                            SenseGroupedDefinitionsCard(result.definitions)
-                        }
+                    // Unified Results Card
+                    item { 
+                        UnifiedResultsCard(
+                            result = unifiedResult,
+                            viewModel = dictionaryViewModel
+                        ) 
                     }
+                    
+                    // Legacy Overview Card and additional sections for backward compatibility
+                    searchResult?.let { result ->
+                        item { OverviewCard(result, dictionaryViewModel, isWordInVocabulary) }
 
-                    // Examples Section
-                    if (result.examples.isNotEmpty()) {
-                        item {
-                            SectionHeader("Examples")
-                        }
-                        items(result.examples) { example ->
-                            ExampleCard(example, dictionaryViewModel)
-                        }
-                        item {
-                            AttributionCard(
-                                sources = result.examples.mapNotNull { it.source }.distinct(),
-                                section = "Examples"
-                            )
-                        }
-                    }
-
-                    // Conjugations Section
-                    result.conjugations?.let { conjugations ->
-                        item {
-                            SectionHeader("Conjugations")
-                        }
-                        item { ConjugationCard(conjugations) }
-                    }
-
-                    // Declensions Section (for nouns)
-                    result.wikidataLexemeData?.let { lexemeData ->
-                        if (lexemeData.lexicalCategory == "noun" && lexemeData.declensions.isNotEmpty()) {
+                        // Definitions Section
+                        if (result.definitions.isNotEmpty()) {
                             item {
-                                SectionHeader("Declensions")
+                                SectionHeader("Definitions")
                             }
-                            item { DeclensionCard(lexemeData) }
-                        }
-                    }
-
-                    // Synonyms Section
-                    if (result.synonyms.isNotEmpty()) {
-                        item {
-                            SectionHeader("Synonyms")
-                        }
-                        item { SynonymsCard(result.synonyms, dictionaryViewModel) }
-                        item {
-                            AttributionCard(
-                                sources = listOf("OpenThesaurus"),
-                                section = "Synonyms"
-                            )
-                        }
-                    }
-
-                    // Translations Section
-                    if (result.translations.isNotEmpty()) {
-                        item {
-                            SectionHeader("Translations")
-                        }
-                        item {
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                            ) {
-                                Column(
-                                    modifier = Modifier.padding(16.dp)
-                                ) {
-                                    result.translations.forEach { translation ->
-                                        Text(
-                                            text = "• $translation",
-                                            fontSize = 16.sp,
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            modifier = Modifier.padding(vertical = 2.dp)
-                                        )
-                                    }
-                                }
+                            item {
+                                SenseGroupedDefinitionsCard(result.definitions)
                             }
                         }
-                        item {
-                            AttributionCard(
-                                sources = listOf("MyMemory", "LibreTranslate"),
-                                section = "Translations"
-                            )
-                        }
-                    }
 
-                    // Etymology Section (if available)
-                    result.etymology?.let { etymology ->
-                        item {
-                            SectionHeader("Etymology")
-                        }
-                        item {
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                            ) {
-                                Text(
-                                    text = etymology,
-                                    fontSize = 16.sp,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.padding(16.dp)
+                        // Examples Section
+                        if (result.examples.isNotEmpty()) {
+                            item {
+                                SectionHeader("Examples")
+                            }
+                            items(result.examples) { example ->
+                                ExampleCard(example, dictionaryViewModel)
+                            }
+                            item {
+                                AttributionCard(
+                                    sources = result.examples.mapNotNull { it.source }.distinct(),
+                                    section = "Examples"
                                 )
                             }
                         }
+
+                        // Conjugations Section
+                        result.conjugations?.let { conjugations ->
+                            item {
+                                SectionHeader("Conjugations")
+                            }
+                            item { ConjugationCard(conjugations) }
+                        }
+
+                        // Declensions Section (for nouns)
+                        result.wikidataLexemeData?.let { lexemeData ->
+                            if (lexemeData.lexicalCategory == "noun" && lexemeData.declensions.isNotEmpty()) {
+                                item {
+                                    SectionHeader("Declensions")
+                                }
+                                item { DeclensionCard(lexemeData) }
+                            }
+                        }
+
+                        // Synonyms Section
+                        if (result.synonyms.isNotEmpty()) {
+                            item {
+                                SectionHeader("Synonyms")
+                            }
+                            item { SynonymsCard(result.synonyms, dictionaryViewModel) }
+                            item {
+                                AttributionCard(
+                                    sources = listOf("OpenThesaurus"),
+                                    section = "Synonyms"
+                                )
+                            }
+                        }
+
+                        // Translations Section
+                        if (result.translations.isNotEmpty()) {
+                            item {
+                                SectionHeader("Translations")
+                            }
+                            item {
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                                ) {
+                                    Column(
+                                        modifier = Modifier.padding(16.dp)
+                                    ) {
+                                        result.translations.forEach { translation ->
+                                            Text(
+                                                text = "• $translation",
+                                                fontSize = 16.sp,
+                                                color = MaterialTheme.colorScheme.onSurface,
+                                                modifier = Modifier.padding(vertical = 2.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                            item {
+                                AttributionCard(
+                                    sources = listOf("MyMemory", "LibreTranslate"),
+                                    section = "Translations"
+                                )
+                            }
+                        }
+
+                        // Etymology Section (if available)
+                        result.etymology?.let { etymology ->
+                            item {
+                                SectionHeader("Etymology")
+                            }
+                            item {
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                                ) {
+                                    Text(
+                                        text = etymology,
+                                        fontSize = 16.sp,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                }
+                            }
+                            item {
+                                AttributionCard(
+                                    sources = listOf("Wiktionary"),
+                                    section = "Etymology"
+                                )
+                            }
+                        }
+
+                        // Comprehensive Attribution Footer
                         item {
-                            AttributionCard(
-                                sources = listOf("Wiktionary"),
-                                section = "Etymology"
-                            )
+                            AttributionFooter(result)
                         }
                     }
-
-                    // Comprehensive Attribution Footer
-                    item {
-                        AttributionFooter(result)
-                    }
-
-                    // Add some bottom padding
-                    item { Spacer(modifier = Modifier.height(32.dp)) }
                 }
             }
         } ?: run {

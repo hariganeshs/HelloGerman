@@ -5,9 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hellogerman.app.data.models.DictionarySearchRequest
 import com.hellogerman.app.data.models.DictionarySearchResult
+import com.hellogerman.app.data.models.UnifiedSearchResult
 import com.hellogerman.app.data.repository.OfflineDictionaryRepository
+import com.hellogerman.app.data.repository.UnifiedDictionaryRepository
 import com.hellogerman.app.data.repository.DictionaryRepository
 import com.hellogerman.app.data.repository.HelloGermanRepository
+import com.hellogerman.app.data.dictionary.LanguageHint
+import com.hellogerman.app.data.dictionary.SearchConfidence
 import com.hellogerman.app.ui.utils.TTSHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,17 +26,18 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     
     private val onlineRepository = DictionaryRepository(application)
     private val repository = OfflineDictionaryRepository(application, onlineRepository)
+    private val unifiedRepository = UnifiedDictionaryRepository(application, onlineRepository)
     private val helloGermanRepository = HelloGermanRepository(application)
     private val ttsHelper = TTSHelper(application)
     
     init {
-        // Initialize offline dictionary on startup
+        // Initialize unified dictionary on startup
         viewModelScope.launch {
             try {
-                repository.initialize()
-                android.util.Log.d("DictionaryViewModel", "Offline dictionary initialized successfully")
+                unifiedRepository.initialize()
+                android.util.Log.d("DictionaryViewModel", "Unified dictionary initialized successfully")
             } catch (e: Exception) {
-                android.util.Log.e("DictionaryViewModel", "Failed to initialize offline dictionary", e)
+                android.util.Log.e("DictionaryViewModel", "Failed to initialize unified dictionary", e)
             }
         }
     }
@@ -43,12 +48,22 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     private val _searchResult = MutableStateFlow<DictionarySearchResult?>(null)
     val searchResult: StateFlow<DictionarySearchResult?> = _searchResult.asStateFlow()
     
+    private val _unifiedSearchResult = MutableStateFlow<UnifiedSearchResult?>(null)
+    val unifiedSearchResult: StateFlow<UnifiedSearchResult?> = _unifiedSearchResult.asStateFlow()
+    
+    private val _detectedLanguage = MutableStateFlow<LanguageHint>(LanguageHint.UNKNOWN)
+    val detectedLanguage: StateFlow<LanguageHint> = _detectedLanguage.asStateFlow()
+    
+    private val _searchConfidence = MutableStateFlow<SearchConfidence>(SearchConfidence.LOW)
+    val searchConfidence: StateFlow<SearchConfidence> = _searchConfidence.asStateFlow()
+    
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
     
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
     
+    // Legacy language states (kept for backward compatibility)
     private val _fromLanguage = MutableStateFlow("de") // German
     val fromLanguage: StateFlow<String> = _fromLanguage.asStateFlow()
     
@@ -111,44 +126,75 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
             return
         }
         
-        // Offline repository works without internet, so no connectivity check needed
-        android.util.Log.d("DictionaryViewModel", "Starting search for: $query")
+        android.util.Log.d("DictionaryViewModel", "Starting unified search for: $query")
         
         viewModelScope.launch {
             _isLoading.value = true
             _errorMessage.value = null
             
-            val request = DictionarySearchRequest(
-                word = query,
-                fromLang = _fromLanguage.value,
-                toLang = _toLanguage.value
-            )
-            
-            // Run search on IO and switch back; prevent UI thread stalls
-            kotlin.runCatching {
-                repository.searchWord(request)
-            }.getOrElse {
-                Result.failure(it)
-            }.fold(
-                onSuccess = { result ->
-                    android.util.Log.d("DictionaryViewModel", "Search successful for: $query, hasResults: ${result.hasResults}, gender: ${result.gender}")
-                    _searchResult.value = result
-                    if (result.hasResults) {
+            // Use unified repository for intelligent search
+            unifiedRepository.searchWord(query).fold(
+                onSuccess = { unifiedResult ->
+                    android.util.Log.d("DictionaryViewModel", "Unified search successful for: $query, hasResults: ${unifiedResult.hasResults}")
+                    
+                    _unifiedSearchResult.value = unifiedResult
+                    _detectedLanguage.value = unifiedResult.detectedLanguage
+                    _searchConfidence.value = unifiedResult.confidence
+                    
+                    // Update legacy states for backward compatibility
+                    updateLegacyStates(unifiedResult)
+                    
+                    if (unifiedResult.hasResults) {
                         addToSearchHistory(query)
-                        // Reset to overview tab when new search is performed
                         _selectedTab.value = 0
-                        // Check if word is in vocabulary
                         checkWordInVocabulary()
                     } else {
                         _errorMessage.value = "No information found for '$query'. Try a different word or check spelling."
                     }
                 },
                 onFailure = { exception ->
+                    android.util.Log.e("DictionaryViewModel", "Unified search failed for: $query", exception)
                     _errorMessage.value = exception.message ?: "An error occurred while searching"
                 }
             )
             
             _isLoading.value = false
+        }
+    }
+    
+    /**
+     * Update legacy states for backward compatibility
+     */
+    private fun updateLegacyStates(unifiedResult: UnifiedSearchResult) {
+        // Update legacy search result with primary translation
+        val primaryTranslation = unifiedResult.primaryTranslation
+        if (primaryTranslation != null) {
+            val legacyResult = DictionarySearchResult(
+                originalWord = unifiedResult.originalWord,
+                translations = primaryTranslation.englishTranslations,
+                fromLanguage = if (unifiedResult.detectedLanguage == LanguageHint.GERMAN) "de" else "en",
+                toLanguage = if (unifiedResult.detectedLanguage == LanguageHint.GERMAN) "en" else "de",
+                hasResults = true,
+                definitions = primaryTranslation.englishTranslations.map { Definition(meaning = it) },
+                gender = primaryTranslation.gender,
+                wordType = primaryTranslation.wordType
+            )
+            _searchResult.value = legacyResult
+        }
+        
+        // Update language states based on detection
+        when (unifiedResult.detectedLanguage) {
+            LanguageHint.GERMAN -> {
+                _fromLanguage.value = "de"
+                _toLanguage.value = "en"
+            }
+            LanguageHint.ENGLISH -> {
+                _fromLanguage.value = "en"
+                _toLanguage.value = "de"
+            }
+            else -> {
+                // Keep current language settings for ambiguous cases
+            }
         }
     }
     
@@ -204,6 +250,9 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     
     fun clearResults() {
         _searchResult.value = null
+        _unifiedSearchResult.value = null
+        _detectedLanguage.value = LanguageHint.UNKNOWN
+        _searchConfidence.value = SearchConfidence.LOW
         _searchQuery.value = ""
         _errorMessage.value = null
         _selectedTab.value = 0

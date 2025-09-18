@@ -1,0 +1,152 @@
+package com.hellogerman.app.data.dictionary
+
+/**
+ * Language detection service for automatic identification of German vs English words
+ * Provides intelligent language hints to guide unified dictionary searches
+ */
+class LanguageDetector {
+    
+    /**
+     * Detect the most likely language of a given word
+     * @param word The word to analyze
+     * @return LanguageHint indicating the detected language and confidence level
+     */
+    fun detectLanguage(word: String): LanguageHint {
+        if (word.isBlank()) return LanguageHint.UNKNOWN
+        
+        val cleanWord = word.trim().lowercase()
+        
+        // Strong German indicators
+        if (hasGermanCharacters(cleanWord)) {
+            return LanguageHint.GERMAN
+        }
+        
+        // German word endings
+        if (hasGermanEndings(cleanWord)) {
+            return LanguageHint.GERMAN
+        }
+        
+        // German prefixes
+        if (hasGermanPrefixes(cleanWord)) {
+            return LanguageHint.GERMAN
+        }
+        
+        // English indicators
+        if (hasEnglishPatterns(cleanWord)) {
+            return LanguageHint.ENGLISH
+        }
+        
+        // Ambiguous cases - could be either
+        if (isAmbiguousWord(cleanWord)) {
+            return LanguageHint.AMBIGUOUS
+        }
+        
+        return LanguageHint.UNKNOWN
+    }
+    
+    /**
+     * Check if word contains German-specific characters
+     */
+    private fun hasGermanCharacters(word: String): Boolean {
+        return word.contains(Regex("[äöüßÄÖÜ]"))
+    }
+    
+    /**
+     * Check for common German word endings
+     */
+    private fun hasGermanEndings(word: String): Boolean {
+        val germanEndings = listOf(
+            "chen", "lein", "ung", "heit", "keit", "schaft", "tum", "nis",
+            "er", "en", "el", "ig", "lich", "bar", "sam", "haft"
+        )
+        
+        return germanEndings.any { word.endsWith(it) && word.length > it.length + 1 }
+    }
+    
+    /**
+     * Check for German prefixes
+     */
+    private fun hasGermanPrefixes(word: String): Boolean {
+        val germanPrefixes = listOf(
+            "ge", "be", "ver", "ent", "er", "zer", "un", "aus", "ein", "auf", "über", "unter"
+        )
+        
+        return germanPrefixes.any { word.startsWith(it) && word.length > it.length + 1 }
+    }
+    
+    /**
+     * Check for English patterns
+     */
+    private fun hasEnglishPatterns(word: String): Boolean {
+        // English suffixes
+        val englishSuffixes = listOf(
+            "ing", "tion", "sion", "ness", "ment", "able", "ible", "ful", "less", "ly"
+        )
+        
+        if (englishSuffixes.any { word.endsWith(it) && word.length > it.length + 1 }) {
+            return true
+        }
+        
+        // English prefixes
+        val englishPrefixes = listOf(
+            "un", "re", "pre", "dis", "mis", "over", "under", "out", "up", "down"
+        )
+        
+        if (englishPrefixes.any { word.startsWith(it) && word.length > it.length + 1 }) {
+            return true
+        }
+        
+        // Common English words
+        val commonEnglishWords = setOf(
+            "the", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by",
+            "is", "are", "was", "were", "be", "been", "have", "has", "had", "do", "does", "did",
+            "will", "would", "could", "should", "may", "might", "can", "must"
+        )
+        
+        return commonEnglishWords.contains(word)
+    }
+    
+    /**
+     * Check if word is ambiguous (could be either language)
+     */
+    private fun isAmbiguousWord(word: String): Boolean {
+        // Short words that exist in both languages
+        val ambiguousWords = setOf(
+            "der", "die", "das", "und", "oder", "aber", "ist", "sind", "hat", "hatte",
+            "the", "and", "or", "but", "is", "are", "has", "had"
+        )
+        
+        return ambiguousWords.contains(word)
+    }
+    
+    /**
+     * Get confidence level for language detection
+     */
+    fun getConfidence(hint: LanguageHint): SearchConfidence {
+        return when (hint) {
+            LanguageHint.GERMAN -> SearchConfidence.HIGH
+            LanguageHint.ENGLISH -> SearchConfidence.HIGH
+            LanguageHint.AMBIGUOUS -> SearchConfidence.MEDIUM
+            LanguageHint.UNKNOWN -> SearchConfidence.LOW
+        }
+    }
+}
+
+/**
+ * Language detection hints
+ */
+enum class LanguageHint {
+    GERMAN,      // Clearly German word
+    ENGLISH,     // Clearly English word
+    AMBIGUOUS,   // Could be either language
+    UNKNOWN      // Cannot determine language
+}
+
+/**
+ * Search confidence levels
+ */
+enum class SearchConfidence {
+    HIGH,    // Very confident in language detection
+    MEDIUM,  // Somewhat confident, may need both directions
+    LOW      // Low confidence, should search both directions
+}

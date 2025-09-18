@@ -347,6 +347,67 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - DE→EN searches continue to work as before
 - Gender detection and display remain accurate
 
+---
+
+## Bug #010: Unified Dictionary Implementation (Leo-style Interface)
+
+### Problem Description (2025-09-18)
+- User requested merging English-to-German and German-to-English dictionaries into a single unified session
+- Current system requires manual language selection before searching
+- Need automatic language detection and comprehensive results from both dictionaries
+- Desired Leo-like experience where users can search both languages in one interface
+
+### Root Cause
+- Dictionary system was designed with separate language directions requiring explicit selection
+- No automatic language detection capability
+- Limited cross-referencing between dictionaries
+- Complex UI with language switching controls
+
+### Fix
+**Phase 1: Core Infrastructure**
+- Created `LanguageDetector.kt` with intelligent language detection using character patterns, word endings, and common words
+- Created `UnifiedSearchResult.kt` data model combining results from both dictionaries
+- Created `UnifiedDictionaryRepository.kt` for dual-direction search with automatic language detection
+
+**Phase 2: ViewModel Integration**
+- Updated `DictionaryViewModel.kt` to use unified repository
+- Added unified search result states and language detection indicators
+- Maintained backward compatibility with legacy search results
+
+**Phase 3: UI Redesign**
+- Created `UnifiedResultsCard.kt` for comprehensive results display
+- Updated `DictionaryScreen.kt` to show unified results with language detection indicators
+- Preserved all existing functionality while adding unified interface
+
+### Technical Implementation
+- **Language Detection**: Analyzes German characters (äöüß), word endings (chen, lein, ung), and English patterns
+- **Search Strategy**: Automatically chooses German-only, English-only, or both-directions search based on confidence
+- **Result Combination**: Merges translations from both dictionaries, deduplicates, and preserves gender information
+- **UI Enhancement**: Shows detected language with confidence level, displays comprehensive translation groups
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/data/dictionary/LanguageDetector.kt` (new)
+- `app/src/main/java/com/hellogerman/app/data/models/UnifiedSearchResult.kt` (new)
+- `app/src/main/java/com/hellogerman/app/data/repository/UnifiedDictionaryRepository.kt` (new)
+- `app/src/main/java/com/hellogerman/app/ui/screens/UnifiedResultsCard.kt` (new)
+- `app/src/main/java/com/hellogerman/app/ui/viewmodel/DictionaryViewModel.kt` (unified search integration)
+- `app/src/main/java/com/hellogerman/app/ui/screens/DictionaryScreen.kt` (unified results display)
+
+### Verification
+- Users can now search English words without selecting language direction
+- Users can now search German words without selecting language direction
+- Automatic language detection works for most common words
+- Comprehensive results show translations from both dictionaries
+- Gender information preserved for all German words
+- Backward compatibility maintained for existing functionality
+
+### Benefits
+- **Simplified UX**: Single search input, no language switching required
+- **Maximum Information**: Results from both dictionaries combined
+- **Leo-like Experience**: Familiar unified dictionary interface
+- **Intelligent Detection**: Automatic language recognition
+- **Preserved Features**: All existing functionality maintained
+
 
 ## Bug #002: Runtime Crash in GermanVerbConjugator
 
