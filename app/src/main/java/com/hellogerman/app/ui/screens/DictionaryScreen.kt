@@ -589,9 +589,12 @@ private fun OverviewCard(
                     } ?: ""
                     // Prefer showing the first German translation when searching EN→DE
                     val headerWord = if (result.fromLanguage.lowercase() in listOf("en", "english") && result.translations.isNotEmpty()) {
-                        // pick the first single-word German candidate; fallback to first
-                        val single = result.translations.firstOrNull { it.split(" ").size == 1 }
-                        single ?: result.translations.first()
+                        // Build a concise lemma-like header: join up to first 2 single-word nouns
+                        val parts = result.translations
+                            .map { it.replace(Regex("^(?i)(der|die|das)\\s+"), "").trim() }
+                            .filter { it.isNotEmpty() }
+                        val singles = parts.filter { !it.contains(" ") }
+                        if (singles.isNotEmpty()) singles.take(2).joinToString(", ") else parts.first()
                     } else result.originalWord
                     Text(
                         text = articlePrefix + headerWord,

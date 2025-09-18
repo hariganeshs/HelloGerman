@@ -177,7 +177,7 @@ class FreedictReader(
                 .trim()
 
             // Split by common separators to enumerate translations
-            t.split(';', '|', '/').map { it.trim() }.forEach { part ->
+            t.split(';', '|', '/', ',').map { it.trim() }.forEach { part ->
                 var p = part
                 if (p.isEmpty()) return@forEach
 
@@ -213,11 +213,11 @@ class FreedictReader(
 
     private fun extractGenderFromRaw(raw: String): String? {
         val l = raw.lowercase()
-        // Only trust explicit tag markers to avoid false matches with abbreviations like "n." (noun)
+        // Only trust explicit tag markers to avoid false matches with POS abbreviations (e.g., "n." for noun)
         return when {
-            Regex("<(masc|m)>").containsMatchIn(l) -> "der"
-            Regex("<(fem|f)>").containsMatchIn(l) -> "die"
-            Regex("<(neut|n)>").containsMatchIn(l) -> "das"
+            Regex("<(masc|m)>", RegexOption.IGNORE_CASE).containsMatchIn(l) -> "der"
+            Regex("<(fem|f)>", RegexOption.IGNORE_CASE).containsMatchIn(l) -> "die"
+            Regex("<(neut)>", RegexOption.IGNORE_CASE).containsMatchIn(l) -> "das"
             else -> null
         }
     }

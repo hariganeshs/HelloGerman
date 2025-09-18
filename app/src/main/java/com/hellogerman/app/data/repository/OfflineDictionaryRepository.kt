@@ -281,7 +281,14 @@ class OfflineDictionaryRepository @Inject constructor(
     private fun searchOfflineFreedict(word: String, fromLang: String, toLang: String): DictionarySearchResult {
         val isGerman = fromLang.lowercase() in listOf("de", "german")
         val reader = if (isGerman) deReader else enReader
-        val entry = reader.lookupExact(word)
+        var entry = reader.lookupExact(word)
+        // Fallback: if EN→DE lookup fails but input looks German, try German reader
+        if (entry == null && !isGerman) {
+            val looksGerman = Regex("[äöüß]|[a-z]+(en|er|chen|lein)$", RegexOption.IGNORE_CASE).containsMatchIn(word)
+            if (looksGerman) {
+                entry = deReader.lookupExact(word)
+            }
+        }
 
         if (entry == null) {
             return DictionarySearchResult(

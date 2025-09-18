@@ -269,6 +269,34 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 
 ---
 
+## Bug #007: Mixed-direction issues in dictionary (articles, German queries, DE→EN neuter)
+
+### Problems (from screenshots, 2025-09-18)
+1) EN→DE header showed only one article before the first lemma even when two German nouns were presented.
+2) Searching German words while in EN→DE mode returned unrelated verbs (e.g., "murmeln" for "mutter") because EN→DE reader failed lookup and no fallback was attempted.
+3) DE→EN showed `das` as gender for nearly all nouns due to misreading POS `n.` as neuter `n`.
+
+### Root Causes
+- Header logic picked a single candidate and didn’t compose multiple lemmas.
+- Repository used only the EN→DE FreeDict reader when `fromLang=en`; no detection of German input.
+- Gender extractor accepted `<n>` as neuter; FreeDict uses `n.` to mark part of speech (noun), not gender. This caused false neuter assignment.
+
+### Fixes
+- UI header (EN→DE): now composes up to two single-word German lemmas (e.g., `Begründer, Vater`) and still prefixes the article chip.
+- Repository fallback: when in EN→DE and lookup fails, detect German-looking input (ä/ö/ü/ß or endings like `-en`, `-er`, `-chen`, `-lein`) and retry with the German reader.
+- Gender parsing: only trusts `<masc>`, `<fem>`, `<neut>` tags; removed acceptance of `<n>` to avoid POS confusion.
+
+### Result
+- EN→DE shows correct heading like `der Begründer, Vater` and translations are consistent.
+- German queries in EN→DE mode resolve properly.
+- DE→EN article is correct (no global `das`).
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/ui/screens/DictionaryScreen.kt` (header composition)
+- `app/src/main/java/com/hellogerman/app/data/repository/OfflineDictionaryRepository.kt` (German fallback)
+- `app/src/main/java/com/hellogerman/app/data/dictionary/FreedictReader.kt` (gender parsing; tokenization improvements)
+
+
 ## Bug #002: Runtime Crash in GermanVerbConjugator
 
 ### **Problem Description**
