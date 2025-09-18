@@ -67,7 +67,7 @@ data class UnifiedSearchResult(
                     val englishTranslations = result.translations
                     val gender = result.gender
                     val wordType = result.wordType
-                    val examples = result.examples.map { it.text }
+                    val examples: List<String> = result.examples.map { it.sentence }
                     
                     combinedTranslations.add(
                         TranslationGroup(
@@ -99,7 +99,7 @@ data class UnifiedSearchResult(
                                 englishTranslations = listOf(englishWord),
                                 gender = result.gender,
                                 wordType = result.wordType,
-                                examples = result.examples.map { it.text }
+                                examples = result.examples.map { it.sentence }
                             )
                         )
                     }

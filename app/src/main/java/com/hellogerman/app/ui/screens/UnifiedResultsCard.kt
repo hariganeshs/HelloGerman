@@ -43,6 +43,7 @@ fun UnifiedResultsCard(
                 word = result.originalWord,
                 detectedLanguage = result.detectedLanguage,
                 confidence = result.confidence,
+                viewModel = viewModel,
                 modifier = Modifier.fillMaxWidth()
             )
             
@@ -76,6 +77,7 @@ private fun WordHeader(
     word: String,
     detectedLanguage: LanguageHint,
     confidence: SearchConfidence,
+    viewModel: DictionaryViewModel,
     modifier: Modifier = Modifier
 ) {
     Row(

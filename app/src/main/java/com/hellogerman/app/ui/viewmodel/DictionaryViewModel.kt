@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.hellogerman.app.data.models.DictionarySearchRequest
 import com.hellogerman.app.data.models.DictionarySearchResult
 import com.hellogerman.app.data.models.UnifiedSearchResult
+import com.hellogerman.app.data.models.Definition
 import com.hellogerman.app.data.repository.OfflineDictionaryRepository
 import com.hellogerman.app.data.repository.UnifiedDictionaryRepository
 import com.hellogerman.app.data.repository.DictionaryRepository
