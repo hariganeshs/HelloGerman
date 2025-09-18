@@ -38,9 +38,59 @@ class UnifiedDictionaryRepository(
     }
     
     /**
-     * Search for a word using intelligent language detection and unified results
+     * Determine the best search strategy based on language detection and user preferences
      */
-    suspend fun searchWord(word: String): Result<UnifiedSearchResult> {
+    private fun determineSearchStrategy(
+        detectedLanguage: LanguageHint, 
+        confidence: SearchConfidence, 
+        userFromLanguage: String?, 
+        userToLanguage: String?
+    ): SearchStrategy {
+        // If user has specified a direction, consider it
+        if (userFromLanguage != null && userToLanguage != null) {
+            val userFromLang = userFromLanguage.lowercase()
+            val userToLang = userToLanguage.lowercase()
+            
+            // If user wants German->English but detected English, search English->German (reverse)
+            if (userFromLang in listOf("de", "german") && userToLang in listOf("en", "english") && 
+                detectedLanguage == LanguageHint.ENGLISH) {
+                android.util.Log.d("UnifiedDictionaryRepository", "User wants DE->EN but word is English, searching EN->DE")
+                return SearchStrategy.ENGLISH_ONLY
+            }
+            
+            // If user wants English->German but detected German, search German->English (reverse)
+            if (userFromLang in listOf("en", "english") && userToLang in listOf("de", "german") && 
+                detectedLanguage == LanguageHint.GERMAN) {
+                android.util.Log.d("UnifiedDictionaryRepository", "User wants EN->DE but word is German, searching DE->EN")
+                return SearchStrategy.GERMAN_ONLY
+            }
+            
+            // If user direction matches detected language, use that
+            if ((userFromLang in listOf("de", "german") && detectedLanguage == LanguageHint.GERMAN) ||
+                (userFromLang in listOf("en", "english") && detectedLanguage == LanguageHint.ENGLISH)) {
+                return when (detectedLanguage) {
+                    LanguageHint.GERMAN -> SearchStrategy.GERMAN_ONLY
+                    LanguageHint.ENGLISH -> SearchStrategy.ENGLISH_ONLY
+                    else -> SearchStrategy.BOTH_DIRECTIONS
+                }
+            }
+        }
+        
+        // Fall back to automatic detection
+        return when (detectedLanguage) {
+            LanguageHint.GERMAN -> SearchStrategy.GERMAN_ONLY
+            LanguageHint.ENGLISH -> SearchStrategy.ENGLISH_ONLY
+            LanguageHint.AMBIGUOUS, LanguageHint.UNKNOWN -> SearchStrategy.BOTH_DIRECTIONS
+        }
+    }
+    
+    /**
+     * Search for a word using intelligent language detection and unified results
+     * @param word The word to search for
+     * @param userFromLanguage The user's selected "from" language (optional)
+     * @param userToLanguage The user's selected "to" language (optional)
+     */
+    suspend fun searchWord(word: String, userFromLanguage: String? = null, userToLanguage: String? = null): Result<UnifiedSearchResult> {
         return withContext(Dispatchers.IO) {
             try {
                 val cleanWord = word.trim()
@@ -55,13 +105,10 @@ class UnifiedDictionaryRepository(
                 val confidence = languageDetector.getConfidence(languageHint)
                 
                 android.util.Log.d("UnifiedDictionaryRepository", "Detected language: $languageHint, confidence: $confidence")
+                android.util.Log.d("UnifiedDictionaryRepository", "User direction: $userFromLanguage -> $userToLanguage")
                 
-                // Determine search strategy
-                val searchStrategy = when (languageHint) {
-                    LanguageHint.GERMAN -> SearchStrategy.GERMAN_ONLY
-                    LanguageHint.ENGLISH -> SearchStrategy.ENGLISH_ONLY
-                    LanguageHint.AMBIGUOUS, LanguageHint.UNKNOWN -> SearchStrategy.BOTH_DIRECTIONS
-                }
+                // Determine search strategy considering both detection and user preference
+                val searchStrategy = determineSearchStrategy(languageHint, confidence, userFromLanguage, userToLanguage)
                 
                 // Perform search based on strategy
                 val result = when (searchStrategy) {

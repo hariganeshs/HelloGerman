@@ -511,6 +511,48 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - German articles only applied to appropriate single German words
 - Grammar and language consistency maintained
 
+---
+
+## Bug #014: Language Direction Conflict - No Results for English Words in German→English Mode
+
+### Problem Description (2025-09-18)
+- When user sets language direction to "From German" to "To English" but searches for English words like "mother"
+- System returns "No information found for 'mother'. Try a different word or check spelling."
+- Unified dictionary ignores user's selected language direction and only uses automatic language detection
+- User's intent (wanting German translation of "mother") is not respected
+
+### Root Cause
+- **Language Direction Ignored**: UnifiedDictionaryRepository only used automatic language detection without considering user's selected direction
+- **Search Strategy Conflict**: When user selects German→English but searches English word, system tried to find "mother" in German→English dictionary instead of English→German
+- **Missing User Intent**: No logic to handle cases where detected language conflicts with user's selected direction
+
+### Fix
+**1. Enhanced Search Strategy**
+- Modified `searchWord()` to accept user's language direction parameters (`userFromLanguage`, `userToLanguage`)
+- Added `determineSearchStrategy()` function to consider both detected language and user preference
+- Implemented intelligent conflict resolution logic
+
+**2. Smart Direction Handling**
+- When user wants German→English but word is English: search English→German (reverse direction)
+- When user wants English→German but word is German: search German→English (reverse direction)
+- When user direction matches detected language: use normal direction
+- Fall back to automatic detection when no user direction specified
+
+**3. User Intent Respect**
+- Dictionary now respects user's language direction selection
+- Searches in appropriate direction based on user's intent, not just detection
+- Provides results even when detected language conflicts with selected direction
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/data/repository/UnifiedDictionaryRepository.kt` (enhanced search strategy)
+- `app/src/main/java/com/hellogerman/app/ui/viewmodel/DictionaryViewModel.kt` (pass user direction to repository)
+
+### Verification
+- Searching "mother" in German→English mode now finds German translation "Mutter"
+- User's language direction preference is respected
+- Intelligent conflict resolution between detection and user intent
+- No more "No information found" errors for valid searches
+
 
 ## Bug #002: Runtime Crash in GermanVerbConjugator
 

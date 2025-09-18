@@ -133,8 +133,8 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
             _isLoading.value = true
             _errorMessage.value = null
             
-            // Use unified repository for intelligent search
-            unifiedRepository.searchWord(query).fold(
+            // Use unified repository for intelligent search with user's language direction
+            unifiedRepository.searchWord(query, _fromLanguage.value, _toLanguage.value).fold(
                 onSuccess = { unifiedResult ->
                     android.util.Log.d("DictionaryViewModel", "Unified search successful for: $query, hasResults: ${unifiedResult.hasResults}")
                     
