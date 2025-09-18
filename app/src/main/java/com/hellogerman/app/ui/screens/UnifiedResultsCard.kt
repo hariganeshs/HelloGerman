@@ -51,10 +51,10 @@ fun UnifiedResultsCard(
             
             // Translation groups
             if (result.combinedTranslations.isNotEmpty()) {
-                LazyColumn(
+                Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(result.combinedTranslations) { translationGroup ->
+                    result.combinedTranslations.forEach { translationGroup ->
                         TranslationGroupCard(
                             translationGroup = translationGroup,
                             viewModel = viewModel

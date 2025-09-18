@@ -408,6 +408,33 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - **Intelligent Detection**: Automatic language recognition
 - **Preserved Features**: All existing functionality maintained
 
+---
+
+## Bug #011: LazyColumn Nesting Crash in UnifiedResultsCard
+
+### Problem Description (2025-09-18)
+- App crashes with `IllegalStateException: Vertically scrollable component was measured with an infinity maximum height constraints`
+- Error occurs when displaying unified dictionary results
+- Root cause: `LazyColumn` nested inside another `LazyColumn` in `UnifiedResultsCard`
+
+### Root Cause
+- `UnifiedResultsCard` contained a `LazyColumn` for displaying translation groups
+- This card is used inside the main `LazyColumn` in `DictionaryScreen`
+- Compose doesn't allow nested scrollable components as it creates infinite height constraints
+
+### Fix
+- Replaced inner `LazyColumn` in `UnifiedResultsCard` with regular `Column`
+- Changed from `items()` to `forEach()` for iteration
+- Maintained same visual layout and functionality
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/ui/screens/UnifiedResultsCard.kt` (replace LazyColumn with Column)
+
+### Verification
+- App no longer crashes when displaying unified dictionary results
+- Layout and functionality remain identical
+- Compilation successful with no errors
+
 
 ## Bug #002: Runtime Crash in GermanVerbConjugator
 
