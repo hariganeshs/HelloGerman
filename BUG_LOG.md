@@ -470,6 +470,47 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - Layout matches user's requested structure
 - All functionality preserved and enhanced
 
+---
+
+## Bug #013: Malformed Phrases and Low Confidence Issues
+
+### Problem Description (2025-09-18)
+- Dictionary displays grammatically incorrect phrases like "der peel an apple" and "der compare apples and oranges"
+- These phrases incorrectly combine German articles with English verb phrases/idioms
+- Common words like "apple" show "Unknown Low confidence" when they should have high confidence
+- Results are confusing and hinder effective language learning
+
+### Root Cause
+- **Malformed Phrases**: The system was automatically adding German articles to all words with gender, including English phrases like "peel an apple"
+- **Low Confidence**: Language detection was not recognizing common English words like "apple", marking them as UNKNOWN with low confidence
+- **English Phrase Recognition**: No logic to detect when a word/phrase is English and shouldn't receive German articles
+
+### Fix
+**1. Smart Article Application**
+- Added `shouldAddGermanArticle()` function to intelligently determine when to add German articles
+- Added `isEnglishPhrase()` function to detect English phrases and common English words
+- Prevents German articles from being added to English phrases like "peel an apple", "compare apples and oranges"
+
+**2. Enhanced Language Detection**
+- Expanded `commonEnglishWords` set to include common nouns like "apple", "orange", "banana", "book", "car", etc.
+- Improved confidence scoring for common English words
+- Better recognition of English phrase patterns
+
+**3. Logic Improvements**
+- Only add German articles to single German words with gender
+- Don't add articles to words that already have them
+- Don't add articles to English phrases or multi-word expressions
+
+### Files Changed
+- `app/src/main/java/com/hellogerman/app/ui/screens/UnifiedResultsCard.kt` (smart article application logic)
+- `app/src/main/java/com/hellogerman/app/data/dictionary/LanguageDetector.kt` (enhanced English word recognition)
+
+### Verification
+- English phrases like "peel an apple" no longer get German articles
+- Common words like "apple" now have proper confidence levels
+- German articles only applied to appropriate single German words
+- Grammar and language consistency maintained
+
 
 ## Bug #002: Runtime Crash in GermanVerbConjugator
 

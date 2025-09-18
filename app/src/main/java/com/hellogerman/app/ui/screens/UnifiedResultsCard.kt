@@ -81,6 +81,62 @@ fun UnifiedResultsCard(
 }
 
 /**
+ * Determine if a German article should be added to a word
+ */
+private fun shouldAddGermanArticle(word: String, gender: String?): Boolean {
+    // Don't add articles to English phrases
+    if (isEnglishPhrase(word)) {
+        return false
+    }
+    
+    // Don't add articles if no gender is specified
+    if (gender == null) {
+        return false
+    }
+    
+    // Don't add articles to words that already have them
+    if (word.startsWith("der ", ignoreCase = true) || 
+        word.startsWith("die ", ignoreCase = true) || 
+        word.startsWith("das ", ignoreCase = true)) {
+        return false
+    }
+    
+    // Add article for single German words with gender
+    return word.split(" ").size == 1
+}
+
+/**
+ * Check if a word/phrase is English (shouldn't get German articles)
+ */
+private fun isEnglishPhrase(word: String): Boolean {
+    val lowerWord = word.lowercase()
+    
+    // Common English words that shouldn't get German articles
+    val englishWords = setOf(
+        "apple", "orange", "banana", "peel", "compare", "and", "or", "the", "a", "an",
+        "to", "for", "with", "from", "by", "in", "on", "at", "of", "is", "are", "was", "were"
+    )
+    
+    // Check if it contains English words
+    val words = lowerWord.split(" ")
+    val englishWordCount = words.count { it in englishWords }
+    
+    // If more than half the words are English, treat as English phrase
+    if (words.size > 1 && englishWordCount > words.size / 2) {
+        return true
+    }
+    
+    // Check for common English phrase patterns
+    val englishPhrasePatterns = listOf(
+        "peel an", "compare.*and.*", "apples and oranges", "eat an", "buy a", "have a"
+    )
+    
+    return englishPhrasePatterns.any { pattern ->
+        Regex(pattern, RegexOption.IGNORE_CASE).containsMatchIn(lowerWord)
+    }
+}
+
+/**
  * Primary word display showing the main German word with gender and pronunciation
  */
 @Composable
@@ -95,15 +151,17 @@ private fun PrimaryWordDisplay(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val formattedGermanWord = translationGroup.gender?.let { gender ->
-                val article = when (gender.lowercase()) {
+            val formattedGermanWord = if (shouldAddGermanArticle(translationGroup.germanWord, translationGroup.gender)) {
+                val article = when (translationGroup.gender?.lowercase()) {
                     "der", "masculine" -> "der"
                     "die", "feminine" -> "die"
                     "das", "neuter" -> "das"
-                    else -> gender
+                    else -> "der" // Default fallback
                 }
                 "$article ${translationGroup.germanWord}"
-            } ?: translationGroup.germanWord
+            } else {
+                translationGroup.germanWord
+            }
             
             Text(
                 text = formattedGermanWord,

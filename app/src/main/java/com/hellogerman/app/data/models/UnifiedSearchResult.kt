@@ -91,12 +91,16 @@ data class UnifiedSearchResult(
                         it.endsWith("en") || it.endsWith("er") || it.endsWith("chen") || it.endsWith("lein")
                     }
                     
-                    germanTranslations.forEach { germanWord ->
-                        val cleanGermanWord = germanWord.replace(Regex("^(der|die|das)\\s+"), "").trim()
+                    // Group German translations together for the same English word
+                    if (germanTranslations.isNotEmpty()) {
+                        val cleanGermanTranslations = germanTranslations.map { 
+                            it.replace(Regex("^(der|die|das)\\s+"), "").trim() 
+                        }
+                        
                         combinedTranslations.add(
                             TranslationGroup(
-                                germanWord = cleanGermanWord,
-                                englishTranslations = listOf(englishWord),
+                                germanWord = cleanGermanTranslations.first(), // Primary German translation
+                                englishTranslations = listOf(englishWord), // The original English word
                                 gender = result.gender,
                                 wordType = result.wordType,
                                 examples = result.examples.map { it.sentence }

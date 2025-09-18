@@ -100,7 +100,12 @@ class LanguageDetector {
         val commonEnglishWords = setOf(
             "the", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by",
             "is", "are", "was", "were", "be", "been", "have", "has", "had", "do", "does", "did",
-            "will", "would", "could", "should", "may", "might", "can", "must"
+            "will", "would", "could", "should", "may", "might", "can", "must",
+            // Common nouns
+            "apple", "orange", "banana", "book", "car", "house", "water", "food", "time", "day",
+            "night", "year", "month", "week", "hour", "minute", "person", "man", "woman", "child",
+            "mother", "father", "brother", "sister", "friend", "family", "home", "school", "work",
+            "money", "love", "life", "death", "health", "world", "country", "city", "street"
         )
         
         return commonEnglishWords.contains(word)
