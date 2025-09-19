@@ -186,73 +186,112 @@ fun DictionaryScreen(
             }
         }
         
-        // Language Selection Row
+        // Language Selection Row - Auto-detection indicator
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
         ) {
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(16.dp)
             ) {
-                // From Language
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable {
-                            isSelectingFromLanguage = true
-                            showLanguageDialog = true
-                        }
-                ) {
-                    Text(
-                        text = "From",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = dictionaryViewModel.getLanguageName(fromLanguage),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-                
-                // Swap Button
-                IconButton(
-                    onClick = { dictionaryViewModel.swapLanguages() }
+                // Auto-detection header
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Default.SwapHoriz,
-                        contentDescription = "Swap Languages",
-                        tint = AccentBlue
+                        imageVector = Icons.Default.AutoAwesome,
+                        contentDescription = "Auto-detect",
+                        tint = AccentBlue,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Auto-detects input language",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = AccentBlue
                     )
                 }
                 
-                // To Language
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable {
-                            isSelectingFromLanguage = false
-                            showLanguageDialog = true
-                        }
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                // Language direction display (read-only)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "To",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = dictionaryViewModel.getLanguageName(toLanguage),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    // From Language
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = "From",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            text = dictionaryViewModel.getLanguageName(fromLanguage),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                    
+                    // Swap Button (now informational)
+                    IconButton(
+                        onClick = { 
+                            // Show info about auto-detection
+                            dictionaryViewModel.clearError()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.SwapHoriz,
+                            contentDescription = "Language direction",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    
+                    // To Language
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = "To",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            text = dictionaryViewModel.getLanguageName(toLanguage),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+                
+                // Detection status
+                detectedLanguage.let { detected ->
+                    if (detected != com.hellogerman.app.data.dictionary.LanguageHint.UNKNOWN) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Detected: ${when (detected) {
+                                com.hellogerman.app.data.dictionary.LanguageHint.GERMAN -> "German"
+                                com.hellogerman.app.data.dictionary.LanguageHint.ENGLISH -> "English"
+                                else -> "Unknown"
+                            }}",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
@@ -261,7 +300,7 @@ fun DictionaryScreen(
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { dictionaryViewModel.updateSearchQuery(it) },
-            label = { Text("Enter word to translate") },
+            label = { Text("Enter German or English word") },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(

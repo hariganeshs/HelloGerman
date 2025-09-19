@@ -46,24 +46,26 @@ class UnifiedDictionaryRepository(
         userFromLanguage: String?, 
         userToLanguage: String?
     ): SearchStrategy {
-        // If user has specified a direction, consider it
+        // Priority 1: Always respect language detection for clear cases
+        // This ensures "mother" (English) searches English->German regardless of UI direction
+        if (confidence == SearchConfidence.HIGH || confidence == SearchConfidence.MEDIUM) {
+            return when (detectedLanguage) {
+                LanguageHint.GERMAN -> {
+                    android.util.Log.d("UnifiedDictionaryRepository", "High confidence German detection, searching DE->EN")
+                    SearchStrategy.GERMAN_ONLY
+                }
+                LanguageHint.ENGLISH -> {
+                    android.util.Log.d("UnifiedDictionaryRepository", "High confidence English detection, searching EN->DE")
+                    SearchStrategy.ENGLISH_ONLY
+                }
+                else -> SearchStrategy.BOTH_DIRECTIONS
+            }
+        }
+        
+        // Priority 2: For low confidence or ambiguous cases, consider user direction
         if (userFromLanguage != null && userToLanguage != null) {
             val userFromLang = userFromLanguage.lowercase()
             val userToLang = userToLanguage.lowercase()
-            
-            // If user wants German->English but detected English, search English->German (reverse)
-            if (userFromLang in listOf("de", "german") && userToLang in listOf("en", "english") && 
-                detectedLanguage == LanguageHint.ENGLISH) {
-                android.util.Log.d("UnifiedDictionaryRepository", "User wants DE->EN but word is English, searching EN->DE")
-                return SearchStrategy.ENGLISH_ONLY
-            }
-            
-            // If user wants English->German but detected German, search German->English (reverse)
-            if (userFromLang in listOf("en", "english") && userToLang in listOf("de", "german") && 
-                detectedLanguage == LanguageHint.GERMAN) {
-                android.util.Log.d("UnifiedDictionaryRepository", "User wants EN->DE but word is German, searching DE->EN")
-                return SearchStrategy.GERMAN_ONLY
-            }
             
             // If user direction matches detected language, use that
             if ((userFromLang in listOf("de", "german") && detectedLanguage == LanguageHint.GERMAN) ||
@@ -73,6 +75,17 @@ class UnifiedDictionaryRepository(
                     LanguageHint.ENGLISH -> SearchStrategy.ENGLISH_ONLY
                     else -> SearchStrategy.BOTH_DIRECTIONS
                 }
+            }
+            
+            // If user direction conflicts with detection, prefer detection for clear cases
+            if (detectedLanguage == LanguageHint.GERMAN && userFromLang in listOf("en", "english")) {
+                android.util.Log.d("UnifiedDictionaryRepository", "Detected German but user wants EN->DE, preferring German detection")
+                return SearchStrategy.GERMAN_ONLY
+            }
+            
+            if (detectedLanguage == LanguageHint.ENGLISH && userFromLang in listOf("de", "german")) {
+                android.util.Log.d("UnifiedDictionaryRepository", "Detected English but user wants DE->EN, preferring English detection")
+                return SearchStrategy.ENGLISH_ONLY
             }
         }
         
