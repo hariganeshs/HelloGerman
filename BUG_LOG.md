@@ -2,7 +2,7 @@
 
 This document tracks bugs encountered in the HelloGerman app, attempted solutions, and their outcomes for future AI agents.
 
-## Summary — 2025-09-19: FreeDict Integration and Stability Fixes
+## Summary — 2025-09-19: FreeDict Integration and Unified Dictionary Fixes
 
 - Integrated FreeDict as the primary offline dictionary source:
   - Added `FreedictReader` to parse `.index`, decompress `.dict.dz`, and provide exact lookup and suggestions.
@@ -10,6 +10,11 @@ This document tracks bugs encountered in the HelloGerman app, attempted solution
 - Normalized FreeDict entries to improve quality and grammar:
   - Robust cleanup (strip `<...>`, `[ ... ]`, parentheticals, IPA-like fragments; collapse whitespace; strip leading articles).
   - Extracted explicit gender from `<masc>/<fem>/<neut>` tags; prefer this over heuristics.
+- **Fixed unified dictionary language detection**:
+  - Updated `UnifiedDictionaryRepository.determineSearchStrategy()` to prioritize high-confidence language detection over UI direction.
+  - English words like "mother" now correctly search EN→DE regardless of UI showing "From German".
+  - Updated UI to show auto-detection capability with detection status display.
+  - Changed search placeholder to "Enter German or English word" for clarity.
 - Performance and stability:
   - Lazy initialization of readers per direction; build suggestions index lazily to reduce GC churn.
   - EN→DE fallback: if English-side lookup fails but input looks German, retry with German reader.
