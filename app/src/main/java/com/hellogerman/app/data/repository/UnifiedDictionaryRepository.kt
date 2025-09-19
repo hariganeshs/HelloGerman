@@ -164,7 +164,8 @@ class UnifiedDictionaryRepository(
             confidence = confidence,
             deResult = deResult,
             enResult = null,
-            searchStrategy = SearchStrategy.GERMAN_ONLY
+            searchStrategy = SearchStrategy.GERMAN_ONLY,
+            primaryResult = deResult
         )
     }
     
@@ -187,7 +188,8 @@ class UnifiedDictionaryRepository(
             confidence = confidence,
             deResult = null,
             enResult = enResult,
-            searchStrategy = SearchStrategy.ENGLISH_ONLY
+            searchStrategy = SearchStrategy.ENGLISH_ONLY,
+            primaryResult = enResult
         )
     }
     
@@ -291,13 +293,28 @@ class UnifiedDictionaryRepository(
             null
         }
         
+        // Determine primary result for legacy method
+        val primaryResult = when {
+            deResult?.hasResults == true && enResult?.hasResults == true -> {
+                if (word.contains(Regex("[äöüßÄÖÜ]")) || hasGermanCharacteristics(word)) {
+                    deResult
+                } else {
+                    enResult
+                }
+            }
+            deResult?.hasResults == true -> deResult
+            enResult?.hasResults == true -> enResult
+            else -> null
+        }
+        
         return UnifiedSearchResult.combine(
             originalWord = word,
             detectedLanguage = languageHint,
             confidence = confidence,
             deResult = deResult,
             enResult = enResult,
-            searchStrategy = SearchStrategy.BOTH_DIRECTIONS
+            searchStrategy = SearchStrategy.BOTH_DIRECTIONS,
+            primaryResult = primaryResult
         )
     }
     
@@ -327,7 +344,8 @@ class UnifiedDictionaryRepository(
                 confidence = SearchConfidence.LOW,
                 deResult = null,
                 enResult = null,
-                searchStrategy = SearchStrategy.FALLBACK
+                searchStrategy = SearchStrategy.FALLBACK,
+                primaryResult = null
             )
         }
     }
