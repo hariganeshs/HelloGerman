@@ -686,6 +686,63 @@ val primaryResult = when {
 - **Performance**: Parallel search of both dictionaries for speed
 - **Reliability**: Eliminates false detection failures
 
+---
+
+## Bug #016: LiveEdit InstantiationException with Coroutines
+
+### Problem Description (2025-09-19)
+- App crashes with `InstantiationException: Can't instantiate abstract class kotlin.coroutines.jvm.internal.ContinuationImpl`
+- Error occurs when searching for "mutter" after code changes
+- Stack trace shows LiveEdit-related errors from Android Studio's hot reload
+- Issue appears to be related to coroutine changes in UnifiedDictionaryRepository
+
+### Root Cause
+- **LiveEdit Limitations**: Android Studio's LiveEdit feature cannot handle complex coroutine changes
+- **Coroutine Instantiation**: The error occurs when LiveEdit tries to instantiate coroutine continuations
+- **Hot Reload Conflict**: Code changes involving suspend functions and coroutines are too complex for LiveEdit
+- **Abstract Class Issue**: LiveEdit cannot instantiate abstract coroutine classes
+
+### Solution: Restart App Instead of Hot Reload ✅ SUCCESS
+
+#### **1. Immediate Fix**
+- **Stop the app** completely in Android Studio
+- **Rebuild and restart** the app from scratch
+- **Avoid using LiveEdit** for coroutine-related changes
+
+#### **2. Prevention**
+- When making changes to suspend functions or coroutines, always restart the app
+- Use "Run" instead of "Apply Changes" for coroutine modifications
+- Consider disabling LiveEdit for complex coroutine changes
+
+#### **3. Technical Details**
+The error occurs because:
+- LiveEdit tries to hot-reload coroutine code
+- Coroutines use complex internal classes (`ContinuationImpl`)
+- These classes cannot be instantiated by LiveEdit's reflection mechanism
+- The suspend function `searchWord()` creates coroutine continuations that LiveEdit cannot handle
+
+### Files Affected
+- `app/src/main/java/com/hellogerman/app/data/repository/UnifiedDictionaryRepository.kt` (coroutine changes)
+- Any suspend function modifications trigger this issue
+
+### Verification
+- ✅ App runs successfully after full restart
+- ✅ "mutter" search works correctly after restart
+- ✅ No crashes when avoiding LiveEdit for coroutine changes
+- ✅ Comprehensive dual-dictionary search functions properly
+
+### Prevention Guidelines
+- **Always restart app** after modifying suspend functions
+- **Use "Run" instead of "Apply Changes"** for coroutine modifications
+- **Test thoroughly** after any coroutine-related changes
+- **Consider LiveEdit limitations** when working with complex async code
+
+### Key Learnings
+- LiveEdit has limitations with coroutines and suspend functions
+- Complex coroutine changes require full app restart
+- Android Studio's hot reload cannot handle all code change types
+- Always restart app when modifying async/coroutine code
+
 
 ## Bug #002: Runtime Crash in GermanVerbConjugator
 
