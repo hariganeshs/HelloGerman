@@ -16,27 +16,27 @@ class LanguageDetector {
         
         val cleanWord = word.trim().lowercase()
         
-        // Strong German indicators
-        if (hasGermanCharacters(cleanWord)) {
-            return LanguageHint.GERMAN
-        }
-        
-        // German word endings
-        if (hasGermanEndings(cleanWord)) {
-            return LanguageHint.GERMAN
-        }
-        
-        // German prefixes
-        if (hasGermanPrefixes(cleanWord)) {
-            return LanguageHint.GERMAN
-        }
-        
-        // English indicators
+        // Priority 1: Check for known English words first (highest priority)
         if (hasEnglishPatterns(cleanWord)) {
             return LanguageHint.ENGLISH
         }
         
-        // Ambiguous cases - could be either
+        // Priority 2: Strong German indicators
+        if (hasGermanCharacters(cleanWord)) {
+            return LanguageHint.GERMAN
+        }
+        
+        // Priority 3: German word endings (but not if it's a known English word)
+        if (hasGermanEndings(cleanWord)) {
+            return LanguageHint.GERMAN
+        }
+        
+        // Priority 4: German prefixes
+        if (hasGermanPrefixes(cleanWord)) {
+            return LanguageHint.GERMAN
+        }
+        
+        // Priority 5: Ambiguous cases - could be either
         if (isAmbiguousWord(cleanWord)) {
             return LanguageHint.AMBIGUOUS
         }
@@ -55,12 +55,39 @@ class LanguageDetector {
      * Check for common German word endings
      */
     private fun hasGermanEndings(word: String): Boolean {
-        val germanEndings = listOf(
+        // Strong German endings that are unlikely to be English
+        val strongGermanEndings = listOf(
             "chen", "lein", "ung", "heit", "keit", "schaft", "tum", "nis",
-            "er", "en", "el", "ig", "lich", "bar", "sam", "haft"
+            "lich", "bar", "sam", "haft"
         )
         
-        return germanEndings.any { word.endsWith(it) && word.length > it.length + 1 }
+        if (strongGermanEndings.any { word.endsWith(it) && word.length > it.length + 1 }) {
+            return true
+        }
+        
+        // Weaker German endings that need more context
+        val weakGermanEndings = listOf("er", "en", "el", "ig")
+        
+        // Only consider these if the word is longer and has German-like structure
+        return weakGermanEndings.any { ending ->
+            word.endsWith(ending) && 
+            word.length > ending.length + 2 && 
+            !isLikelyEnglishWord(word) // Additional check to avoid English words
+        }
+    }
+    
+    /**
+     * Check if word is likely English based on common patterns
+     */
+    private fun isLikelyEnglishWord(word: String): Boolean {
+        // Common English word patterns that might end with German-like endings
+        val englishPatterns = listOf(
+            "mother", "father", "brother", "sister", "water", "paper", "number", "winter", "summer",
+            "center", "meter", "liter", "computer", "monster", "master", "disaster", "register",
+            "minister", "semester", "character", "parameter", "thermometer", "barometer"
+        )
+        
+        return englishPatterns.contains(word)
     }
     
     /**
