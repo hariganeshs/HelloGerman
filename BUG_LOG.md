@@ -2,6 +2,24 @@
 
 This document tracks bugs encountered in the HelloGerman app, attempted solutions, and their outcomes for future AI agents.
 
+## Summary — 2025-09-19: FreeDict Integration and Stability Fixes
+
+- Integrated FreeDict as the primary offline dictionary source:
+  - Added `FreedictReader` to parse `.index`, decompress `.dict.dz`, and provide exact lookup and suggestions.
+  - Refactored `OfflineDictionaryRepository` to be FreeDict-first with online enrichment (Wiktionary, Tatoeba, Wikidata, etc.).
+- Normalized FreeDict entries to improve quality and grammar:
+  - Robust cleanup (strip `<...>`, `[ ... ]`, parentheticals, IPA-like fragments; collapse whitespace; strip leading articles).
+  - Extracted explicit gender from `<masc>/<fem>/<neut>` tags; prefer this over heuristics.
+- Performance and stability:
+  - Lazy initialization of readers per direction; build suggestions index lazily to reduce GC churn.
+  - EN→DE fallback: if English-side lookup fails but input looks German, retry with German reader.
+- Repo hygiene and build:
+  - Removed old `german_dictionary.db` asset; updated `.gitignore` to exclude large dictionary payloads (`*.dict`, `*.dict.dz`, `*.index`).
+  - Authored `FREEDICT_DICTIONARY_PLAN.md` documenting requirements and plan.
+  - Fixed compile errors (regex escape, missing imports); build is green.
+
+Files touched: `app/src/main/java/.../FreedictReader.kt`, `.../OfflineDictionaryRepository.kt`, `.gitignore`, `FREEDICT_DICTIONARY_PLAN.md`.
+
 ## Bug #001: Incorrect Gender Assignment for "Apfel"
 
 ### **Problem Description**
