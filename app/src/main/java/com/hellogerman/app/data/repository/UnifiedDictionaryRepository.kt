@@ -48,7 +48,7 @@ class UnifiedDictionaryRepository(
     ): SearchStrategy {
         // Priority 1: Always respect language detection for clear cases
         // This ensures "mother" (English) searches English->German regardless of UI direction
-        if (confidence == SearchConfidence.HIGH || confidence == SearchConfidence.MEDIUM) {
+        if (confidence == SearchConfidence.HIGH) {
             return when (detectedLanguage) {
                 LanguageHint.GERMAN -> {
                     android.util.Log.d("UnifiedDictionaryRepository", "High confidence German detection, searching DE->EN")
@@ -57,6 +57,25 @@ class UnifiedDictionaryRepository(
                 LanguageHint.ENGLISH -> {
                     android.util.Log.d("UnifiedDictionaryRepository", "High confidence English detection, searching EN->DE")
                     SearchStrategy.ENGLISH_ONLY
+                }
+                else -> SearchStrategy.BOTH_DIRECTIONS
+            }
+        }
+        
+        // Priority 1.5: For medium confidence, prefer detection but consider user direction
+        if (confidence == SearchConfidence.MEDIUM) {
+            return when (detectedLanguage) {
+                LanguageHint.GERMAN -> {
+                    android.util.Log.d("UnifiedDictionaryRepository", "Medium confidence German detection, searching DE->EN")
+                    SearchStrategy.GERMAN_ONLY
+                }
+                LanguageHint.ENGLISH -> {
+                    android.util.Log.d("UnifiedDictionaryRepository", "Medium confidence English detection, searching EN->DE")
+                    SearchStrategy.ENGLISH_ONLY
+                }
+                LanguageHint.AMBIGUOUS -> {
+                    android.util.Log.d("UnifiedDictionaryRepository", "Ambiguous detection, searching both directions")
+                    SearchStrategy.BOTH_DIRECTIONS
                 }
                 else -> SearchStrategy.BOTH_DIRECTIONS
             }

@@ -26,22 +26,16 @@ class LanguageDetector {
             return LanguageHint.GERMAN
         }
         
-        // Priority 3: German word endings (but not if it's a known English word)
-        if (hasGermanEndings(cleanWord)) {
-            return LanguageHint.GERMAN
-        }
+        // Priority 3: Use scoring system for ambiguous cases
+        val germanScore = calculateGermanScore(cleanWord)
+        val englishScore = calculateEnglishScore(cleanWord)
         
-        // Priority 4: German prefixes
-        if (hasGermanPrefixes(cleanWord)) {
-            return LanguageHint.GERMAN
+        return when {
+            germanScore > englishScore && germanScore >= 2 -> LanguageHint.GERMAN
+            englishScore > germanScore && englishScore >= 2 -> LanguageHint.ENGLISH
+            germanScore == englishScore && germanScore >= 1 -> LanguageHint.AMBIGUOUS
+            else -> LanguageHint.UNKNOWN
         }
-        
-        // Priority 5: Ambiguous cases - could be either
-        if (isAmbiguousWord(cleanWord)) {
-            return LanguageHint.AMBIGUOUS
-        }
-        
-        return LanguageHint.UNKNOWN
     }
     
     /**
@@ -149,6 +143,112 @@ class LanguageDetector {
         )
         
         return ambiguousWords.contains(word)
+    }
+    
+    /**
+     * Calculate German language score based on multiple indicators
+     */
+    private fun calculateGermanScore(word: String): Int {
+        var score = 0
+        
+        // German characters (strong indicator)
+        if (hasGermanCharacters(word)) score += 3
+        
+        // German endings (moderate indicator)
+        if (hasGermanEndings(word)) score += 2
+        
+        // German prefixes (moderate indicator)
+        if (hasGermanPrefixes(word)) score += 2
+        
+        // German compound word patterns
+        if (hasGermanCompoundPatterns(word)) score += 1
+        
+        // Length and structure patterns
+        if (hasGermanStructure(word)) score += 1
+        
+        return score
+    }
+    
+    /**
+     * Calculate English language score based on multiple indicators
+     */
+    private fun calculateEnglishScore(word: String): Int {
+        var score = 0
+        
+        // English suffixes (strong indicator)
+        if (hasEnglishSuffixes(word)) score += 3
+        
+        // English prefixes (moderate indicator)
+        if (hasEnglishPrefixes(word)) score += 2
+        
+        // English spelling patterns
+        if (hasEnglishSpellingPatterns(word)) score += 2
+        
+        // English structure patterns
+        if (hasEnglishStructure(word)) score += 1
+        
+        return score
+    }
+    
+    /**
+     * Check for German compound word patterns
+     */
+    private fun hasGermanCompoundPatterns(word: String): Boolean {
+        // German compound words often have multiple capital letters or specific patterns
+        return word.contains(Regex("[A-Z][a-z]+[A-Z]")) || // Multiple capitals
+               word.length > 8 && word.contains(Regex("[aeiou]{2,}")) // Long words with vowel clusters
+    }
+    
+    /**
+     * Check for German word structure patterns
+     */
+    private fun hasGermanStructure(word: String): Boolean {
+        // German words often have specific consonant-vowel patterns
+        return word.matches(Regex(".*[bcdfghjklmnpqrstvwxyz]{2,}.*")) && // Multiple consonants
+               word.length > 4
+    }
+    
+    /**
+     * Check for English suffixes
+     */
+    private fun hasEnglishSuffixes(word: String): Boolean {
+        val englishSuffixes = listOf(
+            "ing", "tion", "sion", "ness", "ment", "able", "ible", "ful", "less", "ly",
+            "ed", "er", "est", "ism", "ist", "ity", "ive", "ize", "ous", "ship", "ward"
+        )
+        
+        return englishSuffixes.any { word.endsWith(it) && word.length > it.length + 1 }
+    }
+    
+    /**
+     * Check for English prefixes
+     */
+    private fun hasEnglishPrefixes(word: String): Boolean {
+        val englishPrefixes = listOf(
+            "un", "re", "pre", "dis", "mis", "over", "under", "out", "up", "down",
+            "anti", "auto", "co", "de", "ex", "inter", "non", "post", "sub", "super"
+        )
+        
+        return englishPrefixes.any { word.startsWith(it) && word.length > it.length + 1 }
+    }
+    
+    /**
+     * Check for English spelling patterns
+     */
+    private fun hasEnglishSpellingPatterns(word: String): Boolean {
+        // English-specific spelling patterns
+        return word.contains(Regex("(ph|th|sh|ch|ck|qu|gh)")) || // Common English letter combinations
+               word.matches(Regex(".*[aeiou]{2,}.*")) || // Double vowels (common in English)
+               word.contains(Regex("(ough|augh|eigh)")) // English-specific patterns
+    }
+    
+    /**
+     * Check for English word structure patterns
+     */
+    private fun hasEnglishStructure(word: String): Boolean {
+        // English words often have specific patterns
+        return word.matches(Regex(".*[aeiou].*[aeiou].*")) || // Multiple vowels
+               word.length <= 6 && word.matches(Regex("[a-z]+")) // Short common words
     }
     
     /**
