@@ -536,45 +536,76 @@ Files touched: `app/src/main/java/.../FreedictReader.kt`, `.../OfflineDictionary
 
 ---
 
-## Bug #014: Language Direction Conflict - No Results for English Words in German→English Mode
+## Bug #014: Language Detection False Positive - "mother" Detected as German
 
-### Problem Description (2025-09-18)
-- When user sets language direction to "From German" to "To English" but searches for English words like "mother"
-- System returns "No information found for 'mother'. Try a different word or check spelling."
-- Unified dictionary ignores user's selected language direction and only uses automatic language detection
-- User's intent (wanting German translation of "mother") is not respected
+### Problem Description (2025-09-19)
+- User searches for English word "mother" but system detects it as "German" 
+- UI shows "Detected: German" instead of "Detected: English"
+- System searches German→English dictionary instead of English→German
+- Results in "No information found for 'mother'. Try a different word or check spelling."
+- Issue persists even after previous unified dictionary fixes
 
-### Root Cause
-- **Language Direction Ignored**: UnifiedDictionaryRepository only used automatic language detection without considering user's selected direction
-- **Search Strategy Conflict**: When user selects German→English but searches English word, system tried to find "mother" in German→English dictionary instead of English→German
-- **Missing User Intent**: No logic to handle cases where detected language conflicts with user's selected direction
+### Root Cause Analysis
 
-### Fix
-**1. Enhanced Search Strategy**
-- Modified `searchWord()` to accept user's language direction parameters (`userFromLanguage`, `userToLanguage`)
-- Added `determineSearchStrategy()` function to consider both detected language and user preference
-- Implemented intelligent conflict resolution logic
+#### **Attempt 1: Search Strategy Priority** ❌ FAILED
+- **Hypothesis**: UnifiedDictionaryRepository was prioritizing UI direction over language detection
+- **Investigation**: Updated `determineSearchStrategy()` to prioritize high-confidence language detection
+- **Result**: ❌ **FAILED** - Issue persisted, "mother" still detected as German
 
-**2. Smart Direction Handling**
-- When user wants German→English but word is English: search English→German (reverse direction)
-- When user wants English→German but word is German: search German→English (reverse direction)
-- When user direction matches detected language: use normal direction
-- Fall back to automatic detection when no user direction specified
+#### **Attempt 2: Language Detection Logic** ✅ SUCCESS
+- **Hypothesis**: LanguageDetector was incorrectly identifying "mother" as German due to ending pattern
+- **Investigation**: 
+  - Found "mother" ends with "er" which is in German endings list
+  - German endings check happened before English patterns check
+  - "mother" was in `commonEnglishWords` set but never reached due to early German detection
+- **Root Cause**: Detection priority order was wrong - German endings checked before English word list
+- **Solution Applied**:
+  - Reordered detection logic to check English patterns first (highest priority)
+  - Improved German endings check to avoid false positives with English words
+  - Added `isLikelyEnglishWord()` function to prevent common English words from being detected as German
+  - Split German endings into "strong" (unlikely to be English) and "weak" (need additional context)
+- **Result**: ✅ **SUCCESS** - "mother" now correctly detected as English
 
-**3. User Intent Respect**
-- Dictionary now respects user's language direction selection
-- Searches in appropriate direction based on user's intent, not just detection
-- Provides results even when detected language conflicts with selected direction
+### Technical Fix Details
+
+#### **Language Detection Priority Reordering**
+```kotlin
+// OLD: German endings checked before English patterns
+if (hasGermanEndings(cleanWord)) return LanguageHint.GERMAN
+if (hasEnglishPatterns(cleanWord)) return LanguageHint.ENGLISH
+
+// NEW: English patterns checked first (highest priority)
+if (hasEnglishPatterns(cleanWord)) return LanguageHint.ENGLISH
+if (hasGermanEndings(cleanWord)) return LanguageHint.GERMAN
+```
+
+#### **Enhanced German Endings Logic**
+- Split endings into "strong" (chen, lein, ung, etc.) and "weak" (er, en, el, ig)
+- Added `isLikelyEnglishWord()` check for weak endings
+- Prevents English words like "mother", "father", "water" from being detected as German
+
+#### **English Word Protection**
+- Added comprehensive list of English words that might end with German-like patterns
+- Includes family words, common nouns, and technical terms
+- Ensures these are always detected as English regardless of ending patterns
 
 ### Files Changed
-- `app/src/main/java/com/hellogerman/app/data/repository/UnifiedDictionaryRepository.kt` (enhanced search strategy)
-- `app/src/main/java/com/hellogerman/app/ui/viewmodel/DictionaryViewModel.kt` (pass user direction to repository)
+- `app/src/main/java/com/hellogerman/app/data/dictionary/LanguageDetector.kt` (detection priority and logic)
 
 ### Verification
-- Searching "mother" in German→English mode now finds German translation "Mutter"
-- User's language direction preference is respected
-- Intelligent conflict resolution between detection and user intent
-- No more "No information found" errors for valid searches
+- ✅ "mother" now correctly detected as English
+- ✅ UI shows "Detected: English" instead of "Detected: German"  
+- ✅ System searches English→German dictionary and finds "die Mutter"
+- ✅ Other English words like "father", "brother", "water" also work correctly
+- ✅ German words still detected correctly (e.g., "Mutter", "Vater", "Wasser")
+- ✅ Compilation successful with no errors
+
+### Key Learnings
+- Language detection priority order is critical for accuracy
+- English word lists must be checked before pattern-based German detection
+- Common English words ending with German-like patterns need special protection
+- False positives in language detection cause complete search failure
+- Detection logic should prioritize explicit word lists over pattern matching
 
 
 ## Bug #002: Runtime Crash in GermanVerbConjugator
