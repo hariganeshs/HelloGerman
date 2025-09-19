@@ -55,7 +55,8 @@ data class UnifiedSearchResult(
             confidence: SearchConfidence,
             deResult: DictionarySearchResult?,
             enResult: DictionarySearchResult?,
-            searchStrategy: SearchStrategy
+            searchStrategy: SearchStrategy,
+            primaryResult: DictionarySearchResult? = null
         ): UnifiedSearchResult {
             
             val combinedTranslations = mutableListOf<TranslationGroup>()

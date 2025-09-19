@@ -117,7 +117,7 @@ class UnifiedDictionaryRepository(
     }
     
     /**
-     * Search for a word using intelligent language detection and unified results
+     * Search for a word using both dictionaries simultaneously for maximum information
      * @param word The word to search for
      * @param userFromLanguage The user's selected "from" language (optional)
      * @param userToLanguage The user's selected "to" language (optional)
@@ -130,27 +130,12 @@ class UnifiedDictionaryRepository(
                     return@withContext Result.failure(IllegalArgumentException("Empty search word"))
                 }
                 
-                android.util.Log.d("UnifiedDictionaryRepository", "Unified search for: '$cleanWord'")
+                android.util.Log.d("UnifiedDictionaryRepository", "Comprehensive search for: '$cleanWord'")
                 
-                // Detect language
-                val languageHint = languageDetector.detectLanguage(cleanWord)
-                val confidence = languageDetector.getConfidence(languageHint)
+                // Always search both directions for maximum information
+                val result = searchBothDirectionsComprehensive(cleanWord)
                 
-                android.util.Log.d("UnifiedDictionaryRepository", "Detected language: $languageHint, confidence: $confidence")
-                android.util.Log.d("UnifiedDictionaryRepository", "User direction: $userFromLanguage -> $userToLanguage")
-                
-                // Determine search strategy considering both detection and user preference
-                val searchStrategy = determineSearchStrategy(languageHint, confidence, userFromLanguage, userToLanguage)
-                
-                // Perform search based on strategy
-                val result = when (searchStrategy) {
-                    SearchStrategy.GERMAN_ONLY -> searchGermanWord(cleanWord, languageHint, confidence)
-                    SearchStrategy.ENGLISH_ONLY -> searchEnglishWord(cleanWord, languageHint, confidence)
-                    SearchStrategy.BOTH_DIRECTIONS -> searchBothDirections(cleanWord, languageHint, confidence)
-                    SearchStrategy.FALLBACK -> searchFallback(cleanWord, languageHint, confidence)
-                }
-                
-                android.util.Log.d("UnifiedDictionaryRepository", "Search completed for '$cleanWord', hasResults: ${result.hasResults}")
+                android.util.Log.d("UnifiedDictionaryRepository", "Comprehensive search completed for '$cleanWord', hasResults: ${result.hasResults}")
                 Result.success(result)
                 
             } catch (e: Exception) {
@@ -207,7 +192,80 @@ class UnifiedDictionaryRepository(
     }
     
     /**
-     * Search both directions and combine results
+     * Comprehensive search using both dictionaries simultaneously for maximum information
+     */
+    private suspend fun searchBothDirectionsComprehensive(word: String): UnifiedSearchResult {
+        android.util.Log.d("UnifiedDictionaryRepository", "Comprehensive search for: '$word'")
+        
+        // Detect language for display purposes only
+        val languageHint = languageDetector.detectLanguage(word)
+        val confidence = languageDetector.getConfidence(languageHint)
+        
+        // Search both directions in parallel for maximum coverage
+        val deResult = try {
+            deReader.initializeIfNeeded()
+            searchOfflineFreedict(word, "de", "en")
+        } catch (e: Exception) {
+            android.util.Log.w("UnifiedDictionaryRepository", "DE->EN search failed for '$word'", e)
+            null
+        }
+        
+        val enResult = try {
+            enReader.initializeIfNeeded()
+            searchOfflineFreedict(word, "en", "de")
+        } catch (e: Exception) {
+            android.util.Log.w("UnifiedDictionaryRepository", "EN->DE search failed for '$word'", e)
+            null
+        }
+        
+        // Determine the best result to prioritize based on which direction found results
+        val primaryResult = when {
+            deResult?.hasResults == true && enResult?.hasResults == true -> {
+                // Both found results - prioritize based on word characteristics
+                if (word.contains(Regex("[äöüßÄÖÜ]")) || hasGermanCharacteristics(word)) {
+                    android.util.Log.d("UnifiedDictionaryRepository", "Both directions found results, prioritizing German")
+                    deResult
+                } else {
+                    android.util.Log.d("UnifiedDictionaryRepository", "Both directions found results, prioritizing English")
+                    enResult
+                }
+            }
+            deResult?.hasResults == true -> {
+                android.util.Log.d("UnifiedDictionaryRepository", "Only German direction found results")
+                deResult
+            }
+            enResult?.hasResults == true -> {
+                android.util.Log.d("UnifiedDictionaryRepository", "Only English direction found results")
+                enResult
+            }
+            else -> {
+                android.util.Log.d("UnifiedDictionaryRepository", "No results found in either direction")
+                null
+            }
+        }
+        
+        return UnifiedSearchResult.combine(
+            originalWord = word,
+            detectedLanguage = languageHint,
+            confidence = confidence,
+            deResult = deResult,
+            enResult = enResult,
+            searchStrategy = SearchStrategy.BOTH_DIRECTIONS,
+            primaryResult = primaryResult
+        )
+    }
+    
+    /**
+     * Check if word has German characteristics for prioritization
+     */
+    private fun hasGermanCharacteristics(word: String): Boolean {
+        return word.contains(Regex("[äöüßÄÖÜ]")) ||
+               word.endsWith("en") || word.endsWith("er") || word.endsWith("chen") || word.endsWith("lein") ||
+               word.length > 8 // German compound words tend to be longer
+    }
+    
+    /**
+     * Search both directions and combine results (legacy method)
      */
     private suspend fun searchBothDirections(
         word: String, 

@@ -196,21 +196,21 @@ fun DictionaryScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Auto-detection header
+                // Comprehensive search header
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Default.AutoAwesome,
-                        contentDescription = "Auto-detect",
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Comprehensive search",
                         tint = AccentBlue,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Auto-detects input language",
+                        text = "Searches both dictionaries for maximum information",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = AccentBlue
@@ -300,7 +300,7 @@ fun DictionaryScreen(
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { dictionaryViewModel.updateSearchQuery(it) },
-            label = { Text("Enter German or English word") },
+            label = { Text("Enter any word - searches both dictionaries") },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
