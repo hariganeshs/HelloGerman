@@ -96,6 +96,7 @@ data class DictionarySearchResult(
     val synonyms: List<String> = emptyList(),
     val antonyms: List<String> = emptyList(),
     val pronunciation: Pronunciation? = null,
+    val pronunciationInfo: PronunciationInfo? = null,
     val conjugations: VerbConjugations? = null,
     val etymology: String? = null,
     val wordType: String? = null, // noun, verb, adjective, etc.
@@ -127,6 +128,12 @@ data class Pronunciation(
     val region: String? = null
 )
 
+data class PronunciationInfo(
+    val ipa: String,
+    val audioUrl: String? = null,
+    val isAvailable: Boolean = true
+)
+
 /**
  * Wiktionary API response models
  */
@@ -154,13 +161,6 @@ data class WiktionaryWikitext(
 /**
  * German Verb API response models
  */
-data class VerbConjugationResponse(
-    @SerializedName("verb")
-    val verb: String,
-    
-    @SerializedName("conjugations")
-    val conjugations: VerbConjugations
-)
 
 data class VerbConjugations(
     @SerializedName("present")
@@ -336,4 +336,67 @@ data class WikidataForm(
 data class WikidataSense(
     val id: String,
     val gloss: String? = null
+)
+
+/**
+ * Pronunciation data model for Wiktionary API
+ */
+data class PronunciationData(
+    val ipa: String? = null,
+    val audioUrl: String? = null
+)
+
+/**
+ * Grammar data models for Leo-style comprehensive grammar information
+ */
+
+// Noun declension information
+data class NounDeclension(
+    val nominative: String,
+    val genitive: String,
+    val dative: String,
+    val accusative: String,
+    val plural: String
+)
+
+// Verb conjugation information
+data class VerbConjugation(
+    val infinitive: String,
+    val present: Map<String, String>,
+    val past: Map<String, String>,
+    val perfect: Map<String, String>,
+    val future: Map<String, String>,
+    val participle: String,
+    val auxiliary: String // haben or sein
+)
+
+// Adjective declension information
+data class AdjectiveDeclension(
+    val positive: String,
+    val comparative: String,
+    val superlative: String,
+    val declensionTable: Map<String, Map<String, String>>
+)
+
+// Grammar data response models
+data class NounDeclensionResponse(
+    val noun: String,
+    val declension: NounDeclension
+)
+
+data class VerbConjugationResponse(
+    val verb: String,
+    val conjugations: VerbConjugation
+)
+
+data class AdjectiveDeclensionResponse(
+    val adjective: String,
+    val declension: AdjectiveDeclension
+)
+
+// Comprehensive grammar information
+data class GrammarInfo(
+    val nounDeclension: NounDeclension? = null,
+    val verbConjugation: VerbConjugation? = null,
+    val adjectiveDeclension: AdjectiveDeclension? = null
 )

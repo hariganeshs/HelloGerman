@@ -4,32 +4,29 @@ package com.hellogerman.app.data.dictionary
  * Language detection service for automatic identification of German vs English words
  * Provides intelligent language hints to guide unified dictionary searches
  */
-class LanguageDetector {
-    
+class EnhancedLanguageDetector {
+
     /**
-     * Detect the most likely language of a given word
+     * Enhanced language detection with improved German/English detection
      * @param word The word to analyze
      * @return LanguageHint indicating the detected language and confidence level
      */
     fun detectLanguage(word: String): LanguageHint {
-        if (word.isBlank()) return LanguageHint.UNKNOWN
-        
         val cleanWord = word.trim().lowercase()
-        
-        // Priority 1: Check for known English words first (highest priority)
-        if (hasEnglishPatterns(cleanWord)) {
-            return LanguageHint.ENGLISH
-        }
-        
-        // Priority 2: Strong German indicators
-        if (hasGermanCharacters(cleanWord)) {
-            return LanguageHint.GERMAN
-        }
-        
-        // Priority 3: Use scoring system for ambiguous cases
+
+        // Strong German indicators (highest priority)
+        if (containsGermanCharacters(cleanWord)) return LanguageHint.GERMAN
+        if (hasGermanEndings(cleanWord)) return LanguageHint.POSSIBLY_GERMAN
+        if (hasGermanPrefixes(cleanWord)) return LanguageHint.POSSIBLY_GERMAN
+
+        // Strong English indicators
+        if (hasEnglishEndings(cleanWord)) return LanguageHint.POSSIBLY_ENGLISH
+        if (hasEnglishPatterns(cleanWord)) return LanguageHint.POSSIBLY_ENGLISH
+
+        // Use scoring system for ambiguous cases
         val germanScore = calculateGermanScore(cleanWord)
         val englishScore = calculateEnglishScore(cleanWord)
-        
+
         return when {
             germanScore > englishScore && germanScore >= 2 -> LanguageHint.GERMAN
             englishScore > germanScore && englishScore >= 2 -> LanguageHint.ENGLISH
@@ -41,34 +38,31 @@ class LanguageDetector {
     /**
      * Check if word contains German-specific characters
      */
-    private fun hasGermanCharacters(word: String): Boolean {
+    private fun containsGermanCharacters(word: String): Boolean {
         return word.contains(Regex("[äöüßÄÖÜ]"))
     }
-    
+
     /**
      * Check for common German word endings
      */
     private fun hasGermanEndings(word: String): Boolean {
-        // Strong German endings that are unlikely to be English
-        val strongGermanEndings = listOf(
-            "chen", "lein", "ung", "heit", "keit", "schaft", "tum", "nis",
-            "lich", "bar", "sam", "haft"
+        val germanEndings = listOf(
+            "chen", "lein", "ung", "heit", "keit", "schaft",
+            "tion", "sion", "ment", "ling", "ig"
         )
-        
-        if (strongGermanEndings.any { word.endsWith(it) && word.length > it.length + 1 }) {
-            return true
-        }
-        
-        // Weaker German endings that need more context
-        val weakGermanEndings = listOf("er", "en", "el", "ig")
-        
-        // Only consider these if the word is longer and has German-like structure
-        return weakGermanEndings.any { ending ->
-            word.endsWith(ending) && 
-            word.length > ending.length + 2 && 
-            !isLikelyEnglishWord(word) // Additional check to avoid English words
-        }
+        return germanEndings.any { word.endsWith(it) }
     }
+
+    /**
+     * Check for English word endings
+     */
+    private fun hasEnglishEndings(word: String): Boolean {
+        val englishEndings = listOf(
+            "ing", "tion", "sion", "ness", "ment", "able", "ible"
+        )
+        return englishEndings.any { word.endsWith(it) }
+    }
+    
     
     /**
      * Check if word is likely English based on common patterns
@@ -152,7 +146,7 @@ class LanguageDetector {
         var score = 0
         
         // German characters (strong indicator)
-        if (hasGermanCharacters(word)) score += 3
+        if (containsGermanCharacters(word)) score += 3
         
         // German endings (moderate indicator)
         if (hasGermanEndings(word)) score += 2
@@ -258,6 +252,8 @@ class LanguageDetector {
         return when (hint) {
             LanguageHint.GERMAN -> SearchConfidence.HIGH
             LanguageHint.ENGLISH -> SearchConfidence.HIGH
+            LanguageHint.POSSIBLY_GERMAN -> SearchConfidence.MEDIUM
+            LanguageHint.POSSIBLY_ENGLISH -> SearchConfidence.MEDIUM
             LanguageHint.AMBIGUOUS -> SearchConfidence.MEDIUM
             LanguageHint.UNKNOWN -> SearchConfidence.LOW
         }
@@ -268,10 +264,12 @@ class LanguageDetector {
  * Language detection hints
  */
 enum class LanguageHint {
-    GERMAN,      // Clearly German word
-    ENGLISH,     // Clearly English word
-    AMBIGUOUS,   // Could be either language
-    UNKNOWN      // Cannot determine language
+    GERMAN,          // Clearly German word
+    ENGLISH,         // Clearly English word
+    POSSIBLY_GERMAN, // Likely German based on indicators
+    POSSIBLY_ENGLISH, // Likely English based on indicators
+    AMBIGUOUS,       // Could be either language
+    UNKNOWN          // Cannot determine language
 }
 
 /**

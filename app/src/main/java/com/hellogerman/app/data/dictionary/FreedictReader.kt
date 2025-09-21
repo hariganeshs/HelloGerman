@@ -91,7 +91,7 @@ class FreedictReader(
         val entry = index[key] ?: return null
         val raw = readBlock(entry.offset, entry.length)
         val translations = parseTranslations(raw, word)
-        val gender = extractGenderFromRaw(raw)
+        val gender = extractGenderFromRaw(raw, word)
         return Entry(headword = word, raw = raw, translations = translations, gender = gender)
     }
 
@@ -211,13 +211,49 @@ class FreedictReader(
         return out.take(16)
     }
 
-    private fun extractGenderFromRaw(raw: String): String? {
+    private fun extractGenderFromRaw(raw: String, word: String): String? {
+        // 1. Check explicit tags in FreeDict entry
+        val explicitGender = extractExplicitGender(raw)
+        if (explicitGender != null) return explicitGender
+
+        // 2. Apply German gender rules as fallback
+        return applyGenderRules(word)
+    }
+
+    private fun extractExplicitGender(raw: String): String? {
         val l = raw.lowercase()
         // Only trust explicit tag markers to avoid false matches with POS abbreviations (e.g., "n." for noun)
         return when {
             Regex("<(masc|m)>", RegexOption.IGNORE_CASE).containsMatchIn(l) -> "der"
             Regex("<(fem|f)>", RegexOption.IGNORE_CASE).containsMatchIn(l) -> "die"
             Regex("<(neut)>", RegexOption.IGNORE_CASE).containsMatchIn(l) -> "das"
+            else -> null
+        }
+    }
+
+    private fun applyGenderRules(word: String): String? {
+        val lowerWord = word.lowercase()
+        return when {
+            // Masculine endings
+            lowerWord.endsWith("er") && !lowerWord.endsWith("chen") -> "der"
+            lowerWord.endsWith("ling") -> "der"
+            lowerWord.endsWith("ig") -> "der"
+
+            // Feminine endings
+            lowerWord.endsWith("ung") -> "die"
+            lowerWord.endsWith("heit") -> "die"
+            lowerWord.endsWith("keit") -> "die"
+            lowerWord.endsWith("schaft") -> "die"
+            lowerWord.endsWith("tion") -> "die"
+            lowerWord.endsWith("sion") -> "die"
+            lowerWord.endsWith("nis") -> "die"
+
+            // Neuter endings
+            lowerWord.endsWith("chen") -> "das"
+            lowerWord.endsWith("lein") -> "das"
+            lowerWord.endsWith("ment") -> "das"
+            lowerWord.endsWith("um") -> "das"
+
             else -> null
         }
     }

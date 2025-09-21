@@ -3,6 +3,10 @@ package com.hellogerman.app.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -11,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hellogerman.app.data.models.UnifiedSearchResult
@@ -326,6 +331,8 @@ private fun LanguageDetectionIndicator(
     val (text, color) = when (detectedLanguage) {
         LanguageHint.GERMAN -> "German" to Color(0xFF4CAF50)
         LanguageHint.ENGLISH -> "English" to Color(0xFF2196F3)
+        LanguageHint.POSSIBLY_GERMAN -> "Possibly German" to Color(0xFF8BC34A)
+        LanguageHint.POSSIBLY_ENGLISH -> "Possibly English" to Color(0xFF03A9F4)
         LanguageHint.AMBIGUOUS -> "Both languages" to Color(0xFFFF9800)
         LanguageHint.UNKNOWN -> "Unknown" to Color(0xFF9E9E9E)
     }
@@ -514,4 +521,161 @@ fun UnifiedSearchInput(
             unfocusedBorderColor = MaterialTheme.colorScheme.outline
         )
     )
+}
+
+/**
+ * Enhanced search bar with suggestions (Leo-style)
+ */
+@Composable
+fun EnhancedSearchBar(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    suggestions: List<String>,
+    onSuggestionClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        OutlinedTextField(
+            value = query,
+            onValueChange = onQueryChange,
+            label = { Text("Search German or English") },
+            trailingIcon = {
+                IconButton(onClick = onSearch) {
+                    Icon(Icons.Default.Search, contentDescription = "Search")
+                }
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = { onSearch() }),
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AccentBlue,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+            )
+        )
+
+        // Show suggestions
+        if (suggestions.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    Text(
+                        text = "Suggestions",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    suggestions.take(5).forEach { suggestion ->
+                        SuggestionChip(
+                            onClick = { onSuggestionClick(suggestion) },
+                            label = { Text(suggestion) }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Suggestion chip component
+ */
+@Composable
+private fun SuggestionChip(
+    onClick: () -> Unit,
+    label: @Composable () -> Unit
+) {
+    AssistChip(
+        onClick = onClick,
+        label = label,
+        modifier = Modifier.padding(vertical = 2.dp),
+        colors = AssistChipDefaults.assistChipColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            labelColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    )
+}
+
+/**
+ * Enhanced German word display with gender information (Leo-style)
+ */
+@Composable
+fun GermanWordWithGender(
+    word: String,
+    gender: String?,
+    translations: List<String>,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+    ) {
+        // Gender chip
+        gender?.let { g ->
+            GenderChip(gender = g)
+        }
+
+        // Word with proper formatting
+        Text(
+            text = formatGermanWord(word, gender),
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            color = AccentBlue
+        )
+    }
+}
+
+/**
+ * Format German word with article based on gender
+ */
+private fun formatGermanWord(word: String, gender: String?): String {
+    return gender?.let { g ->
+        val article = when (g.lowercase()) {
+            "der", "masculine" -> "der"
+            "die", "feminine" -> "die"
+            "das", "neuter" -> "das"
+            else -> ""
+        }
+        if (article.isNotEmpty()) "$article $word" else word
+    } ?: word
+}
+
+/**
+ * Gender chip component for displaying German noun gender
+ */
+@Composable
+fun GenderChip(gender: String) {
+    val (backgroundColor, textColor, text) = when (gender.lowercase()) {
+        "der", "masculine" -> Triple(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary, "der")
+        "die", "feminine" -> Triple(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.onSecondary, "die")
+        "das", "neuter" -> Triple(MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.onTertiary, "das")
+        else -> Triple(MaterialTheme.colorScheme.surface, MaterialTheme.colorScheme.onSurface, gender)
+    }
+
+    Surface(
+        color = backgroundColor,
+        shape = RoundedCornerShape(12.dp),
+        modifier = Modifier.padding(vertical = 2.dp)
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            color = textColor,
+            fontWeight = FontWeight.Bold,
+            fontSize = 12.sp
+        )
+    }
 }

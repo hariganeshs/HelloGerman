@@ -8,7 +8,7 @@ import com.hellogerman.app.data.models.DictionarySearchResult
 import com.hellogerman.app.data.models.UnifiedSearchResult
 import com.hellogerman.app.data.models.Definition
 import com.hellogerman.app.data.repository.OfflineDictionaryRepository
-import com.hellogerman.app.data.repository.UnifiedDictionaryRepository
+import com.hellogerman.app.data.repository.EnhancedUnifiedDictionaryRepository
 import com.hellogerman.app.data.repository.DictionaryRepository
 import com.hellogerman.app.data.repository.HelloGermanRepository
 import com.hellogerman.app.data.dictionary.LanguageHint
@@ -27,7 +27,12 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     
     private val onlineRepository = DictionaryRepository(application)
     private val repository = OfflineDictionaryRepository(application, onlineRepository)
-    private val unifiedRepository = UnifiedDictionaryRepository(application, onlineRepository)
+    private val unifiedRepository = EnhancedUnifiedDictionaryRepository(
+        context = application,
+        onlineRepository = onlineRepository,
+        wiktionaryService = null,
+        grammarService = null
+    )
     private val helloGermanRepository = HelloGermanRepository(application)
     private val ttsHelper = TTSHelper(application)
     
@@ -134,7 +139,7 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
             _errorMessage.value = null
             
             // Use unified repository for intelligent search with user's language direction
-            unifiedRepository.searchWord(query, _fromLanguage.value, _toLanguage.value).fold(
+            unifiedRepository.searchUnified(query, _fromLanguage.value, _toLanguage.value).fold(
                 onSuccess = { unifiedResult ->
                     android.util.Log.d("DictionaryViewModel", "Unified search successful for: $query, hasResults: ${unifiedResult.hasResults}")
                     

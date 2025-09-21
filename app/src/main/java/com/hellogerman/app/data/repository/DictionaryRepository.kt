@@ -555,17 +555,17 @@ class DictionaryRepository(private val context: Context) {
             val apiUrl = WiktionaryApiService.createApiUrl(baseUrl)
 
             // Try Wiktionary API first
-            val response = wiktionaryApiService.getWordDefinition(url = apiUrl, page = request.word)
-            if (response.isSuccessful) {
-                val wikitext = response.body()?.parse?.wikitext?.content
+            try {
+                val wiktionaryResponse = wiktionaryApiService.getWordDefinition(page = request.word)
+                val wikitext = wiktionaryResponse.parse?.wikitext?.content
                 if (wikitext != null) {
-                    wiktionaryParser.parseWiktionaryContent(request.word, wikitext, request.fromLang)
+                    wiktionaryParser.parseWiktionaryContent(request.word, wikitext, request.fromLang.toString())
                 } else {
                     // Use offline dictionary as fallback
                     createOfflineResult(request.word, request.fromLang, request.toLang)
                 }
-            } else {
-                // Use offline dictionary for 403/404 errors
+            } catch (e: Exception) {
+                // Use offline dictionary for API errors
                 createOfflineResult(request.word, request.fromLang, request.toLang)
             }
         } catch (e: Exception) {
@@ -601,7 +601,7 @@ class DictionaryRepository(private val context: Context) {
             // Try external API first
             val response = verbApiService.getVerbConjugation(word)
             if (response.isSuccessful) {
-                response.body()?.conjugations
+                response.body()?.conjugations as? VerbConjugations
             } else {
                 // Fallback to local conjugation system
                 GermanVerbConjugator.getConjugation(word)

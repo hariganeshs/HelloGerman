@@ -1,11 +1,14 @@
 package com.hellogerman.app.data.repository
 
 import android.content.Context
+import com.hellogerman.app.data.api.GermanGrammarApiService
+import com.hellogerman.app.data.api.WiktionaryApiService
+import com.hellogerman.app.data.dictionary.EnhancedLanguageDetector
 import com.hellogerman.app.data.dictionary.FreedictReader
-import com.hellogerman.app.data.dictionary.LanguageDetector
 import com.hellogerman.app.data.dictionary.LanguageHint
 import com.hellogerman.app.data.dictionary.SearchConfidence
 import com.hellogerman.app.data.models.*
+import com.hellogerman.app.data.parser.IpaExtractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -13,12 +16,14 @@ import kotlinx.coroutines.withContext
  * Unified dictionary repository that provides intelligent search across both German-to-English
  * and English-to-German dictionaries with automatic language detection
  */
-class UnifiedDictionaryRepository(
+class EnhancedUnifiedDictionaryRepository(
     private val context: Context,
-    private val onlineRepository: DictionaryRepository
+    private val onlineRepository: DictionaryRepository,
+    private val wiktionaryService: WiktionaryApiService?,
+    private val grammarService: GermanGrammarApiService?
 ) {
-    
-    private val languageDetector = LanguageDetector()
+
+    private val languageDetector = EnhancedLanguageDetector()
     private val deReader: FreedictReader = FreedictReader.buildGermanToEnglish(context)
     private val enReader: FreedictReader = FreedictReader.buildEnglishToGerman(context)
     
@@ -112,10 +117,57 @@ class UnifiedDictionaryRepository(
         return when (detectedLanguage) {
             LanguageHint.GERMAN -> SearchStrategy.GERMAN_ONLY
             LanguageHint.ENGLISH -> SearchStrategy.ENGLISH_ONLY
+            LanguageHint.POSSIBLY_GERMAN -> SearchStrategy.GERMAN_ONLY
+            LanguageHint.POSSIBLY_ENGLISH -> SearchStrategy.ENGLISH_ONLY
             LanguageHint.AMBIGUOUS, LanguageHint.UNKNOWN -> SearchStrategy.BOTH_DIRECTIONS
         }
     }
     
+    /**
+     * Enhanced unified search with pronunciation and grammar integration
+     * @param word The word to search for
+     * @param userFromLanguage The user's selected "from" language (optional)
+     * @param userToLanguage The user's selected "to" language (optional)
+     */
+    suspend fun searchUnified(word: String, userFromLanguage: String? = null, userToLanguage: String? = null): Result<UnifiedSearchResult> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val cleanWord = word.trim()
+                if (cleanWord.isEmpty()) {
+                    return@withContext Result.failure(IllegalArgumentException("Empty search word"))
+                }
+
+                android.util.Log.d("EnhancedUnifiedDictionaryRepository", "Enhanced unified search for: '$cleanWord'")
+
+                val detectedLanguage = languageDetector.detectLanguage(cleanWord)
+
+                // Always search both directions for comprehensive results
+                val deResult = searchGermanToEnglish(cleanWord)
+                val enResult = searchEnglishToGerman(cleanWord)
+
+                // Enhance results with additional data
+                val enhancedDeResult = enhanceWithPronunciationAndGrammar(deResult)
+                val enhancedEnResult = enhanceWithPronunciationAndGrammar(enResult)
+
+                val result = UnifiedSearchResult.combine(
+                    originalWord = cleanWord,
+                    detectedLanguage = detectedLanguage,
+                    confidence = calculateConfidence(deResult, enResult),
+                    deResult = enhancedDeResult,
+                    enResult = enhancedEnResult,
+                    searchStrategy = SearchStrategy.BOTH_DIRECTIONS
+                )
+
+                android.util.Log.d("EnhancedUnifiedDictionaryRepository", "Enhanced search completed for '$cleanWord', hasResults: ${result.hasResults}")
+                Result.success(result)
+
+            } catch (e: Exception) {
+                android.util.Log.e("EnhancedUnifiedDictionaryRepository", "Enhanced search failed for '$word'", e)
+                Result.failure(e)
+            }
+        }
+    }
+
     /**
      * Search for a word using both dictionaries simultaneously for maximum information
      * @param word The word to search for
@@ -123,26 +175,7 @@ class UnifiedDictionaryRepository(
      * @param userToLanguage The user's selected "to" language (optional)
      */
     suspend fun searchWord(word: String, userFromLanguage: String? = null, userToLanguage: String? = null): Result<UnifiedSearchResult> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val cleanWord = word.trim()
-                if (cleanWord.isEmpty()) {
-                    return@withContext Result.failure(IllegalArgumentException("Empty search word"))
-                }
-                
-                android.util.Log.d("UnifiedDictionaryRepository", "Comprehensive search for: '$cleanWord'")
-                
-                // Always search both directions for maximum information
-                val result = searchBothDirectionsComprehensive(cleanWord)
-                
-                android.util.Log.d("UnifiedDictionaryRepository", "Comprehensive search completed for '$cleanWord', hasResults: ${result.hasResults}")
-                Result.success(result)
-                
-            } catch (e: Exception) {
-                android.util.Log.e("UnifiedDictionaryRepository", "Search failed for '$word'", e)
-                Result.failure(e)
-            }
-        }
+        return searchUnified(word, userFromLanguage, userToLanguage)
     }
     
     /**
@@ -467,5 +500,82 @@ class UnifiedDictionaryRepository(
                 emptyList()
             }
         }
+    }
+
+    /**
+     * Search German to English direction
+     */
+    private suspend fun searchGermanToEnglish(word: String): DictionarySearchResult? {
+        return try {
+            deReader.initializeIfNeeded()
+            searchOfflineFreedict(word, "de", "en")
+        } catch (e: Exception) {
+            android.util.Log.w("EnhancedUnifiedDictionaryRepository", "DE->EN search failed for '$word'", e)
+            null
+        }
+    }
+
+    /**
+     * Search English to German direction
+     */
+    private suspend fun searchEnglishToGerman(word: String): DictionarySearchResult? {
+        return try {
+            enReader.initializeIfNeeded()
+            searchOfflineFreedict(word, "en", "de")
+        } catch (e: Exception) {
+            android.util.Log.w("EnhancedUnifiedDictionaryRepository", "EN->DE search failed for '$word'", e)
+            null
+        }
+    }
+
+    /**
+     * Calculate confidence based on search results
+     */
+    private fun calculateConfidence(deResult: DictionarySearchResult?, enResult: DictionarySearchResult?): SearchConfidence {
+        val deHasResults = deResult?.hasResults == true
+        val enHasResults = enResult?.hasResults == true
+
+        return when {
+            deHasResults && enHasResults -> SearchConfidence.HIGH
+            deHasResults || enHasResults -> SearchConfidence.MEDIUM
+            else -> SearchConfidence.LOW
+        }
+    }
+
+    /**
+     * Enhance dictionary results with pronunciation and grammar data
+     */
+    private suspend fun enhanceWithPronunciationAndGrammar(
+        result: DictionarySearchResult?
+    ): DictionarySearchResult? {
+        if (result == null || !result.hasResults) return result
+
+        // Add pronunciation data
+        val pronunciation = try {
+            wiktionaryService?.let { service ->
+                val wikitext = service.getPageContent(page = result.originalWord).parse?.wikitext?.content
+                wikitext?.let { IpaExtractor().extractPronunciationData(it) }
+            }
+        } catch (e: Exception) {
+            android.util.Log.w("EnhancedUnifiedDictionaryRepository", "Failed to get pronunciation for '${result.originalWord}'", e)
+            null
+        }
+
+        // Add grammar data
+        val grammar = try {
+            grammarService?.getGrammarInfo(result.originalWord)
+        } catch (e: Exception) {
+            android.util.Log.w("EnhancedUnifiedDictionaryRepository", "Failed to get grammar info for '${result.originalWord}'", e)
+            null
+        }
+
+        return result.copy(
+            pronunciation = pronunciation?.let { (ipa, audioUrl) ->
+                Pronunciation(ipa, audioUrl)
+            },
+            pronunciationInfo = pronunciation?.let { (ipa, audioUrl) ->
+                PronunciationInfo(ipa ?: "", audioUrl)
+            }
+        )
     }
 }

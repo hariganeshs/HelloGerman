@@ -31,6 +31,7 @@ import com.hellogerman.app.ui.theme.*
 import com.hellogerman.app.ui.viewmodel.DictionaryViewModel
 import com.hellogerman.app.data.models.*
 import com.hellogerman.app.data.dictionary.LanguageHint
+import com.hellogerman.app.ui.components.GrammarSection
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -1654,5 +1655,300 @@ private fun getSourceLicense(source: String): String {
         "Wikidata" -> "CC0 1.0"
         "Reverso Context" -> "Terms of service apply"
         else -> "Please check source website"
+    }
+}
+
+/**
+ * Leo-style dictionary layout with comprehensive information display
+ */
+@Composable
+fun LeoStyleDictionaryLayout(
+    searchResult: UnifiedSearchResult,
+    onPlayAudio: (String) -> Unit,
+    onAddToVocabulary: (String) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Header with word, gender, and pronunciation
+        item {
+            WordHeader(
+                word = searchResult.primaryTranslation?.germanWord ?: searchResult.originalWord,
+                gender = searchResult.primaryTranslation?.gender,
+                ipa = searchResult.primaryTranslation?.germanWord?.let { "placeholder_ipa" }, // TODO: Get from pronunciation
+                audioUrl = null, // TODO: Get from pronunciation
+                onPlayAudio = onPlayAudio
+            )
+        }
+
+        // Quick actions
+        item {
+            QuickActions(
+                word = searchResult.originalWord,
+                onAddToVocabulary = onAddToVocabulary,
+                onCopy = { /* copy to clipboard */ },
+                onShare = { /* share functionality */ }
+            )
+        }
+
+        // Translations
+        item {
+            TranslationsSection(
+                translations = searchResult.combinedTranslations
+            )
+        }
+
+        // Grammar information
+        // TODO: Add grammar section when grammar data is available
+        // searchResult.grammar?.let { grammar ->
+        //     item {
+        //         GrammarSection(grammar = grammar)
+        //     }
+        // }
+
+        // Examples
+        item {
+            ExamplesSection(
+                examples = searchResult.combinedTranslations.flatMap { it.examples }
+            )
+        }
+
+        // Cross-references
+        if (searchResult.isCrossReference) {
+            item {
+                CrossReferenceSection(
+                    germanToEnglish = searchResult.germanToEnglish,
+                    englishToGerman = searchResult.englishToGerman
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Word header with pronunciation and audio controls
+ */
+@Composable
+private fun WordHeader(
+    word: String,
+    gender: String?,
+    ipa: String?,
+    audioUrl: String?,
+    onPlayAudio: (String) -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            // Word with gender
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                gender?.let {
+                    Text(
+                        text = it,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .background(
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                RoundedCornerShape(8.dp)
+                            )
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    )
+                }
+
+                Text(
+                    text = word,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = AccentBlue
+                )
+            }
+
+            // IPA pronunciation
+            ipa?.let {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "/$it/",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            // Audio controls
+            audioUrl?.let {
+                Spacer(modifier = Modifier.height(8.dp))
+                IconButton(
+                    onClick = { onPlayAudio(word) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.VolumeUp,
+                        contentDescription = "Play pronunciation",
+                        tint = AccentBlue
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Quick actions section
+ */
+@Composable
+private fun QuickActions(
+    word: String,
+    onAddToVocabulary: (String) -> Unit,
+    onCopy: () -> Unit,
+    onShare: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        OutlinedButton(
+            onClick = onCopy,
+            modifier = Modifier.weight(1f)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ContentCopy,
+                contentDescription = "Copy",
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text("Copy")
+        }
+
+        OutlinedButton(
+            onClick = onShare,
+            modifier = Modifier.weight(1f)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Share,
+                contentDescription = "Share",
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text("Share")
+        }
+
+        OutlinedButton(
+            onClick = { onAddToVocabulary(word) },
+            modifier = Modifier.weight(1f)
+        ) {
+            Icon(
+                imageVector = Icons.Default.BookmarkAdd,
+                contentDescription = "Add to Vocab",
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text("Add to Vocab")
+        }
+    }
+}
+
+/**
+ * Translations section
+ */
+@Composable
+private fun TranslationsSection(translations: List<TranslationGroup>) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Translations",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            translations.forEach { translation ->
+                Text(
+                    text = "• ${translation.englishTranslations.joinToString(", ")}",
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Examples section
+ */
+@Composable
+private fun ExamplesSection(examples: List<String>) {
+    if (examples.isEmpty()) return
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Examples",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            examples.take(3).forEach { example ->
+                Text(
+                    text = "• $example",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Cross-reference section
+ */
+@Composable
+private fun CrossReferenceSection(
+    germanToEnglish: DictionarySearchResult?,
+    englishToGerman: DictionarySearchResult?
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Cross-references",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Found in both German and English dictionaries",
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }
