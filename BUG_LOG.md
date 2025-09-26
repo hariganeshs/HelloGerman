@@ -198,6 +198,37 @@ Files touched: `app/src/main/java/.../FreedictReader.kt`, `.../OfflineDictionary
 - **Changes**: Modified OfflineDictionaryRepository to swap data when doing reverse lookup
 - **Result**: ❌ Still shows "der murmeln" and "der brummeln"
 
+#### **Attempt 2: German Word Detection Fix** ✅ SUCCESS
+- **Date**: 2025-09-24
+- **Hypothesis**: The system was doing reverse lookups for German-looking words instead of direct German-to-English lookups
+- **Root Cause**: When searching for "mutter", the system was:
+  1. First doing reverse lookup in EN→DE dictionary
+  2. Finding "murmeln" → "mutter" (English verb "to mutter")
+  3. Also finding "Mutter" → "mother" (German noun)
+  4. But the reverse lookup was prioritizing verb translations
+- **Solution**: Modified `searchOfflineFreedict()` to:
+  1. Detect if the search word looks German (contains umlauts, common endings, or German language code)
+  2. For German-looking words: try DE→EN dictionary FIRST
+  3. Only fall back to EN→DE reverse lookup if DE→EN fails
+- **Changes Made**:
+  - Updated `FreedictReader.lookupByGermanWord()` to handle case sensitivity properly
+  - Modified `OfflineDictionaryRepository.searchOfflineFreedict()` to prioritize DE→EN for German words
+  - Added German word detection logic using regex patterns
+- **Result**: ✅ **FIXED** - Now searching for "mutter" correctly returns "Mutter" (mother) instead of "murmeln" (to murmur)
+- **Verification**: Created unit tests to verify the fix works for:
+  - Lowercase "mutter" → German "Mutter" (mother)
+  - Capitalized "Mutter" → German "Mutter" (mother)  
+  - English "mutter" → English verb "mutter" (to murmur)
+
+### ✅ Final Fix Applied (2025-09-24)
+The issue was that the system was prioritizing reverse lookups (EN→DE) for German words, which caused confusion between:
+- German noun "Mutter" (mother) 
+- English verb "mutter" (to murmur)
+
+**Solution**: For German-looking words, search the German-to-English dictionary first, then fall back to English-to-German reverse lookup if needed.
+
+**Impact**: Searching for "mutter" now correctly returns "Mutter" (mother) instead of "murmeln" (to murmur).
+
 #### **Attempt 2: Remove Share Button** ❌ FAILED (Unrelated)
 - **Date**: 2025-09-23
 - **Changes**: Removed share button, added examples, fixed gender display

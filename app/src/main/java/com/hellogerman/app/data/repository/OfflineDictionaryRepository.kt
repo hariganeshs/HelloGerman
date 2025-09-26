@@ -284,7 +284,37 @@ class OfflineDictionaryRepository @Inject constructor(
         val looksGerman = fromLang.lowercase() in listOf("de", "german") || Regex("[äöüß]|[a-z]+(en|er|chen|lein)$", RegexOption.IGNORE_CASE).containsMatchIn(word)
 
         if (looksGerman) {
-            // German term: reverse lookup inside EN→DE data
+            // For German-looking words, try multiple approaches in order of preference
+            
+            // 1. Try direct lookup in German-to-English dictionary first
+            deReader.initializeIfNeeded()
+            entry = deReader.lookupExact(word)
+            
+            if (entry != null) {
+                // Found in German-to-English dictionary, return normal result
+                val defs = entry.translations.map { t -> Definition(meaning = t, partOfSpeech = null, level = null) }
+                val examples = entry.examples.map { exampleText ->
+                    Example(
+                        sentence = exampleText,
+                        translation = null,
+                        source = "FreeDict"
+                    )
+                }
+                
+                return DictionarySearchResult(
+                    originalWord = word,
+                    translations = entry.translations,
+                    fromLanguage = "de",
+                    toLanguage = "en",
+                    hasResults = entry.translations.isNotEmpty(),
+                    definitions = defs,
+                    examples = examples,
+                    gender = entry.gender,
+                    wordType = if (entry.gender != null) "noun" else null
+                )
+            }
+            
+            // 2. If not found in DE→EN, try reverse lookup in EN→DE data
             entry = enReader.lookupByGermanWord(word)
             if (entry != null) {
                 // For reverse lookup, we need to swap the data:
