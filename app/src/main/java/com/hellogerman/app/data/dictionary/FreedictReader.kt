@@ -32,8 +32,12 @@ class FreedictReader(
         val headword: String,
         val raw: String,
         val translations: List<String>,
-        val gender: String? = null
+        val gender: String? = null,
+        val examples: List<String> = emptyList()
     )
+
+    // Reverse lookup cache: german word (lc) -> Entry or null (negative caching)
+    private val reverseCache: MutableMap<String, Entry?> = HashMap()
 
     @Synchronized
     fun initializeIfNeeded() {
@@ -88,11 +92,50 @@ class FreedictReader(
     fun lookupExact(word: String): Entry? {
         if (!initialized) initializeIfNeeded()
         val key = word.trim().lowercase()
-        val entry = index[key] ?: return null
-        val raw = readBlock(entry.offset, entry.length)
-        val translations = parseTranslations(raw, word)
-        val gender = extractGenderFromRaw(raw, word)
-        return Entry(headword = word, raw = raw, translations = translations, gender = gender)
+        val entryIdx = index[key] ?: return null
+        return buildEntryFromIndex(key, entryIdx)
+    }
+
+    /**
+     * Reverse lookup: find English headword entry whose translations contain the given German word.
+     * Scans the index lazily and caches results for faster subsequent access.
+     * NOTE: This is O(N) on first miss but acceptable given offline usage and caching.
+     */
+    fun lookupByGermanWord(word: String): Entry? {
+        if (!initialized) initializeIfNeeded()
+        val key = word.trim().lowercase()
+        reverseCache[key]?.let { return it }
+
+        // For German nouns, we expect capitalized form
+        val capitalizedWord = word.trim().replaceFirstChar { it.uppercase() }
+        
+        // Linear scan – build lazy
+        for ((head, idx) in index) {
+            val entry = buildEntryFromIndex(head, idx)
+            
+            // Look for exact match (case-sensitive for nouns)
+            val hasExactMatch = entry.translations.any { translation ->
+                val cleanTranslation = translation.trim()
+                // Check both lowercase (for verbs/adjectives) and capitalized (for nouns)
+                cleanTranslation == word || cleanTranslation == capitalizedWord
+            }
+            
+            if (hasExactMatch) {
+                reverseCache[key] = entry
+                return entry
+            }
+        }
+        // Negative cache to avoid future scans
+        reverseCache[key] = null
+        return null
+    }
+
+    private fun buildEntryFromIndex(head: String, idx: IndexEntry): Entry {
+        val raw = readBlock(idx.offset, idx.length)
+        val translations = parseTranslations(raw, head)
+        val gender = extractGenderFromRaw(raw, head)
+        val examples = extractExamples(raw)
+        return Entry(headword = head, raw = raw, translations = translations, gender = gender, examples = examples)
     }
 
     private fun ensureDecompressedDict() {
@@ -256,6 +299,56 @@ class FreedictReader(
 
             else -> null
         }
+    }
+
+    private fun extractExamples(raw: String): List<String> {
+        val examples = mutableListOf<String>()
+        val lines = raw.split('\n')
+        
+        // Look for example patterns in FreeDict entries
+        lines.forEach { line ->
+            val trimmed = line.trim()
+            
+            // Skip empty lines and the main entry
+            if (trimmed.isEmpty()) return@forEach
+            
+            // Common example patterns in FreeDict:
+            // - Lines starting with "e.g." or "ex."
+            // - Lines in parentheses that look like full sentences
+            // - Lines starting with a dash or bullet
+            if (trimmed.startsWith("e.g.") || 
+                trimmed.startsWith("ex.") ||
+                trimmed.startsWith("Ex:") ||
+                trimmed.startsWith("Example:") ||
+                trimmed.startsWith("-") ||
+                trimmed.startsWith("•")) {
+                
+                val example = trimmed
+                    .removePrefix("e.g.")
+                    .removePrefix("ex.")
+                    .removePrefix("Ex:")
+                    .removePrefix("Example:")
+                    .removePrefix("-")
+                    .removePrefix("•")
+                    .trim()
+                    
+                if (example.length > 10 && example.contains(" ")) {
+                    examples.add(example)
+                }
+            }
+            
+            // Also check for sentences in parentheses
+            val parenthesesPattern = Regex("\\(([^)]+)\\)")
+            parenthesesPattern.findAll(trimmed).forEach { match ->
+                val content = match.groupValues[1]
+                // Only add if it looks like a sentence (has multiple words)
+                if (content.split(" ").size >= 3) {
+                    examples.add(content)
+                }
+            }
+        }
+        
+        return examples.take(3) // Limit to 3 examples
     }
 
     private fun decodeBase64Number(s: String): Long {

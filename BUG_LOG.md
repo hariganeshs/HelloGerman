@@ -167,6 +167,58 @@ Files touched: `app/src/main/java/.../FreedictReader.kt`, `.../OfflineDictionary
 ### Notes
 - Kept online merge logic intact; offline remains the authoritative gender when available.
 
+## Bug #002: Incorrect "der murmeln" Display When Searching for "mutter"
+
+### **Problem Description**
+- **Date**: 2025-09-23
+- **Issue**: When searching for "mutter" (German for "mother"), the dictionary shows:
+  1. Correct: "der mutter" → "mother" (should be "die Mutter" with capital M)
+  2. Incorrect: "der murmeln" → "mutter" (murmeln is a verb meaning "to murmur", not related)
+- **Evidence**: Screenshot shows two results, second one is clearly wrong
+
+### **Root Cause Analysis**
+
+#### **Initial Investigation**
+- The search for "mutter" is finding multiple unrelated entries
+- "murmeln" (to murmur) is incorrectly showing up when searching for "mutter" (mother)
+- The system is doing a reverse lookup in the EN→DE dictionary and finding entries where "mutter" appears in the translations
+
+#### **Problem Identified**
+1. When searching for "mutter", the system does:
+   - Reverse lookup in EN→DE dictionary finds "mother" → "Mutter" ✓
+   - But ALSO finds "murmeln" → "mutter" (lowercase, meaning "to mutter/murmur")
+2. The reverse lookup is too broad - it's matching "mutter" as a translation in ANY entry
+3. The `lookupByGermanWord` method searches all translations, not just noun translations
+
+### **Failed Attempts**
+
+#### **Attempt 1: Reverse Lookup Fix** ❌ FAILED
+- **Date**: 2025-09-23
+- **Hypothesis**: Fixed reverse lookup to properly structure German results
+- **Changes**: Modified OfflineDictionaryRepository to swap data when doing reverse lookup
+- **Result**: ❌ Still shows "der murmeln" and "der brummeln"
+
+#### **Attempt 2: Remove Share Button** ❌ FAILED (Unrelated)
+- **Date**: 2025-09-23
+- **Changes**: Removed share button, added examples, fixed gender display
+- **Result**: ❌ These were UI fixes, didn't address the core issue
+
+#### **Attempt 3: Fix UnifiedSearchResult.combine** ❌ FAILED
+- **Date**: 2025-09-23
+- **Hypothesis**: EN->DE results were being incorrectly processed
+- **Changes**: Added filtering to prevent English words from showing as German
+- **Result**: ❌ Still shows "der murmeln" and "der brummeln"
+
+#### **Attempt 4: Case-Sensitive Reverse Lookup** ❌ FAILED
+- **Date**: 2025-09-23
+- **Hypothesis**: Made reverse lookup case-sensitive and exact
+- **Changes**: Modified lookupByGermanWord to check exact matches
+- **Result**: ❌ STILL SHOWS "der murmeln" and "der brummeln"
+
+### **Current Status**: 🔴 UNRESOLVED
+- The issue persists after multiple attempts
+- "murmeln" (to murmur) and "brummeln" (to grumble) still appear when searching for "mutter"
+
 ### **Investigation Status: ISSUE PERSISTED - ADDITIONAL FIX REQUIRED**
 
 **Current Status**: Initial fix did not resolve the issue - translation APIs were failing

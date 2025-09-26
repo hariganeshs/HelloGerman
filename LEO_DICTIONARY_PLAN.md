@@ -1,4 +1,137 @@
-# Leo Dictionary-Style Implementation Plan for HelloGerman
+# Dictionary System Revamp – Leo-Style Integration
+
+This document details the end-to-end plan to transform HelloGerman’s dictionary into a feature-parity experience with [dict.leo.org](https://dict.leo.org). The new system will:
+
+1. Use **one authoritative source (EN-DE FreeDict)** for _all_ look-ups (German ➜ English and English ➜ German) to keep data consistent.
+2. Display **noun gender chips** (`der`, `die`, `das`) _before_ each German noun.
+3. Show **IPA pronunciation** + optional audio for every German headword.
+4. Include **examples, declension & conjugation tables, plural forms, etc.**
+5. Provide **single-bar unified search** with automatic language detection.
+6. Remain fully **offline-capable** via Room cache while refreshing data lazily.
+
+---
+
+## Phase 0 – Scoping & Setup
+| Week | Deliverable |
+| --- | --- |
+| 0 | This plan committed. Project board with issues created. |
+
+Tasks
+- [ ] Finalise API keys if needed (Wiktionary is public; no keys).
+- [ ] Create kotlin data models for grammar & pronunciation.
+
+---
+
+## Phase 1 – Source Unification (Week 1)
+Goal: Guarantee that **eng-deu** dictionary files power _all_ queries.
+
+Key steps
+1. **FreedictReader.kt**
+   * Load only `eng-deu.dict` & `eng-deu.index`.
+   * Add `directionHint` param (`AUTO` | `EN->DE`).
+   * Parse entries into `DictionaryEntryRaw` preserving comment blocks.
+2. **LanguageDetector.kt** → `EnhancedLanguageDetector` (already prototyped).
+3. **UnifiedDictionaryRepository.kt**
+   * `search(word)` executes single pass over EN->DE dataset.
+   * If query language == German ⇒ filter rows where _German headword_ matches.
+   * If English ⇒ filter rows where _English translation_ matches.
+4. Add unit tests proving symmetric results from one dataset.
+
+---
+
+## Phase 2 – Gender Extraction & Chip UI (Week 1-2)
+1. **FreedictReader.kt**
+   * Implement `extractGender(word, rawEntry)` (see pseudo-code in old file).
+2. **DictionaryModels.kt**
+   ```kotlin
+   data class DictionaryEntry(
+       val headwordDe: String,
+       val headwordEn: String,
+       val gender: String?,   // "der"|"die"|"das"|null
+       ...
+   )
+   ```
+3. **UI** (`UnifiedResultsCard.kt` / `DictionaryScreen.kt`)
+   * Add `GenderChip` composable (colour-coded by gender).
+   * Prepend chip to German headword.
+4. Tests: snapshot Compose test to verify visual.
+
+---
+
+## Phase 3 – Pronunciation (IPA + Audio) (Week 2-3)
+1. **WiktionaryApiService.kt** (new, retrofit).
+2. **IpaExtractor.kt** (already drafted) – parse `{{IPA|de|/…/}}`.
+3. Cache IPA & audio URL in `dictionary_cache` (schema migration v16).
+4. **UI**: Speaker icon that plays audio via `ExoPlayer` if present.
+
+---
+
+## Phase 4 – Grammar & Examples (Week 3-4)
+1. **GermanGrammarApiService.kt** (external or local JSON assets).
+2. New data classes: `NounDeclension`, `VerbConjugation`, `AdjectiveDeclension`.
+3. Persist grammar snapshot in cache tables.
+4. **UI components**
+   * `NounDeclensionTable`
+   * `VerbConjugationTable`
+5. Extend `DictionaryEntry` to include `examples: List<String>`.
+6. Update `FreedictReader` to extract example sentences when present.
+
+---
+
+## Phase 5 – UI/UX Polish (Week 4-5)
+* Collapsible sections (Translations, Grammar, Examples, Conjugations).
+* Dark-mode theming alignment.
+* Scrollable tab layout for long grammar tables.
+
+---
+
+## Phase 6 – Performance & Caching (Week 5)
+* Room migration → **v16** (`expiresAt` + IPA + grammar JSON fields).
+* Pre-populate common 5k words asynchronously.
+* LRU in-memory cache for recent look-ups.
+
+---
+
+## Phase 7 – Testing & QA (Week 5-6)
+* Unit tests: parser, gender rules, language detector.
+* Instrumented tests: Compose hierarchy for dictionary screen.
+* Regression: Search speed < 150 ms for cached words.
+
+---
+
+## Phase 8 – Release & Docs (Week 6)
+* Update README + WARP.md about new dictionary features.
+* Create migration guide for old cache.
+
+---
+
+### File-level Impact Matrix
+| Layer | Files (new / modified) |
+| --- | --- |
+| Data | `FreedictReader.kt` (M), `UnifiedDictionaryRepository.kt` (M), `DictionaryModels.kt` (M), `LanguageDetector.kt` (M), `WiktionaryApiService.kt` (N), `GermanGrammarApiService.kt` (N), `IpaExtractor.kt` (N) |
+| Cache | `GermanDictionaryDatabase.kt` (M), new migration v16 |
+| UI | `DictionaryScreen.kt` (M), `UnifiedResultsCard.kt` (M), `GenderChip.kt` (N), `PronunciationPlayer.kt` (N), `GrammarComponents.kt` (N) |
+| Tests | `FreedictReaderTest.kt` (N), `DictionaryScreenTest.kt` (M) |
+
+---
+
+## Roll-back Strategy
+* Keep migration path; destructive fallback only for dev builds.
+* Feature flag `leoDictionaryEnabled` in `DataStore` to toggle new flow.
+
+---
+
+## Definition of Done
+1. Searching “Hund” returns card: `der Hund` | IPA /hʊnt/ | EN „dog“ | plural „Hunde“ | declension table | sample sentences.
+2. Searching “dog” returns same card as above.
+3. All unit & instrumented tests pass. Lint & CI green.
+4. Offline search works after initial lookup.
+
+---
+
+_Lead developer_: **Agent Mode**
+
+_Estimated total effort_: **~6 calendar weeks**
 
 ## Executive Summary
 

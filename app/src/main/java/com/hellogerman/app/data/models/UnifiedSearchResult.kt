@@ -76,7 +76,9 @@ data class UnifiedSearchResult(
                             englishTranslations = englishTranslations,
                             gender = gender,
                             wordType = wordType,
-                            examples = examples
+                            examples = examples,
+                            detectedLanguage = LanguageHint.GERMAN,
+                            isFromGermanDictionary = true
                         )
                     )
                 }
@@ -85,28 +87,45 @@ data class UnifiedSearchResult(
             // Add English-to-German translations
             enResult?.let { result ->
                 if (result.hasResults) {
-                    // For EN->DE, we need to extract German words from translations
+                    // For EN->DE results, we need to be careful about what we're adding
+                    // Only add if this is truly an English word that was found in the EN->DE dictionary
                     val englishWord = result.originalWord
-                    val germanTranslations = result.translations.filter { 
-                        it.contains(Regex("[äöüßÄÖÜ]")) || 
-                        it.endsWith("en") || it.endsWith("er") || it.endsWith("chen") || it.endsWith("lein")
-                    }
                     
-                    // Group German translations together for the same English word
-                    if (germanTranslations.isNotEmpty()) {
-                        val cleanGermanTranslations = germanTranslations.map { 
-                            it.replace(Regex("^(der|die|das)\\s+"), "").trim() 
-                        }
+                    // Check if the original word is actually English (not German)
+                    val isActuallyEnglish = !englishWord.contains(Regex("[äöüßÄÖÜ]")) && 
+                                           !englishWord.endsWith("ung") && !englishWord.endsWith("heit") && 
+                                           !englishWord.endsWith("keit") && !englishWord.endsWith("schaft")
+                    
+                    if (result.fromLanguage.lowercase() in listOf("en", "english") && isActuallyEnglish) {
+                        // This means we searched for an English word and got German translations
+                        val germanTranslations = result.translations
                         
-                        combinedTranslations.add(
-                            TranslationGroup(
-                                germanWord = cleanGermanTranslations.first(), // Primary German translation
-                                englishTranslations = listOf(englishWord), // The original English word
-                                gender = result.gender,
-                                wordType = result.wordType,
-                                examples = result.examples.map { it.sentence }
-                            )
-                        )
+                        // Create translation groups for each German translation
+                        germanTranslations.forEach { germanTranslation ->
+                            // Extract clean German word and gender if present
+                            val cleanGerman = germanTranslation.replace(Regex("^(der|die|das)\\s+"), "").trim()
+                            val extractedGender = when {
+                                germanTranslation.startsWith("der ") -> "der"
+                                germanTranslation.startsWith("die ") -> "die" 
+                                germanTranslation.startsWith("das ") -> "das"
+                                else -> null
+                            }
+                            
+                            // Only add if this looks like a valid German translation
+                            if (cleanGerman.isNotEmpty() && cleanGerman != englishWord) {
+                                combinedTranslations.add(
+                                    TranslationGroup(
+                                        germanWord = cleanGerman,
+                                        englishTranslations = listOf(englishWord),
+                                        gender = extractedGender ?: result.gender,
+                                        wordType = result.wordType,
+                                        examples = result.examples.map { it.sentence },
+                                        detectedLanguage = LanguageHint.GERMAN,
+                                        isFromGermanDictionary = false
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -164,7 +183,9 @@ data class TranslationGroup(
     val englishTranslations: List<String>,
     val gender: String?,
     val wordType: String?,
-    val examples: List<String> = emptyList()
+    val examples: List<String> = emptyList(),
+    val detectedLanguage: LanguageHint = LanguageHint.UNKNOWN,
+    val isFromGermanDictionary: Boolean = false
 )
 
 /**

@@ -111,6 +111,26 @@ private fun shouldAddGermanArticle(word: String, gender: String?): Boolean {
 }
 
 /**
+ * Check if a word has German characteristics
+ */
+private fun hasGermanCharacteristics(word: String): Boolean {
+    val lowerWord = word.lowercase()
+    
+    // Check for German-specific characters
+    if (word.contains(Regex("[äöüßÄÖÜ]"))) {
+        return true
+    }
+    
+    // Check for typical German endings
+    val germanEndings = listOf(
+        "ung", "heit", "keit", "schaft", "tion", "chen", "lein",
+        "er", "en", "el", "ig", "lich", "isch"
+    )
+    
+    return germanEndings.any { lowerWord.endsWith(it) }
+}
+
+/**
  * Check if a word/phrase is English (shouldn't get German articles)
  */
 private fun isEnglishPhrase(word: String): Boolean {
@@ -156,7 +176,12 @@ private fun PrimaryWordDisplay(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val formattedGermanWord = if (shouldAddGermanArticle(translationGroup.germanWord, translationGroup.gender)) {
+            // Only add gender to German words, not English translations
+            val isGermanWord = translationGroup.detectedLanguage == LanguageHint.GERMAN || 
+                             translationGroup.isFromGermanDictionary || 
+                             hasGermanCharacteristics(translationGroup.germanWord)
+            
+            val formattedGermanWord = if (isGermanWord && shouldAddGermanArticle(translationGroup.germanWord, translationGroup.gender)) {
                 val article = when (translationGroup.gender?.lowercase()) {
                     "der", "masculine" -> "der"
                     "die", "feminine" -> "die"
@@ -265,18 +290,7 @@ private fun PrimaryWordDisplay(
                 Text("Copy")
             }
             
-            OutlinedButton(
-                onClick = { /* Share functionality */ },
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Share,
-                    contentDescription = "Share",
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text("Share")
-            }
+            // Share button removed as requested
             
             OutlinedButton(
                 onClick = { /* Add to vocab functionality */ },
@@ -314,6 +328,44 @@ private fun PrimaryWordDisplay(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(start = 8.dp)
                 )
+            }
+        }
+        
+        // Examples section if available
+        if (translationGroup.examples.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Text(
+                text = "Examples",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                translationGroup.examples.forEach { example ->
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(12.dp)
+                        ) {
+                            Text(
+                                text = example,
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -409,20 +461,27 @@ private fun TranslationGroupCard(
         Column(
             modifier = Modifier.padding(12.dp)
         ) {
-            // German word with gender
+            // German word with gender (only for actual German words)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val formattedGermanWord = translationGroup.gender?.let { gender ->
-                    val article = when (gender.lowercase()) {
+                // Check if this is actually a German word
+                val isGermanWord = translationGroup.detectedLanguage == LanguageHint.GERMAN || 
+                                 translationGroup.isFromGermanDictionary || 
+                                 hasGermanCharacteristics(translationGroup.germanWord)
+                
+                val formattedGermanWord = if (isGermanWord && translationGroup.gender != null) {
+                    val article = when (translationGroup.gender.lowercase()) {
                         "der", "masculine" -> "der"
                         "die", "feminine" -> "die"
                         "das", "neuter" -> "das"
-                        else -> gender
+                        else -> translationGroup.gender
                     }
                     "$article ${translationGroup.germanWord}"
-                } ?: translationGroup.germanWord
+                } else {
+                    translationGroup.germanWord
+                }
                 
                 Text(
                     text = formattedGermanWord,

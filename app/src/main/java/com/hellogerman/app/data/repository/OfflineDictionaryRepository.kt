@@ -278,20 +278,43 @@ class OfflineDictionaryRepository @Inject constructor(
     }
     
     private fun searchOfflineFreedict(word: String, fromLang: String, toLang: String): DictionarySearchResult {
-        val isGerman = fromLang.lowercase() in listOf("de", "german")
-        val reader = if (isGerman) {
-            deReader.initializeIfNeeded(); deReader
-        } else {
-            enReader.initializeIfNeeded(); enReader
-        }
-        var entry = reader.lookupExact(word)
-        // Fallback: if EN→DE lookup fails but input looks German, try German reader
-        if (entry == null && !isGerman) {
-            val looksGerman = Regex("[äöüß]|[a-z]+(en|er|chen|lein)$", RegexOption.IGNORE_CASE).containsMatchIn(word)
-            if (looksGerman) {
-                deReader.initializeIfNeeded()
-                entry = deReader.lookupExact(word)
+        // Always use English→German dataset for lookups
+        enReader.initializeIfNeeded()
+        var entry: FreedictReader.Entry? = null
+        val looksGerman = fromLang.lowercase() in listOf("de", "german") || Regex("[äöüß]|[a-z]+(en|er|chen|lein)$", RegexOption.IGNORE_CASE).containsMatchIn(word)
+
+        if (looksGerman) {
+            // German term: reverse lookup inside EN→DE data
+            entry = enReader.lookupByGermanWord(word)
+            if (entry != null) {
+                // For reverse lookup, we need to swap the data:
+                // The entry.headword is English, but we searched for German
+                // So we create a new result with German as the original word
+                val germanWord = word
+                val englishTranslations = listOf(entry.headword) // The English headword
+                
+                return DictionarySearchResult(
+                    originalWord = germanWord,
+                    translations = englishTranslations,
+                    fromLanguage = "de",
+                    toLanguage = "en",
+                    hasResults = true,
+                    definitions = englishTranslations.map { Definition(meaning = it) },
+                    examples = entry.examples.map { exampleText ->
+                        Example(
+                            sentence = exampleText,
+                            translation = null,
+                            source = "FreeDict"
+                        )
+                    },
+                    gender = entry.gender,
+                    wordType = if (entry.gender != null) "noun" else null
+                )
             }
+        }
+        if (entry == null) {
+            // Try exact English headword lookup
+            entry = enReader.lookupExact(word)
         }
 
         if (entry == null) {
@@ -302,6 +325,9 @@ class OfflineDictionaryRepository @Inject constructor(
                 hasResults = false
             )
         }
+
+        // Determine if the original query is German based on detection above
+        val isGerman = looksGerman
 
         // Build definitions from translations (lightweight)
         val defs = entry.translations.map { t -> Definition(meaning = t, partOfSpeech = null, level = null) }
@@ -329,6 +355,15 @@ class OfflineDictionaryRepository @Inject constructor(
             isGerman && word.length > 3 && word.endsWith("en") -> "verb"
             else -> null
         }
+        
+        // Convert FreeDict examples to Example objects
+        val examples = entry.examples.map { exampleText ->
+            Example(
+                sentence = exampleText,
+                translation = null, // FreeDict doesn't provide translations for examples
+                source = "FreeDict"
+            )
+        }
 
         return DictionarySearchResult(
             originalWord = word,
@@ -337,6 +372,7 @@ class OfflineDictionaryRepository @Inject constructor(
             toLanguage = toLang,
             hasResults = entry.translations.isNotEmpty(),
             definitions = defs,
+            examples = examples,
             gender = explicitGender ?: heuristicGender,
             wordType = inferredWordType
         )
