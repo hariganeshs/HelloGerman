@@ -16,10 +16,11 @@ import com.hellogerman.app.data.entities.*
         UserSubmission::class,
         GrammarProgress::class,
         Achievement::class,
-        DictionaryCacheEntry::class,
-        UserVocabulary::class
+        UserVocabulary::class,
+        DictionaryCache::class,
+        DictionaryEntry::class
     ],
-    version = 15,
+    version = 17,
     exportSchema = false
 )
 abstract class HelloGermanDatabase : RoomDatabase() {
@@ -31,6 +32,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
     abstract fun achievementDao(): AchievementDao
     abstract fun dictionaryCacheDao(): DictionaryCacheDao
     abstract fun userVocabularyDao(): UserVocabularyDao
+    abstract fun dictionaryDao(): DictionaryDao
     
     companion object {
         @Volatile
@@ -43,7 +45,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                     HelloGermanDatabase::class.java,
                     "hello_german_database"
                 )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
@@ -225,6 +227,70 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                         `source` TEXT NOT NULL
                     )
                 """)
+            }
+        }
+
+        private val MIGRATION_15_16 = object : Migration(15, 16) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create Leo dictionary cache table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `leo_dictionary_cache` (
+                        `word` TEXT NOT NULL PRIMARY KEY,
+                        `language` TEXT NOT NULL,
+                        `searchResult` TEXT NOT NULL,
+                        `sources` TEXT NOT NULL,
+                        `fetchedAt` INTEGER NOT NULL,
+                        `expiresAt` INTEGER NOT NULL,
+                        `cacheVersion` INTEGER NOT NULL
+                    )
+                """)
+            }
+        }
+
+        private val MIGRATION_16_17 = object : Migration(16, 17) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Drop old dictionary tables if they exist
+                database.execSQL("DROP TABLE IF EXISTS extracted_dictionary_entries")
+                database.execSQL("DROP TABLE IF EXISTS leo_dictionary_cache")
+                
+                // Create new comprehensive dictionary_entries table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `dictionary_entries` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `english_word` TEXT NOT NULL,
+                        `german_word` TEXT NOT NULL,
+                        `word_type` TEXT,
+                        `gender` TEXT,
+                        `plural_form` TEXT,
+                        `past_tense` TEXT,
+                        `past_participle` TEXT,
+                        `auxiliary_verb` TEXT,
+                        `is_irregular` INTEGER NOT NULL,
+                        `is_separable` INTEGER NOT NULL,
+                        `comparative` TEXT,
+                        `superlative` TEXT,
+                        `additional_translations` TEXT NOT NULL,
+                        `examples` TEXT NOT NULL,
+                        `pronunciation_ipa` TEXT,
+                        `usage_level` TEXT,
+                        `domain` TEXT,
+                        `raw_entry` TEXT NOT NULL,
+                        `english_normalized` TEXT NOT NULL,
+                        `german_normalized` TEXT NOT NULL,
+                        `word_length` INTEGER NOT NULL,
+                        `source` TEXT NOT NULL,
+                        `import_date` INTEGER NOT NULL,
+                        `import_version` INTEGER NOT NULL
+                    )
+                """)
+                
+                // Create indexes for efficient search
+                database.execSQL("CREATE INDEX IF NOT EXISTS `idx_english_search` ON `dictionary_entries` (`english_normalized`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `idx_german_search` ON `dictionary_entries` (`german_normalized`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `idx_word_type` ON `dictionary_entries` (`word_type`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `idx_gender` ON `dictionary_entries` (`gender`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `idx_english_prefix` ON `dictionary_entries` (`english_normalized` COLLATE NOCASE)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `idx_german_prefix` ON `dictionary_entries` (`german_normalized` COLLATE NOCASE)")
             }
         }
     }

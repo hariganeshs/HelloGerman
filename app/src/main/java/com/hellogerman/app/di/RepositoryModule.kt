@@ -2,7 +2,6 @@ package com.hellogerman.app.di
 
 import android.content.Context
 import com.hellogerman.app.data.repository.DictionaryRepository
-import com.hellogerman.app.data.repository.OfflineDictionaryRepository
 import com.hellogerman.app.data.service.VocabularyPackService
 import dagger.Module
 import dagger.Provides
@@ -21,11 +20,10 @@ object RepositoryModule {
     
     @Provides
     @Singleton
-    fun provideOfflineDictionaryRepository(
-        @ApplicationContext context: Context,
-        dictionaryRepository: DictionaryRepository
-    ): OfflineDictionaryRepository {
-        return OfflineDictionaryRepository(context, dictionaryRepository)
+    fun provideDictionaryRepository(
+        @ApplicationContext context: Context
+    ): DictionaryRepository {
+        return DictionaryRepository(context)
     }
     
     @Provides
@@ -34,13 +32,5 @@ object RepositoryModule {
         @ApplicationContext context: Context
     ): VocabularyPackService {
         return VocabularyPackService(context)
-    }
-    
-    @Provides
-    @Singleton
-    fun provideDictionaryRepository(
-        @ApplicationContext context: Context
-    ): DictionaryRepository {
-        return DictionaryRepository(context)
     }
 }

@@ -298,7 +298,8 @@ fun HelloGermanApp() {
 
                 composable("dictionary/{word}") { backStackEntry ->
                     val word = backStackEntry.arguments?.getString("word") ?: ""
-                    DictionaryScreen(navController, initialWord = word)
+                    // TODO: Pass initial word to dictionary screen
+                    DictionaryScreen(navController)
                 }
                 
                 composable(

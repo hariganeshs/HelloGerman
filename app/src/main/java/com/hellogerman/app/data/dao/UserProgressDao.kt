@@ -42,6 +42,8 @@ interface UserProgressDao {
     
     @Query("UPDATE user_progress SET coins = coins + :coins WHERE id = 1")
     suspend fun addCoins(coins: Int)
+    @Query("UPDATE user_progress SET coins = coins - :coins WHERE id = 1")
+    suspend fun deductCoins(coins: Int)
     
     @Query("UPDATE user_progress SET perfectLessons = perfectLessons + 1 WHERE id = 1")
     suspend fun incrementPerfectLessons()

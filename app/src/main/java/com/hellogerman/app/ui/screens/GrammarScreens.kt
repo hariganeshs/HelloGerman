@@ -88,7 +88,7 @@ fun GrammarDashboard(navController: NavController, grammarViewModel: GrammarView
 
 @Composable
 fun GrammarTopicListScreen(navController: NavController, level: String, grammarViewModel: GrammarViewModel = viewModel()) {
-	val grammarLessons by grammarViewModel.lessonsByLevel(level).collectAsState(initial = emptyList())
+	val grammarLessons by grammarViewModel.lessonsByLevel(level).collectAsState(initial = emptyList<com.hellogerman.app.data.entities.Lesson>())
 	val context = LocalContext.current
 	LazyColumn(
 		modifier = Modifier

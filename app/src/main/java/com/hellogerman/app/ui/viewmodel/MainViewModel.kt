@@ -17,15 +17,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    
+
     private val repository = HelloGermanRepository(application)
-    
+
     private val _userProgress = MutableStateFlow<UserProgress?>(null)
     val userProgress: StateFlow<UserProgress?> = _userProgress.asStateFlow()
-    
+
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-    
+
     private val _currentLevel = MutableStateFlow("A1")
     val currentLevel: StateFlow<String> = _currentLevel.asStateFlow()
 
@@ -54,7 +54,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         loadAdaptiveProgress()
         loadVocabularyCount()
     }
-    
+
     private fun loadUserProgress() {
         viewModelScope.launch {
             repository.getUserProgress().collect { progress ->
@@ -69,7 +69,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-    
+
     private fun observeGrammarStats() {
         viewModelScope.launch {
             repository.getTotalGrammarPoints().collectLatest { points ->
@@ -93,7 +93,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         repository.insertUserProgress(initialProgress)
         _userProgress.value = initialProgress
     }
-    
+
     fun updateCurrentLevel(level: String) {
         viewModelScope.launch {
             repository.updateCurrentLevel(level)
@@ -112,13 +112,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             repository.markOnboarded()
         }
     }
-    
+
     fun updateSkillScore(skill: String, score: Int) {
         viewModelScope.launch {
             repository.updateSkillScore(skill, score)
         }
     }
-    
+
     fun incrementLessonsCompleted() {
         viewModelScope.launch {
             repository.incrementLessonsCompleted()
@@ -157,7 +157,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 // Persist unlocks and award rewards atomically per item
                 newAchievements.forEach { achievement ->
                     try {
-                        repository.unlockAchievement(achievement.id, achievement.rewardXP, achievement.rewardCoins)
+                        repository.unlockAchievement(achievement.id, System.currentTimeMillis())
                     } catch (_: Exception) { /* ignore individual failure to continue others */ }
                 }
 
@@ -172,13 +172,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private suspend fun showAchievementNotification(achievement: com.hellogerman.app.gamification.Achievement) {
         _achievementNotifications.emit(achievement)
     }
-    
+
     fun updateStreak(streak: Int) {
         viewModelScope.launch {
             repository.updateStreak(streak)
         }
     }
-    
+
     fun updateLastStudyDate() {
         viewModelScope.launch {
             repository.updateLastStudyDate(System.currentTimeMillis())
@@ -194,11 +194,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             repository.updateSelectedTheme(themeId)
         }
     }
-    
+
     suspend fun getProgressPercentage(skill: String, level: String): Double {
         return repository.getProgressPercentage(skill, level)
     }
-    
+
         suspend fun shouldAdvanceLevel(skill: String, level: String): Boolean {
         return repository.shouldAdvanceLevel(skill, level)
     }
@@ -254,7 +254,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun getSkillProgressDetails(skill: String): LevelCompletionInfo? {
         return _levelCompletionInfo.value[skill]
     }
-    
+
     private fun loadVocabularyCount() {
         viewModelScope.launch {
             try {
@@ -265,7 +265,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-    
+
     fun refreshVocabularyCount() {
         loadVocabularyCount()
     }

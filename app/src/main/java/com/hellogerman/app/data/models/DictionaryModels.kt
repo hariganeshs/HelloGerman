@@ -3,7 +3,15 @@ package com.hellogerman.app.data.models
 import com.google.gson.annotations.SerializedName
 
 /**
- * Request model for dictionary searches
+ * DictionarySearchRequest: A request to look up a word in the dictionary
+ *
+ * This is like filling out a form to ask the dictionary a question.
+ *
+ * @param word: The word you want to look up (like "Haus" or "house")
+ * @param fromLang: The language of the word you're looking up (defaults to "de" for German)
+ * @param toLang: The language you want the translation in (defaults to "en" for English)
+ *
+ * Example: DictionarySearchRequest("Haus", "de", "en") means "Translate 'Haus' from German to English"
  */
 data class DictionarySearchRequest(
     val word: String,
@@ -12,76 +20,103 @@ data class DictionarySearchRequest(
 )
 
 /**
- * Legacy alias for backward compatibility
+ * TranslationRequest: An alias for DictionarySearchRequest
+ *
+ * This is just another name for the same thing - kept for compatibility with older code
+ * that might have used the name "TranslationRequest" instead of "DictionarySearchRequest".
  */
 typealias TranslationRequest = DictionarySearchRequest
 
 /**
  * Data models for MyMemory Translation API responses
+ *
+ * These classes represent responses from the MyMemory translation service,
+ * which is like an online translation service that remembers previous translations.
  */
 
 data class MyMemoryTranslationResponse(
     @SerializedName("responseData")
-    val responseData: ResponseData,
-    
+    val responseData: ResponseData, // The main translation result
+
     @SerializedName("responseStatus")
-    val responseStatus: Int,
-    
+    val responseStatus: Int, // Status code (200 for success, etc.)
+
     @SerializedName("responseDetails")
-    val responseDetails: String?,
-    
+    val responseDetails: String?, // Additional details about the response
+
     @SerializedName("matches")
-    val matches: List<Match>?
+    val matches: List<Match>? // Alternative translation matches from memory
 )
 
 data class ResponseData(
     @SerializedName("translatedText")
-    val translatedText: String,
-    
+    val translatedText: String, // The actual translated text
+
     @SerializedName("match")
-    val match: Float
+    val match: Float // How confident the service is in this translation (0.0 to 1.0)
 )
 
 data class Match(
     @SerializedName("id")
-    val id: String,
-    
+    val id: String, // Unique identifier for this translation memory entry
+
     @SerializedName("segment")
-    val segment: String,
-    
+    val segment: String, // The original text that was translated
+
     @SerializedName("translation")
-    val translation: String,
-    
+    val translation: String, // The translated text
+
     @SerializedName("quality")
-    val quality: String?,
-    
+    val quality: String?, // Quality rating of this translation
+
     @SerializedName("reference")
-    val reference: String?,
-    
+    val reference: String?, // Reference source for this translation
+
     @SerializedName("usage-count")
-    val usageCount: Int?,
-    
+    val usageCount: Int?, // How many times this translation has been used
+
     @SerializedName("subject")
-    val subject: String?,
-    
+    val subject: String?, // Subject category (like "technical", "medical", etc.)
+
     @SerializedName("created-by")
-    val createdBy: String?,
-    
+    val createdBy: String?, // Who created this translation entry
+
     @SerializedName("last-updated-by")
-    val lastUpdatedBy: String?,
-    
+    val lastUpdatedBy: String?, // Who last updated this entry
+
     @SerializedName("create-date")
-    val createDate: String?,
-    
+    val createDate: String?, // When this translation was first created
+
     @SerializedName("last-update-date")
-    val lastUpdateDate: String?,
-    
+    val lastUpdateDate: String?, // When this translation was last updated
+
     @SerializedName("match")
-    val match: Float
+    val match: Float // Confidence score for this particular match
 )
 
 /**
- * Comprehensive dictionary search result for enhanced UI
+ * DictionarySearchResult: Complete results from a dictionary search
+ *
+ * This is like a comprehensive report from a dictionary that includes not just translations
+ * but also detailed linguistic information to help learners understand and use words properly.
+ *
+ * @param originalWord: The word that was searched for
+ * @param translations: List of translations in the target language
+ * @param fromLanguage: The source language of the original word
+ * @param toLanguage: The target language for translations
+ * @param hasResults: Whether any translations or information was found
+ * @param definitions: Detailed explanations of what the word means
+ * @param examples: Sample sentences showing how to use the word
+ * @param synonyms: Words with similar meanings
+ * @param antonyms: Words with opposite meanings
+ * @param pronunciation: Information about how to pronounce the word (IPA notation, audio)
+ * @param pronunciationInfo: Additional pronunciation details
+ * @param conjugations: Verb conjugation tables (for verbs)
+ * @param etymology: Word history and origins
+ * @param wordType: What kind of word this is (noun, verb, adjective, etc.)
+ * @param gender: For German nouns, whether it's der/die/das (masculine/feminine/neuter)
+ * @param difficulty: Learning difficulty level (A1, A2, B1, etc. from CEFR)
+ * @param wikidataLexemeData: Advanced linguistic data from Wikidata
  */
 data class DictionarySearchResult(
     val originalWord: String,
@@ -89,7 +124,7 @@ data class DictionarySearchResult(
     val fromLanguage: String,
     val toLanguage: String,
     val hasResults: Boolean,
-    
+
     // Enhanced dictionary features
     val definitions: List<Definition> = emptyList(),
     val examples: List<Example> = emptyList(),
@@ -109,6 +144,16 @@ data class DictionarySearchResult(
 
 // Enhanced dictionary data models
 
+/**
+ * Definition: A detailed explanation of what a word means
+ *
+ * This is like a dictionary definition that explains the meaning of a word in detail.
+ *
+ * @param meaning: The explanation of what the word means
+ * @param partOfSpeech: What type of word this is (noun, verb, adjective, etc.)
+ * @param context: The situation or field where this meaning applies (like "formal", "technical", "colloquial")
+ * @param level: The difficulty level of this word/meaning (A1, A2, B1, etc.)
+ */
 data class Definition(
     val meaning: String,
     val partOfSpeech: String? = null,
@@ -116,18 +161,43 @@ data class Definition(
     val level: String? = null
 )
 
+/**
+ * Example: A sample sentence showing how to use a word
+ *
+ * This is like seeing a word used in a real sentence from a book or conversation.
+ *
+ * @param sentence: The example sentence containing the word
+ * @param source: Where this example comes from (book title, website, etc.)
+ */
 data class Example(
     val sentence: String,
-    val translation: String? = null,
     val source: String? = null
 )
 
+/**
+ * Pronunciation: Information about how to pronounce a word
+ *
+ * This is like the pronunciation guide you see in dictionaries with phonetic symbols and audio.
+ *
+ * @param ipa: International Phonetic Alphabet notation showing exactly how to pronounce the word
+ * @param audioUrl: Link to an audio file where you can hear the pronunciation
+ * @param region: The regional accent or variant (like "British English" vs "American English")
+ */
 data class Pronunciation(
     val ipa: String? = null,
     val audioUrl: String? = null,
     val region: String? = null
 )
 
+/**
+ * PronunciationInfo: Additional details about word pronunciation
+ *
+ * This provides extra information about pronunciation beyond the basic Pronunciation class.
+ *
+ * @param ipa: The phonetic notation for pronunciation
+ * @param audioUrl: Link to audio pronunciation (optional)
+ * @param isAvailable: Whether pronunciation information is available for this word
+ */
 data class PronunciationInfo(
     val ipa: String,
     val audioUrl: String? = null,
@@ -136,51 +206,73 @@ data class PronunciationInfo(
 
 /**
  * Wiktionary API response models
+ *
+ * These classes represent the structure of data we get back from Wiktionary when we ask for
+ * detailed grammar information about a word. Wiktionary is like Wikipedia but for words.
  */
+
 data class WiktionaryResponse(
     @SerializedName("parse")
-    val parse: WiktionaryParse?
+    val parse: WiktionaryParse? // The parsed content of the Wiktionary page
 )
 
 data class WiktionaryParse(
     @SerializedName("title")
-    val title: String,
-    
+    val title: String, // The title of the Wiktionary page (usually the word itself)
+
     @SerializedName("pageid")
-    val pageId: Int,
-    
+    val pageId: Int, // Unique identifier for this page on Wiktionary
+
     @SerializedName("wikitext")
-    val wikitext: WiktionaryWikitext?
+    val wikitext: WiktionaryWikitext? // The raw wiki markup content of the page
 )
 
 data class WiktionaryWikitext(
     @SerializedName("*")
-    val content: String
+    val content: String // The actual wiki markup text with all the grammar information
 )
 
 /**
- * German Verb API response models
+ * VerbConjugations: Complete conjugation information for a verb
+ *
+ * This is like a comprehensive verb conjugation table that shows all the different forms
+ * a verb can take in different tenses, persons, and moods.
+ *
+ * @param present: Present tense forms (ich gehe, du gehst, er geht, etc.)
+ * @param past: Past tense forms (Simple Past/Präteritum)
+ * @param future: Future tense forms (ich werde gehen, etc.)
+ * @param participle: Present and past participle forms (gehend, gegangen)
+ * @param imperative: Command forms (geh!, geht!, gehen Sie!)
+ * @param subjunctive: Subjunctive mood forms (Konjunktiv)
+ * @param perfect: Present perfect forms (ich habe gegangen)
+ * @param pluperfect: Past perfect forms (ich hatte gegangen)
+ * @param futurePerfect: Future perfect forms (ich werde gegangen sein)
+ * @param conditional: Conditional mood forms (ich würde gehen)
+ * @param auxiliary: Helper verb for perfect tenses ("haben" or "sein")
+ * @param separablePrefix: For separable verbs like "anfangen" (an- + fangen)
+ * @param infinitive: The base "to" form of the verb (gehen)
+ * @param isIrregular: Whether this verb follows irregular patterns
+ * @param isSeparable: Whether this verb has a separable prefix
  */
-
 data class VerbConjugations(
     @SerializedName("present")
     val present: Map<String, String> = emptyMap(),
-    
+
     @SerializedName("past")
     val past: Map<String, String> = emptyMap(),
-    
+
     @SerializedName("future")
     val future: Map<String, String> = emptyMap(),
-    
+
     @SerializedName("participle")
     val participle: Participle? = null,
-    
+
     @SerializedName("imperative")
     val imperative: Map<String, String> = emptyMap(),
-    
+
     @SerializedName("subjunctive")
     val subjunctive: Map<String, String> = emptyMap(),
-    
+
     // Enhanced conjugation features
     val perfect: Map<String, String> = emptyMap(), // Perfect tense (haben/sein + past participle)
     val pluperfect: Map<String, String> = emptyMap(), // Pluperfect tense
@@ -193,10 +285,18 @@ data class VerbConjugations(
     val isSeparable: Boolean = false // Whether the verb has a separable prefix
 )
 
+/**
+ * Participle: Present and past participle forms of a verb
+ *
+ * Participles are verb forms that can act like adjectives or be used in compound tenses.
+ *
+ * @param present: Present participle (gehend - going/walking)
+ * @param past: Past participle (gegangen - gone/walked)
+ */
 data class Participle(
     @SerializedName("present")
     val present: String? = null,
-    
+
     @SerializedName("past")
     val past: String? = null
 )
@@ -252,7 +352,15 @@ data class ReversoExample(
 )
 
 /**
- * Cached dictionary entry for offline access
+ * CachedDictionaryEntry: A saved dictionary lookup for quick access later
+ *
+ * This is like a bookmark or saved search result that lets you quickly recall
+ * dictionary information without having to look it up again.
+ *
+ * @param word: The word that was looked up
+ * @param language: The language of the word
+ * @param result: The complete dictionary results that were found
+ * @param timestamp: When this entry was saved (defaults to current time)
  */
 data class CachedDictionaryEntry(
     val word: String,
@@ -399,4 +507,149 @@ data class GrammarInfo(
     val nounDeclension: NounDeclension? = null,
     val verbConjugation: VerbConjugation? = null,
     val adjectiveDeclension: AdjectiveDeclension? = null
+)
+/**
+ * Leo-Dictionary specific models for comprehensive German-English dictionary
+ *
+ * These are specialized data models for the Leo dictionary system, which provides
+ * particularly detailed information about German words including comprehensive grammar tables.
+ */
+
+// Word types for Leo dictionary
+enum class WordType {
+    NOUN, VERB, ADJECTIVE, ADVERB, PRONOUN, PREPOSITION, CONJUNCTION, INTERJECTION, UNKNOWN
+}
+
+// German gender enum
+enum class GermanGender {
+    DER, DIE, DAS;
+
+    fun getArticle(): String = when(this) {
+        DER -> "der"
+        DIE -> "die"
+        DAS -> "das"
+    }
+
+    companion object {
+        fun fromArticle(article: String): GermanGender? = when(article.lowercase()) {
+            "der" -> DER
+            "die" -> DIE
+            "das" -> DAS
+            else -> null
+        }
+    }
+}
+
+// Main Leo dictionary entry
+data class LeoDictionaryEntry(
+    val germanWord: String,
+    val englishTranslations: List<String>,
+    val wordType: WordType,
+
+    // Noun-specific fields
+    val gender: GermanGender? = null,
+    val article: String? = null,
+    val plural: String? = null,
+    val declension: NounDeclensionTable? = null,
+
+    // Verb-specific fields
+    val conjugation: VerbConjugationTable? = null,
+    val auxiliary: String? = null, // "haben" or "sein"
+    val isIrregular: Boolean = false,
+    val isSeparable: Boolean = false,
+    val separablePrefix: String? = null,
+
+    // Adjective-specific fields
+    val comparative: String? = null,
+    val superlative: String? = null,
+    val adjectiveDeclension: AdjectiveDeclensionTable? = null,
+
+    // Common fields
+    val pronunciation: Pronunciation? = null,
+    val examples: List<GermanExample> = emptyList(),
+    val difficulty: String? = null, // A1, A2, B1, etc.
+    val etymology: String? = null,
+    val source: String = "FreeDict" // FreeDict or Wiktionary
+)
+
+// Noun declension table (full case system)
+data class NounDeclensionTable(
+    val nominative: CaseForms,
+    val genitive: CaseForms,
+    val dative: CaseForms,
+    val accusative: CaseForms
+)
+
+data class CaseForms(
+    val singular: String,
+    val plural: String
+)
+
+// Verb conjugation table (comprehensive)
+data class VerbConjugationTable(
+    val infinitive: String,
+    val present: PersonForms,
+    val past: PersonForms, // Präteritum
+    val perfect: PersonForms, // Perfekt
+    val future: PersonForms, // Futur I
+    val futurePerfect: PersonForms? = null, // Futur II
+    val subjunctive: PersonForms? = null, // Konjunktiv
+    val imperative: ImperativeForms,
+    val participles: Participles
+)
+
+data class PersonForms(
+    val ich: String,
+    val du: String,
+    val erSieEs: String,
+    val wir: String,
+    val ihr: String,
+    val sieSie: String
+)
+
+data class ImperativeForms(
+    val du: String,
+    val ihr: String,
+    val sie: String
+)
+
+data class Participles(
+    val present: String,
+    val past: String
+)
+
+// Adjective declension table
+data class AdjectiveDeclensionTable(
+    val positive: AdjectiveForms,
+    val comparative: AdjectiveForms,
+    val superlative: AdjectiveForms
+)
+
+data class AdjectiveForms(
+    val masculine: String,
+    val feminine: String,
+    val neuter: String,
+    val plural: String
+)
+
+// German example with optional translation
+data class GermanExample(
+    val sentence: String, // German sentence
+    val translation: String? = null, // English translation
+    val context: String? = null // usage context
+)
+
+// Search request for Leo dictionary
+data class LeoDictionarySearchRequest(
+    val word: String,
+    val fromLang: String = "de", // "de" for German, "en" for English
+    val toLang: String = "en"
+)
+
+// Search result for Leo dictionary
+data class LeoDictionarySearchResult(
+    val originalWord: String,
+    val entries: List<LeoDictionaryEntry>,
+    val hasResults: Boolean,
+    val searchTime: Long = System.currentTimeMillis()
 )
