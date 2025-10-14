@@ -35,10 +35,12 @@ class EmbeddingGenerator(private val context: Context) {
     }
     
     private var interpreter: Interpreter? = null
+    private var simplifiedGenerator: SimplifiedEmbeddingGenerator? = null
     private var isInitialized = false
+    private var useSimplifiedMode = false
     
     /**
-     * Initialize the TensorFlow Lite interpreter
+     * Initialize the TensorFlow Lite interpreter with fallback to simplified mode
      */
     fun initialize(): Boolean {
         return try {
@@ -49,27 +51,49 @@ class EmbeddingGenerator(private val context: Context) {
             
             Log.d(TAG, "Initializing embedding generator...")
             
-            // Load model from assets
-            val modelBuffer = FileUtil.loadMappedFile(context, MODEL_PATH)
-            
-            // Configure interpreter options
-            val options = Interpreter.Options().apply {
-                setNumThreads(4) // Use 4 threads for better performance
-                setUseNNAPI(true) // Try to use Android Neural Networks API
+            // Try to load TFLite model first
+            try {
+                val modelBuffer = FileUtil.loadMappedFile(context, MODEL_PATH)
+                
+                // Configure interpreter options
+                val options = Interpreter.Options().apply {
+                    setNumThreads(4) // Use 4 threads for better performance
+                    setUseNNAPI(true) // Try to use Android Neural Networks API
+                }
+                
+                interpreter = Interpreter(modelBuffer, options)
+                useSimplifiedMode = false
+                isInitialized = true
+                
+                Log.d(TAG, "TFLite model loaded successfully - using full semantic search")
+                return true
+                
+            } catch (e: IOException) {
+                Log.w(TAG, "TFLite model not found, falling back to simplified mode: ${e.message}")
+                // Fall back to simplified mode
+                simplifiedGenerator = SimplifiedEmbeddingGenerator(context)
+                useSimplifiedMode = true
+                isInitialized = simplifiedGenerator?.initialize() ?: false
+                
+                if (isInitialized) {
+                    Log.d(TAG, "Simplified embedding generator initialized (basic semantic search)")
+                }
+                return isInitialized
             }
             
-            interpreter = Interpreter(modelBuffer, options)
-            isInitialized = true
-            
-            Log.d(TAG, "Embedding generator initialized successfully")
-            true
-            
-        } catch (e: IOException) {
-            Log.e(TAG, "Error loading TFLite model: ${e.message}", e)
-            false
         } catch (e: Exception) {
             Log.e(TAG, "Error initializing embedding generator: ${e.message}", e)
-            false
+            
+            // Last resort: try simplified mode
+            try {
+                simplifiedGenerator = SimplifiedEmbeddingGenerator(context)
+                useSimplifiedMode = true
+                isInitialized = simplifiedGenerator?.initialize() ?: false
+                isInitialized
+            } catch (e2: Exception) {
+                Log.e(TAG, "Failed to initialize even simplified mode: ${e2.message}", e2)
+                false
+            }
         }
     }
     
@@ -91,18 +115,24 @@ class EmbeddingGenerator(private val context: Context) {
         }
         
         return try {
-            // Preprocess text
-            val tokens = tokenize(text)
-            
-            // Prepare input tensors
-            val inputIds = prepareInputIds(tokens)
-            val attentionMask = prepareAttentionMask(tokens.size)
-            
-            // Run inference
-            val embeddings = runInference(inputIds, attentionMask)
-            
-            // Normalize embeddings (L2 normalization for cosine similarity)
-            normalize(embeddings)
+            if (useSimplifiedMode) {
+                // Use simplified n-gram based embeddings
+                simplifiedGenerator?.generateEmbedding(text)
+            } else {
+                // Use full TFLite model
+                // Preprocess text
+                val tokens = tokenize(text)
+                
+                // Prepare input tensors
+                val inputIds = prepareInputIds(tokens)
+                val attentionMask = prepareAttentionMask(tokens.size)
+                
+                // Run inference
+                val embeddings = runInference(inputIds, attentionMask)
+                
+                // Normalize embeddings (L2 normalization for cosine similarity)
+                normalize(embeddings)
+            }
             
         } catch (e: Exception) {
             Log.e(TAG, "Error generating embedding: ${e.message}", e)
@@ -216,6 +246,10 @@ class EmbeddingGenerator(private val context: Context) {
      * @return Similarity score between 0.0 (completely different) and 1.0 (identical)
      */
     fun cosineSimilarity(embedding1: FloatArray, embedding2: FloatArray): Float {
+        if (useSimplifiedMode) {
+            return simplifiedGenerator?.cosineSimilarity(embedding1, embedding2) ?: 0f
+        }
+        
         require(embedding1.size == embedding2.size) {
             "Embeddings must have same dimension"
         }
@@ -243,6 +277,11 @@ class EmbeddingGenerator(private val context: Context) {
         topK: Int = 10
     ): List<Pair<Long, Float>> {
         
+        if (useSimplifiedMode) {
+            return simplifiedGenerator?.findMostSimilar(queryEmbedding, candidateEmbeddings, topK) 
+                ?: emptyList()
+        }
+        
         val similarities = candidateEmbeddings.map { (id, embedding) ->
             val similarity = cosineSimilarity(queryEmbedding, embedding)
             id to similarity
@@ -260,11 +299,19 @@ class EmbeddingGenerator(private val context: Context) {
         try {
             interpreter?.close()
             interpreter = null
+            simplifiedGenerator?.close()
+            simplifiedGenerator = null
             isInitialized = false
+            useSimplifiedMode = false
             Log.d(TAG, "Embedding generator closed")
         } catch (e: Exception) {
             Log.e(TAG, "Error closing embedding generator: ${e.message}", e)
         }
     }
+    
+    /**
+     * Check if using simplified mode (no TFLite model)
+     */
+    fun isUsingSimplifiedMode(): Boolean = useSimplifiedMode
 }
 

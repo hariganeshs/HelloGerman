@@ -1,9 +1,10 @@
 package com.hellogerman.app.ui.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.hellogerman.app.audio.GoogleTTSService
+import com.hellogerman.app.audio.AndroidTTSService
 import com.hellogerman.app.data.entities.DictionaryEntry
 import com.hellogerman.app.data.entities.SearchLanguage
 import com.hellogerman.app.data.repository.DictionaryRepository
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 class DictionaryViewModel(application: Application) : AndroidViewModel(application) {
     
     private val repository = DictionaryRepository(application)
-    private val ttsService = GoogleTTSService(application)
+    private val ttsService = AndroidTTSService(application)
     
     // Search state
     private val _searchQuery = MutableStateFlow("")
@@ -98,6 +99,20 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     init {
         checkDictionaryStatus()
         initializeSemanticSearch()
+        initializeTTS()
+    }
+    
+    /**
+     * Initialize TTS service
+     */
+    private fun initializeTTS() {
+        viewModelScope.launch {
+            try {
+                ttsService.initialize()
+            } catch (e: Exception) {
+                Log.e("DictionaryViewModel", "Error initializing TTS: ${e.message}", e)
+            }
+        }
     }
     
     // ==================== Search Functions ====================
@@ -451,7 +466,7 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     /**
      * Get TTS cache statistics
      */
-    fun getTTSCacheStats(): GoogleTTSService.CacheStatistics {
+    fun getTTSCacheStats(): AndroidTTSService.CacheStatistics {
         return ttsService.getCacheStatistics()
     }
     
