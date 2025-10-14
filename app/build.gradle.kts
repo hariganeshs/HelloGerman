@@ -135,6 +135,17 @@ dependencies {
     // AdMob
     implementation("com.google.android.gms:play-services-ads:22.6.0")
     
+    // TensorFlow Lite for on-device embeddings
+    implementation("org.tensorflow:tensorflow-lite:2.14.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.4.4")
+    
+    // Google Cloud Text-to-Speech (lightweight - REST API approach)
+    // Using existing Retrofit for TTS API calls
+    
+    // Apache Commons Math for vector operations (cosine similarity)
+    implementation("org.apache.commons:commons-math3:3.6.1")
+    
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

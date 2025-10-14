@@ -18,9 +18,10 @@ import com.hellogerman.app.data.entities.*
         Achievement::class,
         UserVocabulary::class,
         DictionaryCache::class,
-        DictionaryEntry::class
+        DictionaryEntry::class,
+        DictionaryVectorEntry::class
     ],
-    version = 17,
+    version = 18,
     exportSchema = false
 )
 abstract class HelloGermanDatabase : RoomDatabase() {
@@ -33,6 +34,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
     abstract fun dictionaryCacheDao(): DictionaryCacheDao
     abstract fun userVocabularyDao(): UserVocabularyDao
     abstract fun dictionaryDao(): DictionaryDao
+    abstract fun dictionaryVectorDao(): DictionaryVectorDao
     
     companion object {
         @Volatile
@@ -45,7 +47,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                     HelloGermanDatabase::class.java,
                     "hello_german_database"
                 )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
@@ -291,6 +293,30 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                 database.execSQL("CREATE INDEX IF NOT EXISTS `idx_gender` ON `dictionary_entries` (`gender`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `idx_english_prefix` ON `dictionary_entries` (`english_normalized` COLLATE NOCASE)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `idx_german_prefix` ON `dictionary_entries` (`german_normalized` COLLATE NOCASE)")
+            }
+        }
+
+        private val MIGRATION_17_18 = object : Migration(17, 18) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create dictionary vectors table for semantic search
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `dictionary_vectors` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `entry_id` INTEGER NOT NULL,
+                        `combined_embedding` BLOB NOT NULL,
+                        `german_embedding` BLOB NOT NULL,
+                        `english_embedding` BLOB NOT NULL,
+                        `has_examples` INTEGER NOT NULL,
+                        `has_gender` INTEGER NOT NULL,
+                        `word_type` TEXT,
+                        `gender` TEXT,
+                        `created_at` INTEGER NOT NULL,
+                        FOREIGN KEY(`entry_id`) REFERENCES `dictionary_entries`(`id`) ON DELETE CASCADE
+                    )
+                """)
+                
+                // Create unique index on entry_id (Room's default naming: index_{table}_{column})
+                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_dictionary_vectors_entry_id` ON `dictionary_vectors` (`entry_id`)")
             }
         }
     }

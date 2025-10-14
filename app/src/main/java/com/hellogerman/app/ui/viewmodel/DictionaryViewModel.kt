@@ -3,6 +3,7 @@ package com.hellogerman.app.ui.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.hellogerman.app.audio.GoogleTTSService
 import com.hellogerman.app.data.entities.DictionaryEntry
 import com.hellogerman.app.data.entities.SearchLanguage
 import com.hellogerman.app.data.repository.DictionaryRepository
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 class DictionaryViewModel(application: Application) : AndroidViewModel(application) {
     
     private val repository = DictionaryRepository(application)
+    private val ttsService = GoogleTTSService(application)
     
     // Search state
     private val _searchQuery = MutableStateFlow("")
@@ -69,12 +71,33 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
     
+    // Semantic search state
+    private val _useSemanticSearch = MutableStateFlow(false)
+    val useSemanticSearch: StateFlow<Boolean> = _useSemanticSearch.asStateFlow()
+    
+    private val _isSemanticSearchAvailable = MutableStateFlow(false)
+    val isSemanticSearchAvailable: StateFlow<Boolean> = _isSemanticSearchAvailable.asStateFlow()
+    
+    private val _synonyms = MutableStateFlow<List<Pair<DictionaryEntry, Float>>>(emptyList())
+    val synonyms: StateFlow<List<Pair<DictionaryEntry, Float>>> = _synonyms.asStateFlow()
+    
+    private val _relatedWords = MutableStateFlow<List<Pair<DictionaryEntry, Float>>>(emptyList())
+    val relatedWords: StateFlow<List<Pair<DictionaryEntry, Float>>> = _relatedWords.asStateFlow()
+    
+    // Audio playback state
+    private val _isPlayingAudio = MutableStateFlow(false)
+    val isPlayingAudio: StateFlow<Boolean> = _isPlayingAudio.asStateFlow()
+    
+    private val _currentPlayingWord = MutableStateFlow<String?>(null)
+    val currentPlayingWord: StateFlow<String?> = _currentPlayingWord.asStateFlow()
+    
     // Debounce search
     private var searchJob: Job? = null
     private val SEARCH_DEBOUNCE_MS = 300L
     
     init {
         checkDictionaryStatus()
+        initializeSemanticSearch()
     }
     
     // ==================== Search Functions ====================
@@ -113,20 +136,36 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     }
     
     /**
-     * Internal search execution
+     * Internal search execution - uses hybrid search when semantic search is enabled
      */
     private suspend fun performSearch(query: String) {
         try {
             _isSearching.value = true
             _errorMessage.value = null
             
-            val results = repository.search(
-                query = query,
-                language = _searchLanguage.value,
-                exactMatch = false
-            )
+            val results = if (_useSemanticSearch.value && _isSemanticSearchAvailable.value) {
+                // Use hybrid search (exact + semantic)
+                val hybridResults = repository.searchHybrid(
+                    query = query,
+                    language = _searchLanguage.value,
+                    useSemanticSearch = true
+                )
+                hybridResults.map { it.first } // Extract entries, discard scores for now
+            } else {
+                // Use regular exact/prefix search
+                repository.search(
+                    query = query,
+                    language = _searchLanguage.value,
+                    exactMatch = false
+                )
+            }
             
             _searchResults.value = results
+            
+            // If we have results, find synonyms/related words
+            if (results.isNotEmpty() && _useSemanticSearch.value) {
+                findSynonymsFor(query)
+            }
             
         } catch (e: Exception) {
             _errorMessage.value = "Search error: ${e.message}"
@@ -296,11 +335,148 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
         _errorMessage.value = null
     }
     
+    // ==================== Semantic Search Functions ====================
+    
+    /**
+     * Initialize semantic search system
+     */
+    private fun initializeSemanticSearch() {
+        viewModelScope.launch {
+            try {
+                val available = repository.isSemanticSearchAvailable()
+                _isSemanticSearchAvailable.value = available
+                
+                // Initialize vector search if available
+                if (available) {
+                    repository.initializeVectorSearch()
+                }
+            } catch (e: Exception) {
+                _isSemanticSearchAvailable.value = false
+            }
+        }
+    }
+    
+    /**
+     * Toggle semantic search on/off
+     */
+    fun toggleSemanticSearch() {
+        _useSemanticSearch.value = !_useSemanticSearch.value
+        
+        // Re-search with new setting if we have a query
+        val currentQuery = _searchQuery.value
+        if (currentQuery.isNotBlank()) {
+            searchImmediately(currentQuery)
+        }
+    }
+    
+    /**
+     * Set semantic search explicitly
+     */
+    fun setSemanticSearch(enabled: Boolean) {
+        _useSemanticSearch.value = enabled
+    }
+    
+    /**
+     * Find synonyms for a word
+     */
+    private fun findSynonymsFor(word: String) {
+        viewModelScope.launch {
+            try {
+                val synonymResults = repository.findSynonyms(
+                    word = word,
+                    language = _searchLanguage.value,
+                    limit = 10
+                )
+                _synonyms.value = synonymResults
+                
+                // Also get related words
+                val relatedResults = repository.findRelatedWords(
+                    word = word,
+                    language = _searchLanguage.value,
+                    limit = 15
+                )
+                _relatedWords.value = relatedResults
+                
+            } catch (e: Exception) {
+                _synonyms.value = emptyList()
+                _relatedWords.value = emptyList()
+            }
+        }
+    }
+    
+    /**
+     * Clear synonyms and related words
+     */
+    fun clearSynonyms() {
+        _synonyms.value = emptyList()
+        _relatedWords.value = emptyList()
+    }
+    
+    // ==================== Audio Pronunciation Functions ====================
+    
+    /**
+     * Play pronunciation for a German word
+     */
+    fun playPronunciation(germanWord: String) {
+        viewModelScope.launch {
+            try {
+                _isPlayingAudio.value = true
+                _currentPlayingWord.value = germanWord
+                
+                val audioPath = ttsService.synthesizeSpeech(germanWord)
+                if (audioPath != null) {
+                    ttsService.playAudio(audioPath)
+                } else {
+                    _errorMessage.value = "Could not generate audio for: $germanWord"
+                }
+                
+            } catch (e: Exception) {
+                _errorMessage.value = "Audio playback error: ${e.message}"
+            } finally {
+                _isPlayingAudio.value = false
+                _currentPlayingWord.value = null
+            }
+        }
+    }
+    
+    /**
+     * Stop audio playback
+     */
+    fun stopAudio() {
+        ttsService.stopAudio()
+        _isPlayingAudio.value = false
+        _currentPlayingWord.value = null
+    }
+    
+    /**
+     * Get TTS cache statistics
+     */
+    fun getTTSCacheStats(): GoogleTTSService.CacheStatistics {
+        return ttsService.getCacheStatistics()
+    }
+    
+    /**
+     * Clear TTS audio cache
+     */
+    fun clearTTSCache() {
+        ttsService.clearCache()
+    }
+    
+    // ==================== Utility Functions ====================
+    
     /**
      * Format word with gender for display
      */
     fun formatWordWithGender(entry: DictionaryEntry): String {
         return repository.formatWordWithGender(entry)
+    }
+    
+    /**
+     * Cleanup resources when ViewModel is cleared
+     */
+    override fun onCleared() {
+        super.onCleared()
+        ttsService.release()
     }
 }
 

@@ -45,6 +45,12 @@ fun DictionaryScreen(
     val statistics by viewModel.statistics.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     
+    // Semantic search state
+    val useSemanticSearch by viewModel.useSemanticSearch.collectAsState()
+    val isSemanticSearchAvailable by viewModel.isSemanticSearchAvailable.collectAsState()
+    val synonyms by viewModel.synonyms.collectAsState()
+    val relatedWords by viewModel.relatedWords.collectAsState()
+    
     var showImportDialog by remember { mutableStateOf(false) }
     var showStatisticsDialog by remember { mutableStateOf(false) }
     
@@ -63,6 +69,23 @@ fun DictionaryScreen(
                                 SearchLanguage.GERMAN -> MaterialTheme.colorScheme.secondary
                             }
                         )
+                    }
+                    
+                    // Semantic search toggle (only show if available)
+                    if (isSemanticSearchAvailable) {
+                        IconButton(onClick = { viewModel.toggleSemanticSearch() }) {
+                            Icon(
+                                imageVector = if (useSemanticSearch) 
+                                    Icons.Default.AutoAwesome 
+                                else 
+                                    Icons.Default.Search,
+                                contentDescription = "Toggle semantic search",
+                                tint = if (useSemanticSearch) 
+                                    MaterialTheme.colorScheme.tertiary
+                                else 
+                                    MaterialTheme.colorScheme.outline
+                            )
+                        }
                     }
                     
                     // Statistics
@@ -152,6 +175,9 @@ fun DictionaryScreen(
                     onEntryClick = { entry ->
                         viewModel.selectEntry(entry)
                     },
+                    onPlayAudio = { germanWord ->
+                        viewModel.playPronunciation(germanWord)
+                    },
                     isSearching = isSearching
                 )
             }
@@ -235,6 +261,7 @@ fun SearchBar(
 fun SearchResultsList(
     results: List<DictionaryEntry>,
     onEntryClick: (DictionaryEntry) -> Unit,
+    onPlayAudio: (String) -> Unit,
     isSearching: Boolean
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -274,7 +301,8 @@ fun SearchResultsList(
                     items(results, key = { it.id }) { entry ->
                         DictionaryEntryCard(
                             entry = entry,
-                            onClick = { onEntryClick(entry) }
+                            onClick = { onEntryClick(entry) },
+                            onPlayAudio = onPlayAudio
                         )
                     }
                 }
@@ -287,7 +315,8 @@ fun SearchResultsList(
 @Composable
 fun DictionaryEntryCard(
     entry: DictionaryEntry,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onPlayAudio: (String) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
     
@@ -310,21 +339,46 @@ fun DictionaryEntryCard(
             
             Spacer(modifier = Modifier.height(8.dp))
             
-            // German translation with gender
+            // German translation with gender and audio
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
-                // Gender chip for nouns
+                // Gender article for nouns (larger and bolder)
                 if (entry.wordType == WordType.NOUN && entry.gender != null) {
-                    GenderChip(gender = entry.gender)
+                    Text(
+                        text = entry.gender.getArticle(),
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = when (entry.gender) {
+                            GermanGender.DER -> Color(0xFF2196F3) // Blue
+                            GermanGender.DIE -> Color(0xFFE91E63) // Pink
+                            GermanGender.DAS -> Color(0xFF9C27B0) // Purple
+                        }
+                    )
                 }
                 
+                // German word
                 Text(
                     text = entry.germanWord,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f)
                 )
+                
+                // Audio playback button
+                IconButton(
+                    onClick = { onPlayAudio(entry.germanWord) },
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.VolumeUp,
+                        contentDescription = "Play pronunciation",
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
             }
             
             // Word type
