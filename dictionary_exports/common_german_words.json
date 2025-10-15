@@ -1,0 +1,387 @@
+[
+  [
+    "Apfel",
+    79811,
+    "Apfel /ˈapfəl/ <masc, n, sg>"
+  ],
+  [
+    "Mutter",
+    160911,
+    "Mutter /mˈʊtɜ/ <fem, n, sg>"
+  ],
+  [
+    "Vater",
+    160886,
+    "Vater /fˈɑːtɜ/ <masc, n, sg>"
+  ],
+  [
+    "Haus",
+    318468,
+    "Haus /hˈaʊs/ <neut, n, sg>"
+  ],
+  [
+    "Wasser",
+    1345064,
+    "Wasser /vˈasɜ/ <neut, n, sg>"
+  ],
+  [
+    "Essen",
+    363455,
+    "Essen /ˈɛsən/ <neut, n, sg>"
+  ],
+  [
+    "Buch",
+    236857,
+    "Buch /bˈuːx/ <neut, n, sg>"
+  ],
+  [
+    "Baum",
+    149647,
+    "Baum /bˈaʊm/ <masc, n, sg>"
+  ],
+  [
+    "Auto",
+    129936,
+    "Auto /ˈaʊtoː/ <neut, n, sg>"
+  ],
+  [
+    "Hund",
+    423422,
+    "Hund /hˈʊnt/ <masc, n, sg>"
+  ],
+  [
+    "Katze",
+    636058,
+    "Katze /kˈatsə/ <fem, n, sg>"
+  ],
+  [
+    "Vogel",
+    1314724,
+    "Vogel /fˈoːɡəl/ <masc, n, sg>"
+  ],
+  [
+    "Fisch",
+    408766,
+    "Fisch /fˈɪʃ/ <masc, n, sg>"
+  ],
+  [
+    "Sonne",
+    1106794,
+    "Sonne /zˈɔnə/ <fem, n, sg>"
+  ],
+  [
+    "Mond",
+    813088,
+    "Mond /mˈɔnt/ <masc, n, sg>"
+  ],
+  [
+    "Stern",
+    1150535,
+    "Stern /ʃtˈɛɾn/ <masc, n, sg>"
+  ],
+  [
+    "Erde",
+    349238,
+    "Erde /ˈeːɾdə/ <fem, n, sg>"
+  ],
+  [
+    "Feuer",
+    49960,
+    "Feuer /fˈɔøɜ/ <neut, n, sg>"
+  ],
+  [
+    "Wind",
+    459574,
+    "Wind /vˈɪnt/ <masc, n, sg>"
+  ],
+  [
+    "Regen",
+    960138,
+    "Regen /rˈeːɡən/ <masc, n, sg>"
+  ],
+  [
+    "Schnee",
+    198870,
+    "Schnee /ʃnˈeː/ <masc, n, sg>"
+  ],
+  [
+    "Berg",
+    172934,
+    "Berg /bˈɛɾk/ <masc, n, sg>"
+  ],
+  [
+    "Fluss",
+    113876,
+    "Fluss /flˈʊs/ <masc, n, sg>"
+  ],
+  [
+    "Meer",
+    785746,
+    "Meer /mˈeːɾ/ <neut, n, sg>"
+  ],
+  [
+    "Ozean",
+    870151,
+    "Ozean /ˌoːtseːˈɑːn/ <masc, n, sg>"
+  ],
+  [
+    "Wald",
+    1337941,
+    "Wald /vˈalt/ <masc, n, sg>"
+  ],
+  [
+    "Feld",
+    32271,
+    "Feld /fˈɛlt/ <neut, n, sg>"
+  ],
+  [
+    "Garten",
+    453714,
+    "Garten /ɡˈaɾtən/ <masc, n, sg>"
+  ],
+  [
+    "Blume",
+    211783,
+    "Blume /blˈʊmə/ <fem, n, sg>"
+  ],
+  [
+    "Gras",
+    246913,
+    "Gras /ɡɾˈɑːs/ <neut, n, sg>"
+  ],
+  [
+    "Blatt",
+    82895,
+    "Blatt /blˈat/ <neut, n, sg>"
+  ],
+  [
+    "Ast",
+    92516,
+    "Ast /ˈast/ <masc, n, sg>"
+  ],
+  [
+    "Zweig",
+    1402418,
+    "Zweig /tsvˈaɪk/ <masc, n, sg>"
+  ],
+  [
+    "Stein",
+    858801,
+    "Stein /ʃtˈaɪn/ <masc, n, sg>"
+  ],
+  [
+    "Fels",
+    391997,
+    "Fels /fˈeːls/ <masc, n, sg>"
+  ],
+  [
+    "Sand",
+    1006995,
+    "Sand /zˈant/ <masc, n, sg>"
+  ],
+  [
+    "Holz",
+    580958,
+    "Holz /hˈɔlts/ <neut, n, sg>"
+  ],
+  [
+    "Metall",
+    795379,
+    "Metall /meːtˈal/ <neut, n, sg>"
+  ],
+  [
+    "Gold",
+    514055,
+    "Gold /ɡˈɔlt/ <neut, n, sg>"
+  ],
+  [
+    "Silber",
+    1097121,
+    "Silber /zˈɪlbɜ/ <neut, n, sg>"
+  ],
+  [
+    "Eisen",
+    327612,
+    "Eisen /ˈaɪzən/ <neut, n, sg>"
+  ],
+  [
+    "Papier",
+    325055,
+    "Papier /papˈiːɾ/ <neut, n, sg>"
+  ],
+  [
+    "Stift",
+    208029,
+    "Stift /ʃtˈɪft/ <masc, n, sg>"
+  ],
+  [
+    "Bleistift",
+    208015,
+    "Bleistift /blˈaɪstɪft/ <masc, n, sg>"
+  ],
+  [
+    "Tisch",
+    1214317,
+    "Tisch /tˈɪʃ/ <masc, n, sg>"
+  ],
+  [
+    "Stuhl",
+    1179993,
+    "Stuhl /ʃtˈuːl/ <masc, n, sg>"
+  ],
+  [
+    "Bett",
+    189227,
+    "Bett /bˈɛt/ <neut, n, sg>"
+  ],
+  [
+    "Tür",
+    1237223,
+    "Tür /tˈyːɾ/ <fem, n, sg>"
+  ],
+  [
+    "Fenster",
+    392618,
+    "Fenster /fˈɛnstɜ/ <neut, n, sg>"
+  ],
+  [
+    "Wand",
+    1339506,
+    "Wand /vˈant/ <fem, n, sg>"
+  ],
+  [
+    "Boden",
+    214697,
+    "Boden /bˈoːdən/ <masc, n, sg>"
+  ],
+  [
+    "Decke",
+    166324,
+    "Decke /dˈɛkə/ <fem, n, sg>"
+  ],
+  [
+    "Zimmer",
+    1406359,
+    "Zimmer /tsˈɪmɜ/ (Zi. /tsˈiː/) <neut, n, sg>"
+  ],
+  [
+    "Küche",
+    703176,
+    "Küche /kˈyçə/ <fem, n, sg>"
+  ],
+  [
+    "Badezimmer",
+    135395,
+    "Badezimmer /bˈɑdeːtsˌɪmɜ/ <neut, n, sg>"
+  ],
+  [
+    "Schlafzimmer",
+    1033151,
+    "Schlafzimmer /ʃlˈaftsɪmɜ/ <neut, n, sg>"
+  ],
+  [
+    "Wohnzimmer",
+    1382781,
+    "Wohnzimmer /vˈoːntsɪmɜ/ <neut, n, sg>"
+  ],
+  [
+    "Esszimmer",
+    364048,
+    "Esszimmer /ˈɛstsɪmɜ/ <neut, n, sg>"
+  ],
+  [
+    "Büro",
+    242123,
+    "Büro /bˈyːroː/ <neut, n, sg>"
+  ],
+  [
+    "Schule",
+    529590,
+    "Schule /ʃˈuːlə/ <fem, n, sg>"
+  ],
+  [
+    "Krankenhaus",
+    691611,
+    "Krankenhaus /kɾˈankənhˌaʊs/ <neut, n, sg>"
+  ],
+  [
+    "Kirche",
+    515586,
+    "Kirche /kˈɪɾçə/ <masc, n, sg>"
+  ],
+  [
+    "Laden",
+    634547,
+    "Laden /lˈɑːdən/ <pl>"
+  ],
+  [
+    "Restaurant",
+    456247,
+    "Restaurant /rˌɛstoːrˈɑ̃/ <neut, n, sg>"
+  ],
+  [
+    "Hotel",
+    585609,
+    "Hotel /hˈoːtəl/ <neut, n, sg>"
+  ],
+  [
+    "Flughafen",
+    419257,
+    "Flughafen /flˈuːɡhɑːfən/ <masc, n, sg>"
+  ],
+  [
+    "Bahnhof",
+    136957,
+    "Bahnhof /bˈɑːnhoːf/ (Bhf. /bˌeːhˌɑːˈɛf/) <masc, n, sg>"
+  ],
+  [
+    "Park",
+    877079,
+    "Park /pˈaɾk/ <masc, n, sg>"
+  ],
+  [
+    "Straße",
+    45338,
+    "Straße /ʃtɾˈɑːsə/ <fem, n, sg>"
+  ],
+  [
+    "Weg",
+    455841,
+    "Weg /vˈeːk/ <masc, n, sg>"
+  ],
+  [
+    "Brücke",
+    214557,
+    "Brücke /bɾˈykə/ <fem, n, sg>"
+  ],
+  [
+    "Tunnel",
+    1210593,
+    "Tunnel /tˈʊnəl/ <masc, n, sg>"
+  ],
+  [
+    "Gebäude",
+    458130,
+    "Gebäude /ɡəbˈɔødə/ <neut, n, sg>"
+  ],
+  [
+    "Turm",
+    1238456,
+    "Turm /tˈ??m/ <masc, n, sg>"
+  ],
+  [
+    "Schloss",
+    871709,
+    "Schloss /ʃlˈɔs/ <neut, n, sg>"
+  ],
+  [
+    "Palast",
+    871696,
+    "Palast /pˈɑlast/ <masc, n, sg>"
+  ],
+  [
+    "Museum",
+    822371,
+    "Museum /muːzˈeːʊm/ <neut, n, sg>"
+  ]
+]

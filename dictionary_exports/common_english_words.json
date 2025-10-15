@@ -1,0 +1,382 @@
+[
+  [
+    "apple",
+    69876,
+    "apple /ˈapəl/"
+  ],
+  [
+    "mother",
+    142726,
+    "mother /mˈʌðə/"
+  ],
+  [
+    "father",
+    142717,
+    "father /fˈɑːðə/"
+  ],
+  [
+    "house",
+    442643,
+    "house /hˈaʊs/"
+  ],
+  [
+    "water",
+    1255432,
+    "water /wˈɔːtə/"
+  ],
+  [
+    "food",
+    326776,
+    "food /fˈuːd/"
+  ],
+  [
+    "book",
+    211833,
+    "book /bˈʊk/"
+  ],
+  [
+    "tree",
+    132824,
+    "tree /tɹˈiː/"
+  ],
+  [
+    "car",
+    113889,
+    "car /kˈɑː/"
+  ],
+  [
+    "dog",
+    125265,
+    "dog /dˈɒɡ/"
+  ],
+  [
+    "cat",
+    580548,
+    "cat /kˈat/"
+  ],
+  [
+    "bird",
+    347155,
+    "bird /bˈɜːd/"
+  ],
+  [
+    "fish",
+    368897,
+    "fish /fˈɪʃ/"
+  ],
+  [
+    "sun",
+    1029557,
+    "sun /sˈʌn/"
+  ],
+  [
+    "moon",
+    438570,
+    "moon /mˈuːn/ <v>"
+  ],
+  [
+    "star",
+    448842,
+    "star /stˈɑː/"
+  ],
+  [
+    "earth",
+    130108,
+    "earth /ˈɜːθ/"
+  ],
+  [
+    "fire",
+    200053,
+    "fire /fˈaɪə/"
+  ],
+  [
+    "wind",
+    232590,
+    "wind /wˈɪnd/"
+  ],
+  [
+    "rain",
+    888276,
+    "rain /ɹˈeɪn/"
+  ],
+  [
+    "snow",
+    175240,
+    "snow /snˈəʊ/"
+  ],
+  [
+    "mountain",
+    152265,
+    "mountain /mˈaʊntɪn/"
+  ],
+  [
+    "river",
+    380545,
+    "river /ɹˈɪvə/"
+  ],
+  [
+    "sea",
+    723740,
+    "sea /sˈiː/"
+  ],
+  [
+    "ocean",
+    803919,
+    "ocean /ˈəʊʃən/"
+  ],
+  [
+    "forest",
+    1247897,
+    "forest /fˈɒɹɪst/"
+  ],
+  [
+    "field",
+    997,
+    "field /fˈiːld/"
+  ],
+  [
+    "garden",
+    410006,
+    "garden /ɡˈɑːdən/"
+  ],
+  [
+    "flower",
+    187157,
+    "flower /flˈaʊə/"
+  ],
+  [
+    "grass",
+    221406,
+    "grass /ɡɹˈas/"
+  ],
+  [
+    "leaf",
+    181603,
+    "leaf /lˈiːf/"
+  ],
+  [
+    "branch",
+    26937,
+    "branch /bɹˈantʃ/"
+  ],
+  [
+    "stone",
+    773601,
+    "stone /stˈəʊn/"
+  ],
+  [
+    "rock",
+    352761,
+    "rock /ɹˈɒk/"
+  ],
+  [
+    "sand",
+    266716,
+    "sand /sˈand/"
+  ],
+  [
+    "wood",
+    529167,
+    "wood /wˈʊd/"
+  ],
+  [
+    "metal",
+    732710,
+    "metal /mˈɛtəl/"
+  ],
+  [
+    "gold",
+    466533,
+    "gold /ɡˈəʊld/"
+  ],
+  [
+    "silver",
+    1020952,
+    "silver /sˈɪlvə/"
+  ],
+  [
+    "iron",
+    215225,
+    "iron /ˈaɪən/"
+  ],
+  [
+    "paper",
+    332943,
+    "paper /pˈeɪpə/"
+  ],
+  [
+    "pen",
+    283359,
+    "pen /pˈɛn/"
+  ],
+  [
+    "pencil",
+    183937,
+    "pencil /pˈɛnsəl/"
+  ],
+  [
+    "table",
+    1109491,
+    "table /tˈeɪbəl/"
+  ],
+  [
+    "chair",
+    851042,
+    "chair /tʃˈeə/"
+  ],
+  [
+    "bed",
+    167317,
+    "bed /bˈɛd/"
+  ],
+  [
+    "door",
+    1156286,
+    "door /dˈɔː/"
+  ],
+  [
+    "window",
+    353544,
+    "window /wˈɪndəʊ/"
+  ],
+  [
+    "wall",
+    771163,
+    "wall /wˈɔːl/"
+  ],
+  [
+    "floor",
+    193208,
+    "floor /flˈɔː/"
+  ],
+  [
+    "ceiling",
+    457175,
+    "ceiling /sˈiːlɪŋ/"
+  ],
+  [
+    "room",
+    426581,
+    "room /ɹˈuːm/"
+  ],
+  [
+    "kitchen",
+    642805,
+    "kitchen /kˈɪtʃən/"
+  ],
+  [
+    "bathroom",
+    119450,
+    "bathroom /bˈaθɹuːm/"
+  ],
+  [
+    "bedroom",
+    959354,
+    "bedroom /bˈɛdɹuːm/"
+  ],
+  [
+    "living",
+    208253,
+    "living /lˈɪvɪŋ/"
+  ],
+  [
+    "dining",
+    326655,
+    "dining /dˈaɪnɪŋ/"
+  ],
+  [
+    "office",
+    45932,
+    "office /ˈɒfɪs/"
+  ],
+  [
+    "school",
+    331925,
+    "school /skˈuːl/"
+  ],
+  [
+    "hospital",
+    631522,
+    "hospital /hˈɒspɪtəl/"
+  ],
+  [
+    "church",
+    467996,
+    "church /tʃˈɜːtʃ/"
+  ],
+  [
+    "store",
+    581427,
+    "store /stˈɔː/"
+  ],
+  [
+    "restaurant",
+    901152,
+    "restaurant /ɹˈɛstɹɒnt/"
+  ],
+  [
+    "hotel",
+    533879,
+    "hotel /həʊtˈɛl/"
+  ],
+  [
+    "airport",
+    378365,
+    "airport /ˈeəpɔːt/"
+  ],
+  [
+    "station",
+    120976,
+    "station /stˈeɪʃən/ (Sta. /stˈɑː/, ) (Stn /ˌɛstˌiːˈɛn/)"
+  ],
+  [
+    "park",
+    810550,
+    "park /pˈɑːk/"
+  ],
+  [
+    "street",
+    1089309,
+    "street /stɹˈiːt/ (St /sˈənt/)"
+  ],
+  [
+    "road",
+    335224,
+    "road /ɹˈəʊd/"
+  ],
+  [
+    "bridge",
+    205983,
+    "bridge /bɹˈɪdʒ/"
+  ],
+  [
+    "tunnel",
+    934580,
+    "tunnel /tˈʌnəl/"
+  ],
+  [
+    "building",
+    130071,
+    "building /bˈɪldɪŋ/"
+  ],
+  [
+    "tower",
+    1157159,
+    "tower /tˈaʊə/"
+  ],
+  [
+    "castle",
+    219177,
+    "castle /kˈasəl/"
+  ],
+  [
+    "palace",
+    805554,
+    "palace /pˈalɪs/"
+  ],
+  [
+    "museum",
+    758694,
+    "museum /mjuːzˈiəm/"
+  ]
+]

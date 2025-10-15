@@ -255,18 +255,71 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     // ==================== Dictionary Management ====================
     
     /**
-     * Check if dictionary is imported
+     * Check if dictionary is imported and verify quality
      */
     fun checkDictionaryStatus() {
         viewModelScope.launch {
             try {
-                _isDictionaryImported.value = repository.isDictionaryImported()
-                if (_isDictionaryImported.value) {
+                val isImported = repository.isDictionaryImported()
+                val entryCount = repository.getEntryCount()
+                
+                _isDictionaryImported.value = isImported
+                
+                Log.d("DictionaryViewModel", "Dictionary status: imported=$isImported, count=$entryCount")
+                
+                // Check if we have a full dictionary (should be 400k+ entries)
+                if (isImported && entryCount > 100000) {
+                    Log.d("DictionaryViewModel", "Full dictionary imported with $entryCount entries")
                     loadStatistics()
+                } else if (isImported && entryCount < 100000) {
+                    Log.w("DictionaryViewModel", "Only partial dictionary imported ($entryCount entries). Need full import.")
+                    _errorMessage.value = "Dictionary only partially imported ($entryCount entries). Please import full dictionary for best results."
+                } else {
+                    Log.w("DictionaryViewModel", "No dictionary imported. Need to import.")
                 }
+                
+                // Test common words to verify search quality
+                testCommonWords()
+                
             } catch (e: Exception) {
+                Log.e("DictionaryViewModel", "Error checking dictionary status: ${e.message}", e)
                 _errorMessage.value = "Error checking dictionary status: ${e.message}"
             }
+        }
+    }
+    
+    /**
+     * Test common words to verify search quality
+     */
+    private suspend fun testCommonWords() {
+        try {
+            // Test English → German
+            val appleResults = repository.search("apple", SearchLanguage.ENGLISH)
+            Log.d("DictionaryViewModel", "Apple search results: ${appleResults.size}")
+            appleResults.take(3).forEach { entry ->
+                Log.d("DictionaryViewModel", "  - ${entry.germanWord} (${entry.gender})")
+            }
+            
+            // Test German → English
+            val apfelResults = repository.search("Apfel", SearchLanguage.GERMAN)
+            Log.d("DictionaryViewModel", "Apfel search results: ${apfelResults.size}")
+            apfelResults.take(3).forEach { entry ->
+                Log.d("DictionaryViewModel", "  - ${entry.englishWord}")
+            }
+            
+            // Check if we got the expected results
+            val hasAppleTranslation = appleResults.any { it.germanWord.lowercase().contains("apfel") }
+            val hasApfelTranslation = apfelResults.any { it.englishWord.lowercase().contains("apple") }
+            
+            if (!hasAppleTranslation || !hasApfelTranslation) {
+                Log.w("DictionaryViewModel", "Common words not found! Need full dictionary import.")
+                _errorMessage.value = "Dictionary search quality issue detected. Please import full dictionary."
+            } else {
+                Log.d("DictionaryViewModel", "Common words search working correctly")
+            }
+            
+        } catch (e: Exception) {
+            Log.e("DictionaryViewModel", "Error testing common words: ${e.message}", e)
         }
     }
     
@@ -310,6 +363,14 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
                 _importProgress.value = null
             }
         }
+    }
+    
+    /**
+     * Force full dictionary import (recommended for fixing search issues)
+     */
+    fun startFullImport() {
+        Log.d("DictionaryViewModel", "Starting FULL dictionary import to fix search issues")
+        startImport(clearExisting = true)
     }
     
     /**
