@@ -1,0 +1,1001 @@
+English Word,IPA Pronunciation,German Translation,Gender,Word Type,Domains,Examples,Synonyms
+Availability:,,"Copyright (C) Frank Richter  1995 - 2020,; Einhard Leichtfuß 2020-2022, Sebastian Humenda 2021; This dictionary is free software: you can redistribute it and/or modify",,,,0,
+Notes:,,* Database Status: stable,,,,0,
+Source(s):,,"Home: https://dict.tu-chemnitz.de/ This dictionary was generated from; the Ding  dictionary, version 1.9; (2020-12-22) using the , ding2tei-haskell",,,"https://dict.tu-chemnitz.de/, https://github.com/freedict/tools/tree/master/importers/ding2tei, https://ftp.tu-chemnitz.de/pub/Local/urz/ding/",0,
+The Project:,,"This dictionary comes to you through nice people making it available for; free and for good. It is part of the FreeDict project,; https://freedict.org/. This project aims to make many translating",,,,0,
+Changelog:,,* 2020-09-11 #eleichtfuss ver. 1.8.1-fd0.1:; * Initial import from Ding (version 1.8.1).; * Fixed many syntax errors and inconsistencies in the Ding,,,,0,
+the nuts and bolts,ðə nˈʌts and bˈəʊlts,das A und O,,,"coll., ugs.",0,
+congo eels,kˈɒŋɡəʊ ˈiːlz,"Aalmolche , Fischmolche",,plural,"coll., zool.",0,"congo snakes, amphiuma salamanders, amphiumas"
+congo snakes,kˈɒŋɡəʊ snˈeɪks,"Aalmolche , Fischmolche",,plural,"coll., zool.",0,"congo eels, amphiuma salamanders, amphiumas"
+dorsal stripe,dˈɔːsəl stɹˈaɪp,Aalstrich,masculine,,"hunters' parlance, Jägersprache",0,"spinal stripe, eel stripe"
+carrion hunter,kˈaɹiən hˈʌntə,Aasjäger,masculine,,"hunters' parlance, Jägersprache",0,pothunter
+poo,pˈuː,"Aa machen, groß machen, Stinker machen , käckern , Gacki machen",,verb,"children's speech, Kindersprache, Schw.",0,do a poo
+Manila fibre,mɐnˈɪlə fˈaɪbə,"Abacá , Abaka , Manilahanf",masculine,,"Br., bot.",0,"abacá, Manila fiber"
+Manila fiber,mɐnˈɪlə fˈaɪbə,"Abacá , Abaka , Manilahanf",masculine,,"bot., Am.",0,"abacá, Manila fibre"
+colour fastness,kˈʌlə fˈastnəs,"Abbildungsgenauigkeit , Abbildungsqualität",feminine,,"Br., techn.",0,color fastness
+color fastness,kˈʌlə fˈastnəs,"Abbildungsgenauigkeit , Abbildungsqualität",feminine,,"techn., Am.",0,colour fastness
+apologize,ɐpˈɒlədʒˌaɪz,Abbitte leisten,,,eAm.,0,apologise
+apologise,ɐpˈɒlədʒˌaɪz,Abbitte leisten,,,Br.,0,apologize
+valving pressure,vˈalvɪŋ pɹˈɛʃə,Abblasedruck,masculine,,"techn., Am.",0,blowing-off pressure
+relief hood,ɹɪlˈiːf hˈʊd,Abblasehaube,feminine,,"mach., atmospheric",0,
+dipping,dˈɪpɪŋ,Abblenden,neuter,,"Br., auto",0,dimming
+dimming,dˈɪmɪŋ,Abblenden,neuter,,"auto, Am.",0,dipping
+dip switch,dˈɪp swˈɪtʃ,Abblendschalter,masculine,,"Br., auto",0,"dipper, dimmer switch"
+dipper,dˈɪpə,Abblendschalter,masculine,,"Br., auto",0,"dip switch, dimmer switch"
+dimmer switch,dˈɪmə swˈɪtʃ,Abblendschalter,masculine,,"auto, Am.",0,"dip switch, dipper"
+college dropout,kˈɒlɪdʒ dɹˈɒpaʊt,Studienabbrecher,masculine,,Am.,0,university dropout
+demo,dˈɛməʊ,"Abbruch , Abriss , Schleifen",masculine,,"coll., constr.",2,"tearing down, demolishment, pulling down"
+wrecker,ɹˈɛkə,Abbrucharbeiter,masculine,,Am.,0,
+house breaker,hˈaʊs bɹˈeɪkə,"Abbruchfirma , Abbruchunternehmen",feminine,,"Br., constr.",0,"wrecking company, demolition company, wrecker"
+wrecking company,ɹˈɛkɪŋ kˈʌmpəni,"Abbruchfirma , Abbruchunternehmen",feminine,,"constr., Am.",0,"house breaker, demolition company, wrecker"
+housewrecker,hˈaʊsɹɛkə,"Abbruchfirma , Abbruchunternehmen",feminine,,"constr., Am.",0,"house breaker, demolition company, wrecker"
+wrecker,ɹˈɛkə,"Abbruchfirma , Abbruchunternehmen",feminine,,"constr., Am.",0,"house breaker, demolition company, housewrecker"
+NBC defence,ˌɛnbˌiːsˈiː dɪfˈɛns,ABC-Abwehr,feminine,,"Br., mil.",0,NBC defense
+NBC defense,ˌɛnbˌiːsˈiː dɪfˈɛns,ABC-Abwehr,feminine,,"mil., Am.",0,NBC defence
+knacker,nˈakə,"Abdecker , Schinder , Kadaverbeseitiger",masculine,,"Br., veraltet",0,renderer
+weatherstrip,wˈɛðəstɹˌɪp,"Abdichtstreifen , Dichtungsleiste",feminine,,Am.,0,
+moulding,mˈəʊldɪŋ,"Abdruck , Guss , Abguss",masculine,,Br.,0,molding
+molding,mˈəʊldɪŋ,"Abdruck , Guss , Abguss",masculine,,Am.,0,moulding
+pulling-off screw,pˈʊlɪŋ ˈɒf skɹˈuː,Abdrückschraube,feminine,,"techn., Am.",1,"pulling screw, forcing screw"
+pulling screw,pˈʊlɪŋ skɹˈuː,Abdrückschraube,feminine,,"techn., Am.",0,"forcing screw, pulling-off screw"
+It's not,It isn't,"Noch ist nicht aller Tage Abend., Man soll den Tag nicht vor dem Abend loben.",,,Am.,0,It's not over until it's over.
+gloaming,ɡlˈəʊmɪŋ,"Abenddämmerung , Dämmerung , Dämmer",masculine,,"geogr., Sc., poet.",0,"evening twilight, dusk, twilight"
+sere and yellow leaf,sˈiəɹ and jˈɛləʊ lˈiːf,"Abenddämmerung , Niedergang , Ausklang",masculine,,fig.,1,
+have tea,hav tˈiː,"Abendbrot essen, zu Abend essen",,,Sc.,0,
+high tea,hˈaɪ tˈiː,kaltes Abendessen mit Tee,,,"cook., Br.",0,
+commune,kˈɒmjuːn,das Abendmahl empfangen,,,Am.,0,
+departure board,dɪpˈɑːtʃə bˈɔːd,Abfahrtstafel,feminine,,train,0,departure indicator
+departure indicator,dɪpˈɑːtʃəɹ ˈɪndɪkˌeɪtə,Abfahrtstafel,feminine,,"train, Am.",0,departure board
+rubbish,ɹˈʌbɪʃ,"Abfall , Müll     , Mist   , Kehricht     , Güsel",masculine,,"Ös., Br., BW",1,"refuse, trash, garbage"
+garbage,ɡˈɑːbɪdʒ,"Abfall , Müll     , Mist   , Kehricht     , Güsel",masculine,,"Ös., BW, Am.",1,"refuse, rubbish, trash"
+trash,tɹˈaʃ,"Abfall , Müll     , Mist   , Kehricht     , Güsel",masculine,,"Ös., BW, Am.",0,"refuse, rubbish, garbage"
+rubbish,ɹˈʌbɪʃ,"Abfall , Hausabfall , Kehricht",masculine,,Br.,0,
+garbage,ɡˈɑːbɪdʒ,"Abfall , Hausabfall",masculine,,Am.,0,
+waste tipping,wˈeɪst tˈɪpɪŋ,"Abfallablagerung , Müllablagerung, Schuttabladen",feminine,,"Br., envir.",0,waste dumping
+waste treatment,wˈeɪst tɹˈiːtmənt,Abfallbehandlung,feminine,,"envir., solid-",1,refuse treatment
+litter receptacle,lˈɪtə ɹɪsˈɛptəkəl,"Abfallbehälter , Müllbehälter",masculine,,"Br., envir.",0,"waste box, trash receptacle, waste receptacle"
+trash receptacle,tɹˈaʃ ɹɪsˈɛptəkəl,"Abfallbehälter , Müllbehälter",masculine,,"envir., Am.",0,"litter receptacle, waste box, waste receptacle"
+downgrade,dˈaʊŋɡɹeɪd,"Abfallen , Gefälle , abfallender Verlauf",masculine,,"geogr., constr., Am.",0,decline
+waste bin,wˈeɪst bˈɪn,"Abfalleimer , Mülleimer , Abfallkübel , Mistkübel   , Müllkübel   , Kehrichteimer",masculine,,"Br., Ös., envir.",0,"container bin, kitchen bin"
+kitchen bin,kˈɪtʃən bˈɪn,"Abfalleimer , Mülleimer , Abfallkübel , Mistkübel   , Müllkübel   , Kehrichteimer",masculine,,"Br., Ös., envir.",0,"waste bin, container bin"
+trash can,tɹˈaʃ kˈan,Abfalleimer,masculine,,Am.,0,garbage can
+garbage can,ɡˈɑːbɪdʒ kˈan,Abfalleimer,masculine,,Am.,0,trash can
+litter basket,lˈɪtə bˈaskɪt,Abfallkorb,masculine,,"Br., envir.",0,
+waste management counselling,wˈeɪst mˈanɪdʒmənt kˈaʊnsəlˌɪŋ,Abfallwirtschaftsberatung,feminine,,"Br., envir.",0,waste management counseling
+waste management counseling,wˈeɪst mˈanɪdʒmənt kˈaʊnsəlɪŋ,Abfallwirtschaftsberatung,feminine,,"envir., Am.",0,waste management counselling
+recycling centre,ɹɪsˈaɪklɪŋ sˈɛntə,"Abfallwirtschaftshof , Altstoffhof , Altstoffsammelstelle , Altstoffzentrum , Recyclinghof , Wertstoffhof",masculine,,"Dt., Br., envir.",1,"civic amenity site, recycling yard, household waste recycling centre / center"
+recycling center,ɹɪsˈaɪklɪŋ sˈɛntə,"Abfallwirtschaftshof , Altstoffhof , Altstoffsammelstelle , Altstoffzentrum , Recyclinghof , Wertstoffhof",masculine,,"Dt., envir., Am.",0,"civic amenity site, recycling yard, household waste recycling centre / center"
+household waste recycling centre,center,"Abfallwirtschaftshof , Altstoffhof , Altstoffsammelstelle , Altstoffzentrum , Recyclinghof , Wertstoffhof",masculine,,"Dt., envir., Am.",0,"civic amenity site, recycling yard, CA site"
+downtown air terminal,dˈaʊntaʊn ˈeə tˈɜːmɪnəl,Abfertigungsbüro für Fluggäste in der Stadt mit Flughafentransfer,,,"transp., Br.",0,air terminal
+air terminal,ˈeə tˈɜːmɪnəl,Abfertigungsbüro für Fluggäste in der Stadt mit Flughafentransfer,,,"transp., Br.",0,downtown air terminal
+gratuity,ɡɹatjˈuːɪti,"Abfindung , Gratifikation",feminine,,Br.,0,
+golden handshake,ɡˈəʊldən hˈandʃeɪk,"hohe Abfindung , goldener Händedruck",feminine,,"übtr., fig.",0,
+tun dish,tˈʌn dˈɪʃ,Abflusstrichter,masculine,,Br.,0,"exhaust cone, drain funnel"
+moulding,mˈəʊldɪŋ,Abformen,neuter,,"Br., techn.",0,"duplicate molding, molding, duplicate moulding"
+molding,mˈəʊldɪŋ,Abformen,neuter,,"techn., Am.",0,"duplicate molding, duplicate moulding, moulding"
+duplicate moulding,djˈuːplɪkˌeɪt mˈəʊldɪŋ,Abformen,neuter,,"Br., techn.",0,"duplicate molding, molding, moulding"
+duplicate molding,djˈuːplɪkˌeɪt mˈəʊldɪŋ,Abformen,neuter,,"techn., Am.",0,"molding, duplicate moulding, moulding"
+moulding tool,mˈəʊldɪŋ tˈuːl,Abformwerkzeug,neuter,,Br.,0,molding tool
+molding tool,mˈəʊldɪŋ tˈuːl,Abformwerkzeug,neuter,,Am.,0,moulding tool
+tinning plant,tˈɪnɪŋ plˈant,Abfüllanlage,feminine,,Br.,0,canning plant
+canning plant,kˈanɪŋ plˈant,Abfüllanlage,feminine,,Am.,0,tinning plant
+tinning factory,tˈɪnɪŋ fˈaktəɹi,Abfüllbetrieb,masculine,,Br.,0,canning factory
+canning factory,kˈanɪŋ fˈaktəɹi,Abfüllbetrieb,masculine,,Am.,0,tinning factory
+duty,djˈuːti,"Abgabe   , Finanzabgabe , Gebühr",feminine,,"staatliche, government, adm.",0,"tariff, imposition, charge"
+go west,ɡˌəʊ wˈɛst,"den/einen Abgang machen, daran glauben müssen, den Löffel abgeben, abnibbeln    , die Patschen strecken / aufstellen  , bachab gehen  , abgehen  , abserbeln",,,"Ös., Nordostdt., Br.",0,"kick the bucket, to bite the dust, conk out, turn up your toes"
+buy it,bˈaɪ ɪt,"den/einen Abgang machen, daran glauben müssen, den Löffel abgeben, abnibbeln    , die Patschen strecken / aufstellen  , bachab gehen  , abgehen  , abserbeln",,,"Ös., Nordostdt., Mitteldt.",0,"kick the bucket, to bite the dust, go west, conk out"
+buy the farm,bˈaɪ ðə fˈɑːm,"den/einen Abgang machen, daran glauben müssen, den Löffel abgeben, abnibbeln    , die Patschen strecken / aufstellen  , bachab gehen  , abgehen  , abserbeln",,,"Ös., Nordostdt., Mitteldt.",0,"kick the bucket, to bite the dust, go west, conk out"
+diploma,dɪplˈəʊmə,Abgangszeugnis,neuter,,Am.,0,leaving certificate
+catalyser,kˈatɐlˌaɪsə,"Abgaskatalysator , Katalysator , Kat",masculine,,"Br., auto",0,"converter, exhaust gas catalytic converter, catalytic converter"
+assemblyman,ɐsˈɛmblɪmən,"Abgeordnete , Abgeordneter",,,Am.,0,"assemblywoman, deputy"
+assemblywoman,ɐsˈɛmblɪwˌʊmən,"Abgeordnete , Abgeordneter",,,Am.,0,"assemblyman, deputy"
+the gentlewoman,ðə dʒˈɛntəlwˌʊmən,die Frau Abgeordnete,,,"pol., Am.",0,
+abysm,ɐbˈɪzəm,"Abgrund , Schlund",masculine,,poet.,0,"gulf, abyss"
+dependant,dɪpˈɛndənt,"Abhängige , Abhängiger",,,Br.,0,dependent
+dependent,dɪpˈɛndənt,"Abhängige , Abhängiger",,,Am.,0,dependant
+pickup point,pˈɪkʌp pˈɔɪnt,Abholstelle,feminine,,Am.,0,pick-up point
+abiocen,ˈabɪˌəʊsən,Abiozön,neuter,,"envir., Am.",0,abiocoen
+get A-levels,ɡɛt ɐ lˈɛvəlz,"das Abitur ablegen   , die Matura ablegen     , maturieren",,verb,"Ös., Br., Dt.",1,receive/obtain/earn a high-school diploma
+receive,obtain,"das Abitur ablegen   , die Matura ablegen     , maturieren",,verb,"Ös., Am., Dt.",0,get A-levels
+take Latin as a required elective for high school graduation,tˈeɪk lˈatɪn az ɐ ɹɪkwˈaɪəd ɪlˈɛktɪv fɔː hˈaɪ skˈuːl ɡɹˌadjuːˈeɪʃən,"Latein als Abiturfach haben  , Latein als Maturafach haben    , in Latein maturieren",,,"Dt., Schw., Ös.",0,
+A-level student,ɐ lˈɛvəl stjˈuːdənt,"Abiturient   , Maturant   , Maturand",masculine,,"Ös., Br., Dt.",2,high-school senior
+high-school senior,hˈaɪ skˈuːl sˈiːnjə,"Abiturient   , Maturant   , Maturand",masculine,,"Ös., Am., Dt.",1,A-level student
+secondary school leaver,sˈɛkəndəɹi skˈuːl lˈiːvə,"Abiturient   , Maturant   , Maturand",masculine,,"Ös., Br., Dt.",1,high-school graduate
+high-school graduate,hˈaɪ skˈuːl ɡɹˈadjuːət,"Abiturient   , Maturant   , Maturand",masculine,,"Ös., Am., Dt.",1,secondary school leaver
+A-level year group,ɐ lˈɛvəl jˈiə ɡɹˈuːp,"Abiturjahrgang   , Abijahrgang     , Maturajahrgang",masculine,,"school, Ös., Br.",1,"year, class"
+year,jˈiə,"Abiturjahrgang   , Abijahrgang     , Maturajahrgang",masculine,,"school, Ös., Br.",2,"class, A-level year group"
+class,klˈas,"Abiturjahrgang   , Abijahrgang     , Maturajahrgang",masculine,,"school, Ös., Am.",2,"year, A-level year group"
+spoof newspaper compiled by the A-level class,senior class,"Abiturzeitung   , Abizeitung     , Maturazeitung",feminine,,"Ös., Am., Dt.",0,
+crude tipping,kɹˈuːd tˈɪpɪŋ,Abkippen,neuter,,"Br., techn.",0,open dumping
+alphabet soup,ˈalfəbˌɛt sˈuːp,"Abkürzungsdschungel , Buchstabensuppe",masculine,,"coll., pej., ugs.",0,
+counter space,kˈaʊntə spˈeɪs,Ablagefläche,feminine,,Am.,0,surface area
+expiration,ɛkspəɹˈeɪʃən,Ablauf,masculine,,Am.,2,expiry
+groove,ɡɹˈuːv,"eingefahrener Ablauf , ausgefahrene Gleise",masculine,plural,"Br., übtr.",2,rut
+process organization,pɹˈəʊsɛs ˌɔːɡɐnaɪzˈeɪʃən,Ablauforganisation,feminine,,eAm.,0,"process-oriented organization, process organisation"
+process organisation,pɹˈəʊsɛs ˌɔːɡɐnaɪzˈeɪʃən,Ablauforganisation,feminine,,Br.,0,"process organization, process-oriented organization"
+decease,dɪsˈiːs,"Ableben , Hinscheiden   , Hinschied",neuter,,"adm., Schw., poet.",0,demise
+demise,dɪmˈaɪz,"Ableben , Hinscheiden   , Hinschied",neuter,,"Schw., poet.",0,decease
+deprecation,dˌɛpɹɪkˈeɪʃən,"Ablehnung , Missbilligung",feminine,,formal,0,"disapprobation, disapproval"
+repudiation,ɹɪpjˈuːdɪˈeɪʃən,Ablehnung (),feminine,,"public, formal, + gen",1,
+deflexion,dɪflˈɛkʃən,"Ablenkung , Ablenken , Ausschlag",masculine,,Br.,0,deflection
+diversionary manoeuvre,daɪvˈɜːʃənəɹi mənˈuːvə,Ablenkungsmanöver,neuter,,"Br., mil.",0,diversionary maneuver
+diversionary maneuver,daɪvˈɜːʃənəɹi mənˈuːvə,Ablenkungsmanöver,neuter,,"mil., Am.",0,diversionary manoeuvre
+diversion behaviour,behavior,Ablenkungsverhalten,neuter,,"zool., Am.",0,
+key money,kˈiː mˈʌni,"Ablöse Abl.,  /ˈabəl/ , Abstandszahlung",feminine,,Br.,0,premium
+dietary,dˈaɪətəɹi,Diät,feminine,,"dated, cook.",0,"dietary regime, regulated diet, dietary regimen"
+slimming diet,slˈɪmɪŋ dˈaɪət,"Schlankheitsdiät , Schlankheitskur , Abmagerungskur",feminine,,Br.,1,"weight-reduction diet, slimming programme, weight-reduction regime"
+slimming regime,slˈɪmɪŋ ɹeɪʒˈiːm,"Schlankheitsdiät , Schlankheitskur , Abmagerungskur",feminine,,Br.,0,"weight-reduction diet, slimming programme, weight-reduction regime"
+slimming programme,slˈɪmɪŋ pɹˈəʊɡɹam,"Schlankheitsdiät , Schlankheitskur , Abmagerungskur",feminine,,Br.,0,"weight-reduction diet, weight-reduction regime, slimming diet"
+dimension,daɪmˈɛnʃən,"Abmessung , Maß , Aufmaß , Abmaß",feminine,,"measured, math.",1,measurement
+taper,tˈeɪpə,"Abnahme , Verringerung",feminine,,fig.,0,
+callipering,kˈalɪpəɹɪŋ,"Abnehmen , Abgriff",masculine,,Br.,0,calipering
+calipering,kˈalɪpəɹɪŋ,"Abnehmen , Abgriff",masculine,,Am.,0,callipering
+authorised inspector,ˈɔːθəɹˌaɪzd ɪnspˈɛktə,"Abnehmer , Abnehmerin , Abnahmebeamte , Abnahmebeamter",masculine,,Br.,0,authorized inspector
+authorized inspector,ˈɔːθəɹˌaɪzd ɪnspˈɛktə,"Abnehmer , Abnehmerin , Abnahmebeamte , Abnahmebeamter",masculine,,Am.,0,authorised inspector
+wear and tear,wˈeəɹ ɐnd tˈeə,"natürliche Abnutzungserscheinungen/Abnützungserscheinungen       , natürliche Abnutzung/Abnützung",feminine,plural,"Schw., normal, Süddt.",0,
+night soil,nˈaɪt sˈɔɪl,"Abortdünger , Abtrittsdünger",masculine,,"dated, agr., hist.",0,
+packing plant,pˈakɪŋ plˈant,Abpackbetrieb,masculine,,Am.,0,
+reckoning,ɹˈɛkənɪŋ,"Abrechnung , Rechnung",feminine,,"archaic, übtr., econ.",0,
+accounting centre,ɐkˈaʊntɪŋ sˈɛntə,zentrale Abrechnungsstelle,feminine,,"Br., fin.",0,accounting center
+accounting center,ɐkˈaʊntɪŋ sˈɛntə,zentrale Abrechnungsstelle,feminine,,"fin., Am.",0,accounting centre
+setting day,sˈɛtɪŋ dˈeɪ,Abrechnungstermin,masculine,,Br.,0,
+clean sb.'s clock,klˈiːn ˌɛsbˈiː ˈɛs klˈɒk,jdm. eine (ordentliche) Abreibung verpassen,,verb,"sport, fig., Am.",0,
+sanitary lockdown,sˈanɪtəɹi lˈɒkdaʊn,"Abriegelung eines Infektionsgebietes, Cordon sanitaire",masculine,,"med., veraltend, Am.",0,cordon sanitaire
+counterfoil,kˈaʊntəfˌɔɪl,"Abrissabschnitt , Abriss , abtrennbarer Abschnitt , Abschnitt zum Abtrennen, Abrisscoupon     , Coupon     , Abrisskupon   , Kupon   , Talon   , Abrisszettel",masculine,,"Ös., Br., Dt.",0,"coupon, detachable portion, tear-off slip"
+stub,stˈʌb,"Abrissabschnitt , Abriss , abtrennbarer Abschnitt , Abschnitt zum Abtrennen, Abrisscoupon     , Coupon     , Abrisskupon   , Kupon   , Talon   , Abrisszettel",masculine,,"Ös., Am., Dt.",0,"coupon, detachable portion, tear-off slip"
+tyre noise,tˈaɪə nˈɔɪz,Abrollgeräusch,neuter,,"Br., auto",0,tire noise
+tire noise,tˈaɪə nˈɔɪz,Abrollgeräusch,neuter,,"auto, Am.",0,tyre noise
+turnover,tˈɜːnəʊvə,"Absatz , Warenabsatz",masculine,,"Br., econ.",0,sales
+de-energization,dəɹ ˌɛnədʒaɪzˈeɪʃən,"Abschaltung , Aberregung , Netztrennung",feminine,,"eAm., electr.",0,"cut-out, de-energisation, disconnection"
+de-energisation,dəɹ ˌɛnədʒaɪzˈeɪʃən,"Abschaltung , Aberregung , Netztrennung",feminine,,"Br., electr.",0,"cut-out, disconnection, de-energization"
+separation system,sˌɛpəɹˈeɪʃən sˈɪstəm,Abscheideeinrichtung,feminine,,"techn., water/steam",0,
+immigration removal centre,ˌɪmɪɡɹˈeɪʃən ɹɪmˈuːvəl sˈɛntə,"Abschiebezentrum , Schubhaftzentrum",neuter,,"adm., Br., Ös.",1,
+valedictorian,vˌalɪdɪktˈɔːɹiən,Bester eines Abschlussjahrgangs und letzter Redner auf der Abschlussfeier,,,"school, stud., Am.",0,valedictory speaker
+valedictory speaker,vˌalɪdˈɪktəɹi spˈiːkə,Bester eines Abschlussjahrgangs und letzter Redner auf der Abschlussfeier,,,"school, stud., Am.",0,valedictorian
+tow service,tˈəʊ sˈɜːvɪs,Abschleppdienst,masculine,,"auto, Am.",0,"wrecking service, breakdown recovery service, towing service"
+towing company,tˈəʊɪŋ kˈʌmpəni,"Abschleppfirma , Abschleppunternehmen",feminine,,"Br., auto",0,wrecker company
+wrecker company,ɹˈɛkə kˈʌmpəni,"Abschleppfirma , Abschleppunternehmen",feminine,,"Br., auto, Am.",0,towing company
+breakdown lorry,bɹˈeɪkdaʊn lˈɒɹi,"Abschleppwagen , Abschleppfahrzeug",masculine,,Br.,0,"breakdown vehicle, recovery vehicle, breakdown truck"
+breakdown truck,bɹˈeɪkdaʊn tɹˈʌk,"Abschleppwagen , Abschleppfahrzeug",masculine,,Am.,0,"breakdown vehicle, breakdown lorry, recovery vehicle"
+wrecker,ɹˈɛkə,Abschleppwagen,masculine,,Am.,0,"tow-away vehicle, tow truck"
+cloture motion,klˈɒtʃə mˈəʊʃən,Antrag auf Schluss der Debatte,,,Am.,0,closure motion
+wind-up,windup,"Abschluss , Schlusspunkt , Ausklang",masculine,,Am.,0,"conclusion, close, finale"
+final year group,fˈaɪnəl jˈiə ɡɹˈuːp,Abschlussjahrgang,masculine,,"Br., stud., school",0,"graduating class, final year class, graduating year group"
+graduating year group,ɡɹˈadjuːˌeɪtɪŋ jˈiə ɡɹˈuːp,Abschlussjahrgang,masculine,,"Br., stud., school",0,"final year group, graduating class, final year class"
+final year class,fˈaɪnəl jˈiə klˈas,Abschlussjahrgang,masculine,,"school, stud., Am.",0,"final year group, graduating class, graduating year group"
+graduating class,ɡɹˈadjuːˌeɪtɪŋ klˈas,Abschlussjahrgang,masculine,,"school, stud., Am.",0,"final year group, final year class, graduating year group"
+graduation,ɡɹˌadjuːˈeɪʃən,Abschlussprüfung,feminine,,"school, stud., Am.",0,"final, final examination, finals"
+diploma,dɪplˈəʊmə,Abschlusszeugnis,neuter,,"school, stud., Am.",0,
+Stanley knife,stˈanli nˈaɪf,"Abschneidemesser , Abbrechklingenmesser , Japanmesser , Teppichmesser , Stanley-Messer",masculine,,"tm, Ös.",0,"cutter, carpet cutter, utility knife"
+compartmentalization,kɒmpɑːtmˌɛntəlaɪzˈeɪʃən,Abschottung,feminine,,eAm.,1,"partitioning-off, walling-off, compartmentalisation"
+compartmentalisation,kɒmpɑːtmˌɛntəlaɪzˈeɪʃən,Abschottung,feminine,,Br.,0,"walling-off, partitioning-off, compartmentalization"
+bevelling,bˈɛvəlɪŋ,"Abschrägen , Abkanten , Anglage",feminine,,Br.,0,"beveling, chamfering"
+beveling,bˈɛvəlɪŋ,"Abschrägen , Abkanten , Anglage",feminine,,Am.,0,"bevelling, chamfering"
+amortisation,ɐmˌɔːtaɪzˈeɪʃən,"Abschreibung   , Steuerabschreibung",feminine,,"Br., steuerliche, jährliche",0,"allowance for depreciation, amortization, depreciation"
+special amortisation,spˈɛʃəl ɐmˌɔːtaɪzˈeɪʃən,Sonderabschreibung,feminine,,Br.,0,special amortization
+amortization type,ɐmˌɔːtaɪzˈeɪʃən tˈaɪp,Abschreibungsart,feminine,,eAm.,0,amortisation type
+amortisation type,ɐmˌɔːtaɪzˈeɪʃən tˈaɪp,Abschreibungsart,feminine,,Br.,0,amortization type
+amortization amount,ɐmˌɔːtaɪzˈeɪʃən ɐmˈaʊnt,Abschreibungsbetrag,masculine,,eAm.,0,amortisation amount
+amortisation amount,ɐmˌɔːtaɪzˈeɪʃən ɐmˈaʊnt,Abschreibungsbetrag,masculine,,Br.,0,amortization amount
+amortization posting,ɐmˌɔːtaɪzˈeɪʃən pˈəʊstɪŋ,Abschreibungsbuchung,feminine,,eAm.,0,amortisation posting
+amortisation posting,ɐmˌɔːtaɪzˈeɪʃən pˈəʊstɪŋ,Abschreibungsbuchung,feminine,,Br.,0,amortization posting
+amortization field,ɐmˌɔːtaɪzˈeɪʃən fˈiːld,Abschreibungsfeld,neuter,,eAm.,0,amortisation field
+amortisation field,ɐmˌɔːtaɪzˈeɪʃən fˈiːld,Abschreibungsfeld,neuter,,Br.,0,amortization field
+amortization adjustment,ɐmˌɔːtaɪzˈeɪʃən ɐdʒˈʌstmənt,Abschreibungskorrektur,feminine,,eAm.,0,amortisation adjustment
+amortisation adjustment,ɐmˌɔːtaɪzˈeɪʃən ɐdʒˈʌstmənt,Abschreibungskorrektur,feminine,,Br.,0,amortization adjustment
+amortization costs,ɐmˌɔːtaɪzˈeɪʃən kˈɒsts,Abschreibungskosten,,plural,eAm.,0,amortisation costs
+amortisation costs,ɐmˌɔːtaɪzˈeɪʃən kˈɒsts,Abschreibungskosten,,plural,Br.,0,amortization costs
+amortization list,ɐmˌɔːtaɪzˈeɪʃən lˈɪst,Abschreibungsliste,feminine,,eAm.,0,amortisation list
+amortisation list,ɐmˌɔːtaɪzˈeɪʃən lˈɪst,Abschreibungsliste,feminine,,Br.,0,amortization list
+amortization method,ɐmˌɔːtaɪzˈeɪʃən mˈɛθəd,Abschreibungsmethode,feminine,,eAm.,0,amortisation method
+amortisation method,ɐmˌɔːtaɪzˈeɪʃən mˈɛθəd,Abschreibungsmethode,feminine,,Br.,0,amortization method
+amortization mode,ɐmˌɔːtaɪzˈeɪʃən mˈəʊd,Abschreibungsmodus,masculine,,eAm.,0,amortisation mode
+amortisation mode,ɐmˌɔːtaɪzˈeɪʃən mˈəʊd,Abschreibungsmodus,masculine,,Br.,0,amortization mode
+depreciation allowance,dɪpɹˌiːʃɪˈeɪʃən ɐlˈaʊəns,steuerliche Abschreibungsmöglichkeit,feminine,,"Br., fin.",0,possibility for depreciation
+amortization parameter,ɐmˌɔːtaɪzˈeɪʃən pəɹˈamɪtə,Abschreibungsparameter,masculine,,eAm.,0,amortisation parameter
+amortisation parameter,ɐmˌɔːtaɪzˈeɪʃən pəɹˈamɪtə,Abschreibungsparameter,masculine,,Br.,0,amortization parameter
+amortization forecast,ɐmˌɔːtaɪzˈeɪʃən fˈɔːkast,Abschreibungsprognose,feminine,,eAm.,0,amortisation forecast
+amortisation forecast,ɐmˌɔːtaɪzˈeɪʃən fˈɔːkast,Abschreibungsprognose,feminine,,Br.,0,amortization forecast
+amortization rate,ɐmˌɔːtaɪzˈeɪʃən ɹˈeɪt,Abschreibungsrate,feminine,,"fin., eAm.",0,"amortisation rate, depreciation rate"
+amortisation rate,ɐmˌɔːtaɪzˈeɪʃən ɹˈeɪt,Abschreibungsrate,feminine,,"Br., fin.",0,"amortization rate, depreciation rate"
+amortization calculation,ɐmˌɔːtaɪzˈeɪʃən kˌalkjʊlˈeɪʃən,Abschreibungsrechnung,feminine,,eAm.,0,amortisation calculation
+amortisation calculation,ɐmˌɔːtaɪzˈeɪʃən kˌalkjʊlˈeɪʃən,Abschreibungsrechnung,feminine,,Br.,0,amortization calculation
+amortization rule,ɐmˌɔːtaɪzˈeɪʃən ɹˈuːl,Abschreibungsregel,feminine,,eAm.,0,amortisation rule
+amortisation rule,ɐmˌɔːtaɪzˈeɪʃən ɹˈuːl,Abschreibungsregel,feminine,,Br.,0,amortization rule
+amortization record,ɐmˌɔːtaɪzˈeɪʃən ɹˈɛkɔːd,Abschreibungssatz,masculine,,eAm.,0,amortisation record
+amortisation record,ɐmˌɔːtaɪzˈeɪʃən ɹˈɛkɔːd,Abschreibungssatz,masculine,,Br.,0,amortization record
+amortization code,ɐmˌɔːtaɪzˈeɪʃən kˈəʊd,Abschreibungsschlüssel,masculine,,eAm.,0,amortisation code
+amortisation code,ɐmˌɔːtaɪzˈeɪʃən kˈəʊd,Abschreibungsschlüssel,masculine,,Br.,0,amortization code
+amortization cancelation,ɐmˌɔːtaɪzˈeɪʃən kˌansɪlˈeɪʃən,Abschreibungsstornierung,feminine,,eAm.,0,amortisation cancellation
+amortisation cancellation,ɐmˌɔːtaɪzˈeɪʃən kˌansɪlˈeɪʃən,Abschreibungsstornierung,feminine,,Br.,0,amortization cancelation
+amortization value,ɐmˌɔːtaɪzˈeɪʃən vˈaljuː,Abschreibungswert,masculine,,eAm.,0,amortisation value
+amortisation value,ɐmˌɔːtaɪzˈeɪʃən vˈaljuː,Abschreibungswert,masculine,,Br.,0,amortization value
+amortisation period,ɐmˌɔːtaɪzˈeɪʃən pˈiəɹɪəd,"Abschreibungszeitraum , Abschreibungsperiode , Abschreibungsdauer",masculine,,"Br., fin.",0,amortization period
+exemplified copy,ɛɡzˈɛmplɪfˌaɪd kˈɒpɪ,beglaubigte Abschrift,,,Am.,0,"certified copy, attested copy"
+estreat,ˈɛstɹiːt,beglaubigte Abschrift eines Gerichtsprotokolls,,,"Br., jur.",0,
+kill,kˈɪl,Abschuss,masculine,,"coll., mil.",0,
+discharge,dɪstʃˈɑːdʒ,"Abschuss , Abschießen , Abfeuern",masculine,,"mil., formal",0,firing
+be for the chop,biː fəðə tʃˈɒp,auf der Streichliste stehen,,,Br.,0,be on the chopping block
+be on the chopping block,biː ɒnðə tʃˈɒpɪŋ blˈɒk,auf der Streichliste stehen,,,Am.,0,be for the chop
+abseiling,ˈabseɪlɪŋ,Abseilen,neuter,,Br.,2,rappeling
+rappeling,ɹˈapəlɪŋ,Abseilen,neuter,,Am.,2,abseiling
+abseiler,ˈabseɪlə,"Abseiler , Abseilender",masculine,,Br.,0,"rappeller, descender"
+rappeller,ɹˈapələ,"Abseiler , Abseilender",masculine,,Am.,0,"abseiler, descender"
+abseiling equipment,ˈabseɪlɪŋ ɪkwˈɪpmənt,Abseilgerät,neuter,,"Br., sport",0,rappelling equipment
+rappelling equipment,ɹˈapəlɪŋ ɪkwˈɪpmənt,Abseilgerät,neuter,,"sport, Am.",0,abseiling equipment
+abseil,ˈabseɪl,Abseilpartie,feminine,,Br.,1,rappel
+rappel,ɹapˈɛl,Abseilpartie,feminine,,Am.,1,abseil
+carriageway subsidence,kˈaɹɪdʒwˌeɪ sˈʌbsɪdəns,Fahrbahnsenkung,feminine,,Br.,0,roadway subsidence
+roadway subsidence,ɹˈəʊdweɪ sˈʌbsɪdəns,Fahrbahnsenkung,feminine,,Am.,0,carriageway subsidence
+shrive sb.,ʃɹˈaɪv ˌɛsbˈiː,jdm. die Absolution erteilen,,,dated,0,
+alum,ˈaləm,"Absolvent , Absolventin , Ehemaliger   , Ehemalige",masculine,,"stud., Am., coll.",0,"alumnus, alumna"
+graduate,ɡɹˈadjuːət,Absolvent,masculine,,"school, stud., Am.",0,
+cumshot,kˈʌmʃɒt,Abspritzen,neuter,,slang,0,spaffing
+spaffing,spˈafɪŋ,Abspritzen,neuter,,"Br., slang",0,cumshot
+descendance,dɪsˈɛndəns,"Abstammung , Abkunft",feminine,,"archaic, geh., soc.",0,"descent, lineage, ancestry"
+descendancy,dɪsˈɛndənsi,"Abstammung , Abkunft",feminine,,"archaic, geh., soc.",0,"descent, lineage, ancestry"
+descendency,dɪsˈɛndənsi,"Abstammung , Abkunft",feminine,,"soc., archaic, geh.",0,"descent, lineage, ancestry"
+desist from sth.,dɪsˈɪst fɹɒm ˌɛstˌiːˈeɪtʃ,"von etw. Abstand nehmen, von etw. absehen , etw. unterlassen",,,"adm., formal",1,refrain from sth.
+contact avoidance,kˈɒntakt ɐvˈɔɪdəns,"soziales Abstandhalten , Kontaktvermeidung   , Vermeidung / Einschränkung sozialer Kontakte",feminine,,"med., soziale, social",0,social distancing
+range discrimination,ɹˈeɪndʒ dɪskɹˌɪmɪnˈeɪʃən,"Abstandsunterscheidung , Entfernungsauflösungsvermögen , Entfernungsauflösung",feminine,,Br.,0,range resolution
+range resolution,ɹˈeɪndʒ ɹˌɛzəlˈuːʃən,"Abstandsunterscheidung , Entfernungsauflösungsvermögen , Entfernungsauflösung",feminine,,Am.,0,range discrimination
+sortie,sˈɔːti,Abstecher,masculine,,Br.,0,side trip
+dosshouse,dˈɒshaʊs,"Absteige   , Penne",feminine,,"Dt., Br., veraltend",0,flophouse
+flophouse,flˈɒfaʊs,"Absteige   , Penne",feminine,,"Dt., veraltend, billige",0,dosshouse
+put sb. in a backwater,pˌʊt ˌɛsbˈiː ɪn ɐ bˈakwɔːtə,aufs Abstellgleis geschoben werden,,,"übtr., fig.",0,
+tow lot,tˈəʊ lˈɒt,Abstellplatz,masculine,,Am.,0,
+box room,bˈɒks ɹˈuːm,"Abstellraum , Réduit",masculine,,"Br., Schw.",0,storeroom
+division bell,dɪvˈɪʒən bˈɛl,Abstimmungsglocke,feminine,,Br.,0,
+pushing-off of wagons,pˈʊʃɪŋ ˈɒf ɒv wˈaɡənz,"Abstoßbetrieb , Abstoßen von Wagen, Stoß",masculine,,"Br., Schw.",0,"fly shunting, fly switching"
+divestiture,daɪvˈɛstɪtʃə,"Abstoßen von Unternehmensteilen, Entflechtung",feminine,,"econ., Am.",0,"divestment, divesture"
+divesture,daɪvˈɛstʃə,"Abstoßen von Unternehmensteilen, Entflechtung",feminine,,"econ., Am.",0,"divestment, divestiture"
+mouldboard,mˈəʊldbɔːd,"Abstreichblech , Streichblech",neuter,,"Br., agr.",0,"plough board, plow breast, plow board"
+moldboard,mˈəʊldbɔːd,"Abstreichblech , Streichblech",neuter,,"agr., Am.",0,"plough board, plow breast, plow board"
+plough board,plˈaʊ bˈɔːd,"Abstreichblech , Streichblech",neuter,,"Br., agr.",0,"plow breast, plow board, mouldboard"
+plow board,plˈaʊ bˈɔːd,"Abstreichblech , Streichblech",neuter,,"agr., Am.",0,"plough board, plow breast, mouldboard"
+plough breast,plˈaʊ bɹˈɛst,"Abstreichblech , Streichblech",neuter,,"Br., agr.",0,"plough board, plow breast, plow board"
+plow breast,plˈaʊ bɹˈɛst,"Abstreichblech , Streichblech",neuter,,"agr., Am.",0,"plough board, plow board, mouldboard"
+colour gradation,kˈʌlə ɡɹeɪdˈeɪʃən,"Abstufung , Farbabstufung , Farbnuance",feminine,,Br.,0,"shade, color gradation, color shade"
+color gradation,kˈʌlə ɡɹeɪdˈeɪʃən,"Abstufung , Farbabstufung , Farbnuance",feminine,,Am.,0,"shade, colour gradation, color shade"
+dishrag,dˈɪʃɹaɡ,"Abwaschtuch , Abwaschlappen",masculine,,Am.,0,dishcloth
+sewage clarification,sˈuːɪdʒ klˌaɹɪfɪkˈeɪʃən,"Abwasserreinigung , Abwasserklärung",feminine,,"envir., rare",0,sewage purification
+defence,dɪfˈɛns,Abwehr,feminine,,Br.,0,defense
+defense,dɪfˈɛns,Abwehr,feminine,,Am.,0,defence
+defence,dɪfˈɛns,Abwehr,feminine,,Br.,6,defense
+defense,dɪfˈɛns,Abwehr,feminine,,Am.,3,defence
+defence,dɪfˈɛns,"Abwehr , Verteidigung",feminine,,"Br., sport",3,defense
+defense,dɪfˈɛns,"Abwehr , Verteidigung",feminine,,"sport, Am.",3,defence
+play defense,plˈeɪ dɪfˈɛns,in der Abwehr/Verteidigung spielen,,,Am.,0,
+body's defense,bˈɒdi ˈɛs dɪfˈɛns,Abwehrkraft des Körpers,,,Am.,1,body's defence
+defence system,dɪfˈɛns sˈɪstəm,Abwehrsystem,neuter,,"Br., mil.",0,defense system
+defense system,dɪfˈɛns sˈɪstəm,Abwehrsystem,neuter,,"mil., Am.",1,defence system
+colour deviation,kˈʌlə dˌiːvɪˈeɪʃən,Farbabweichung,feminine,,Br.,0,color deviation
+color deviation,kˈʌlə dˌiːvɪˈeɪʃən,Farbabweichung,feminine,,Am.,0,colour deviation
+curator absentis,kjʊəɹˈeɪtəɹ absˈɛntiz,Abwesenheitspfleger,masculine,,"jur., Am.",0,curator for an absent person
+organisation,ˌɔːɡɐnaɪzˈeɪʃən,Abwicklung,feminine,,"adm., Br.",0,organization
+till the cow comes home,tˈɪl ðə kˈaʊ kˈʌmz hˈəʊm,bis zum Abwinken,,,"übtr., fig.",0,
+scrappage scheme,skɹˈapɪdʒ skˈiːm,Abwrackkampagne,feminine,,"Br., pol.",0,cash-for-clunkers program
+cash-for-clunkers program,kˈaʃ fɔː klˈʌŋkəz pɹˈəʊɡɹam,Abwrackkampagne,feminine,,"pol., Am.",0,scrappage scheme
+scrapping bonus,skɹˈapɪŋ bˈəʊnəs,Abwrackprämie,feminine,,car,0,
+shed antlers,ʃˈɛd ˈantləz,Abwurfstangen,,plural,"hunters' parlance, Jägersprache",0,
+decal,dɪkˈal,"Abziehbild , Aufkleber",masculine,,Am.,0,
+snapshot,snˈapʃɒt,"Instantanspeicherabzug , Instantanspeicherauszug",masculine,,coll.,0,snapshot dump
+acetate fibre,ˈasɪtˌeɪt fˈaɪbə,Acetatfaser,feminine,,"Br., textil.",0,acetate fiber
+acetate fiber,ˈasɪtˌeɪt fˈaɪbə,Acetatfaser,feminine,,"textil., Am.",0,acetate fibre
+Get out of town!,ɡɛt ˌaʊtəv tˈaʊn,"Ach komm!, Ach komm, jetzt aber (wirklich)!, Ach hör doch auf!",,,Am.,0,"Get out of here!, Get out!"
+Achilles' heel,ɐkˈɪliːz hˈiːl,"Achillesferse   , wunder Punkt, Schwachstelle",feminine,,"übtr., fig.",0,weak spot
+oxter,ˈɒkstə,"Achselhöhle , Achsel",feminine,,"Sc., anat.",0,"axilla, pit, armpit"
+axle casing,ˈaksəl kˈeɪsɪŋ,Achsgehäuse,neuter,,Br.,0,axle housing
+axle housing,ˈaksəl hˈaʊzɪŋ,Achsgehäuse,neuter,,Am.,0,axle casing
+axle-kilometre,ˈaksəl kˈɪləmˌiːtə,Achskilometer,masculine,,Br.,0,axle-kilometer
+axle-kilometer,ˈaksəl kɪlˈɒmɪtə,Achskilometer,masculine,,Am.,0,axle-kilometre
+octangle,ˈɒktaŋɡəl,"Achteck , Oktagon , Oktogon",neuter,,"math., rare",0,octagon
+quaver,kwˈeɪvə,"Achtelnote , Achtel",feminine,,"Br., mus.",0,eighth note
+eighth note,ˈeɪtθ nˈəʊt,"Achtelnote , Achtel",feminine,,"mus., Am.",1,quaver
+quaver rest,kwˈeɪvə ɹˈɛst,Achtelpause,feminine,,"Br., mus.",0,eighth note rest
+eighth note rest,ˈeɪtθ nˈəʊt ɹˈɛst,Achtelpause,feminine,,"mus., Am.",1,quaver rest
+eight-pointer,ˈeɪt pˈɔɪntə,"Achtender , Achter",masculine,,"hunters' parlance, Jägersprache, zool.",1,"eight-point elk, eight-point stag"
+big dipper,bˈɪɡ dˈɪpə,"Achterbahn , Hochschaubahn",feminine,,"dated, Br., Ös.",0,roller coaster
+seesaw,sˈiːsɔː,Achterbahn,feminine,,"übtr., fig.",1,
+figure eight,fˈɪɡəɹ ˈeɪt,"Achterknoten , Abseilachter",masculine,,"coll., ugs.",1,"figure-of-eight knot, figure eight knot"
+Ten-hut!,tˈɛn hˈʌt,"Stillgestanden!, Habt Acht!  , Achtung steht!",,,"slang, Ös., mil.",0,A-ten-hut!
+A-ten-hut!,ɐ tˈɛn hˈʌt,"Stillgestanden!, Habt Acht!  , Achtung steht!",,,"slang, Ös., mil.",0,Ten-hut!
+under-eighteen-year-olds,ˌʌndəɹ ˈeɪtiːn jˈiəɹ ˈəʊldz,"die Unter-Achtzehnjährigen, die Unter-18-jährigen",,,the,0,"under-eighteens, under 18-year-olds"
+under 18-year-olds,ˌʌndəɹ ˈeɪtiːn jˈiəɹ ˈəʊldz,"die Unter-Achtzehnjährigen, die Unter-18-jährigen",,,the,0,"under-eighteen-year-olds, under-eighteens"
+under-eighteens,ˌʌndəɹ ˈeɪtiːnz,"die Unter-Achtzehnjährigen, die Unter-18-jährigen",,,the,0,"under-eighteen-year-olds, under 18-year-olds"
+crop farming,kɹˈɒp fˈɑːmɪŋ,Ackerbau,masculine,,"agr., Am.",0,"crop raising, cultivation of arable land"
+ploughland,plˈaʊlənd,"Ackerboden , Ackerland , Bauernerde",masculine,,"Br., poet., agr.",0,"arable soil, plowland, arable land"
+plowland,plˈaʊlənd,"Ackerboden , Ackerland , Bauernerde",masculine,,"agr., poet., Am.",0,"arable soil, arable land, ploughland"
+front wheel tractor tire,fɹˈʌnt wˈiːl tɹˈaktə tˈaɪə,Ackerschlepperfrontreifen,masculine,,Am.,1,"tractor front tyre, tractor front tire, front wheel tractor tyre"
+tractor front tire,tɹˈaktə fɹˈʌnt tˈaɪə,Ackerschlepperfrontreifen,masculine,,Am.,1,"front wheel tractor tire, tractor front tyre, front wheel tractor tyre"
+tractor rear tire,tɹˈaktə ɹˈiə tˈaɪə,Ackerschlepperhinterradreifen,masculine,,Am.,1,tractor rear tyre
+sweeper,swˈiːpə,"Ackerschleife , Ackerschleppe",feminine,,"agr., Am.",0,"clod crusher, leveller"
+tractor tire,tɹˈaktə tˈaɪə,Ackerschlepperreifen,masculine,,Am.,0,tractor tyre
+farm truck,fˈɑːm tɹˈʌk,Ackerwagen,masculine,,"agr., Am.",0,"farm gear, farm wagon"
+farm gear,fˈɑːm ɡˈiə,Ackerwagen,masculine,,"agr., Am.",0,"farm truck, farm wagon"
+implement tyre,tire,Ackerwagen- und -maschinenreifen,masculine,,Am.,0,
+agricultural trailer tire,ˌaɡɹɪkˈʌltʃəɹəl tɹˈeɪlə tˈaɪə,Ackerwagenreifen,masculine,,Am.,1,agricultural trailer tyre
+action film,ˈakʃən fˈɪlm,Actionfilm,masculine,,Br.,0,"actioner, action movie"
+action movie,ˈakʃən mˈuːvi,Actionfilm,masculine,,Am.,0,"actioner, action film"
+acclimation,ɐklaɪmˈeɪʃən,Adaption,feminine,,"biol., field",0,adaption
+totalizer,tˈəʊtəlˌaɪzə,"Addierer , Addierwerk , Zählwerk , Summierzählwerk",masculine,,"eAm., techn.",0,"adder, totaliser"
+totaliser,tˈəʊtəlˌaɪzə,"Addierer , Addierwerk , Zählwerk , Summierzählwerk",masculine,,"Br., techn.",0,"adder, totalizer"
+gentry,dʒˈɛntɹi,niederer Adel,,,Br.,1,
+peerage,pˈiəɹɪdʒ,"Peerswürde , Adelsstand",masculine,,"Br., höherer",1,
+the Peerage,ðə pˈiəɹɪdʒ,die Peers,,,Br.,0,
+core,kˈɔː,Ader,feminine,,"Br., electr., telco.",0,"insulated wire, insulated conductor, wire"
+insulated conductor,ˈɪnsjuːlˌeɪtɪd kəndˈʌktə,Ader,feminine,,"telco., electr., Am.",0,"insulated wire, core, wire"
+transposed cores,tɹanspˈəʊzd kˈɔːz,gekreuzte Adern,,,Br.,0,transposed conductors
+transposed conductors,tɹanspˈəʊzd kəndˈʌktəz,gekreuzte Adern,,,Am.,0,transposed cores
+Admiralty Board,ˈadməɹəlti bˈɔːd,Admiralität,feminine,,"Br., mil.",0,"admirals, admiralty, Navy Department"
+Navy Department,nˈeɪvi dɪpˈɑːtmənt,Admiralität,feminine,,"mil., Am.",0,"Admiralty Board, admirals, admiralty"
+and,or whatever,"und Ähnliches, und dergleichen  u. dgl. m.,  /jˈuː dˌiːdʒˌiːˈɛl ˈɛm/",,,"coll., geh.",0,"and these sort of things, and suchlike, and/or whatnot"
+and these sort of things,and ðiːz sˈɔːt ɒv θˈɪŋz,"und Ähnliches, und dergleichen  u. dgl. m.,  /jˈuː dˌiːdʒˌiːˈɛl ˈɛm/",,,"coll., geh.",0,"and suchlike, and/or whatever, and/or whatnot"
+similitude,sˈɪmɪlˌɪtjuːd,Ähnlichkeit,feminine,,formal,0,"likeness, similarity, resemblance"
+law of equivalents,lˈɔː ɒv ɪkwˈɪvələnts,"Ähnlichkeitsprinzip , Ähnlichkeitsgesetz , Simileprinzip",neuter,,"pharm., rare",0,"principle of similars, law of similars"
+homothetic centre,center,"Ähnlichkeitspunkt , Ähnlichkeitszentrum",masculine,,"math., Am.",0,"centre/center of similarity, centre/center of similitude"
+Peckhamian mimicry,pɛkhˈeɪmiən mˈɪmɪkɹi,aggressive Ähnlichkeitstäuschung,,,rare,0,aggressive mimicry
+change authorization,tʃˈeɪndʒ ˌɔːθəɹaɪzˈeɪʃən,Änderungsgenehmigung,feminine,,eAm.,0,change authorisation
+change authorisation,tʃˈeɪndʒ ˌɔːθəɹaɪzˈeɪʃən,Änderungsgenehmigung,feminine,,Br.,0,change authorization
+change authorization draft,tʃˈeɪndʒ ˌɔːθəɹaɪzˈeɪʃən dɹˈaft,Änderungsgenehmigungsentwurf,masculine,,eAm.,1,change authorisation draft
+change authorisation draft,tʃˈeɪndʒ ˌɔːθəɹaɪzˈeɪʃən dɹˈaft,Änderungsgenehmigungsentwurf,masculine,,Br.,1,change authorization draft
+dooking,dˈʊkɪŋ,"Äpfeltauchen , Nach-Äpfeln-Tauchen",neuter,,Sc.,0,"bobbing for apples, snap apple, apple bobbing"
+snap apple,snˈap ˈapəl,"Äpfeltauchen , Nach-Äpfeln-Tauchen",neuter,,Ir.,0,"bobbing for apples, apple bobbing, dooking"
+fall equinox,fˈɔːl ˈɛkwɪnˌɒks,"Herbst-Tagundnachtgleiche, Herbst-Äquinoktium",,,Am.,0,"autumn equinox, autumnal equinox"
+No worries!,nˈəʊ wˈʌɹiz,"Keine Bange!, Keine Sorge!, Kein Problem!",,,"coll., Austr.",0,
+aggro,ˈaɡɹəʊ,"Ärger , Scherereien , Stress , Brass",masculine,plural,"coll., Br., Dt.",0,aggravation
+irritant,ˈɪɹɪtənt,"Ärgernis , Stein des Anstoßes",neuter,,fig.,1,
+pain in the backside,arse,Ärgernis,neuter,,"Br., slang",0,"pain, pain in the butt / ass, pain in the neck"
+pain in the butt,ass,Ärgernis,neuter,,"slang, Am.",0,"pain, pain in the backside / arse, pain in the neck"
+the Chunnel,ðə tʃˈʌnəl,"der Ärmelkanaltunnel, der Kanaltunnel, der Eurotunnel",,,"coll., geogr.",0,"the English Channel Tunnel, the Channel Tunnel"
+aesthetics,iːsθˈɛtɪks,"Ästhetik , Theorie der sinnlichen Wahrnehmung",feminine,,"art, Br., phil.",0,esthetics
+esthetics,ɛsθˈɛtɪks,"Ästhetik , Theorie der sinnlichen Wahrnehmung",feminine,,"art, phil., Am.",0,aesthetics
+the aesthetic,ðɪ iːsθˈɛtɪk,die Ästhetik von etw.,,,Br.,1,esthetic of sth.
+aestheticisation,ˌiːsθɪtˌɪsaɪzˈeɪʃən,Ästhetisierung,feminine,,"art, Br., phil.",0,aestheticization
+anaesthetic ether,ˌanəsθˈɛtɪk ˈiːθə,"Narkoseäther , Narkoseether , Anästhesieäther , Anästhesieether",masculine,,Br.,0,anesthetic ether
+anesthetic ether,ˌanɪsθˈɛtɪk ˈiːθə,"Narkoseäther , Narkoseether , Anästhesieäther , Anästhesieether",masculine,,Am.,0,anaesthetic ether
+etherise sb.,ˈiːθəɹˌaɪz ˌɛsbˈiː,"jdn. mit Äther betäuben, mit Äther narkotisieren",,,"med., Br.",0,etherize sb.
+etherize sb.,ˈiːθəɹˌaɪz ˌɛsbˈiː,"jdn. mit Äther betäuben, mit Äther narkotisieren",,,"med., Am.",0,etherise sb.
+etherise,ˈiːθəɹˌaɪz,eine Äthernarkose durchführen,,,"med., Br.",0,etherize
+etherize,ˈiːθəɹˌaɪz,eine Äthernarkose durchführen,,,"med., Am.",0,etherise
+be jonesing,biː dʒˈəʊnzɪŋ,einen Affen schieben,,,"slang, Am.",0,
+breakneck speed,bɹˈeɪknɛk spˈiːd,"Affentempo , Affenzahn",masculine,,"coll., ugs.",1,
+buffoonery,bəfˈuːnəɹi,"Affentheater , Affenzirkus , Affenkomödie",masculine,,"ugs., pej., silly",0,"madhouse, charade, crazy business"
+punishment for an offence,offense,Ahndung einer Straftat,,,"jur., Am.",0,
+ash-leaf maple,ˈaʃ lˈiːf mˈeɪpəl,"Eschenblättriger Ahorn , Eschenahorn",masculine,,Br.,0,"maple ash, boxelder maple, ash-leaved maple"
+Royal Academy of Arts,ɹˈɔɪəl ɐkˈadəmi ɒv ˈɑːts,Akademie der Künste,,,Br.,0,
+wattles,wˈɒtəlz,"Akazienbäume , Akazien",,plural,"Austr., bot.",0,acacia trees
+acclimatisation,ɐklˌaɪmɐtaɪzˈeɪʃən,"Akklimatisierung , Akklimatisation",feminine,,Br.,0,"acclimation, acclimatization"
+acclimation,ɐklaɪmˈeɪʃən,"Akklimatisierung , Akklimatisation",feminine,,Am.,0,"acclimatization, acclimatisation"
+the acrea,ðɪ ˈeɪkəɹə,die Akren,,plural,"anat., rare",0,the body's extremities
+access to the file,ˈaksɛs tə ðə fˈaɪl,"Aktenauflage   , Möglichkeit zur (allgemeinen) Akteneinsicht",feminine,,"Schw., public",0,
+Crimewatch,kɹˈaɪmwɒtʃ,Aktenzeichen XY … ungelöst,,,Br.,0,Fugitive Watch
+Fugitive Watch,fjˈuːdʒɪtˌɪv wˈɒtʃ,Aktenzeichen XY … ungelöst,,,Am.,0,Crimewatch
+protagonist,pɹˈəʊtɐɡənˌɪst,"Hauptakteur , Protagonist",masculine,,main,1,
+share,ʃˈeə,Aktie,feminine,,"Br., fin.",31,"share of stock, stock"
+share of stock,ʃˈeəɹ ɒv stˈɒk,Aktie,feminine,,"fin., Am.",0,"share, stock"
+stock,stˈɒk,Aktie,feminine,,"fin., Am.",30,"share, share of stock"
+stocks,stˈɒks,Aktien,,plural,Am.,24,shares
+own shares,ˈəʊn ʃˈeəz,"eigene Aktien, Vorratsaktien , Aktien in Eigenbesitz",,plural,Br.,0,treasury stock
+penny stocks,pˈɛni stˈɒks,hochspekulative Aktien mit niedrigem Kurs,,,Am.,0,
+retire shares,ɹɪtˈaɪə ʃˈeəz,Aktien einziehen,,,Am.,0,
+issue(ing) of shares,ˈɪʃuː ˈɪŋ ɒv ʃˈeəz,"Aktienausgabe , Aktienemission , Effektenemission",feminine,,"Br., fin.",0,"share issue, issuance of stocks, stock issue"
+issuance of stocks,ˈɪsjuːəns ɒv stˈɒks,"Aktienausgabe , Aktienemission , Effektenemission",feminine,,"fin., Am.",0,"share issue, stock issue, issue(ing) of shares"
+stockholding,stˈɒkhəʊldɪŋ,Aktienbesitz,masculine,,"fin., Am.",0,"share/stock ownership, holding of shares/stocks, shareholding"
+holding of shares,stocks,Aktienbesitz,masculine,,"fin., Am.",0,"stockholding, share/stock ownership, shareholding"
+share portfolio,ʃˈeə pɔːtfˈəʊlɪˌəʊ,"Aktienbestand , Aktienportfolio , Aktienportefeuille , Aktiendepot",masculine,,"Br., fin.",0,stock portfolio
+stock portfolio,stˈɒk pɔːtfˈəʊlɪˌəʊ,"Aktienbestand , Aktienportfolio , Aktienportefeuille , Aktiendepot",masculine,,"fin., Am.",0,share portfolio
+joint stock bank,dʒˈɔɪnt stˈɒk bˈaŋk,Aktienbank,feminine,,"Br., fin.",1,incorporated bank
+incorporated bank,ɪŋkˈɔːpəɹˌeɪtɪd bˈaŋk,Aktienbank,feminine,,"fin., Am.",0,joint stock bank
+stock (option) right,stˈɒk ˈɒpʃən ɹˈaɪt,Aktienbezugsrecht,neuter,,"Br., fin.",0,share/stock purchase right
+public limited company,pˈʌblɪk lˈɪmɪtɪd kˈʌmpəni,"Aktiengesellschaft   AG,  /ˈaɡ/",feminine,,"Br., econ.",0,"joint-stock company, stock corporation"
+stock corporation,stˈɒk kˌɔːpəɹˈeɪʃən,"Aktiengesellschaft   AG,  /ˈaɡ/",feminine,,"econ., Am.",0,"joint-stock company, public limited company"
+class of shares,klˈas ɒv ʃˈeəz,"Aktiengattung , Gattung",feminine,,"Br., fin.",0,"class of stock, class"
+Public Companies Act,pˈʌblɪk kˈʌmpəniz ˈakt,Aktiengesetz,neuter,,"Br., jur.",0,"Stock Corporation Act, Corporation Act"
+Corporation Act,kˌɔːpəɹˈeɪʃən ˈakt,Aktiengesetz,neuter,,"jur., Am.",0,"Stock Corporation Act, Public Companies Act"
+share index,ʃˈeəɹ ˈɪndɛks,"Aktienindex , Börsenindex , Börseindex",masculine,,"Br., fin., Ös.",0,"stock price average, stock index, stock market index"
+Footsie,fˈʊtsi,britischer Aktienindex,masculine,,Br.,0,"FT-SE 100 index, Financial Times Stock Exchange 100 Share Index"
+stock spin-off,stˈɒk spˈɪn ˈɒf,Aktienkapitalübertragung,feminine,,"fin., Am.",0,share spin-off
+stock price,stˈɒk pɹˈaɪs,"Aktienkurs , Kurs",masculine,,"fin., Am.",0,share price
+share option,ʃˈeəɹ ˈɒpʃən,Aktienoption,feminine,,"Br., fin.",2,stock option
+stock option,stˈɒk ˈɒpʃən,Aktienoption,feminine,,"fin., Am.",3,share option
+acquisition of shares,ɐkwɪsˈɪʃən ɒv ʃˈeəz,Aktienübernahme,feminine,,"Br., fin.",0,stock takeover
+stock takeover,stˈɒk tˈeɪkəʊvə,Aktienübernahme,feminine,,"fin., Am.",0,acquisition of shares
+transfer of shares,tɹˈansfɜːɹ ɒv ʃˈeəz,Aktienübertragung,feminine,,"Br., fin.",0,stock transfer
+stock transfer,stˈɒk tɹˈansfɜː,Aktienübertragung,feminine,,"fin., Am.",0,transfer of shares
+stock subscriber,stˈɒk səbskɹˈaɪbə,Aktienzeichner,masculine,,"fin., Am.",0,"applicant for shares, subscriber to shares, share applicant"
+applicant for shares,ˈaplɪkənt fɔː ʃˈeəz,Aktienzeichner,masculine,,"Br., fin.",0,"subscriber to shares, stock subscriber, share applicant"
+share applicant,ʃˈeəɹ ˈaplɪkənt,Aktienzeichner,masculine,,"Br., fin.",0,"applicant for shares, subscriber to shares, stock subscriber"
+share certificat,ʃˈeə sˈɜːtɪfˌɪkat,"Aktienzertifikat , Aktienurkunde",feminine,,Br.,0,stock certificate
+stock certificate,stˈɒk sətˈɪfɪkət,"Aktienzertifikat , Aktienurkunde",feminine,,Am.,0,share certificat
+shareholder,ʃˈeəhəʊldə,"Aktionär , Aktieninhaber , Anteilsinhaber , Aktienbesitzer , Anteilseigner , Gesellschafter",masculine,,"Br., econ.",0,"equity holder, stockholder"
+stockholder,stˈɒkhəʊldə,"Aktionär , Aktieninhaber , Anteilsinhaber , Aktienbesitzer , Anteilseigner , Gesellschafter",masculine,,"econ., Am.",0,"equity holder, shareholder"
+majority shareholder,mədʒˈɒɹɪti ʃˈeəhəʊldə,"Mehrheitsaktionär , Mehrheitseigner",masculine,,Br.,0,majority stockholder
+majority stockholder,mədʒˈɒɹɪti stˈɒkhəʊldə,"Mehrheitsaktionär , Mehrheitseigner",masculine,,Am.,0,majority shareholder
+action programme,ˈakʃən pɹˈəʊɡɹam,"Aktionsprogramm , Handlungsprogramm",neuter,,Br.,0,action program
+pursuit,pəsˈuːt,"Aktivität   , Beschäftigung , Betätigung",feminine,,"personal, private",2,
+acceptation,ɐksɪptˈeɪʃən,"Akzeptanz , positive Resonanz , Zuspruch",masculine,,"soc., rare",0,"take-up, acceptance"
+take-up,tˈeɪk ˈʌp,"Akzeptanz , positive Resonanz , Zuspruch",masculine,,"Br., soc.",2,"acceptation, acceptance"
+street cred,stɹˈiːt kɹˈɛd,Akzeptanz in der Szene,,,"slang, soc.",0,"cred, street credibility"
+cred,kɹˈɛd,Akzeptanz in der Szene,,,"slang, soc.",0,"street cred, street credibility"
+marchalan,mˈɑːtʃɐlˌan,"Echter Alant, Schlangenkraut",neuter,,Welch,0,"horse-heal, elecampane, elfdock"
+tocsin,tˈɒksɪn,Alarmglocke,feminine,,dated,0,alarm bell
+tocsin,tˈɒksɪn,Alarmsignal,neuter,,"übtr., fig.",0,"alarm signal, danger signal"
+tokenism,tˈəʊkiːnˌɪzəm,"Alibiaktion , Alibipolitik , Feigenblattaktion , Feigenblattpolitik",feminine,,pej.,0,
+John Barleycorn,dʒˈɒn bˈɑːlɪkˌɔːn,Alkohol,masculine,,humor.,0,alcohol
+be on the bottle,biː ɒnðə bˈɒtəl,"dem Alkohol zusprechen, gerne biberln",,,"Br., Ös., fig.",0,
+be on the wagon,biː ɒnðə wˈaɡən,"keinen Alkohol trinken, Antialkoholiker sein",,,coll.,0,be on the wag
+moonlight,mˈuːnlaɪt,schwarzgebrannter Alkohol,,,coll.,0,
+alcohol dependent,ˈalkəhˌɒl dɪpˈɛndənt,"Alkoholabhängiger   , Alkoholsüchtiger   , Trunksüchtiger   , Potator   , Alkoholiker , Alki",masculine,,"med., ugs.",0,"alcoholic, alky, alkie"
+alky,ˈalki,"Alkoholabhängiger   , Alkoholsüchtiger   , Trunksüchtiger   , Potator   , Alkoholiker , Alki",masculine,,"coll., med., ugs.",0,"alcoholic, alcohol dependent, alkie"
+alkie,ˈalki,"Alkoholabhängiger   , Alkoholsüchtiger   , Trunksüchtiger   , Potator   , Alkoholiker , Alki",masculine,,"coll., med., ugs.",0,"alcoholic, alky, alcohol dependent"
+prohibitionist,pɹəhɪbˈɪʃənˌɪst,"Alkoholgegner , Verfechter eines gesetzlichen Alkoholverbots",masculine,,Am.,0,dry
+dry,dɹˈaɪ,"Alkoholgegner , Verfechter eines gesetzlichen Alkoholverbots",masculine,,Am.,0,prohibitionist
+booze,bˈuːz,Alkoholisches,neuter,,Br.,1,
+intoxication,ɪntˌɒksɪkˈeɪʃən,"Alkoholisierung  , Betrunkenheit , Rausch",masculine,,med.,0,"insobriety, inebriation, drunkenness"
+alcohol check,ˈalkəhˌɒl tʃˈɛk,Alkoholkontrolle,feminine,,"polizeiliche, police",1,"roadside alcohol check, sobriety checkpoint"
+sobriety checkpoint,səbɹˈaɪətɪ tʃˈɛkpɔɪnt,Alkoholkontrolle,feminine,,"polizeiliche, Am.",0,"alcohol check, roadside alcohol check"
+moonshiner,mˈuːnʃɪnə,Alkoholschmuggler,masculine,,coll.,0,
+avenue tree,ˈavənjˌuː tɹˈiː,"Alleebaum , Hochstamm für Straßenbepflanzung",masculine,,"Br., agr.",0,standard street tree
+standard street tree,stˈandəd stɹˈiːt tɹˈiː,"Alleebaum , Hochstamm für Straßenbepflanzung",masculine,,"agr., Am.",1,avenue tree
+make sb. (the) universal beneficiary,mˌeɪk ˌɛsbˈiː ðə jˌuːnɪvˈɜːsəl bˌɛnɪfˈɪʃəɹi,jdn. zum Alleinerben einsetzen,,,Br.,0,
+Cheerio!,tʃˈiəɹɪˌəʊ,"Alles Gute!, Viel Glück!, Gott befohlen!    , Behüt dich Gott!  , Geh(t) mit Gott!",,,"dated, veraltend, geh.",0,Godspeed!
+Godspeed!,ɡˈɒdspiːd,"Alles Gute!, Viel Glück!, Gott befohlen!    , Behüt dich Gott!  , Geh(t) mit Gott!",,,"veraltend, geh., relig.",0,Cheerio!
+all-rounder,ˈɔːl ɹˈaʊndə,"Alleskönner , Alleskönnerin , Multitalent , Allrounder",masculine,,"Br., Austr.",1,"Jack-of-all-trades, jack of all trades"
+jack of all trades,dʒˈak ɒv ˈɔːl tɹˈeɪdz,"Alleskönner , Alleskönnerin , Multitalent , Allrounder",masculine,,"coll., Am.",0,"all-rounder, Jack-of-all-trades"
+bedfellows,bˈɛdfɪlˌəʊz,"Allianz , Verbindung",feminine,,"pol., fig., soc.",1,
+allonge,ˈalɒndʒ,Allonge,feminine,,"Br., fin.",0,rider
+rider,ɹˈaɪdə,Allonge,feminine,,"fin., Am.",0,allonge
+all-rounder,ˈɔːl ɹˈaʊndə,"Allroundsportler , Allroundsportlerin",masculine,,"Br., sport",0,
+all-mains motor,ˈɔːl mˈeɪnz mˈəʊtə,Allstrommotor,masculine,,"Br., electr.",0,all-current motor
+all-current motor,ˈɔːl kˈʌɹənt mˈəʊtə,Allstrommotor,masculine,,"electr., Am.",0,all-mains motor
+all-weather pitch,ˈɔːl wˈɛðə pˈɪtʃ,Allwetterplatz,masculine,,"Br., sport",1,all-weather court
+all-weather court,ˈɔːl wˈɛðə kˈɔːt,Allwetterplatz,masculine,,"sport, Am.",1,all-weather pitch
+all-purpose tire,ˈɔːl pˈɜːpəs tˈaɪə,Allzweckreifen,masculine,,"auto, Am.",1,all-purpose tyre
+alphabetization,ˌalfəbˌɛtaɪzˈeɪʃən,Alphabetisierung,feminine,,eAm.,0,alphabetisation
+alphabetisation,ˌalfəbˌɛtaɪzˈeɪʃən,Alphabetisierung,feminine,,Br.,0,alphabetization
+love apple,lˈʌv ˈapəl,"Alraunenbeere , Liebesapfel",masculine,,"coll., obs., bot.",0,mandrake berry
+shandy,ʃˈandi,"Alsterbier     , Alsterwasser     , Radler   , Radler   , Panaché",masculine,,"Ös., cook., Br.",0,
+old flat,ˈəʊld flˈat,Altbauwohnung,feminine,,Br.,0,old apartment
+old apartment,ˈəʊld ɐpˈɑːtmənt,Altbauwohnung,feminine,,Am.,0,old flat
+treble recorder,tɹˈɛbəl ɹɪkˈɔːdə,Altblockflöte,feminine,,"Br., mus.",0,alto recorder
+alto recorder,ˈaltəʊ ɹɪkˈɔːdə,Altblockflöte,feminine,,"mus., Am.",0,treble recorder
+sb.'s old lady,ˌɛsbˈiː ˈɛs ˈəʊld lˈeɪdi,"jds. Alte , jds. Olle",feminine,,"slang, soc., Norddt.",0,sb.'s old woman
+sb.'s old Dutch,ˌɛsbˈiː ˈɛs ˈəʊld dˈʌtʃ,jds. Alte,feminine,,"Br., slang, soc.",0,sb.'s squaw
+sb.'s squaw,ˌɛsbˈiː ˈɛs skwˈɔː,jds. Alte,feminine,,"slang, soc., Am.",0,sb.'s old Dutch
+sb.'s old man,ˌɛsbˈiː ˈɛs ˈəʊld mˈan,"jds. Alter , jds. Oller",masculine,,"slang, soc., Norddt.",0,
+eldercare,ˈɛldəkˌeə,Altenpflege,feminine,,Am.,0,"geriatric care, geriatric nursing, care of the elderly"
+geriatric care centre,dʒˌɛɹɪˈatɹɪk kˈeə sˈɛntə,Altenpflegezentrum,neuter,,Br.,1,geriatric care center
+geriatric care center,dʒˌɛɹɪˈatɹɪk kˈeə sˈɛntə,Altenpflegezentrum,neuter,,Am.,1,geriatric care centre
+bro,bɹˈəʊ,"Alter, Bruda  , Digger",,,"Jugendsprache, Am.",0,"bra, bruh"
+bruh,bɹˈʌ,"Alter, Bruda  , Digger",,,"Jugendsprache, Am.",0,"bra, bro"
+bra,bɹˈɑː,"Alter, Bruda  , Digger",,,"Jugendsprache, South Africa",0,"bro, bruh"
+ageing,ˈeɪdʒɪŋ,Altern,neuter,,Br.,0,"aging, the aging-process"
+aging,ˈeɪdʒɪŋ,Altern,neuter,,Am.,0,"ageing, the aging-process"
+ageism,ˈeɪdʒɪzəm,"Altersdiskriminierung , Diskriminierung aufgrund des Alters",feminine,,"Br., soc.",0,"age discrimination, agism"
+agism,ˈeɪdʒɪzəm,"Altersdiskriminierung , Diskriminierung aufgrund des Alters",feminine,,"soc., Am.",0,"ageism, age discrimination"
+diseases of aging,ageing,Alterskrankheiten,,plural,"med., Br.",0,
+occupational retirement provision,ˌɒkjʊpˈeɪʃənəl ɹɪtˈaɪəmənt pɹəvˈɪʒən,betriebliche Altersversorgung,,,Am.,0,occupational pension provision
+superannuation scheme,sˌuːpəɹˌanjuːˈeɪʃən skˈiːm,betriebliche Altersvorsorge,feminine,,"Br., Austr.",0,
+archeology,ˌɑːkɪˈɒlədʒi,"Altertumskunde , Archäologie",feminine,,Am.,0,archaeology
+ageing,ˈeɪdʒɪŋ,Alterung,feminine,,Br.,0,aging
+aging,ˈeɪdʒɪŋ,Alterung,feminine,,Am.,0,ageing
+tenor horn,tˈɛnə hˈɔːn,Althorn,neuter,,"Br., mus.",0,alto horn
+alto horn,ˈaltəʊ hˈɔːn,Althorn,neuter,,"mus., Am.",0,tenor horn
+rag'n'bone man,ɹˈaɡ ˈɛn bˈəʊn mˈan,"Altkleidersammler , Lumpensammler , Fetzentandler",masculine,,"Br., Ös.",0,"rag-and-bone man, ragman, ragpicker"
+ragman,ɹˈaɡmən,"Altkleidersammler , Lumpensammler , Fetzentandler",masculine,,"Ös., Am.",0,"rag-and-bone man, rag'n'bone man, ragpicker"
+used tyre,tire,Altreifen,masculine,,"auto, Am.",0,scrap tyre/tire
+scrap tyre,tire,Altreifen,masculine,,"auto, Am.",0,used tyre/tire
+buyback centre,bˈaɪbak sˈɛntə,Altstoff-Rückkaufzentrum,neuter,,"Br., envir.",0,buyback center
+buyback center,bˈaɪbak sˈɛntə,Altstoff-Rückkaufzentrum,neuter,,"envir., Am.",0,buyback centre
+resale business,ɹˈiːseɪl bˈɪznəs,Altwarenhandel,masculine,,"econ., Am.",0,second-hand goods trade
+aluminising,ɐlˈuːmɪnˌaɪzɪŋ,"Aluminieren , Aluminiumbedampfung , Aluminiumaufdampfung , Aluminiumbeschichtung",feminine,,Br.,0,aluminizing
+aluminium coating,ˌaljʊmˈɪniəm kˈəʊtɪŋ,Aluminiumanstrich,masculine,,Br.,0,aluminum coating
+aluminum coating,ɐlˈuːmɪnəm kˈəʊtɪŋ,Aluminiumanstrich,masculine,,Am.,0,aluminium coating
+aluminium box,ˌaljʊmˈɪniəm bˈɒks,Aluminiumbehälter,masculine,,Br.,0,aluminum box
+aluminum box,ɐlˈuːmɪnəm bˈɒks,Aluminiumbehälter,masculine,,Am.,0,aluminium box
+aluminium sheet,ˌaljʊmˈɪniəm ʃˈiːt,Aluminiumblech,neuter,,Br.,0,aluminum sheet
+aluminum sheet,ɐlˈuːmɪnəm ʃˈiːt,Aluminiumblech,neuter,,Am.,0,aluminium sheet
+aluminium can,ˌaljʊmˈɪniəm kˈan,"Aluminiumdose , Aludose",feminine,,"Br., ugs.",0,"aluminum can, aluminium tin"
+aluminium tin,ˌaljʊmˈɪniəm tˈɪn,"Aluminiumdose , Aludose",feminine,,"Br., ugs.",0,"aluminium can, aluminum can"
+aluminum can,ɐlˈuːmɪnəm kˈan,"Aluminiumdose , Aludose",feminine,,"ugs., Am.",0,"aluminium can, aluminium tin"
+aluminium facade,ˌaljʊmˈɪniəm fəsˈɑːd,Aluminiumfassade,feminine,,Br.,0,aluminum facade
+aluminum facade,ɐlˈuːmɪnəm fəsˈɑːd,Aluminiumfassade,feminine,,Am.,0,aluminium facade
+aluminium window frame,ˌaljʊmˈɪniəm wˈɪndəʊ fɹˈeɪm,Aluminiumfensterrahmen,masculine,,Br.,1,aluminum window frame
+aluminum window frame,ɐlˈuːmɪnəm wˈɪndəʊ fɹˈeɪm,Aluminiumfensterrahmen,masculine,,Am.,1,aluminium window frame
+aluminium window-sill,ˌaljʊmˈɪniəm wˈɪndəʊ sˈɪl,Aluminiumfensterbank,feminine,,Br.,0,aluminum window-sill
+aluminum window-sill,ɐlˈuːmɪnəm wˈɪndəʊ sˈɪl,Aluminiumfensterbank,feminine,,Am.,0,aluminium window-sill
+aluminium casting,ˌaljʊmˈɪniəm kˈastɪŋ,"Aluminiumguss , Aluguss",masculine,,Br.,0,"aluminium cast, aluminum casting, aluminum cast"
+aluminum casting,ɐlˈuːmɪnəm kˈastɪŋ,"Aluminiumguss , Aluguss",masculine,,Am.,0,"aluminium cast, aluminum cast, aluminium casting"
+aluminium mill,ˌaljʊmˈɪniəm mˈɪl,Aluminiumhütte,feminine,,Br.,0,aluminum mill
+aluminum mill,ɐlˈuːmɪnəm mˈɪl,Aluminiumhütte,feminine,,Am.,0,aluminium mill
+aluminium alloy,ˌaljʊmˈɪniəm ˈalɔɪ,Aluminiumlegierung,feminine,,Br.,0,aluminum alloy
+aluminum alloy,ɐlˈuːmɪnəm ˈalɔɪ,Aluminiumlegierung,feminine,,Am.,0,aluminium alloy
+aluminium frame,ˌaljʊmˈɪniəm fɹˈeɪm,Aluminiumrahmen,masculine,,Br.,0,aluminum frame
+aluminum frame,ɐlˈuːmɪnəm fɹˈeɪm,Aluminiumrahmen,masculine,,Am.,0,aluminium frame
+aluminium powder,ˌaljʊmˈɪniəm pˈaʊdə,"Aluminiumpulver , Alupulver , Aluminiumpigment",neuter,,"Br., techn.",0,aluminum powder
+aluminum powder,ɐlˈuːmɪnəm pˈaʊdə,"Aluminiumpulver , Alupulver , Aluminiumpigment",neuter,,"techn., Am.",0,aluminium powder
+aluminium tube,ˌaljʊmˈɪniəm tjˈuːb,Aluminiumrohr,neuter,,Br.,0,aluminum tube
+aluminum tube,ɐlˈuːmɪnəm tjˈuːb,Aluminiumrohr,neuter,,Am.,0,aluminium tube
+aluminum compound foil,ɐlˈuːmɪnəm kˈɒmpaʊnd fˈɔɪl,Aluminiumverbundfolie,feminine,,Am.,0,aluminium compound foil
+mess tin,mˈɛs tˈɪn,Aluschale mit Klappgriff,,,"cook., Br., mil.",0,
+amateur radio licence,ˈamətə ɹˈeɪdɪˌəʊ lˈaɪsəns,Amateurfunklizenz,feminine,,Br.,0,amateur radio license
+amateur radio license,ˈamətə ɹˈeɪdɪˌəʊ lˈaɪsəns,Amateurfunklizenz,feminine,,Am.,0,amateur radio licence
+doodlebag,dˈuːdəlbˌaɡ,Ameisenlarve,feminine,,Am.,0,
+as sure as shooting,az ʃˈʊəɹ az ʃˈuːtɪŋ,"so sicher wie das Amen in der Kirche    , so sicher wie das Amen im Gebet",,,"Ös., rare, Dt.",0,"as sure as death, as sure as eggs is eggs"
+Yank,jˈaŋk,Ami,masculine,,"coll., soc., ugs.",0,Yankee
+buntings,bˈʌntɪŋz,Ammern,,plural,"Br., ornith.",0,American sparrows
+American sparrows,ɐmˈɛɹɪkən spˈaɹəʊz,Ammern,,plural,"ornith., Am.",0,buntings
+ameba,ˈeɪmbə,Amöbe,feminine,,"biol., Am.",0,amoeba
+amortisation,ɐmˌɔːtaɪzˈeɪʃən,"Amortisierung , Amortisation",feminine,,"Br., fin.",0,amortization
+robot,ɹˈəʊbɒt,"Ampel , Verkehrsampel , Lichtsignalanlage",feminine,,South Africa,0,"traffic light, traffic lights"
+jump a red light,dʒˈʌmp ɐ ɹˈɛd lˈaɪt,bei Rot (über die Ampel/Kreuzung) fahren,,,coll.,0,
+signalize a junction,sˈɪɡnəlˌaɪz ɐ dʒˈʌŋkʃən,eine Kreuzung mit einer Ampelregelung versehen,,,"auto, Austr., Am.",0,
+amp,ˈamp,Amphetamin,neuter,,"slang, pharm.",1,amphetamine
+amphitheatre,ˈamfɪθˌiətə,Amphitheater,neuter,,Br.,0,amphitheater
+amphitheater,ˈamfɪθˌiːeɪtə,Amphitheater,neuter,,Am.,0,amphitheatre
+agency,ˈeɪdʒənsi,Amt,neuter,,"adm., Am.",0,"office, administrative office, department"
+parks department,pˈɑːks dɪpˈɑːtmənt,"Amt für Grünflächen, Grünflächenamt , Gartenbauamt , Gartenamt , Stadtgartenamt",neuter,,"adm., Br.",0,park department
+park department,pˈɑːk dɪpˈɑːtmənt,"Amt für Grünflächen, Grünflächenamt , Gartenbauamt , Gartenamt , Stadtgartenamt",neuter,,"adm., Am.",0,parks department
+impersonating a public servant,ɪmpˈɜːsənˌeɪtɪŋ ɐ pˈʌblɪk sˈɜːvənt,Amtsanmaßung,feminine,,"jur., Am.",0,false assumption of (public) authority
+official letter,əfˈɪʃəl lˈɛtə,Amtsbescheid,masculine,,"adm., Br.",0,official action
+official action,əfˈɪʃəl ˈakʃən,Amtsbescheid,masculine,,"adm., Am.",0,official letter
+Inauguration Day,ɪnˌɔːɡjəɹˈeɪʃən dˈeɪ,Tag der Amtseinführung,,,Am.,0,
+recall,ɹˈiːkɔːl,Amtsenthebung,feminine,,"pol., Am.",0,"dismissal from office, ouster, discharge from office"
+ouster,ˈaʊstə,Amtsenthebung,feminine,,"pol., Am.",0,"dismissal from office, recall, discharge from office"
+county court,kˈaʊnti kˈɔːt,"Amtsgericht , Bezirksgericht     , Friedensgericht",neuter,,"Br., Ös., jur.",0,"local court, municipal court"
+municipal court,mjuːnˈɪsɪpəl kˈɔːt,"Amtsgericht , Bezirksgericht     , Friedensgericht",neuter,,"Schw., Ös., jur.",0,"local court, county court"
+officeholder,ˈɒfɪshˌəʊldə,"Amtsträger , Amtsträgerin",masculine,,"adm., Am.",0,office holder
+Amur leopard,ˈamə lˈɛpəd,Amurleopard,masculine,,Panthera pardus orientalis,0,
+close reach,klˈəʊs ɹˈiːtʃ,Am-Wind-Kurs,masculine,,"coll., sport",0,close reach course
+anaesthesiology,ɐnˌiːsθəsɪˈɒlədʒi,Anästhesiologie,feminine,,"med., Br.",0,anesthesiology
+anesthesiology,ˌanɪsθˌiːzɪˈɒlədʒi,Anästhesiologie,feminine,,"med., Am.",0,anaesthesiology
+analogues,ˈanəlˌɒɡz,"Analoga , gleichartige chemische Verbindungen",,plural,"Br., chem.",0,analogs
+analogs,ˈanəlˌɒɡz,"Analoga , gleichartige chemische Verbindungen",,plural,"chem., Am.",0,analogues
+analogue character,ˈanəlˌɒɡ kˈaɹɪktə,Analogzeichen,neuter,,Br.,0,analog character
+analog character,ˈanəlˌɒɡ kˈaɹɪktə,Analogzeichen,neuter,,Am.,0,analogue character
+rimjob,ɹˈɪmdʒɒb,Anal-Oralsex,masculine,,slang,0,"anilingus, rimming"
+buggery,bˈʌɡəɹi,"Analsex , Analverkehr",masculine,,Br.,0,anal sex
+bugger,bˈʌɡə,Analverkehr Ausübender,,,Br.,0,
+analyser,ˈanɐlˌaɪsə,Analysator,masculine,,Br.,1,analyzer
+analyzer,ˈanɐlˌaɪzə,Analysator,masculine,,Am.,1,analyser
+analyser,ˈanɐlˌaɪsə,"Analyseprogramm , Analysierprogramm",neuter,,Br.,0,analyzer
+quant,kwˈɒnt,quantitativer Analyst,,,coll.,0,quantitative analyst
+anapaest,ˈanɐpˌiːst,Anapäst,masculine,,"Br., ling.",0,anapest
+anapest,ˈaneɪpˌɪst,Anapäst,masculine,,"ling., Am.",0,anapaest
+eve-teasing,ˈiːv tˈiːzɪŋ,öffentliches Anbaggern,neuter,,"India, soc.",0,
+annexe,ˈanɛks,"Anbau , Anbaute",masculine,,"adm., Br., Schw.",0,"building extension, building addition, annex"
+mounted tractor plough,mˈaʊntɪd tɹˈaktə plˈaʊ,Anbaupflug,masculine,,"Br., agr.",1,mounted tractor plow
+mounted tractor plow,mˈaʊntɪd tɹˈaktə plˈaʊ,Anbaupflug,masculine,,"agr., Am.",1,mounted tractor plough
+mounted disc plough,mˈaʊntɪd dˈɪsk plˈaʊ,Anbauscheibenpflug,masculine,,Br.,1,mounted disk plow
+mounted disk plow,mˈaʊntɪd dˈɪsk plˈaʊ,Anbauscheibenpflug,masculine,,Am.,1,mounted disc plough
+vender,vˈɛndə,"Anbieter , Ausstatter",masculine,,"econ., Am.",0,"supplier, provider, vendor"
+purveyor,pɜːvˈeɪə,"Anbieter , Lieferant",masculine,,"formal, econ.",3,
+churn,tʃˈɜːn,"Anbieterwechsel , Kundenabwanderung",masculine,,"customer, econ.",0,
+a sight for sore eyes,ɐ sˈaɪt fɔː sˈɔːɹ ˈaɪz,"ein Anblick für Götter, ein Bild für Götter",,,"iron., Br.",1,
+dawn,dˈɔːn,"Anbruch   , Beginn ()",masculine,,"geh., fig., + gen",4,
+souvenir store,sˌuːvənˈiə stˈɔː,"Andenkenladen , Souvenirladen , Souvenirgeschäft",masculine,,Am.,0,souvenir shop
+trust account,tɹˈʌst ɐkˈaʊnt,Anderkonto,neuter,,"Br., fin.",0,fiduciary account
+stampede,stampˈiːd,"Andrang , Ansturm , Massenansturm",masculine,,"übtr., fig.",2,
+acknowledgement,ɐknˈɒlɪdʒmənt,"Anerkenntnis , Eingeständnis",neuter,,Br.,2,acknowledgment
+acknowledgment,ɐknˈɒlɪdʒmənt,"Anerkenntnis , Eingeständnis",neuter,,Am.,0,acknowledgement
+acknowledgement,ɐknˈɒlɪdʒmənt,"Anerkennung   , Würdigung",feminine,,"persönliche, Br.",1,acknowledgment
+acknowledgment,ɐknˈɒlɪdʒmənt,"Anerkennung   , Würdigung",feminine,,"persönliche, Am.",0,acknowledgement
+tiro,tˈaɪɹəʊ,Anfänger,masculine,,Br.,0,tyro
+tyro,tˈaɪɹəʊ,Anfänger,masculine,,Am.,0,tiro
+journey,dʒˈɜːni,"Anfahrt , Fahrt",feminine,,"transp., Br.",5,
+jag,dʒˈaɡ,"Anfall , Rausch",masculine,,Am.,0,spree
+crying jag,kɹˈaɪɪŋ dʒˈaɡ,Weinanfall,masculine,,Am.,0,crying spree
+from the get-go,fɹʌmðə ɡɛt ɡˈəʊ,"von Anfang an, von vornherein, von Anbeginn",,,"coll., geh., Am.",0,"from the outset, from the git-go, from the beginning"
+from the git-go,fɹʌmðə ɡˈɪt ɡˈəʊ,"von Anfang an, von vornherein, von Anbeginn",,,"coll., geh., Am.",0,"from the outset, from the beginning, from the get-go"
+file challenges,fˈaɪl tʃˈalɪndʒɪz,Einwendungen gegen die Echtheit bzw. Erheblichkeit eines Beweismittels machen,,,Am.,0,
+challenge to the panel,array,Ablehnung sämtlicher Geschworenen,,,Am.,0,
+victimisation,vˌɪktɪmaɪzˈeɪʃən,"persönliche Anfeindungen , Ausgrenzung",feminine,plural,"Br., soc.",0,victimization
+yell,jˈɛl,Anfeuerungsruf,masculine,,Am.,0,
+extended centre line,ɛkstˈɛndɪd sˈɛntə lˈaɪn,Anfluggrundlinie,feminine,,"Br., aviat.",0,"flight base line, extended centerline"
+extended centerline,ɛkstˈɛndɪd sˈɛntəlˌaɪn,Anfluggrundlinie,feminine,,"aviat., Am.",0,"flight base line, extended centre line"
+approach control radar,ɐpɹˈəʊtʃ kəntɹˈəʊl ɹˈeɪdɑː,Anflugkontrollradar,masculine,,"Br., aviat.",0,
+radar approach control centre,center,Anflugkontrollstelle,feminine,,"aviat., Am.",0,
+demands,dɪmˈandz,"hohe Anforderungen , hohe Ansprüche",,plural,heavy,5,
+enquiry,ɛŋkwˈaɪəɹi,"Anfrage , Nachfrage , Bitte um Auskunft",feminine,,Br.,2,inquiry
+inquiry,ɪŋkwˈaɪəɹi,"Anfrage , Nachfrage , Bitte um Auskunft",feminine,,Am.,0,enquiry
+inverted comma,ɪnvˈɜːtɪd kˈɒmə,"Anführungszeichen , Anführungsstrich , Gänsefüßchen   , Tüttelchen",masculine,,"comp., print, Br.",2,"quote, quotation mark"
+blowhard,blˈəʊhɑːd,"Angeber , Aufschneider , Großmaul , Wichtigtuer , Windmacher , Schaumschläger , Piefke   , Renommist   , Prahlhans   , Maulheld",masculine,,"geh., Norddt., veraltet",0,"boaster, swankpot, tinhorn"
+tinhorn,tˈɪnhɔːn,"Angeber , Aufschneider , Großmaul , Wichtigtuer , Windmacher , Schaumschläger , Piefke   , Renommist   , Prahlhans   , Maulheld",masculine,,"geh., Norddt., veraltet",0,"boaster, swankpot, rodomont"
+cockalorum,kˌɒkɐlˈɔːɹəm,"Angeber , Aufschneider , Großmaul , Wichtigtuer , Windmacher , Schaumschläger , Piefke   , Renommist   , Prahlhans   , Maulheld",masculine,,"dated, geh., Norddt.",0,"boaster, swankpot, tinhorn"
+braggart,bɹˈaɡɑːt,"Angeber , Aufschneider , Großmaul , Wichtigtuer , Windmacher , Schaumschläger , Piefke   , Renommist   , Prahlhans   , Maulheld",masculine,,"dated, geh., Br.",0,"boaster, swankpot, tinhorn"
+swankpot,swˈaŋkpɒt,"Angeber , Aufschneider , Großmaul , Wichtigtuer , Windmacher , Schaumschläger , Piefke   , Renommist   , Prahlhans   , Maulheld",masculine,,"dated, geh., Br.",0,"boaster, tinhorn, rodomont"
+rodomont,ɹˈɒdəmˌɒnt,"Angeber , Aufschneider , Großmaul , Wichtigtuer , Windmacher , Schaumschläger , Piefke   , Renommist   , Prahlhans   , Maulheld",masculine,,"geh., archaic, Norddt.",0,"boaster, swankpot, tinhorn"
+bling car,blˈɪŋ kˈɑː,"Angeberauto , Angeberwagen   , Protzkarre     , Potenzkrücke",masculine,,"slang, Br., Dt.",1,"showy car, bling bling car, flashy car"
+bling bling car,blˈɪŋ blˈɪŋ kˈɑː,"Angeberauto , Angeberwagen   , Protzkarre     , Potenzkrücke",masculine,,"slang, Br., Dt.",1,"showy car, bling car, flashy car"
+bling bling look,blˈɪŋ blˈɪŋ lˈʊk,Angeber-Look,masculine,,"coll., ugs.",0,
+bling bling,blˈɪŋ blˈɪŋ,Angeberstück,neuter,,"coll., ugs.",0,
+offer,ˈɒfə,"Angebot   , Anbot   , Anerbietung   , Offerte , Offert",feminine,,"Ös., schriftlich aufgeschlüsseltes, econ.",13,
+tender,tˈɛndə,"Angebot   , Anbot   , Anerbietung",feminine,,"Ös., schriftlich aufgeschlüsseltes, econ.",7,bid
+bid,bˈɪd,"Angebot   , Anbot   , Anerbietung",feminine,,"Ös., schriftlich aufgeschlüsseltes, econ.",7,tender
+panel,pˈanəl,"Angeklagter , Angeklagte",masculine,,"Sc., jur.",0,"accused, defendant"
+John Doe,dʒˈɒn dˈəʊ,anonymer Angeklagter oder anonymes Opfer,,,"the person of, Am.",0,
+Jane Doe,dʒˈeɪn dˈəʊ,anonyme Angeklagte oder anonymes Opfer,,,"the person of, Am.",0,
+earnest money,ˈɜːnɪst mˈʌni,"Angeld , Anzahlung , Draufgabe",feminine,,"fin., Am.",0,deposit
+home affairs,hˈəʊm ɐfˈeəz,innere Angelegenheiten,,,Br.,0,internal affairs
+chum,tʃˈʌm,Fischstücke als Köder,,,Am.,0,
+furlough employees,fˈɜːləʊ ɛmplˈɔɪiːz,Angestellte in den Zwangsurlaub schicken,,,Am.,0,
+anglerfishes,ˈaŋɡələfɪʃɪz,"Anglerfische , Fühlerfische",,plural,"Austr., zool.",0,frogfish
+assaulter,ɐsˈɒltə,Angreifer,masculine,,rare,0,"attacker, assailant"
+felonious assault,fɛlˈəʊniəs ɐsˈɒlt,Gewaltanwendung/Körperverletzung mit einer tödlichen Waffe,,,"versuchte, Am.",0,
+attack,ɐtˈak,Angriff,masculine,,"Br., sport",2,offense
+offense,əfˈɛns,Angriff,masculine,,"sport, Am.",0,attack
+play offense,plˈeɪ əfˈɛns,im Angriff spielen,,,Am.,0,
+fear,worry,"Angst/Furcht/Sorge, es könnte etwas Bestimmtes geschehen",,,"Br., formal",0,
+chicken out,tʃˈɪkɪn ˈaʊt,"es (bei etw.) mit der Angst (zu tun) bekommen/kriegen, den Schwanz einziehen",,,coll.,1,
+put the wind up sb.,pˌʊt ðə wˈaɪnd ˈʌp ˌɛsbˈiː,"jdm. Angst machen, jdn. ins Bockshorn jagen",,verb,"coll., übtr., ugs.",0,
+dreaded rival,dɹˈɛdɪd ɹˈaɪvəl,Angstgegner,masculine,,"ugs., sport, Am.",0,"dreaded opponent, feared opponent, bogey team"
+chicken strip,tʃˈɪkɪn stɹˈɪp,"Angstrand , Angststreifen",masculine,,"coll., auto, ugs.",0,
+worshipper,wˈɜːʃɪpə,"Anhänger , Verehrer , Anbeter",masculine,,"Br., relig., pej.",1,worshiper
+worshiper,wˈɜːʃɪpə,"Anhänger , Verehrer , Anbeter",masculine,,"relig., pej., Am.",0,worshipper
+votary,vˈɒtəɹi,"überzeugter/treuer Anhänger , Jünger",masculine,,"dated, geh., formal",2,
+thumb a lift,θˈʌm ɐ lˈɪft,"per Anhalter fahren, per Autostopp fahren, autostoppen  , trampen",,,"coll., Ös.",0,"hitchhike, go backpacking, hitch"
+annex,ˈanɛks,"Anhang   Anh.,  /ˈan/",masculine,,"Br., print",0,"annexure, appendix"
+annexure,ˈanɛkʃʊə,"Anhang   Anh.,  /ˈan/",masculine,,"print, South Africa, rare",0,"annex, appendix"
+notes,nˈəʊts,Anhang,masculine,,"adm., econ., Am.",1,
+exhibit,ɛɡzˈɪbɪt,Anhang,masculine,,"jur., Am.",0,schedule
+trailer sway control,tɹˈeɪlə swˈeɪ kəntɹˈəʊl,"Anhängerstabilisierung , Giermoment-Regelung",feminine,,"auto, Am.",0,
+bar girl,bˈɑː ɡˈɜːl,"Animierdame , Animiermädchen",feminine,,Am.,0,"bar hostess, nightclub hostess, B-girl"
+B-girl,bˈiː ɡˈɜːl,"Animierdame , Animiermädchen",feminine,,"dated, Am.",1,"bar hostess, nightclub hostess, bar girl"
+clip joint,klˈɪp dʒˈɔɪnt,"Animierlokal , Animierkneipe",feminine,,pej.,0,hostess bar
+commend itself,themselves to sb.,"bei jdm. Anklang/Zustimmung/Zuspruch/Beifall finden, jdn. ansprechen, jdm. zusagen",,verb,formal,0,
+plaint,plˈeɪnt,Anklage,feminine,,"Br., jur.",0,indictment
+impeachment,ɪmpˈiːtʃmənt,Anklage,feminine,,"jur., Am.",0,
+impeachment,ɪmpˈiːtʃmənt,Anklage wegen Staatsgefährdung,,,"Br., hist., jur.",0,
+complaint,kəmplˈeɪnt,Anklageschrift,feminine,,"jur., Am.",0,"true bill, charge, bill of indictment"
+true bill,tɹˈuː bˈɪl,Anklageschrift,feminine,,"jur., Am.",0,"complaint, charge, bill of indictment"
+docking manoeuvre,dˈɒkɪŋ mənˈuːvə,"Ankopplungsmanöver , Andockmanöver",neuter,,"Br., aviat.",0,docking maneuver
+docking maneuver,dˈɒkɪŋ mənˈuːvə,"Ankopplungsmanöver , Andockmanöver",neuter,,"aviat., Am.",0,docking manoeuvre
+jigger,dʒˈɪɡə,"Ankopplungsspule , Kopplungsspule , Koppelspule",feminine,,"coll., electr.",0,coupling coil
+assets authorization,ˈasɛts ˌɔːθəɹaɪzˈeɪʃən,Anlagenberechtigung,feminine,,"fin., eAm.",0,authorisation
+authorisation,ˌɔːθəɹaɪzˈeɪʃən,Anlagenberechtigung,feminine,,"Br., fin.",0,assets authorization
+money-market deposit account,mˈʌni mˈɑːkɪt dɪpˈɒzɪt ɐkˈaʊnt,Anlagekonto mit eingeschränkter Zahlungsverkehrsmöglichkeit,,,Am.,0,
+mechanical contractor for HVAC and plumbing services,mɪkˈanɪkəl kəntɹˈaktə fɔːɹ ˈeɪtʃvˈak and plˈʌmɪŋ sˈɜːvɪsɪz,"Anlagenmechaniker für Sanitär-, Heizungs- und Klimatechnik, SHK-Anlagenmechaniker",,,Am.,0,"contractor / technician for heating, ventilation, air conditioning and plumbing services"
+component,kəmpˈəʊnənt,Anlagenteil,neuter,,"mach., plant",0,
+assets management,ˈasɛts mˈanɪdʒmənt,"Anlageverwaltung , Anlagenverwaltung , Anlagenmanagement , Anlagenwertführung , Effektenverwaltung , Vermögensverwaltung , Verwaltung von Vermögenswerten",feminine,,"fin., rare",0,"investment management, trust management, asset management"
+tempering temperature,tˈɛmpəɹɪŋ tˈɛmpɹɪtʃə,Anlasstemperatur,feminine,,"Br., techn.",0,annealing temperature
+annealing temperature,ɐnˈiːlɪŋ tˈɛmpɹɪtʃə,Anlasstemperatur,feminine,,"techn., Am.",0,tempering temperature
+axial buffer disc,ˈaksɪəl bˈʌfə dˈɪsk,Anlaufplatte,feminine,,"Br., techn.",1,axial buffer disk
+axial buffer disk,ˈaksɪəl bˈʌfə dˈɪsk,Anlaufplatte,feminine,,"techn., Am.",1,axial buffer disc
+stop disc,stˈɒp dˈɪsk,Anlaufscheibe,feminine,,Br.,0,"stop disk, thrust washer"
+stop disk,stˈɒp dˈɪsk,Anlaufscheibe,feminine,,Am.,0,"stop disc, thrust washer"
+property bond,pɹˈɒpəti bˈɒnd,"Immobilienanleihe , Immobilienobligation , Immobilienschuldverschreibung",feminine,,"Br., real",0,
+DM-nominated bearer treasury note,dˌiːˈɛm nˈɒmɪnˌeɪtɪd bˈeəɹə tɹˈɛʒəɹi nˈəʊt,"Kassenobligation , Kassaobligation     , Kassenschein , Kassaschein",masculine,,"Schw., Ös., Am.",0,"medium-term fixed-rate note, cash bond"
+borrowing,bˈɒɹəʊɪŋ,Anleihe,feminine,,"art, artistic, künstlerische",1,
+neighbouring State,nˈeɪbəɹɪŋ stˈeɪt,"Anliegerstaat , Anrainerstaat",masculine,,"Br., geogr., Ös.",0,"neighboring country, neighbouring country, neighboring State"
+neighboring State,nˈeɪbəɹɪŋ stˈeɪt,"Anliegerstaat , Anrainerstaat",masculine,,"geogr., Ös., Am.",0,"neighbouring State, neighbouring country, neighboring country"
+come-on,kˈʌm ˈɒn,Anmache,feminine,,"coll., ugs.",1,
+enrolment,ɛnɹˈəʊlmənt,"Anmeldung , Einschreibung",feminine,,"adm., Br., school",1,enrollment
+enrollment,ɛnɹˈəʊlmənt,"Anmeldung , Einschreibung",feminine,,"adm., school, Am.",0,enrolment
+nota bene,nˈəʊtə bˈɛnɪ,"Anmerkung Anm.,  /ˈanəm/ , Notiz , Vermerk",masculine,,archaic,0,note
+hirer,hˈaɪəɹə,"Anmieter , Mieter",masculine,,Br.,1,renter
+renter,ɹˈɛntə,"Anmieter , Mieter",masculine,,Am.,0,hirer
+on acceptance,ˌɒn ɐksˈɛptəns,bei Annahme,,,up,0,
+domestic acceptance,dəmˈɛstɪk ɐksˈɛptəns,Inlandsakzept,neuter,,Am.,0,
+cancelation,kˌansɪlˈeɪʃən,"Annullierung , Annullation , Aufhebung",feminine,,Am.,0,cancellation
+anonymisation,ɐnˌɒnəmaɪzˈeɪʃən,Anonymisierung,feminine,,"adm., Br.",0,anonymization
+spatial disposition,spˈeɪʃəl dˌɪspəzˈɪʃən,"räumliche Anordnung , Anordnung , Aufstellung",feminine,,formal,0,"disposition, spatial arrangement, arrangement"
+disposition,dˌɪspəzˈɪʃən,"räumliche Anordnung , Anordnung , Aufstellung",feminine,,formal,2,"spatial arrangement, spatial disposition, arrangement"
+community order,kəmjˈuːnɪti ˈɔːdə,Anordnung gemeinnütziger Arbeit,,,"Br., jur.",0,community service order
+fiat,fˈiːət,"Anordnung , Befehl , Ordonnanz",masculine,,"obs., formal",0,"ordinance, precept"
+hustler,hˈʌslə,"Anpacker , Wühler , Macher , Kämpfernatur",masculine,,Am.,0,go-getter
+socialisation,sˌəʊʃəlaɪzˈeɪʃən,"soziale Anpassung , Sozialisierung , Sozialisation",feminine,,"Br., soc.",0,"social adaptation, socialization, social adjustment"
+customizing,kˈʌstəmˌaɪzɪŋ,Anpassung,feminine,,eAm.,0,"customisation, customization, customising"
+customising,kˈʌstəmˌaɪzɪŋ,Anpassung,feminine,,Br.,0,"customizing, customization, customisation"
+adaptive behaviour,ɐdˈaptɪv bɪhˈeɪvjə,Anpassungsverhalten,neuter,,Br.,0,adaptive behavior
+adaptive behavior,ɐdˈaptɪv bɪhˈeɪvjə,Anpassungsverhalten,neuter,,Am.,0,adaptive behaviour
+bawling-out,bˈɔːlɪŋ ˈaʊt,"Anpfiff , Anranzer , Zusammenschiss",masculine,,"coll., Schw., ugs.",0,
+rocket,ɹˈɒkɪt,"Anpfiff   , Anschiss",masculine,,"vulg., Br., ugs.",1,rap
+rap,ɹˈap,"Anpfiff   , Anschiss",masculine,,"coll., ugs., vulg.",0,rocket
+molestation,məlɪstˈeɪʃən,"Anpöbeln , Pöbelei",feminine,,"dated, soc.",0,
+practicum credit,pɹˈaktɪkəm kɹˈɛdɪt,Anrechnung als Praktikum,,,Am.,0,
+letter salutation,lˈɛtə sˌaluːtˈeɪʃən,Briefanrede,feminine,,"persönliche, personal",0,
+shill,ʃˈɪl,"Anreißer , Scheininteressent , Scheinkunde",masculine,,Am.,0,
+standfirst,stˈandfɜːst,"Anreißer , Anriss , Anrisstext , Anrissbild",masculine,,Br.,0,teaser
+buffet,bˈʌfɪt,"Anrichteschrank , Anrichte , Büfett , Buffet     , Kredenz",masculine,,"Schw., veraltend, Ös.",0,"credenza, sideboard cupboard, sideboard"
+gaminess,ɡˈeɪminəs,"Anrüchigkeit , zweifelhafte Natur",feminine,,Am.,0,
+concourse,kˈɒŋkɔːs,"Ansammlung , Auflauf",masculine,,"formal, soc.",1,
+colour,kˈʌlə,"Anschein , Anstrich",masculine,,Br.,3,color
+color,kˈʌlə,"Anschein , Anstrich",masculine,,Am.,1,colour
+face value,fˈeɪs vˈaljuː,"der erste Anschein, der äußere Anschein",,,fig.,8,
+noticeboard,nˈəʊtɪsbˌɔːd,"Anschlagbrett , schwarzes Brett",neuter,,Br.,1,"notice board, bulletin board"
+female,fˈiːmeɪl,"Anschlussbuchse , Steckerbuchse , Buchse , Buchsenstecker , Steckerhülse , Weibchen   , Weiberl",masculine,,"Ös., Bayr., electr.",0,"plug socket, jack, receptacle connector"
+aftermarket,ˈaftəmˌɑːkɪt,Anschlussmarkt,masculine,,"econ., Am.",0,
+terminal busses,tˈɜːmɪnəl bˈʌsɪz,"Anschlussschienen , Anschlußschienen",,plural,Am.,0,terminal buses
+continuity clerk,kɒntɪnjˈuːɪti klˈɑːk,"Anschlussüberwachung , Continuity",feminine,,"dated, Am.",0,"script girl, script supervisor, script reader"
+script reader,skɹˈɪpt ɹˈiːdə,"Anschlussüberwachung , Continuity",feminine,,"dated, Am.",0,"continuity clerk, script girl, script supervisor"
+script girl,skɹˈɪpt ɡˈɜːl,"Anschlussüberwachung , Continuity",feminine,,"dated, Am.",0,"continuity clerk, script supervisor, script reader"
+mould gating,mˈəʊld ɡˈeɪtɪŋ,"Anschnitttechnik , Steigertechnik",feminine,,"Br., techn.",0,"mold gating, gating"
+mold gating,mˈəʊld ɡˈeɪtɪŋ,"Anschnitttechnik , Steigertechnik",feminine,,"techn., Am.",0,"mould gating, gating"
+intumescence,ɪntjuːmˈɛsəns,"Anschwellen , Schwellung , Tumeszenz , Turgeszenz",feminine,,"med., rare",0,"turgescence, turgidity, tumentia"
+intumescentia,ɪntjˌuːmɪsˈɛnʃə,"Anschwellen , Schwellung , Tumeszenz , Turgeszenz",feminine,,"med., rare",0,"turgescence, turgidity, tumentia"
+kudos,kjˈuːdəʊz,"öffentliches Ansehen , Berühmtheit , Prestige , Ehre",feminine,,"used without article, Br.",3,
+payroll saving,pˈeɪɹəʊl sˈeɪvɪŋ,Ansparen durch freiwilligen Lohnabzug,,,"fin., Am.",0,
+goad,ɡˈəʊd,Ansporn,masculine,,fig.,0,
+contagion,kəntˈeɪdʒən,Ansteckung,feminine,,"übtr., fig.",0,
+elevation,ˌɛlɪvˈeɪʃən,"Ansteigen , Anstieg ()",masculine,,"med., formal, phys.",1,"increase, rise"
+upgrade,ˈʌpɡɹeɪd,"Ansteigen , Steigung , ansteigender Verlauf",masculine,,"geogr., constr., Am.",1,incline
+employ,ɛmplˈɔɪ,"Anstellung , Einstellung , Beschäftigung , Arbeitsverhältnis , Beschäftigungsverhältnis , Dienstverhältnis",feminine,,"adm., archaic",8,employment
+the Employment Act 1980,ðɪ ɛmplˈɔɪmənt ˈakt nˈaɪntiːnhˈʌndɹɪdən ˈeɪti,das Arbeitsgesetz von 1980,,,Br.,0,
+Employment Appeal Tribunal,ɛmplˈɔɪmənt ɐpˈiːl tɹaɪbjˈuːnəl,Rechtsmittelinstanz in arbeitsrechtlichen Angelegenheiten,,,Br.,0,
+angle of incidence,ˈaŋɡəl ɒv ˈɪnsɪdəns,Anstellwinkel,masculine,,"Br., aviat.",0,angle of attack
+jolt sb.,sth. into sth.,"jdm./etw. den Anstoß zu etw. geben, jdn. schlagartig/abrupt in etw. befördern",,,"übtr., fig.",0,
+centre spot,sˈɛntə spˈɒt,Anstoßpunkt,masculine,,"Br., sport",0,"center spot, kick-off spot"
+center spot,sˈɛntə spˈɒt,Anstoßpunkt,masculine,,"sport, Am.",0,"centre spot, kick-off spot"
+strain,stɹˈeɪn,Anstrengung,feminine,,fig.,7,
+buffeting,bˈʌfɪtɪŋ,"Ansturm , Druck",masculine,,fig.,0,
+stakeholder economy,stˈeɪkhəʊldəɹ ɪkˈɒnəmi,Wirtschaftssystem mit breiter Bürgerbeteiligung,,,"Br., pol.",0,
+antenna,antˈɛnə,Antenne,feminine,,"Am., telco., techn.",11,aerial
+aerial,ˈeəɹɪəl,Antenne,feminine,,"Br., telco.",1,antenna
+dipole aerial,dˈaɪpəʊl ˈeəɹɪəl,Wurfantenne,feminine,,Br.,0,dipole antenna
+aerial range,ˈeəɹɪəl ɹˈeɪndʒ,Antennenreichweite,feminine,,Br.,0,antenna range
+anthocyans,ˈanθəsɪənz,"Anthozyane , Anthocyane , Anthocyanine",,plural,"biochem., selten, rare",0,anthocyanins
+teetotaller,tˈiːtəʊtˌɔːlə,"Antialkoholiker , Abstinenzler",masculine,,"Br., ugs.",0,teetotaler
+teetotaler,tˈiːtəʊtˌeɪlə,"Antialkoholiker , Abstinenzler",masculine,,"ugs., Am.",0,teetotaller
+antisomatogen,ˌantɪsˈɒmɐtədʒən,"Antikörperbildner , Antigen , Antisomatogen",masculine,,"med., former name, frühere Bezeichnung",0,antigen
+antibody titre,ˈantɪbˌɒdi tˈɪtə,"Antikörpergehalt , Schutzkörpergehalt , Antikörpertiter",masculine,,"med., Br.",0,"antibody titer, immune body titer, immune body titre"
+antibody titer,ˈantɪbˌɒdi tˈaɪtə,"Antikörpergehalt , Schutzkörpergehalt , Antikörpertiter",masculine,,"med., Am.",0,"immune body titer, antibody titre, immune body titre"
+immune body titre,ɪmjˈuːn bˈɒdi tˈɪtə,"Antikörpergehalt , Schutzkörpergehalt , Antikörpertiter",masculine,,"med., Br.",0,"antibody titer, immune body titer, antibody titre"
+immune body titer,ɪmjˈuːn bˈɒdi tˈaɪtə,"Antikörpergehalt , Schutzkörpergehalt , Antikörpertiter",masculine,,"med., Am.",0,"antibody titer, antibody titre, immune body titre"
+serologic survey,sˌɛɹəlˈɒdʒɪk sˈɜːveɪ,"Antikörperkataster , serologische Übersicht",masculine,,"med., large-scale",0,serosurvey
+second-hand bookshop,sˈɛkənd hˈand bˈʊkʃɒp,"Antiquariat , Buchhandlung für antiquarische Bücher",neuter,,Br.,1,second-hand bookstore
+second-hand bookstore,sˈɛkənd hˈand bˈʊkstɔː,"Antiquariat , Buchhandlung für antiquarische Bücher",neuter,,Am.,1,second-hand bookshop
+antiquarian bookseller's shop,ˌantɪkwˈeəɹiən bˈʊksɛləɹ ˈɛs ʃˈɒp,spezialisiertes bibliophiles Antiquariat,neuter,,Br.,0,"antiquarian bookshop, antiquarian bookstore"
+antiquarian bookshop,ˌantɪkwˈeəɹiən bˈʊkʃɒp,spezialisiertes bibliophiles Antiquariat,neuter,,Br.,0,"antiquarian bookseller's shop, antiquarian bookstore"
+antiquarian bookstore,ˌantɪkwˈeəɹiən bˈʊkstɔː,spezialisiertes bibliophiles Antiquariat,neuter,,Am.,0,"antiquarian bookseller's shop, antiquarian bookshop"
+antique,antˈiːk,nach Antiquitäten stöbern/suchen,,,Am.,0,
+go antiquing,ɡˌəʊ antˈiːkɪŋ,auf Antiquitätensuche gehen,,,Am.,0,
+antiques store,antˈiːks stˈɔː,"Antiquitätengeschäft , Antiquitätenhandlung , Antiquitätenladen",masculine,,Am.,0,antique store
+anti-racism,ˈanti ɹˈeɪsɪzəm,Antirassismus,masculine,,Br.,0,antiracism
+antiracism,ˌantɪɹˈeɪsɪzəm,Antirassismus,masculine,,Am.,0,anti-racism
+motion to reconsider,mˈəʊʃən tə ɹˌiːkənsˈɪdə,Antrag auf erneute Beratung,,,"pol., Am.",0,
+motion of no case to answer,mˈəʊʃən ɒv nˈəʊ kˈeɪs tʊ ˈansə,Antrag auf Freispruch ohne Anklageerwiderung,,,"Br., jur.",0,no case motion
+plea in bar,plˈiː ɪn bˈɑː,Antrag auf Sachabweisung,,,"jur., Am.",0,plea to dismiss the action/suit on the merits
+demurrer,dɪmˈɜːɹə,Antrag auf Verfahrenseinstellung aus rechtlichen Gründen,,,"obs., jur.",4,
+demur,dɪmˈɜː,"einen Antrag auf Verfahrenseinstellung einbringen, die Verfahrenseinstellung beantragen",,,obs.,2,
+non-movant,nˈɒn mˈuːvənt,Antragsgegner,masculine,,"jur., Am.",1,non-moving party
+chow call,tʃˈaʊ kˈɔːl,Antreten einer Einheit zum Essensempfang,,,"coll., mil., Am.",0,
+energize,ˈɛnədʒˌaɪz,"etw. Antrieb geben, unter Strom setzen",,,"eAm., electr.",0,energise sth.
+drive wheel tire,dɹˈaɪv wˈiːl tˈaɪə,Antriebsreifen,masculine,,"auto, Am.",1,drive wheel tyre
+answer,ˈansə,"Antwort   , Rückmeldung , Rückäußerung",feminine,,"geh., schriftliche, written",1,reply
+answer,ˈansə,Antwort,feminine,,"übtr., fig.",4,
+partnership of attorneys,pˈɑːtnəʃˌɪp ɒv ɐtˈɜːniz,"Anwaltsgemeinschaft , Sozietät von Rechtsanwälten, Sozietät , Gemeinschaftskanzlei",feminine,,"jur., Am.",0,partnership of lawyers
+chamber,tʃˈeɪmbə,"Anwaltskanzlei , Rechtsanwaltskanzlei , Kanzlei , Rechtsanwaltsbüro , Anwaltsfirma",feminine,,"Br., jur.",0,"lawyer's office, law office, law firm"
+law firm,lˈɔː fˈɜːm,"Anwaltskanzlei , Rechtsanwaltskanzlei , Kanzlei , Rechtsanwaltsbüro , Anwaltsfirma",feminine,,"jur., Am.",0,"lawyer's office, chamber, law office"
+chambers,tʃˈeɪmbəz,Gemeinschaftskanzlei,,,"Br., jur.",0,
+homeroom,hˈəʊmɹuːm,Anwesenheitskontrolle und administrative Angelegenheiten,,,"school, Am.",0,"planning period, registration, advisory"
+face time,fˈeɪs tˈaɪm,"Anwesenheitszeit , Präsenzzeit , Zeit der Medienpräsenz",feminine,,"coll., soc., Am.",0,
+abutting resident,ɐbˈʌtɪŋ ɹˈɛzɪdənt,"Anwohner     , Anlieger   , Anrainer   , Anstösser   , Anwänder",masculine,,"Ös., adm., Am.",0,"adjoining resident, abutter, neighbo(u)ring resident"
+abutter,ɐbˈʌtə,"Anwohner     , Anlieger   , Anrainer   , Anstösser   , Anwänder",masculine,,"Ös., adm., Am.",0,"adjoining resident, abutting resident, neighbo(u)ring resident"
+Access only!,ˈaksɛs ˈəʊnli,"Anlieger/Anwohner frei!, Ausgenommen Anrainer!  , Anwohner gestattet!",,,"Br., Ös., Schw.",0,Residents only!
+resident parking decal,ɹˈɛzɪdənt pˈɑːkɪŋ dɪkˈal,"Anwohner-Parkausweis , Anwohnerplakette , Anrainerpickerl",masculine,,"Ös., Am.",1,resident parking permit/pass/sticker
+ad,ˈad,"Anzeige , Annonce , Inserat",feminine,,coll.,3,"advert, advertisement"
+advert,ˈadvɜːt,"Anzeige , Annonce , Inserat",feminine,,"coll., Br.",2,"ad, advertisement"
+wanted ad,wˈɒntɪd ˈad,"Suchanzeige , Suchannonce",feminine,,Br.,0,want ads
+want ads,wˈɒnt ˈadz,"Suchanzeige , Suchannonce",feminine,,Am.,0,wanted ad
+display screen,dɪsplˈeɪ skɹˈiːn,"Anzeigefeld , Anzeige , Display",feminine,,"small, comp., electr.",1,display
+display,dɪsplˈeɪ,"Anzeigefeld , Anzeige , Display",feminine,,"small, comp., electr.",1,display screen
+display screens,dɪsplˈeɪ skɹˈiːnz,"Anzeigefelder , Anzeigen , Displays",,plural,small,0,displays
+small ads,smˈɔːl ˈadz,"Kleinanzeigenteil , Kleinanzeigen",masculine,plural,Br.,0,"classified advertisements, classified ads, want ads"
+wanted ads,wˈɒntɪd ˈadz,"Kleinanzeigenteil , Kleinanzeigen",masculine,plural,Br.,0,"classified advertisements, classified ads, want ads"
+want ads,wˈɒnt ˈadz,"Kleinanzeigenteil , Kleinanzeigen",masculine,plural,Am.,0,"classified advertisements, classified ads, wanted ads"
+lubricity,luːbɹˈɪsɪti,Anzüglichkeit,feminine,,fig.,0,
+be advancing,biː ɐdvˈansɪŋ,im Anzug sein,,verb,mil.,0,be in the offing
+toffie apple,tˈɒfi ˈapəl,glasierter Apfel,,,Br.,0,candy apple
+apple fritters,ˈapəl fɹˈɪtəz,"Apfel im Hemd , Apfelräder , Apfelradln",masculine,plural,"cook., Br., Bayr.",0,apple beignets
+apple beignets,ˈapəl bˈeɪnɪts,"Apfel im Hemd , Apfelräder , Apfelradln",masculine,plural,"cook., Bayr., Ös.",0,apple fritters
+apple pip,ˈapəl pˈɪp,Apfelkern,masculine,,"cook., Br.",1,apple seed
+apple seed,ˈapəl sˈiːd,Apfelkern,masculine,,"cook., Am.",1,apple pip
+aphaeresis,ɐfeəɹˈiːsɪs,Aphärese,feminine,,"Br., ling.",0,apheresis
+Internet chemist,ˈɪntənˌɛt kˈɛmɪst,"Internet-Apotheke , Online-Apotheke",feminine,,"coll., Br.",0,"Internet pharmacy, online pharmacy"
+dispensing chemist,dɪspˈɛnsɪŋ kˈɛmɪst,"Apotheker , Apothekerin",masculine,,"Br., pharm.",0,"druggist, apothecary, pharmacist"
+druggist,dɹˈʌɡɪst,"Apotheker , Apothekerin",masculine,,"dated, pharm., Am.",0,"apothecary, pharmacist, dispensing chemist"
+apothecary,ɐpˈɒθɪkəɹi,"Apotheker , Apothekerin",masculine,,"pharm., hist.",0,"druggist, pharmacist, dispensing chemist"
+machinery,məʃˈiːnəɹi,"Apparat , Maschinerie , Räderwerk",masculine,,"übtr., fig.",5,
+sb.'s lunchbox,ˌɛsbˈiː ˈɛs lˈʌntʃbɒks,"jds. Apparat , jds. Gemächt",masculine,,"Br., humor.",0,sb.'s package
+sb.'s package,ˌɛsbˈiː ˈɛs pˈakɪdʒ,"jds. Apparat , jds. Gemächt",masculine,,"humor., Am.",0,sb.'s lunchbox
+appetitive behavior,apˈɛtɪtˌɪv bɪhˈeɪvjə,Appetenzverhalten,neuter,,"biol., psych., Am.",0,appetitive behaviour
+chemical colour,kˈɛmɪkəl kˈʌlə,Applikationsfarbe,feminine,,"Br., textil.",0,chemical color
+chemical color,kˈɛmɪkəl kˈʌlə,Applikationsfarbe,feminine,,"textil., Am.",0,chemical colour
+retrieval,ɹɪtɹˈiːvəl,Apport,masculine,,"hunters' parlance, Jägersprache",0,
+Talking of sb.,sth.,"Apropos jd./etw. , Da/Weil wir gerade von jdm./etw. sprechen",,,Br.,0,"Speaking of sb./sth., While we are on the subject of sb./sth."
+watercolour,wˈɔːtəkˌʌlə,"Aquarell , Aquarellmalerei , Aquarellzeichnung",feminine,,"art, Br.",0,"watercolour drawing, watercolor drawing, watercolor"
+watercolour painting,wˈɔːtəkˌʌlə pˈeɪntɪŋ,"Aquarell , Aquarellmalerei , Aquarellzeichnung",feminine,,"art, Br.",0,"watercolour drawing, watercolor drawing, watercolor"
+watercolour drawing,wˈɔːtəkˌʌlə dɹˈɔːɪŋ,"Aquarell , Aquarellmalerei , Aquarellzeichnung",feminine,,"art, Br.",0,"watercolor drawing, watercolor, watercolour"
+watercolor,wˈɔːtəkˌʌlə,"Aquarell , Aquarellmalerei , Aquarellzeichnung",feminine,,"art, Am.",0,"watercolour drawing, watercolor drawing, watercolour"
+watercolor painting,wˈɔːtəkˌʌlə pˈeɪntɪŋ,"Aquarell , Aquarellmalerei , Aquarellzeichnung",feminine,,"art, Am.",0,"watercolour drawing, watercolor drawing, watercolor"
+watercolor drawing,wˈɔːtəkˌʌlə dɹˈɔːɪŋ,"Aquarell , Aquarellmalerei , Aquarellzeichnung",feminine,,"art, Am.",0,"watercolour drawing, watercolor, watercolour"
+watercolour technique,wˈɔːtəkˌʌlə tɛknˈiːk,"Aquarelltechnik , Wasserfarbentechnik",feminine,,"art, Br.",0,"watercolor, watercolor technique, watercolour"
+watercolour,wˈɔːtəkˌʌlə,"Aquarelltechnik , Wasserfarbentechnik",feminine,,"art, Br.",0,"watercolour technique, watercolor, watercolor technique"
+watercolor technique,wˈɔːtəkˌʌlə tɛknˈiːk,"Aquarelltechnik , Wasserfarbentechnik",feminine,,"art, Am.",0,"watercolour technique, watercolor, watercolour"
+watercolor,wˈɔːtəkˌʌlə,"Aquarelltechnik , Wasserfarbentechnik",feminine,,"art, Am.",0,"watercolour technique, watercolor technique, watercolour"
+watercolour painting,wˈɔːtəkˌʌlə pˈeɪntɪŋ,Aquarellmalerei,feminine,,"art, Br.",0,"watercolor, watercolour, watercolor painting"
+watercolour,wˈɔːtəkˌʌlə,Aquarellmalerei,feminine,,"art, Br.",0,"watercolor, watercolour painting, watercolor painting"
+watercolor painting,wˈɔːtəkˌʌlə pˈeɪntɪŋ,Aquarellmalerei,feminine,,"art, Am.",0,"watercolor, watercolour painting, watercolour"
+watercolor,wˈɔːtəkˌʌlə,Aquarellmalerei,feminine,,"art, Am.",0,"watercolour painting, watercolor painting, watercolour"
+watercolour painting,wˈɔːtəkˌʌlə pˈeɪntɪŋ,"Aquarellmalerei , Aquarellzeichnung",feminine,,"art, Br.",0,watercolor painting
+watercolor painting,wˈɔːtəkˌʌlə pˈeɪntɪŋ,"Aquarellmalerei , Aquarellzeichnung",feminine,,"art, Am.",0,watercolour painting
+watercolour paper,wˈɔːtəkˌʌlə pˈeɪpə,Aquarellpapier,neuter,,Br.,0,watercolor paper
+watercolor paper,wˈɔːtəkˌʌlə pˈeɪpə,Aquarellpapier,neuter,,Am.,0,watercolour paper
+labour,lˈeɪbə,Arbeit,feminine,,"Br., mühevolle",0,labor
+labor,lˈeɪbə,Arbeit,feminine,,"mühevolle, Am.",0,labour
+labour,lˈeɪbə,Arbeit,feminine,,"Br., econ.",3,labor
+labor,lˈeɪbə,Arbeit,feminine,,"econ., Am.",0,labour
+timeserver,tˈaɪmsɜːvə,"jd., der auf Arbeit nur seine Stunden absitzt",,,pej.,0,
+working stiffs,wˈɜːkɪŋ stˈɪfs,einfache Arbeiter,,,Am.,0,
+labourer,lˈeɪbəɹə,Arbeiter,masculine,,Br.,0,laborer
+laborer,lˈeɪbəɹə,Arbeiter,masculine,,Am.,0,labourer
+labour leader,lˈeɪbə lˈiːdə,"Arbeiterführer , Arbeiterführerin",masculine,,Br.,0,labor leader
+labor leader,lˈeɪbə lˈiːdə,"Arbeiterführer , Arbeiterführerin",masculine,,Am.,0,labour leader
+labour,lˈeɪbə,die Arbeitnehmer,,plural,"Br., pol., econ.",1,labor
+labor,lˈeɪbə,die Arbeitnehmer,,plural,"econ., pol., Am.",0,labour
+labour,lˈeɪbə,die Arbeiterschaft,feminine,,"Br., pol., soc.",1,"workmen, the working class, labor"
+labor,lˈeɪbə,die Arbeiterschaft,feminine,,"pol., soc., Am.",1,"workmen, the working class, labour"
+upskill workers,ˈʌpskɪl wˈɜːkəz,Arbeitnehmer höher qualifizieren,,,Br.,0,
+workers' organization,wˈɜːkəz ˌɔːɡɐnaɪzˈeɪʃən,Arbeitnehmerorganisation,feminine,,eAm.,1,workers' organisation
+workers' organisation,wˈɜːkəz ˌɔːɡɐnaɪzˈeɪʃən,Arbeitnehmerorganisation,feminine,,Br.,1,workers' organization
+employment office,ɛmplˈɔɪmənt ˈɒfɪs,Arbeitsamt,neuter,,"adm., local",0,"job center, employment exchange, job centre"
+labour office,lˈeɪbəɹ ˈɒfɪs,Arbeitsamt,neuter,,"adm., Br.",0,"job center, employment exchange, job centre"
+labor office,lˈeɪbəɹ ˈɒfɪs,Arbeitsamt,neuter,,"adm., Am.",0,"job center, employment exchange, job centre"
+employment exchange,ɛmplˈɔɪmənt ɛkstʃˈeɪndʒ,Arbeitsamt,neuter,,"adm., Br.",0,"job center, job centre, labor office"
+job centre,dʒˈɒb sˈɛntə,Arbeitsamt,neuter,,"adm., Br.",0,"job center, employment exchange, labor office"
+job center,dʒˈɒb sˈɛntə,Arbeitsamt,neuter,,"adm., Am.",0,"employment exchange, job centre, labor office"
+labour supply,lˈeɪbə səplˈaɪ,Arbeitsangebot,neuter,,"Br., econ.",0,labor supply
+labor supply,lˈeɪbə səplˈaɪ,Arbeitsangebot,neuter,,"econ., Am.",0,labour supply
+boilersuit,bˈɔɪləsˌuːt,"Arbeitsanzug , Arbeitsoverall , Overall",masculine,,"Br., textil.",0,"coveralls, overalls"
+overalls,ˌəʊvəɹˈɔːlz,"Arbeitsanzug , Arbeitsoverall , Overall",masculine,,"Br., textil., pair of",0,"coveralls, boilersuit"
+coveralls,kˈʌvəɹˌɔːlz,"Arbeitsanzug , Arbeitsoverall , Overall",masculine,,"pair of, textil., Am.",0,"boilersuit, overalls"
+expenditure of human labor,ɛkspˈɛndɪtʃəɹ ɒv hjˈuːmən lˈeɪbə,Arbeitsaufwand,masculine,,Am.,0,expenditure of human labour
+working papers,wˈɜːkɪŋ pˈeɪpəz,Arbeitsausweis,masculine,,Am.,0,"working paper, working card"
+labour director,lˈeɪbə daɪɹˈɛktə,"Arbeitsdirektor , Arbeitsdirektorin",masculine,,Br.,0,"labor director, worker director"
+sweat equity,swˈɛt ˈɛkwɪti,"persönlicher Arbeitseinsatz , Muskelkapital",masculine,,Am.,1,
+counter space,kˈaʊntə spˈeɪs,Arbeitsfläche,feminine,,Am.,1,work surface
+industrial tribunal,ɪndˈʌstɹɪəl tɹaɪbjˈuːnəl,Arbeitsgericht,neuter,,"Br., jur.",0,"employment tribunal, labour court"
+employment tribunal,ɛmplˈɔɪmənt tɹaɪbjˈuːnəl,Arbeitsgericht,neuter,,"Br., jur.",0,"industrial tribunal, labour court"
+labour legislation,lˈeɪbə lˌɛdʒɪslˈeɪʃən,"Arbeitsgesetzgebung , Arbeitsgesetze",feminine,plural,Br.,0,labor legislation
+labor legislation,lˈeɪbə lˌɛdʒɪslˈeɪʃən,"Arbeitsgesetzgebung , Arbeitsgesetze",feminine,plural,Am.,0,labour legislation
+spike,spˈaɪk,Arbeitshaus,neuter,,"coll., Br., hist.",0,workhouse
+labour dispute,lˈeɪbə dɪspjˈuːt,Arbeitskampf,masculine,,Br.,0,labor dispute
+labor dispute,lˈeɪbə dɪspjˈuːt,Arbeitskampf,masculine,,Am.,0,labour dispute
+overall,ˌəʊvəɹˈɔːl,"Arbeitskittel , Kittel",masculine,,"Br., textil.",0,"dust coat, smock"
+cost of labour,kˈɒst ɒv lˈeɪbə,Arbeitskosten,,plural,Br.,0,labor costs
+labor costs,lˈeɪbə kˈɒsts,Arbeitskosten,,plural,Am.,1,cost of labour
+labour force,lˈeɪbə fˈɔːs,Arbeitskräfte,,plural,Br.,0,"workforce, human resources, workers"
+labor force,lˈeɪbə fˈɔːs,Arbeitskräfte,,plural,Am.,0,"workforce, labour force, human resources"
+labour,lˈeɪbə,Arbeitskräfte,,plural,Br.,0,"workforce, labour force, human resources"
+labor,lˈeɪbə,Arbeitskräfte,,plural,Am.,0,"workforce, labour force, human resources"
+dungarees,dˌʌŋɡɐɹˈiːz,"Arbeitslatzhose , Arbeitshose , Latzhose , Blaumann",masculine,,"Br., textil., pair of",0,"work trousers, bib-and-brace trousers, bib-and-brace overalls"
+bib-and-brace trousers,bˈɪb and bɹˈeɪs tɹˈaʊsəz,"Arbeitslatzhose , Arbeitshose , Latzhose , Blaumann",masculine,,"Br., textil.",0,"work trousers, dungarees, bib-and-brace overalls"
+work trousers,wˈɜːk tɹˈaʊsəz,"Arbeitslatzhose , Arbeitshose , Latzhose , Blaumann",masculine,,"Br., textil.",0,"bib-and-brace trousers, dungarees, bib-and-brace overalls"
+overalls,ˌəʊvəɹˈɔːlz,"Arbeitslatzhose , Arbeitshose , Latzhose , Blaumann",masculine,,"pair of, textil., Am.",0,"work trousers, bib-and-brace trousers, dungarees"
+bib-and-brace overalls,bˈɪb and bɹˈeɪs ˌəʊvəɹˈɔːlz,"Arbeitslatzhose , Arbeitshose , Latzhose , Blaumann",masculine,,"textil., Am.",0,"work trousers, bib-and-brace trousers, dungarees"
+indirect labour costs,ɪndaɪɹˈɛkt lˈeɪbə kˈɒsts,"indirekte Löhne, nicht direkt zurechenbare Löhne, Gemeinkostenlöhne , Hilfslöhne",,plural,Br.,0,"overhead labor costs, indirect labor costs, indirect wages"
+indirect labor costs,ɪndaɪɹˈɛkt lˈeɪbə kˈɒsts,"indirekte Löhne, nicht direkt zurechenbare Löhne, Gemeinkostenlöhne , Hilfslöhne",,plural,Am.,0,"overhead labor costs, indirect labour costs, indirect wages"
+overhead labour costs,ˌəʊvəhˈɛd lˈeɪbə kˈɒsts,"indirekte Löhne, nicht direkt zurechenbare Löhne, Gemeinkostenlöhne , Hilfslöhne",,plural,Br.,0,"overhead labor costs, indirect labour costs, indirect wages"
+overhead labor costs,ˌəʊvəhˈɛd lˈeɪbə kˈɒsts,"indirekte Löhne, nicht direkt zurechenbare Löhne, Gemeinkostenlöhne , Hilfslöhne",,plural,Am.,0,"indirect labour costs, indirect wages, overhead labour costs"
+dole,dˈəʊl,"Arbeitslosenunterstützung , Arbeitslosengeld",feminine,,Br.,1,
+labour market,lˈeɪbə mˈɑːkɪt,Arbeitsmarkt,masculine,,Br.,2,"labor market, job market"
+labor market,lˈeɪbə mˈɑːkɪt,Arbeitsmarkt,masculine,,Am.,0,"labour market, job market"
+labour market policy,lˈeɪbə mˈɑːkɪt pˈɒlɪsi,Arbeitsmarktpolitik,feminine,,Br.,0,labor market policy
+labor market policy,lˈeɪbə mˈɑːkɪt pˈɒlɪsi,Arbeitsmarktpolitik,feminine,,Am.,0,labour market policy
+galley slaves,ɡˈalɪ slˈeɪvz,reine Arbeitsmaschinen,,plural,fig.,1,
+occupational medicine,ˌɒkjʊpˈeɪʃənəl mˈɛdsən,"Arbeitsmedizin , Betriebsmedizin",feminine,,"med., Br.",0,"industrial medicine, occupational medicine and health care"
+industrial medicine,ɪndˈʌstɹɪəl mˈɛdsən,"Arbeitsmedizin , Betriebsmedizin",feminine,,"med., Am.",0,"occupational medicine and health care, occupational medicine"
+labour migration,lˈeɪbə maɪɡɹˈeɪʃən,Arbeitsmigration,feminine,,"Br., soc.",0,labor migration
+labor migration,lˈeɪbə maɪɡɹˈeɪʃən,Arbeitsmigration,feminine,,"soc., Am.",0,labour migration
+Secretary of Employment,sˈɛkɹətɹi ɒv ɛmplˈɔɪmənt,"Arbeitsminister , Arbeitsministerin",masculine,,"Br., pol.",0,"Secretary of Labor, minister for employment"
+Secretary of Labor,sˈɛkɹətɹi ɒv lˈeɪbə,"Arbeitsminister , Arbeitsministerin",masculine,,"pol., Am.",0,"Secretary of Employment, minister for employment"
+Department of Employment,dɪpˈɑːtmənt ɒv ɛmplˈɔɪmənt,Arbeitsministerium,neuter,,"Br., pol.",0,"Department of Labor, ministry for employment"
+Department of Labor,dɪpˈɑːtmənt ɒv lˈeɪbə,Arbeitsministerium,neuter,,"pol., Am.",0,"ministry for employment, Department of Employment"
+labour demand,lˈeɪbə dɪmˈand,Arbeitsnachfrage,feminine,,"Br., econ.",0,labor demand
+labor demand,lˈeɪbə dɪmˈand,Arbeitsnachfrage,feminine,,"econ., Am.",0,labour demand
+work rules,wˈɜːk ɹˈuːlz,"Arbeitsordnung , Betriebsordnung",feminine,,Am.,0,work regulations
+labor organization,lˈeɪbəɹ ˌɔːɡɐnaɪzˈeɪʃən,Arbeitsorganisation,feminine,,eAm.,0,labour organisation
+labour organisation,lˈeɪbəɹ ˌɔːɡɐnaɪzˈeɪʃən,Arbeitsorganisation,feminine,,Br.,0,labor organization
+routing,ɹˈaʊtɪŋ,Arbeitsplan,masculine,,Am.,0,
+work disc,wˈɜːk dˈɪsk,Arbeitsplatte,feminine,,Br.,0,work disk
+work disk,wˈɜːk dˈɪsk,Arbeitsplatte,feminine,,Am.,0,work disc
+worktop,wˈɜːktɒp,Arbeitsplatte,feminine,,Br.,0,"countertop, counter"
+countertop,kˈaʊntətˌɒp,Arbeitsplatte,feminine,,Am.,0,"counter, worktop"
+counter,kˈaʊntə,Arbeitsplatte,feminine,,Am.,0,"countertop, worktop"
+discless workstation,dˈɪskləs wˈɜːkstˌeɪʃən,Arbeitsplatzrechner ohne (eigene) Laufwerke,,,Br.,0,diskless workstation
+diskless workstation,dˈɪskləs wˈɜːkstˌeɪʃən,Arbeitsplatzrechner ohne (eigene) Laufwerke,,,Am.,0,discless workstation
+job hopping,dʒˈɒb hˈɒpɪŋ,häufiger Arbeitsplatzwechsel,,,coll.,0,
+job hopper,dʒˈɒb hˈɒpə,"jemand, der häufig den Arbeitsplatz wechselt",,,coll.,0,
+labour law,lˈeɪbə lˈɔː,Arbeitsrecht,neuter,,"Br., jur.",0,"industrial law, law of master and servant, employment law"
+labor law,lˈeɪbə lˈɔː,Arbeitsrecht,neuter,,"jur., Am.",1,"industrial law, law of master and servant, employment law"
+industrial law,ɪndˈʌstɹɪəl lˈɔː,Arbeitsrecht,neuter,,"Br., jur.",0,"law of master and servant, employment law, labor law"
+law of master and servant,lˈɔː ɒv mˈastə and sˈɜːvənt,Arbeitsrecht,neuter,,"former name, jur.",0,"industrial law, employment law, labor law"
+bunnies,bˈʌnɪz,"feste, halbhohe Arbeitsschuhe",,,Austr.,0,
+safety representative,sˈeɪfti ɹˌɛpɹɪzˈɛntətˌɪv,"Arbeitsschutzbeauftragte , Arbeitsschutzbeauftragter",,,health and,0,occupational health and safety officer
+situation,sˌɪtʃuːˈeɪʃən,"Arbeitsstelle , Arbeitsplatz , Arbeit , Stelle , Posten , Anstellung , Stellung",masculine,,"veraltend, formal",0,"position of employment, position, appointment"
+working day,wˈɜːkɪŋ dˈeɪ,"Arbeitstag , Werktag",masculine,,Br.,3,workday
+workday,wˈɜːkdeɪ,"Arbeitstag , Werktag",masculine,,Am.,1,working day
+working day,wˈɜːkɪŋ dˈeɪ,Arbeitstag,masculine,,Br.,2,workday
+workday,wˈɜːkdeɪ,Arbeitstag,masculine,,Am.,2,working day
+grafter,ɡɹˈaftə,"Arbeitstier , Malocher   , Wühler",masculine,,"Dt., Br.",0,"toiler, hard worker, workhorse"
+railway gang,ɹˈeɪlweɪ ɡˈaŋ,Gleisbaurotte,feminine,,Br.,0,railroad gang
+railroad gang,ɹˈeɪlɹəʊd ɡˈaŋ,Gleisbaurotte,feminine,,Am.,0,railway gang
+stock arbitrage,stˈɒk ˈɑːbɪtɹɪdʒ,"Effektenarbitrage , Wertpapierarbitrage",feminine,,Am.,0,
+arbitrageur,ˌɑːbɪtɹɐdʒjˈʊə,"Arbitragehändler , Arbitrageur",masculine,,"Br., fin.",0,"arbitragist, arbitrage dealer, arbitrager"
+arbitragist,ˈɑːbɪtɹˌadʒɪst,"Arbitragehändler , Arbitrageur",masculine,,"fin., rare",0,"arbitrageur, arbitrage dealer, arbitrager"
+arbitrage shares,stock,Arbitragewerte,,plural,"fin., Am.",0,
+archaeologist,ˌɑːkiːˈɒlədʒˌɪst,"Archäologe , Archäologin",masculine,,Br.,0,archeologist
+archeologist,ˌɑːkɪˈɒlədʒˌɪst,"Archäologe , Archäologin",masculine,,Am.,0,archaeologist
+Archaean,ɑːkˈiən,"Archaikum , Azoikum",neuter,,"Br., geol.",0,"Archeozoic, Archaeozoic, Archean"
+Archean,ˈɑːkiən,"Archaikum , Azoikum",neuter,,"geol., Am.",0,"Archaean, Archaeozoic, Archeozoic"
+Archaeozoic,ˌɑːkiːəzˈəʊɪk,"Archaikum , Azoikum",neuter,,"Br., geol.",0,"Archeozoic, Archaean, Archean"
+Archeozoic,ˌɑːkɪəzˈəʊɪk,"Archaikum , Azoikum",neuter,,"geol., Am.",0,"Archaean, Archaeozoic, Archean"
+algorism,ˈalɡəɹˌɪzəm,"Arithmetik , Rechnen mit (natürlichen) Zahlen",feminine,,"math., rare",0,arithmetic
+clock arithmetic,klˈɒk ɐɹˈɪθmətˌɪk,modulare Arithmetik,,,coll.,0,modular arithmetic
+the long,strong arm of the law,der lange Arm des Gesetzes,,,"übtr., fig.",0,
+have on sb.,hav ˌɒn ˌɛsbˈiː,"jdn. zum Besten/Narren halten, auf den Arm nehmen, hochnehmen, anführen, aufziehen, verschaukeln, verladen, veräppeln, verhohnepipeln, vergackeiern, verkohlen, pflanzen",,,"Br., Ös.",0,"yank sb.'s chain, put on sb., pull sb.'s chain"
+put on sb.,pˌʊt ˌɒn ˌɛsbˈiː,"jdn. zum Besten/Narren halten, auf den Arm nehmen, hochnehmen, anführen, aufziehen, verschaukeln, verladen, veräppeln, verhohnepipeln, vergackeiern, verkohlen, pflanzen",,,"Ös., Am.",0,"yank sb.'s chain, pull sb.'s chain, have on sb."
+pull sb.'s chain,pˈʊl ˌɛsbˈiː ˈɛs tʃˈeɪn,"jdn. zum Besten/Narren halten, auf den Arm nehmen, hochnehmen, anführen, aufziehen, verschaukeln, verladen, veräppeln, verhohnepipeln, vergackeiern, verkohlen, pflanzen",,,"Ös., Am.",0,"yank sb.'s chain, put on sb., have on sb."
+yank sb.'s chain,jˈaŋk ˌɛsbˈiː ˈɛs tʃˈeɪn,"jdn. zum Besten/Narren halten, auf den Arm nehmen, hochnehmen, anführen, aufziehen, verschaukeln, verladen, veräppeln, verhohnepipeln, vergackeiern, verkohlen, pflanzen",,,"Ös., Am.",0,"put on sb., have on sb., pull sb.'s leg"
+dash,dˈaʃ,Armaturenbrett,neuter,,"coll., auto",0,"fascia, car dashboard, dashboard"
+fascia,fˈeɪʃiə,Armaturenbrett,neuter,,"Br., auto",0,"dash, car dashboard, dashboard"
+facia,fˈeɪʃə,Armaturenbrett,neuter,,"Br., auto",0,"fascia, dash, car dashboard"
+pauper,pˈɔːpə,"Armer , armer Schlucker",masculine,,"dated, veraltet, soc.",0,poor man
+the labouring poor,ðə lˈeɪbəɹɪŋ pˈʊə,"Erwerbsarme, erwerbstätige Arme, Arme trotz Erwerbstätigkeit",,,Br.,0,"the laboring poor, the working poor"
+the laboring poor,ðə lˈeɪbəɹɪŋ pˈʊə,"Erwerbsarme, erwerbstätige Arme, Arme trotz Erwerbstätigkeit",,,Am.,0,"the labouring poor, the working poor"
+Poor laws,pˈʊə lˈɔːz,"Armengesetze , Armengesetzgebung",feminine,plural,"Br., hist., jur.",0,
+want,wˈɒnt,Armut,feminine,,"formal, soc.",1,poverty
+breadline,bɹˈɛdlaɪn,Armutsgrenze,feminine,,"coll., Br.",0,"poverty line, poverty level"
+poorface,pˈʊəfeɪs,"Armut-Spielen , Armsein für einen Tag",neuter,,"pej., soc.",0,performance poverty
+bullpen,bˈʊlpɛn,Arrestzelle,feminine,,"coll., Am.",0,detention cell
+arse,ˈɑːs,Arsch,masculine,,"vulg., Br., slang",2,"wazoo, ass"
+ass,ˈas,Arsch,masculine,,"vulg., slang, Am.",3,"wazoo, arse"
+wazoo,wɑːzˈuː,Arsch,masculine,,"vulg., slang, Am.",0,"ass, arse"
+in the boondocks,ɪnðə bˈuːndɒks,am Arsch der Welt,,,"coll., ugs.",0,"at the back of beyond, out in the sticks"
+Get stuffed!,ɡɛt stˈʌft,"Du kannst mich mal (am Arsch lecken)!, Leck mich am Arsch!LMAA,  /ˈɛlmˈɑː/ , Du kannst mich kreuzweise!, Geh scheißen!",,,"Br., Ös.",0,"Fuck off and die!, Eat shit and die!"
+Bugger me! Did you see that?,bˈʌɡə mˌiː dˈɪd juː sˈiː ðˈat,Ja leck mich am Arsch! Hast du das gesehen?,,,"vulg., Br.",0,
+arse bandit,ˈɑːs bˈandɪt,"Arschficker , Arschpirat",masculine,,"vulg., Br.",0,"fudge packer, arse-fucker, bum-fucker"
+bum-fucker,bˈʌm fˈʌkə,"Arschficker , Arschpirat",masculine,,"vulg., Br.",0,"fudge packer, arse-fucker, butt-fucker"
+butt-fucker,bˈʌt fˈʌkə,"Arschficker , Arschpirat",masculine,,"vulg., Am.",0,"fudge packer, arse-fucker, bum-fucker"
+fudge packer,fˈʌdʒ pˈakə,"Arschficker , Arschpirat",masculine,,vulg.,0,"arse-fucker, butt-fucker, bum-fucker"
+shitface,ʃˈɪtfeɪs,Arschgesicht,neuter,,"vulg., slang",0,butthead
+brownnoser,bɹˈaʊnəʊzə,Arschlecker,masculine,,"vulg., slang",0,"bumlicker, ass kisser, arselicker"
+arsehole,ˈɑːsɪhˌəʊl,"Arschloch , Arschgeige , Affenarsch , Arsch , Scheißkerl , Wichser , blöde Sau",masculine,,"vulg., Br.",0,"twat, shithead, motherfucker"
+twat,twˈɒt,"Arschloch , Arschgeige , Affenarsch , Arsch , Scheißkerl , Wichser , blöde Sau",masculine,,"vulg., Br.",0,"shithead, motherfucker, arsehole"
+asshole,ˈashəʊl,"Arschloch , Arschgeige , Affenarsch , Arsch , Scheißkerl , Wichser , blöde Sau",masculine,,"vulg., Am.",0,"twat, shithead, motherfucker"
+dipshit,dˈɪpʃɪt,"Arschloch , Arschgeige , Affenarsch , Arsch , Scheißkerl , Wichser , blöde Sau",masculine,,"vulg., Am.",0,"twat, shithead, motherfucker"
+motherfucker,mˈʌðəfˌʌkə,"Arschloch , Arschgeige , Affenarsch , Arsch , Scheißkerl , Wichser , blöde Sau",masculine,,"vulg., Am.",0,"twat, shithead, arsehole"
+ass antlers,ˈas ˈantləz,"Arschgeweih   , Rückentätowierung in der Steißgegend",neuter,,"coll., ugs.",0,"tramp stamp, lower back tattoo"
+ass-kisser,ˈas kˈɪsə,"Arschkriecher , Schleimscheißer",masculine,,"vulg., Am.",1,"arse-licker, kiss-ass"
+kiss-ass,kˈɪs ˈas,"Arschkriecher , Schleimscheißer",masculine,,"vulg., Am.",1,"arse-licker, ass-kisser"
+kiss ass,kˈɪs ˈas,ein Arschkriecher sein,,,Am.,0,
+bumsucking,bˈʌmsʌkɪŋ,Arschkriecherei,feminine,,"coll., Br., ugs.",0,
+armoury,ˈɑːmɜːɹi,"Arsenal , Vorrat",masculine,,"Br., übtr.",1,"arsenal, armory"
+armory,ˈɑːməɹi,"Arsenal , Vorrat",masculine,,"übtr., fig., Am.",0,"arsenal, armoury"
+wise,wˈaɪz,"Art und Weise , Art , Weise",feminine,,archaic,0,"style, way, fashion"
+strand,stɹˈand,"Art , Linie , Richtung , Strömung",feminine,,"übtr., fig.",7,"line, strain"
+and stuff,and stˈʌf,"und so was in der Art, und so was, und Co.",,,"coll., ugs.",1,
+of sorts,ɒv sˈɔːts,"eine Art von, so etwas wie",,,coll.,1,
+artefact,ˈɑːtɪfˌakt,"Artefakt , Verfälschungseffekt",masculine,,"Br., sci.",0,artifact
+artifact,ˈɑːtɪfˌakt,"Artefakt , Verfälschungseffekt",masculine,,"sci., Am.",0,artefact
+artefact,ˈɑːtɪfˌakt,"Artefakt , vom Menschen geschaffener Gegenstand",neuter,,Br.,0,artifact
+artifact,ˈɑːtɪfˌakt,"Artefakt , vom Menschen geschaffener Gegenstand",neuter,,Am.,1,artefact
+bombshell,bˈɒmʃɛl,"Artilleriegeschoss , Artilleriegranate , Granate",feminine,,"dated, mil.",0,"artillery shell, shell"
+curtain fire,kˈɜːtən fˈaɪə,"Artillerietrommelfeuer , Trommelfeuer , Artilleriesperrfeuer , Sperrfeuer",neuter,,"Br., mil.",0,"barrage fire, curtain of fire, artillery barrage"
+curtain of fire,kˈɜːtən ɒv fˈaɪə,"Artillerietrommelfeuer , Trommelfeuer , Artilleriesperrfeuer , Sperrfeuer",neuter,,"mil., Am.",0,"barrage fire, artillery barrage, curtain fire"
+hybridization of species,hˌaɪbɹɪdaɪzˈeɪʃən ɒv spˈiːsiːz,Artkreuzung,feminine,,"biol., eAm.",0,hybridisation of species
+hybridisation of species,hˌaɪbɹɪdaɪzˈeɪʃən ɒv spˈiːsiːz,Artkreuzung,feminine,,"biol., Br.",0,hybridization of species
+drug,dɹˈʌɡ,"Arzneimittel   , Arznei   , Medikament , Medizin",feminine,,"medicinal, pharm., geh.",8,"medicament, medicine, medication"
+medicament,mˈɛdɪkəmənt,"Arzneimittel   , Arznei   , Medikament , Medizin",feminine,,"pharm., geh., formal",0,"medicine, medication, drug"
+adverse drug reaction,advˈɜːs dɹˈʌɡ ɹɪˈakʃən,unerwünschte Arzneimittelwirkung,feminine,,"Br., pharm.",0,adverse drug event
+adverse drug event,advˈɜːs dɹˈʌɡ ɪvˈɛnt,unerwünschte Arzneimittelwirkung,feminine,,"pharm., Am.",0,adverse drug reaction
+medic,mˈɛdɪk,"Arzt , Doktor",masculine,,"coll., ugs.",2,"doctor, medical doctor, physician"
+lady doctor,lˈeɪdi dˈɒktə,"Ärztin , Frau Doktor",feminine,,rare,0,female doctor
+railroad doctor,ɹˈeɪlɹəʊd dˈɒktə,Bahnarzt,masculine,,Am.,0,railway doctor
+foundation house officer,faʊndˈeɪʃən hˈaʊs ˈɒfɪsə,Arzt im Praktikum,,,Br.,0,"resident, resident physician, house officer"
+house officer,hˈaʊs ˈɒfɪsə,Arzt im Praktikum,,,Br.,2,"resident, resident physician, foundation house officer"
+houseman,hˈaʊsmən,Arzt im Praktikum,,,Br.,0,"resident, resident physician, house officer"
+resident physician,ɹˈɛzɪdənt fɪzˈɪʃən,Arzt im Praktikum,,,Am.,0,"resident, house officer, foundation house officer"
+resident,ɹˈɛzɪdənt,Arzt im Praktikum,,,Am.,1,"resident physician, house officer, foundation house officer"
+intern,ˈɪntɜːn,"Arzt im ersten Praktikumsjahr, Turnusarzt im ersten Jahr",,,"Ös., Am.",0,

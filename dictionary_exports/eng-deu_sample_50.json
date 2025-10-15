@@ -1,0 +1,1085 @@
+[
+  {
+    "headword": "Availability:",
+    "pronunciation_ipa": "",
+    "translations": [
+      "Copyright (C) Frank Richter  1995 - 2020,",
+      "Einhard Leichtfuß 2020-2022, Sebastian Humenda 2021",
+      "This dictionary is free software: you can redistribute it and/or modify",
+      "it under the terms of both the GNU General Public License, version 3",
+      "(GPLv3) and the GNU Affero General Public License, version 3 (AGPLv3),",
+      "where each of these licenses applies to different parts of this",
+      "(combined) work.",
+      "This dictionary is distributed in the hope that it will be useful, but",
+      "WITHOUT ANY WARRANTY; without even the implied warranty of",
+      "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General",
+      "Public License and the GNU Affero General Public License for more",
+      "details.",
+      "You should have received a copy of both the GNU General Public License",
+      "and the GNU Affero General Public License along with this dictionary. If",
+      "not, see https://www.gnu.org/licenses/.",
+      "dictionary is composed of the original Ding dictionary (licensed GPLv2+)",
+      "and the ding2tei-haskell program (licensed AGPLv3+)."
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": []
+  },
+  {
+    "headword": "Notes:",
+    "pronunciation_ipa": "",
+    "translations": [
+      "* Database Status: stable"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": []
+  },
+  {
+    "headword": "Source(s):",
+    "pronunciation_ipa": "",
+    "translations": [
+      "Home: https://dict.tu-chemnitz.de/ This dictionary was generated from",
+      "the Ding  dictionary, version 1.9",
+      "(2020-12-22) using the , ding2tei-haskell",
+      "program. The Ding dictionary can be obtained from",
+      "https://ftp.tu-chemnitz.de/pub/Local/urz/ding/",
+      ". The ding2tei-haskell",
+      "program can be obtained from",
+      "https://github.com/freedict/tools/tree/master/importers/ding2tei"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": [
+      "https://dict.tu-chemnitz.de/",
+      "https://github.com/freedict/tools/tree/master/importers/ding2tei",
+      "https://ftp.tu-chemnitz.de/pub/Local/urz/ding/"
+    ]
+  },
+  {
+    "headword": "The Project:",
+    "pronunciation_ipa": "",
+    "translations": [
+      "This dictionary comes to you through nice people making it available for",
+      "free and for good. It is part of the FreeDict project,",
+      "https://freedict.org/. This project aims to make many translating",
+      "dictionaries available for free. Your contributions are welcome!"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": []
+  },
+  {
+    "headword": "Changelog:",
+    "pronunciation_ipa": "",
+    "translations": [
+      "* 2020-09-11 #eleichtfuss ver. 1.8.1-fd0.1:",
+      "* Initial import from Ding (version 1.8.1).",
+      "* Fixed many syntax errors and inconsistencies in the Ding",
+      "dictionary.",
+      "* Most explicit Ding annotations are transferred to TEI.",
+      "* Several entries per Ding line are given references to one",
+      "* Entries with more than one keyword on the source language side",
+      "are split up into multiple entries. These are linked using references",
+      "* 2020-10-14 #eleichtfuss ver. 1.8.1-fd0.2:",
+      "* Identify examples to some entries; add the former to the latter",
+      "the list of regular entries.",
+      "* Add annotations that are only implicitly present in the Ding",
+      "dictionary, such as: {f}, but no {pl} -> {noun}.",
+      "* Transfer some annotations within Ding entries (e.g., when",
+      "* Fixed some TEI syntax, as per comments from Sebastian Humenda.",
+      "* Recognize more types of annotations (notes).",
+      "* 2020-10-28 #eleichtfuss ver. 1.8.1-fd0.2.1:",
+      "* Mark units with annotated inflected forms as verbs.",
+      "* 2022-04-15 #eleichtfuss ver. 1.9-fd1:",
+      "* Update to Ding version 1.9.",
+      "* Unify xr elements by @type. (Previously, each xr element",
+      "contained exactly one ref element.)"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": []
+  },
+  {
+    "headword": "the nuts and bolts",
+    "pronunciation_ipa": "ðə nˈʌts and bˈəʊlts",
+    "translations": [
+      "das A und O"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": [
+      "coll.",
+      "ugs."
+    ]
+  },
+  {
+    "headword": "congo eels",
+    "pronunciation_ipa": "kˈɒŋɡəʊ ˈiːlz",
+    "translations": [
+      "Aalmolche , Fischmolche"
+    ],
+    "gender": [],
+    "word_types": [
+      "plural"
+    ],
+    "examples": [],
+    "synonyms": [
+      "congo snakes",
+      "amphiuma salamanders",
+      "amphiumas"
+    ],
+    "notes": [
+      "Amphiuma",
+      "zoologische Gattung"
+    ],
+    "domains": [
+      "coll.",
+      "zool."
+    ]
+  },
+  {
+    "headword": "congo snakes",
+    "pronunciation_ipa": "kˈɒŋɡəʊ snˈeɪks",
+    "translations": [
+      "Aalmolche , Fischmolche"
+    ],
+    "gender": [],
+    "word_types": [
+      "plural"
+    ],
+    "examples": [],
+    "synonyms": [
+      "congo eels",
+      "amphiuma salamanders",
+      "amphiumas"
+    ],
+    "notes": [
+      "Amphiuma",
+      "zoologische Gattung",
+      "zoological genus"
+    ],
+    "domains": [
+      "coll.",
+      "zool."
+    ]
+  },
+  {
+    "headword": "dorsal stripe",
+    "pronunciation_ipa": "dˈɔːsəl stɹˈaɪp",
+    "translations": [
+      "Aalstrich"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "spinal stripe",
+      "eel stripe"
+    ],
+    "notes": [
+      "auf dem Rücken von Wildtieren"
+    ],
+    "domains": [
+      "hunters' parlance",
+      "Jägersprache"
+    ]
+  },
+  {
+    "headword": "carrion hunter",
+    "pronunciation_ipa": "kˈaɹiən hˈʌntə",
+    "translations": [
+      "Aasjäger"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "pothunter"
+    ],
+    "notes": [
+      "der es nur auf Fleisch abgesehen hat"
+    ],
+    "domains": [
+      "hunters' parlance",
+      "Jägersprache"
+    ]
+  },
+  {
+    "headword": "poo",
+    "pronunciation_ipa": "pˈuː",
+    "translations": [
+      "Aa machen, groß machen, Stinker machen , käckern , Gacki machen"
+    ],
+    "gender": [],
+    "word_types": [
+      "verb"
+    ],
+    "examples": [],
+    "synonyms": [
+      "do a poo"
+    ],
+    "notes": [],
+    "domains": [
+      "children's speech",
+      "Kindersprache",
+      "Schw."
+    ]
+  },
+  {
+    "headword": "Manila fibre",
+    "pronunciation_ipa": "mɐnˈɪlə fˈaɪbə",
+    "translations": [
+      "Abacá , Abaka , Manilahanf"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "abacá",
+      "Manila fiber"
+    ],
+    "notes": [],
+    "domains": [
+      "Br.",
+      "bot."
+    ]
+  },
+  {
+    "headword": "Manila fiber",
+    "pronunciation_ipa": "mɐnˈɪlə fˈaɪbə",
+    "translations": [
+      "Abacá , Abaka , Manilahanf"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "abacá",
+      "Manila fibre"
+    ],
+    "notes": [],
+    "domains": [
+      "bot.",
+      "Am."
+    ]
+  },
+  {
+    "headword": "colour fastness",
+    "pronunciation_ipa": "kˈʌlə fˈastnəs",
+    "translations": [
+      "Abbildungsgenauigkeit , Abbildungsqualität"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "color fastness"
+    ],
+    "notes": [],
+    "domains": [
+      "Br.",
+      "techn."
+    ]
+  },
+  {
+    "headword": "color fastness",
+    "pronunciation_ipa": "kˈʌlə fˈastnəs",
+    "translations": [
+      "Abbildungsgenauigkeit , Abbildungsqualität"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "colour fastness"
+    ],
+    "notes": [],
+    "domains": [
+      "techn.",
+      "Am."
+    ]
+  },
+  {
+    "headword": "apologize",
+    "pronunciation_ipa": "ɐpˈɒlədʒˌaɪz",
+    "translations": [
+      "Abbitte leisten"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "apologise"
+    ],
+    "notes": [],
+    "domains": [
+      "eAm."
+    ]
+  },
+  {
+    "headword": "apologise",
+    "pronunciation_ipa": "ɐpˈɒlədʒˌaɪz",
+    "translations": [
+      "Abbitte leisten"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "apologize"
+    ],
+    "notes": [],
+    "domains": [
+      "Br."
+    ]
+  },
+  {
+    "headword": "valving pressure",
+    "pronunciation_ipa": "vˈalvɪŋ pɹˈɛʃə",
+    "translations": [
+      "Abblasedruck"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "blowing-off pressure"
+    ],
+    "notes": [
+      "Metallurgie",
+      "metallurgy"
+    ],
+    "domains": [
+      "techn.",
+      "Am."
+    ]
+  },
+  {
+    "headword": "relief hood",
+    "pronunciation_ipa": "ɹɪlˈiːf hˈʊd",
+    "translations": [
+      "Abblasehaube"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": [
+      "mach.",
+      "atmospheric"
+    ]
+  },
+  {
+    "headword": "dipping",
+    "pronunciation_ipa": "dˈɪpɪŋ",
+    "translations": [
+      "Abblenden"
+    ],
+    "gender": [
+      "neuter"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "dimming"
+    ],
+    "notes": [],
+    "domains": [
+      "Br.",
+      "auto"
+    ]
+  },
+  {
+    "headword": "dimming",
+    "pronunciation_ipa": "dˈɪmɪŋ",
+    "translations": [
+      "Abblenden"
+    ],
+    "gender": [
+      "neuter"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "dipping"
+    ],
+    "notes": [
+      "of headlights"
+    ],
+    "domains": [
+      "auto",
+      "Am."
+    ]
+  },
+  {
+    "headword": "dip switch",
+    "pronunciation_ipa": "dˈɪp swˈɪtʃ",
+    "translations": [
+      "Abblendschalter"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "dipper",
+      "dimmer switch"
+    ],
+    "notes": [],
+    "domains": [
+      "Br.",
+      "auto"
+    ]
+  },
+  {
+    "headword": "dipper",
+    "pronunciation_ipa": "dˈɪpə",
+    "translations": [
+      "Abblendschalter"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "dip switch",
+      "dimmer switch"
+    ],
+    "notes": [],
+    "domains": [
+      "Br.",
+      "auto"
+    ]
+  },
+  {
+    "headword": "dimmer switch",
+    "pronunciation_ipa": "dˈɪmə swˈɪtʃ",
+    "translations": [
+      "Abblendschalter"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "dip switch",
+      "dipper"
+    ],
+    "notes": [],
+    "domains": [
+      "auto",
+      "Am."
+    ]
+  },
+  {
+    "headword": "college dropout",
+    "pronunciation_ipa": "kˈɒlɪdʒ dɹˈɒpaʊt",
+    "translations": [
+      "Studienabbrecher"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "university dropout"
+    ],
+    "notes": [],
+    "domains": [
+      "Am."
+    ]
+  },
+  {
+    "headword": "demo",
+    "pronunciation_ipa": "dˈɛməʊ",
+    "translations": [
+      "Abbruch , Abriss , Schleifen"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [
+      {
+        "english": "demolition of an entire area",
+        "german": "Flächenabriss"
+      },
+      {
+        "english": "re-demolition",
+        "german": "Wiederabriss"
+      }
+    ],
+    "synonyms": [
+      "tearing down",
+      "demolishment",
+      "pulling down",
+      "razing",
+      "demolition"
+    ],
+    "notes": [
+      "eines Gebäudes",
+      "of a building"
+    ],
+    "domains": [
+      "coll.",
+      "constr."
+    ]
+  },
+  {
+    "headword": "wrecker",
+    "pronunciation_ipa": "ɹˈɛkə",
+    "translations": [
+      "Abbrucharbeiter"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": [
+      "Am."
+    ]
+  },
+  {
+    "headword": "house breaker",
+    "pronunciation_ipa": "hˈaʊs bɹˈeɪkə",
+    "translations": [
+      "Abbruchfirma , Abbruchunternehmen"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "wrecking company",
+      "demolition company",
+      "wrecker",
+      "housewrecker"
+    ],
+    "notes": [],
+    "domains": [
+      "Br.",
+      "constr."
+    ]
+  },
+  {
+    "headword": "wrecking company",
+    "pronunciation_ipa": "ɹˈɛkɪŋ kˈʌmpəni",
+    "translations": [
+      "Abbruchfirma , Abbruchunternehmen"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "house breaker",
+      "demolition company",
+      "wrecker",
+      "housewrecker"
+    ],
+    "notes": [],
+    "domains": [
+      "constr.",
+      "Am."
+    ]
+  },
+  {
+    "headword": "housewrecker",
+    "pronunciation_ipa": "hˈaʊsɹɛkə",
+    "translations": [
+      "Abbruchfirma , Abbruchunternehmen"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "house breaker",
+      "demolition company",
+      "wrecker",
+      "wrecking company"
+    ],
+    "notes": [],
+    "domains": [
+      "constr.",
+      "Am."
+    ]
+  },
+  {
+    "headword": "wrecker",
+    "pronunciation_ipa": "ɹˈɛkə",
+    "translations": [
+      "Abbruchfirma , Abbruchunternehmen"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "house breaker",
+      "demolition company",
+      "housewrecker",
+      "wrecking company"
+    ],
+    "notes": [],
+    "domains": [
+      "constr.",
+      "Am."
+    ]
+  },
+  {
+    "headword": "NBC defence",
+    "pronunciation_ipa": "ˌɛnbˌiːsˈiː dɪfˈɛns",
+    "translations": [
+      "ABC-Abwehr"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "NBC defense"
+    ],
+    "notes": [],
+    "domains": [
+      "Br.",
+      "mil."
+    ]
+  },
+  {
+    "headword": "NBC defense",
+    "pronunciation_ipa": "ˌɛnbˌiːsˈiː dɪfˈɛns",
+    "translations": [
+      "ABC-Abwehr"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "NBC defence"
+    ],
+    "notes": [],
+    "domains": [
+      "mil.",
+      "Am."
+    ]
+  },
+  {
+    "headword": "knacker",
+    "pronunciation_ipa": "nˈakə",
+    "translations": [
+      "Abdecker , Schinder , Kadaverbeseitiger"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "renderer"
+    ],
+    "notes": [],
+    "domains": [
+      "Br.",
+      "veraltet"
+    ]
+  },
+  {
+    "headword": "weatherstrip",
+    "pronunciation_ipa": "wˈɛðəstɹˌɪp",
+    "translations": [
+      "Abdichtstreifen , Dichtungsleiste"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [
+      "Fenster, Tür",
+      "window, door"
+    ],
+    "domains": [
+      "Am."
+    ]
+  },
+  {
+    "headword": "moulding",
+    "pronunciation_ipa": "mˈəʊldɪŋ",
+    "translations": [
+      "Abdruck , Guss , Abguss"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "molding"
+    ],
+    "notes": [],
+    "domains": [
+      "Br."
+    ]
+  },
+  {
+    "headword": "molding",
+    "pronunciation_ipa": "mˈəʊldɪŋ",
+    "translations": [
+      "Abdruck , Guss , Abguss"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "moulding"
+    ],
+    "notes": [],
+    "domains": [
+      "Am."
+    ]
+  },
+  {
+    "headword": "pulling-off screw",
+    "pronunciation_ipa": "pˈʊlɪŋ ˈɒf skɹˈuː",
+    "translations": [
+      "Abdrückschraube"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [
+      {
+        "english": "pulling-off screws",
+        "german": "Abdrückschrauben"
+      }
+    ],
+    "synonyms": [
+      "pulling screw",
+      "forcing screw"
+    ],
+    "notes": [
+      "für Räder"
+    ],
+    "domains": [
+      "techn.",
+      "Am."
+    ]
+  },
+  {
+    "headword": "pulling screw",
+    "pronunciation_ipa": "pˈʊlɪŋ skɹˈuː",
+    "translations": [
+      "Abdrückschraube"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "forcing screw",
+      "pulling-off screw"
+    ],
+    "notes": [
+      "für Räder",
+      "for wheels"
+    ],
+    "domains": [
+      "techn.",
+      "Am."
+    ]
+  },
+  {
+    "headword": "It's not",
+    "pronunciation_ipa": "It isn't",
+    "translations": [
+      "Noch ist nicht aller Tage Abend., Man soll den Tag nicht vor dem Abend loben."
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "It's not over until it's over."
+    ],
+    "notes": [],
+    "domains": [
+      "Am."
+    ]
+  },
+  {
+    "headword": "gloaming",
+    "pronunciation_ipa": "ɡlˈəʊmɪŋ",
+    "translations": [
+      "Abenddämmerung , Dämmerung , Dämmer"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "evening twilight",
+      "dusk",
+      "twilight"
+    ],
+    "notes": [],
+    "domains": [
+      "geogr.",
+      "Sc.",
+      "poet.",
+      "phys."
+    ]
+  },
+  {
+    "headword": "sere and yellow leaf",
+    "pronunciation_ipa": "sˈiəɹ and jˈɛləʊ lˈiːf",
+    "translations": [
+      "Abenddämmerung , Niedergang , Ausklang"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [
+      {
+        "english": "the sere and yellow leaf (of life/age)",
+        "german": "Lebensabend"
+      }
+    ],
+    "synonyms": [],
+    "notes": [],
+    "domains": [
+      "fig."
+    ]
+  },
+  {
+    "headword": "have tea",
+    "pronunciation_ipa": "hav tˈiː",
+    "translations": [
+      "Abendbrot essen, zu Abend essen"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": [
+      "Sc."
+    ]
+  },
+  {
+    "headword": "high tea",
+    "pronunciation_ipa": "hˈaɪ tˈiː",
+    "translations": [
+      "kaltes Abendessen mit Tee"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": [
+      "cook.",
+      "Br."
+    ]
+  },
+  {
+    "headword": "commune",
+    "pronunciation_ipa": "kˈɒmjuːn",
+    "translations": [
+      "das Abendmahl empfangen"
+    ],
+    "gender": [],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [],
+    "notes": [],
+    "domains": [
+      "Am."
+    ]
+  },
+  {
+    "headword": "departure board",
+    "pronunciation_ipa": "dɪpˈɑːtʃə bˈɔːd",
+    "translations": [
+      "Abfahrtstafel"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "departure indicator"
+    ],
+    "notes": [
+      "Bahn"
+    ],
+    "domains": [
+      "train"
+    ]
+  },
+  {
+    "headword": "departure indicator",
+    "pronunciation_ipa": "dɪpˈɑːtʃəɹ ˈɪndɪkˌeɪtə",
+    "translations": [
+      "Abfahrtstafel"
+    ],
+    "gender": [
+      "feminine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "departure board"
+    ],
+    "notes": [
+      "Bahn",
+      "railway"
+    ],
+    "domains": [
+      "train",
+      "Am."
+    ]
+  },
+  {
+    "headword": "rubbish",
+    "pronunciation_ipa": "ɹˈʌbɪʃ",
+    "translations": [
+      "Abfall , Müll     , Mist   , Kehricht     , Güsel"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [
+      {
+        "english": "take out/take down the rubbish/garbage",
+        "german": "den Müll hinaustragen/hinuntertragen"
+      }
+    ],
+    "synonyms": [
+      "refuse",
+      "trash",
+      "garbage"
+    ],
+    "notes": [],
+    "domains": [
+      "Ös.",
+      "Br.",
+      "BW",
+      "Dt.",
+      "Schw."
+    ]
+  },
+  {
+    "headword": "garbage",
+    "pronunciation_ipa": "ɡˈɑːbɪdʒ",
+    "translations": [
+      "Abfall , Müll     , Mist   , Kehricht     , Güsel"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [
+      {
+        "english": "take out/take down the rubbish/garbage",
+        "german": "den Müll hinaustragen/hinuntertragen"
+      }
+    ],
+    "synonyms": [
+      "refuse",
+      "rubbish",
+      "trash"
+    ],
+    "notes": [],
+    "domains": [
+      "Ös.",
+      "BW",
+      "Am.",
+      "Dt.",
+      "Schw."
+    ]
+  },
+  {
+    "headword": "trash",
+    "pronunciation_ipa": "tɹˈaʃ",
+    "translations": [
+      "Abfall , Müll     , Mist   , Kehricht     , Güsel"
+    ],
+    "gender": [
+      "masculine"
+    ],
+    "word_types": [],
+    "examples": [],
+    "synonyms": [
+      "refuse",
+      "rubbish",
+      "garbage"
+    ],
+    "notes": [],
+    "domains": [
+      "Ös.",
+      "BW",
+      "Am.",
+      "Dt.",
+      "Schw."
+    ]
+  }
+]
