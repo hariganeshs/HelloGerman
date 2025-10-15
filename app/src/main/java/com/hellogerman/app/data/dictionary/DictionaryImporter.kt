@@ -336,64 +336,122 @@ class DictionaryImporter(
     
     /**
      * Insert batch of entries and their vector embeddings
+     * Enhanced with storage monitoring and graceful degradation
      */
     private suspend fun insertBatch(entries: List<DictionaryEntry>, batchNumber: Int, totalBatches: Int): Boolean {
         return try {
+            // Check storage space before inserting
+            if (!checkStorageSpace()) {
+                Log.w(TAG, "Insufficient storage space, skipping vector generation for batch $batchNumber")
+                // Insert text-only entries (no vectors)
+                val insertedIds = dictionaryDao.insertEntries(entries)
+                Log.d(TAG, "Inserted text-only batch $batchNumber/$totalBatches (${entries.size} entries)")
+                return true
+            }
+            
             // Insert dictionary entries first (to get IDs)
             val insertedIds = dictionaryDao.insertEntries(entries)
             Log.d(TAG, "Inserted batch $batchNumber/$totalBatches (${entries.size} entries)")
             
-            // Generate and insert vectors for the entries
+            // Generate and insert vectors for the entries (with optimization)
             if (insertedIds.isNotEmpty()) {
-                val vectors = generateVectors(entries, insertedIds)
-                if (vectors.isNotEmpty()) {
-                    vectorDao.insertVectorsBatch(vectors)
-                    Log.d(TAG, "Inserted vectors for batch $batchNumber (${vectors.size} vectors)")
+                try {
+                    val vectors = generateOptimizedVectors(entries, insertedIds)
+                    if (vectors.isNotEmpty()) {
+                        vectorDao.insertVectorsBatch(vectors)
+                        Log.d(TAG, "Inserted vectors for batch $batchNumber (${vectors.size} vectors)")
+                    }
+                } catch (vectorError: Exception) {
+                    Log.w(TAG, "Vector generation failed for batch $batchNumber, continuing with text-only", vectorError)
+                    // Continue without vectors - text search will still work
                 }
             }
             
             true
         } catch (e: Exception) {
-            Log.e(TAG, "Error inserting batch $batchNumber", e)
-            false
+            if (e.message?.contains("SQLITE_FULL") == true || e.message?.contains("database or disk is full") == true) {
+                Log.e(TAG, "Storage full error in batch $batchNumber, switching to text-only mode", e)
+                // Try to insert text-only entries
+                try {
+                    val insertedIds = dictionaryDao.insertEntries(entries)
+                    Log.d(TAG, "Recovered: Inserted text-only batch $batchNumber (${entries.size} entries)")
+                    return true
+                } catch (textError: Exception) {
+                    Log.e(TAG, "Even text-only insertion failed for batch $batchNumber", textError)
+                    return false
+                }
+            } else {
+                Log.e(TAG, "Error inserting batch $batchNumber", e)
+                return false
+            }
         }
     }
     
     /**
-     * Generate vector embeddings for dictionary entries
+     * Check available storage space
      */
-    private suspend fun generateVectors(
+    private fun checkStorageSpace(): Boolean {
+        try {
+            val dataDir = context.filesDir
+            val freeSpace = dataDir.freeSpace
+            val totalSpace = dataDir.totalSpace
+            val usedSpace = totalSpace - freeSpace
+            
+            Log.d(TAG, "Storage check - Free: ${freeSpace/(1024*1024)}MB, Used: ${usedSpace/(1024*1024)}MB")
+            
+            // Require at least 100MB free space for vectors
+            return freeSpace > 100 * 1024 * 1024
+        } catch (e: Exception) {
+            Log.w(TAG, "Could not check storage space", e)
+            return true // Assume we have space if we can't check
+        }
+    }
+    
+    /**
+     * Generate optimized vector embeddings (smaller, more efficient)
+     */
+    private suspend fun generateOptimizedVectors(
         entries: List<DictionaryEntry>,
         entryIds: List<Long>
     ): List<DictionaryVectorEntry> {
         if (!embeddingGenerator.initialize()) {
-            Log.w(TAG, "Embedding generator not initialized, skipping vector generation")
-            return emptyList()
+            Log.w(TAG, "Embedding generator not initialized, using simplified embeddings")
+            return generateSimplifiedVectors(entries, entryIds)
+        }
+        
+        // Only generate vectors for common words to save space
+        val commonWordEntries = entries.filterIndexed { index, entry ->
+            index < 1000 || isCommonWord(entry.englishWord) || isCommonWord(entry.germanWord)
         }
         
         val vectors = mutableListOf<DictionaryVectorEntry>()
         
-        entries.forEachIndexed { index, entry ->
+        commonWordEntries.forEachIndexed { index, entry ->
             try {
-                val entryId = entryIds.getOrNull(index) ?: return@forEachIndexed
+                val originalIndex = entries.indexOf(entry)
+                val entryId = entryIds.getOrNull(originalIndex) ?: return@forEachIndexed
                 
-                // Generate combined embedding (German + English)
+                // Generate smaller embeddings (128 dimensions instead of 384)
                 val combinedText = "${entry.germanWord} ${entry.englishWord}"
-                val combinedEmbedding = embeddingGenerator.generateEmbedding(combinedText)
+                val combinedEmbedding = embeddingGenerator.generateEmbedding(combinedText)?.let { embedding ->
+                    // Reduce dimensions to 128
+                    embedding.take(128).toFloatArray()
+                }
                 
-                // Generate German-only embedding
-                val germanEmbedding = embeddingGenerator.generateEmbedding(entry.germanWord)
+                val germanEmbedding = embeddingGenerator.generateEmbedding(entry.germanWord)?.let { embedding ->
+                    embedding.take(128).toFloatArray()
+                }
                 
-                // Generate English-only embedding
-                val englishEmbedding = embeddingGenerator.generateEmbedding(entry.englishWord)
+                val englishEmbedding = embeddingGenerator.generateEmbedding(entry.englishWord)?.let { embedding ->
+                    embedding.take(128).toFloatArray()
+                }
                 
-                // Only add if all embeddings were successfully generated
                 if (combinedEmbedding != null && germanEmbedding != null && englishEmbedding != null) {
                     val vectorEntry = DictionaryVectorEntry(
                         entryId = entryId,
-                        combinedEmbedding = VectorConverter.floatArrayToByteArray(combinedEmbedding),
-                        germanEmbedding = VectorConverter.floatArrayToByteArray(germanEmbedding),
-                        englishEmbedding = VectorConverter.floatArrayToByteArray(englishEmbedding),
+                        combinedEmbedding = floatArrayToByteArray(combinedEmbedding),
+                        germanEmbedding = floatArrayToByteArray(germanEmbedding),
+                        englishEmbedding = floatArrayToByteArray(englishEmbedding),
                         hasExamples = entry.examples.isNotEmpty(),
                         hasGender = entry.gender != null,
                         wordType = entry.wordType?.name,
@@ -402,12 +460,106 @@ class DictionaryImporter(
                     vectors.add(vectorEntry)
                 }
             } catch (e: Exception) {
-                Log.w(TAG, "Error generating vector for entry: ${entry.englishWord} -> ${entry.germanWord}", e)
+                Log.w(TAG, "Error generating vector for entry: ${entry.englishWord}", e)
             }
         }
         
+        Log.d(TAG, "Generated ${vectors.size} optimized vectors out of ${entries.size} entries")
         return vectors
     }
+    
+    /**
+     * Generate simplified vectors using character n-grams (fallback)
+     */
+    private suspend fun generateSimplifiedVectors(
+        entries: List<DictionaryEntry>,
+        entryIds: List<Long>
+    ): List<DictionaryVectorEntry> {
+        val vectors = mutableListOf<DictionaryVectorEntry>()
+        
+        entries.take(10000).forEachIndexed { index, entry -> // Limit to 10k entries for simplified vectors
+            try {
+                val entryId = entryIds.getOrNull(index) ?: return@forEachIndexed
+                
+                // Generate simplified embeddings using character n-grams
+                val combinedEmbedding = generateSimplifiedEmbedding("${entry.germanWord} ${entry.englishWord}")
+                val germanEmbedding = generateSimplifiedEmbedding(entry.germanWord)
+                val englishEmbedding = generateSimplifiedEmbedding(entry.englishWord)
+                
+                val vectorEntry = DictionaryVectorEntry(
+                    entryId = entryId,
+                    combinedEmbedding = combinedEmbedding,
+                    germanEmbedding = germanEmbedding,
+                    englishEmbedding = englishEmbedding,
+                    hasExamples = entry.examples.isNotEmpty(),
+                    hasGender = entry.gender != null,
+                    wordType = entry.wordType?.name,
+                    gender = entry.gender?.name
+                )
+                vectors.add(vectorEntry)
+            } catch (e: Exception) {
+                Log.w(TAG, "Error generating simplified vector for entry: ${entry.englishWord}", e)
+            }
+        }
+        
+        Log.d(TAG, "Generated ${vectors.size} simplified vectors")
+        return vectors
+    }
+    
+    /**
+     * Check if a word is common (for selective vector generation)
+     */
+    private fun isCommonWord(word: String): Boolean {
+        val commonWords = setOf(
+            "apple", "house", "water", "food", "book", "tree", "car", "dog", "cat", "bird",
+            "Apfel", "Haus", "Wasser", "Essen", "Buch", "Baum", "Auto", "Hund", "Katze", "Vogel",
+            "mother", "father", "child", "man", "woman", "person", "family", "friend",
+            "Mutter", "Vater", "Kind", "Mann", "Frau", "Person", "Familie", "Freund"
+        )
+        return commonWords.contains(word.lowercase())
+    }
+    
+    /**
+     * Generate simplified embedding using character n-grams
+     */
+    private fun generateSimplifiedEmbedding(text: String): ByteArray {
+        val ngrams = mutableSetOf<String>()
+        val normalizedText = text.lowercase().replace(Regex("[^a-zäöüß]"), "")
+        
+        // Generate 2-grams and 3-grams
+        for (i in 0 until normalizedText.length - 1) {
+            ngrams.add(normalizedText.substring(i, i + 2))
+        }
+        for (i in 0 until normalizedText.length - 2) {
+            ngrams.add(normalizedText.substring(i, i + 3))
+        }
+        
+        // Convert to 64-dimensional vector (simplified)
+        val vector = FloatArray(64)
+        ngrams.forEachIndexed { index, ngram ->
+            val hash = ngram.hashCode()
+            val vectorIndex = Math.abs(hash) % 64
+            vector[vectorIndex] += 1.0f
+        }
+        
+        return floatArrayToByteArray(vector)
+    }
+    
+    /**
+     * Convert float array to byte array for storage
+     */
+    private fun floatArrayToByteArray(floatArray: FloatArray): ByteArray {
+        val byteArray = ByteArray(floatArray.size * 4)
+        for (i in floatArray.indices) {
+            val bits = java.lang.Float.floatToIntBits(floatArray[i])
+            byteArray[i * 4] = (bits shr 24).toByte()
+            byteArray[i * 4 + 1] = (bits shr 16).toByte()
+            byteArray[i * 4 + 2] = (bits shr 8).toByte()
+            byteArray[i * 4 + 3] = bits.toByte()
+        }
+        return byteArray
+    }
+    
     
     /**
      * Helper to notify progress

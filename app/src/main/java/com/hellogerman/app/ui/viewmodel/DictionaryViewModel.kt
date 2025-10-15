@@ -350,7 +350,14 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
                         }
                         
                         override fun onError(error: Exception) {
-                            _errorMessage.value = "Import failed: ${error.message}"
+                            val errorMsg = when {
+                                error.message?.contains("SQLITE_FULL") == true || 
+                                error.message?.contains("database or disk is full") == true -> {
+                                    "Storage full! Dictionary import switched to text-only mode. Search will work but semantic features are limited."
+                                }
+                                else -> "Import failed: ${error.message}"
+                            }
+                            _errorMessage.value = errorMsg
                             _isImporting.value = false
                             _importProgress.value = null
                         }
