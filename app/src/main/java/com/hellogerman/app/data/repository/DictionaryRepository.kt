@@ -59,10 +59,14 @@ class DictionaryRepository(private val context: Context) {
         
         when (language) {
             SearchLanguage.ENGLISH -> {
-                if (exactMatch) {
-                    dictionaryDao.searchEnglishExact(normalized)
+                // Always try exact match first for better results
+                val exactResults = dictionaryDao.searchEnglishExact(normalized, limit = 10)
+                if (exactResults.isNotEmpty()) {
+                    exactResults
+                } else if (exactMatch) {
+                    exactResults
                 } else {
-                    // Try prefix match first
+                    // Try prefix match
                     val prefixResults = dictionaryDao.searchEnglishPrefix(normalized, limit = 50)
                     if (prefixResults.isNotEmpty()) {
                         prefixResults
@@ -73,10 +77,14 @@ class DictionaryRepository(private val context: Context) {
                 }
             }
             SearchLanguage.GERMAN -> {
-                if (exactMatch) {
-                    dictionaryDao.searchGermanExact(normalized)
+                // Always try exact match first for better results
+                val exactResults = dictionaryDao.searchGermanExact(normalized, limit = 10)
+                if (exactResults.isNotEmpty()) {
+                    exactResults
+                } else if (exactMatch) {
+                    exactResults
                 } else {
-                    // Try prefix match first
+                    // Try prefix match
                     val prefixResults = dictionaryDao.searchGermanPrefix(normalized, limit = 50)
                     if (prefixResults.isNotEmpty()) {
                         prefixResults

@@ -61,7 +61,11 @@ interface DictionaryDao {
     @Query("""
         SELECT * FROM dictionary_entries 
         WHERE english_normalized LIKE :prefix || '%' 
-        ORDER BY word_length ASC, english_word ASC
+        ORDER BY 
+            CASE WHEN english_normalized = :prefix THEN 0 ELSE 1 END,
+            CASE WHEN english_normalized LIKE :prefix || ' %' THEN 0 ELSE 1 END,
+            word_length ASC, 
+            english_word ASC
         LIMIT :limit
     """)
     suspend fun searchEnglishPrefix(prefix: String, limit: Int = 50): List<DictionaryEntry>
@@ -110,7 +114,11 @@ interface DictionaryDao {
     @Query("""
         SELECT * FROM dictionary_entries 
         WHERE german_normalized LIKE :prefix || '%' 
-        ORDER BY word_length ASC, german_word ASC
+        ORDER BY 
+            CASE WHEN german_normalized = :prefix THEN 0 ELSE 1 END,
+            CASE WHEN german_normalized LIKE :prefix || ' %' THEN 0 ELSE 1 END,
+            word_length ASC, 
+            german_word ASC
         LIMIT :limit
     """)
     suspend fun searchGermanPrefix(prefix: String, limit: Int = 50): List<DictionaryEntry>

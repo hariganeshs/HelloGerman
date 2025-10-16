@@ -152,17 +152,22 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     
     /**
      * Internal search execution - uses hybrid search when semantic search is enabled
+     * Enhanced with automatic language detection
      */
     private suspend fun performSearch(query: String) {
         try {
             _isSearching.value = true
             _errorMessage.value = null
             
+            // Auto-detect language from query
+            val detectedLanguage = repository.detectLanguage(query)
+            Log.d("DictionaryViewModel", "Query: '$query', Detected language: $detectedLanguage")
+            
             val results = if (_useSemanticSearch.value && _isSemanticSearchAvailable.value) {
                 // Use hybrid search (exact + semantic)
                 val hybridResults = repository.searchHybrid(
                     query = query,
-                    language = _searchLanguage.value,
+                    language = detectedLanguage,
                     useSemanticSearch = true
                 )
                 hybridResults.map { it.first } // Extract entries, discard scores for now
@@ -170,12 +175,15 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
                 // Use regular exact/prefix search
                 repository.search(
                     query = query,
-                    language = _searchLanguage.value,
+                    language = detectedLanguage,
                     exactMatch = false
                 )
             }
             
             _searchResults.value = results
+            
+            // Update search language to match detected language
+            _searchLanguage.value = detectedLanguage
             
             // If we have results, find synonyms/related words
             if (results.isNotEmpty() && _useSemanticSearch.value) {
