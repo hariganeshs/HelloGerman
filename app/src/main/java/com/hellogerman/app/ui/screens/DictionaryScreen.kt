@@ -98,16 +98,25 @@ fun DictionaryScreen(
                         }
                     }
                     
-                    // Fix Search Issues (Full Import)
-                    if (errorMessage?.contains("search quality") == true || errorMessage?.contains("partially imported") == true) {
-                        IconButton(onClick = { viewModel.startFullImport() }) {
-                            Icon(
-                                imageVector = Icons.Default.Refresh,
-                                contentDescription = "Fix search issues",
-                                tint = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    }
+                            // Debug Button (for testing)
+                            IconButton(onClick = { viewModel.debugWord("apple") }) {
+                                Icon(
+                                    imageVector = Icons.Default.BugReport,
+                                    contentDescription = "Debug apple",
+                                    tint = MaterialTheme.colorScheme.secondary
+                                )
+                            }
+                            
+                            // Fix Search Issues (Full Import)
+                            if (errorMessage?.contains("search quality") == true || errorMessage?.contains("partially imported") == true) {
+                                IconButton(onClick = { viewModel.startFullImport() }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Refresh,
+                                        contentDescription = "Fix search issues",
+                                        tint = MaterialTheme.colorScheme.error
+                                    )
+                                }
+                            }
                     
                     // Import/Management
                     IconButton(onClick = { showImportDialog = true }) {

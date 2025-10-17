@@ -1228,3 +1228,74 @@ The error occurs because:
 ### Notes for Future Agents
 - FreeDict datasets use lightweight markup; always normalize before display.
 - Keep explicit gender parsing as source of truth and retain the article-heuristic as a safety fallback for ENG→DE.
+
+---
+
+## Bug #017: Dictionary Search Issues - Unrelated Results and No Results
+
+### **Problem Description**
+- **Date**: 2025-01-15
+- **Issue**: Dictionary search produces incorrect results for common words:
+  1. **English → German**: "apple" shows unrelated results like "der An", "der As", "der You" instead of "der Apfel"
+  2. **German → English**: "apfel" shows "No results found" instead of "apple"
+- **Evidence**: Screenshots show unrelated words appearing before correct translations and complete failure for German searches
+
+### **Root Cause Analysis**
+
+#### **Attempt 1: Automatic Language Detection** ❌ FAILED
+- **Hypothesis**: System not detecting language correctly, causing wrong search direction
+- **Investigation**: 
+  - Added automatic language detection in `DictionaryViewModel.performSearch()`
+  - Uses `repository.detectLanguage(query)` to determine search language
+  - Updates UI language indicator to match detected language
+- **Result**: ❌ **FAILED** - Issue persists, still showing unrelated results
+
+#### **Attempt 2: Search Ranking Enhancement** ❌ FAILED  
+- **Hypothesis**: Search results not properly ranked, exact matches not prioritized
+- **Investigation**:
+  - Enhanced SQL ORDER BY clauses to prioritize exact matches
+  - Added logic: exact match first, then compound words, then by length
+  - Modified search logic to always try exact match first
+- **Result**: ❌ **FAILED** - Issue persists, unrelated words still appear first
+
+#### **Attempt 3: Database Content Investigation** 🔄 IN PROGRESS
+- **Hypothesis**: Database may contain incorrect or malformed entries for common words
+- **Investigation**: 
+  - Need to verify what entries actually exist for "apple" and "apfel"
+  - Check if database import was successful and complete
+  - Verify text normalization and search indexing
+- **Expected Outcome**: Identify if database contains correct entries for these words
+- **Result**: 🔄 **IN PROGRESS** - Need to investigate database content
+
+### **Current Status**: 🔴 **UNRESOLVED**
+
+**Issues Persist**:
+1. ❌ "apple" search shows unrelated words like "der An", "der As", "der You"
+2. ❌ "apfel" search shows "No results found" 
+3. ❌ Automatic language detection implemented but not fixing core issue
+4. ❌ Search ranking improved but unrelated results still appear first
+
+### **Next Investigation Steps**
+1. **Database Content Verification**: Check what entries actually exist for "apple"/"apfel"
+2. **Import Status Check**: Verify if dictionary import was complete and successful
+3. **Text Normalization**: Ensure search terms are properly normalized
+4. **Index Verification**: Check if database indexes are working correctly
+5. **Search Algorithm**: Verify the actual search logic execution
+
+### **Technical Changes Made (Failed Attempts)**
+- Enhanced `DictionaryViewModel.performSearch()` with automatic language detection
+- Improved SQL ORDER BY clauses in `DictionaryDao.kt` for better ranking
+- Modified search logic in `DictionaryRepository.kt` to prioritize exact matches
+- Added debug logging for language detection
+
+### **Files Modified**
+- `app/src/main/java/com/hellogerman/app/ui/viewmodel/DictionaryViewModel.kt`
+- `app/src/main/java/com/hellogerman/app/data/dao/DictionaryDao.kt` 
+- `app/src/main/java/com/hellogerman/app/data/repository/DictionaryRepository.kt`
+
+### **Key Learnings**
+- Language detection alone cannot fix search result quality issues
+- Search ranking improvements don't help if underlying data is incorrect
+- Database content verification is essential before optimizing search algorithms
+- Need to trace the complete data flow from import to search results
+- Search issues may be caused by incomplete or corrupted dictionary import

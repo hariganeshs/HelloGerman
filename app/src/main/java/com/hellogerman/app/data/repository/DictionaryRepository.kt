@@ -396,5 +396,48 @@ class DictionaryRepository(private val context: Context) {
             entry.germanWord
         }
     }
+    
+    /**
+     * Debug method to check what entries exist for a specific word
+     */
+    suspend fun debugWord(word: String): String {
+        val result = StringBuilder()
+        result.appendLine("=== DEBUGGING WORD: '$word' ===")
+        
+        // Check English exact match
+        val englishExact = dictionaryDao.searchEnglishExact(word, 10)
+        result.appendLine("English exact matches: ${englishExact.size}")
+        englishExact.forEach { entry ->
+            result.appendLine("  - EN: '${entry.englishWord}' -> DE: '${entry.germanWord}' (${entry.wordType})")
+        }
+        
+        // Check English prefix match
+        val englishPrefix = dictionaryDao.searchEnglishPrefix(word, 10)
+        result.appendLine("English prefix matches: ${englishPrefix.size}")
+        englishPrefix.take(5).forEach { entry ->
+            result.appendLine("  - EN: '${entry.englishWord}' -> DE: '${entry.germanWord}' (${entry.wordType})")
+        }
+        
+        // Check German exact match
+        val germanExact = dictionaryDao.searchGermanExact(word, 10)
+        result.appendLine("German exact matches: ${germanExact.size}")
+        germanExact.forEach { entry ->
+            result.appendLine("  - DE: '${entry.germanWord}' -> EN: '${entry.englishWord}' (${entry.wordType})")
+        }
+        
+        // Check German prefix match
+        val germanPrefix = dictionaryDao.searchGermanPrefix(word, 10)
+        result.appendLine("German prefix matches: ${germanPrefix.size}")
+        germanPrefix.take(5).forEach { entry ->
+            result.appendLine("  - DE: '${entry.germanWord}' -> EN: '${entry.englishWord}' (${entry.wordType})")
+        }
+        
+        // Check total entries
+        val totalEntries = dictionaryDao.getTotalEntryCount()
+        result.appendLine("Total dictionary entries: $totalEntries")
+        
+        result.appendLine("=== END DEBUG ===")
+        return result.toString()
+    }
 }
 

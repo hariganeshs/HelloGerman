@@ -553,6 +553,22 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
         ttsService.clearCache()
     }
     
+    /**
+     * Debug method to check what entries exist for a specific word
+     */
+    fun debugWord(word: String) {
+        viewModelScope.launch {
+            try {
+                val debugInfo = repository.debugWord(word)
+                Log.d("DictionaryViewModel", debugInfo)
+                _errorMessage.value = debugInfo
+            } catch (e: Exception) {
+                Log.e("DictionaryViewModel", "Error debugging word: $word", e)
+                _errorMessage.value = "Debug error: ${e.message}"
+            }
+        }
+    }
+    
     // ==================== Utility Functions ====================
     
     /**
