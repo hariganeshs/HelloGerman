@@ -45,12 +45,6 @@ fun DictionaryScreen(
     val statistics by viewModel.statistics.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     
-    // Semantic search state
-    val useSemanticSearch by viewModel.useSemanticSearch.collectAsState()
-    val isSemanticSearchAvailable by viewModel.isSemanticSearchAvailable.collectAsState()
-    val synonyms by viewModel.synonyms.collectAsState()
-    val relatedWords by viewModel.relatedWords.collectAsState()
-    
     var showImportDialog by remember { mutableStateOf(false) }
     var showStatisticsDialog by remember { mutableStateOf(false) }
     
@@ -69,23 +63,6 @@ fun DictionaryScreen(
                                 SearchLanguage.GERMAN -> MaterialTheme.colorScheme.secondary
                             }
                         )
-                    }
-                    
-                    // Semantic search toggle (only show if available)
-                    if (isSemanticSearchAvailable) {
-                        IconButton(onClick = { viewModel.toggleSemanticSearch() }) {
-                            Icon(
-                                imageVector = if (useSemanticSearch) 
-                                    Icons.Default.AutoAwesome 
-                                else 
-                                    Icons.Default.Search,
-                                contentDescription = "Toggle semantic search",
-                                tint = if (useSemanticSearch) 
-                                    MaterialTheme.colorScheme.tertiary
-                                else 
-                                    MaterialTheme.colorScheme.outline
-                            )
-                        }
                     }
                     
                     // Statistics

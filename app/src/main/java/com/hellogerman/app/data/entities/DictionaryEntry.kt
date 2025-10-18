@@ -2,6 +2,7 @@ package com.hellogerman.app.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.hellogerman.app.data.converters.DictionaryTypeConverters
@@ -12,7 +13,16 @@ import com.hellogerman.app.data.converters.DictionaryTypeConverters
  * This entity stores comprehensive linguistic information for each word pair,
  * including grammar details, usage examples, and search optimization fields.
  */
-@Entity(tableName = "dictionary_entries")
+@Entity(
+    tableName = "dictionary_entries",
+    indices = [
+        Index(value = ["english_normalized"]),
+        Index(value = ["german_normalized"]),
+        Index(value = ["word_type"]),
+        Index(value = ["gender"]),
+        Index(value = ["word_length"])
+    ]
+)
 @TypeConverters(DictionaryTypeConverters::class)
 data class DictionaryEntry(
     @PrimaryKey(autoGenerate = true)

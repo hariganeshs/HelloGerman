@@ -45,25 +45,30 @@ interface DictionaryDao {
     // ==================== ENGLISH SEARCH ====================
     
     /**
-     * Search for exact English word match
+     * Search for exact English word match with improved ranking
      */
     @Query("""
         SELECT * FROM dictionary_entries 
         WHERE english_normalized = :word 
-        ORDER BY word_length ASC, english_word ASC
+        ORDER BY 
+            CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
+            CASE WHEN gender IS NOT NULL THEN 0 ELSE 1 END,
+            word_length ASC,
+            english_word ASC
         LIMIT :limit
     """)
     suspend fun searchEnglishExact(word: String, limit: Int = 50): List<DictionaryEntry>
     
     /**
-     * Search for English words starting with prefix
+     * Search for English words starting with prefix with improved ranking
      */
     @Query("""
         SELECT * FROM dictionary_entries 
         WHERE english_normalized LIKE :prefix || '%' 
         ORDER BY 
             CASE WHEN english_normalized = :prefix THEN 0 ELSE 1 END,
-            CASE WHEN english_normalized LIKE :prefix || ' %' THEN 0 ELSE 1 END,
+            CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
+            CASE WHEN gender IS NOT NULL THEN 0 ELSE 1 END,
             word_length ASC, 
             english_word ASC
         LIMIT :limit
@@ -71,13 +76,15 @@ interface DictionaryDao {
     suspend fun searchEnglishPrefix(prefix: String, limit: Int = 50): List<DictionaryEntry>
     
     /**
-     * Search English words containing query (less efficient, for fuzzy search)
+     * Search English words containing query (less efficient, for fuzzy search) with improved ranking
      */
     @Query("""
         SELECT * FROM dictionary_entries 
         WHERE english_normalized LIKE '%' || :query || '%' 
         ORDER BY 
             CASE WHEN english_normalized = :query THEN 0 ELSE 1 END,
+            CASE WHEN english_normalized LIKE :query || '%' THEN 0 ELSE 1 END,
+            CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
             word_length ASC,
             english_word ASC
         LIMIT :limit
@@ -98,25 +105,30 @@ interface DictionaryDao {
     // ==================== GERMAN SEARCH (Reverse Lookup) ====================
     
     /**
-     * Search for exact German word match
+     * Search for exact German word match with improved ranking
      */
     @Query("""
         SELECT * FROM dictionary_entries 
         WHERE german_normalized = :word 
-        ORDER BY word_length ASC, german_word ASC
+        ORDER BY 
+            CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
+            CASE WHEN gender IS NOT NULL THEN 0 ELSE 1 END,
+            word_length ASC,
+            german_word ASC
         LIMIT :limit
     """)
     suspend fun searchGermanExact(word: String, limit: Int = 50): List<DictionaryEntry>
     
     /**
-     * Search for German words starting with prefix
+     * Search for German words starting with prefix with improved ranking
      */
     @Query("""
         SELECT * FROM dictionary_entries 
         WHERE german_normalized LIKE :prefix || '%' 
         ORDER BY 
             CASE WHEN german_normalized = :prefix THEN 0 ELSE 1 END,
-            CASE WHEN german_normalized LIKE :prefix || ' %' THEN 0 ELSE 1 END,
+            CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
+            CASE WHEN gender IS NOT NULL THEN 0 ELSE 1 END,
             word_length ASC, 
             german_word ASC
         LIMIT :limit
@@ -124,13 +136,15 @@ interface DictionaryDao {
     suspend fun searchGermanPrefix(prefix: String, limit: Int = 50): List<DictionaryEntry>
     
     /**
-     * Search German words containing query
+     * Search German words containing query with improved ranking
      */
     @Query("""
         SELECT * FROM dictionary_entries 
         WHERE german_normalized LIKE '%' || :query || '%' 
         ORDER BY 
             CASE WHEN german_normalized = :query THEN 0 ELSE 1 END,
+            CASE WHEN german_normalized LIKE :query || '%' THEN 0 ELSE 1 END,
+            CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
             word_length ASC,
             german_word ASC
         LIMIT :limit

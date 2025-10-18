@@ -4,9 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.hellogerman.app.data.HelloGermanDatabase
 import com.hellogerman.app.data.entities.DictionaryEntry
-import com.hellogerman.app.data.entities.DictionaryVectorEntry
-import com.hellogerman.app.data.entities.VectorConverter
-import com.hellogerman.app.data.embeddings.EmbeddingGenerator
 import com.hellogerman.app.data.grammar.AdvancedGenderDetector
 import com.hellogerman.app.data.examples.ExampleExtractor
 import com.hellogerman.app.utils.TextNormalizer
@@ -27,22 +24,32 @@ class DictionaryImporter(
     companion object {
         private const val TAG = "DictionaryImporter"
         private const val BATCH_SIZE = 500 // Process and insert in batches
-        private const val ASSET_DICT_PATH = "freedict-eng-deu-1.9-fd1.dictd/eng-deu/eng-deu.dict.dz"
-        private const val ASSET_INDEX_PATH = "freedict-eng-deu-1.9-fd1.dictd/eng-deu/eng-deu.index"
+        
+        // English → German dictionary paths
+        private const val ASSET_ENG_DEU_DICT_PATH = "freedict-eng-deu-1.9-fd1.dictd/eng-deu/eng-deu.dict.dz"
+        private const val ASSET_ENG_DEU_INDEX_PATH = "freedict-eng-deu-1.9-fd1.dictd/eng-deu/eng-deu.index"
+        
+        // German → English dictionary paths
+        private const val ASSET_DEU_ENG_DICT_PATH = "freedict-deu-eng-1.9-fd1.dictd/deu-eng/deu-eng.dict.dz"
+        private const val ASSET_DEU_ENG_INDEX_PATH = "freedict-deu-eng-1.9-fd1.dictd/deu-eng/deu-eng.index"
     }
     
     private val database = HelloGermanDatabase.getDatabase(context)
     private val dictionaryDao = database.dictionaryDao()
-    private val vectorDao = database.dictionaryVectorDao()
     
-    private val fileReader = DictdFileReader(context, ASSET_DICT_PATH)
-    private val indexParser = DictdIndexParser(context, ASSET_INDEX_PATH)
+    // English → German readers/parsers
+    private val engDeuFileReader = DictdFileReader(context, ASSET_ENG_DEU_DICT_PATH)
+    private val engDeuIndexParser = DictdIndexParser(context, ASSET_ENG_DEU_INDEX_PATH)
+    
+    // German → English readers/parsers
+    private val deuEngFileReader = DictdFileReader(context, ASSET_DEU_ENG_DICT_PATH)
+    private val deuEngIndexParser = DictdIndexParser(context, ASSET_DEU_ENG_INDEX_PATH)
+    
     private val dataParser = DictdDataParser()
     
     // Enhanced extractors for better accuracy
     private val advancedGenderDetector = AdvancedGenderDetector()
     private val exampleExtractor = ExampleExtractor()
-    private val embeddingGenerator = EmbeddingGenerator(context)
     private val grammarExtractor = GrammarExtractor() // Keep for verb/adjective info
     
     /**
@@ -136,35 +143,50 @@ class DictionaryImporter(
                 dictionaryDao.deleteAllEntries()
             }
             
-            // Phase 2: Decompress dictionary file
-            notifyProgress(listener, ImportPhase.DECOMPRESSING, 0, 0, 0, 0, 0, 0, "Decompressing dictionary file...")
+            // Phase 2: Decompress English → German dictionary
+            notifyProgress(listener, ImportPhase.DECOMPRESSING, 0, 0, 0, 0, 0, 0, "Decompressing English → German dictionary...")
             
-            if (!fileReader.decompressIfNeeded()) {
-                throw Exception("Failed to decompress dictionary file")
+            if (!engDeuFileReader.decompressIfNeeded()) {
+                throw Exception("Failed to decompress English → German dictionary file")
             }
             
-            Log.d(TAG, "Dictionary file decompressed: ${fileReader.getFileSize() / 1024 / 1024}MB")
+            Log.d(TAG, "Eng-Deu dictionary decompressed: ${engDeuFileReader.getFileSize() / 1024 / 1024}MB")
             
-            // Phase 3: Parse index
-            notifyProgress(listener, ImportPhase.PARSING_INDEX, 0, 0, 0, 0, 0, 0, "Parsing dictionary index...")
+            // Phase 3: Parse English → German index
+            notifyProgress(listener, ImportPhase.PARSING_INDEX, 0, 0, 0, 0, 0, 0, "Parsing English → German index...")
             
-            val index = indexParser.parseIndex()
-            val totalEntries = index.size
+            val engDeuIndex = engDeuIndexParser.parseIndex()
+            Log.d(TAG, "Eng-Deu index parsed: ${engDeuIndex.size} entries")
+            
+            // Phase 4: Decompress German → English dictionary
+            notifyProgress(listener, ImportPhase.DECOMPRESSING, 0, 0, 0, 0, 0, 0, "Decompressing German → English dictionary...")
+            
+            if (!deuEngFileReader.decompressIfNeeded()) {
+                throw Exception("Failed to decompress German → English dictionary file")
+            }
+            
+            Log.d(TAG, "Deu-Eng dictionary decompressed: ${deuEngFileReader.getFileSize() / 1024 / 1024}MB")
+            
+            // Phase 5: Parse German → English index
+            notifyProgress(listener, ImportPhase.PARSING_INDEX, 0, 0, 0, 0, 0, 0, "Parsing German → English index...")
+            
+            val deuEngIndex = deuEngIndexParser.parseIndex()
+            Log.d(TAG, "Deu-Eng index parsed: ${deuEngIndex.size} entries")
+            
+            val totalEntries = engDeuIndex.size + deuEngIndex.size
             val totalBatches = (totalEntries + BATCH_SIZE - 1) / BATCH_SIZE
             
-            Log.d(TAG, "Index parsed: $totalEntries entries, $totalBatches batches")
-            
-            // Phase 4: Import entries
-            notifyProgress(listener, ImportPhase.IMPORTING_ENTRIES, totalEntries, 0, 0, 0, 0, totalBatches, "Importing dictionary entries...")
+            // Phase 6: Import English → German entries
+            notifyProgress(listener, ImportPhase.IMPORTING_ENTRIES, totalEntries, 0, 0, 0, 0, totalBatches, "Importing English → German entries...")
             
             var processedCount = 0
             var batchNumber = 0
-            val entriesToInsert = mutableListOf<DictionaryEntry>()
+            var entriesToInsert = mutableListOf<DictionaryEntry>()
             
-            // Process entries in batches
-            for ((_, indexEntry) in index) {
+            // Import eng-deu entries
+            for ((_, indexEntry) in engDeuIndex) {
                 try {
-                    val result = processEntry(indexEntry)
+                    val result = processEngDeuEntry(indexEntry)
                     if (result != null) {
                         entriesToInsert.addAll(result)
                     } else {
@@ -180,7 +202,7 @@ class DictionaryImporter(
                         if (inserted) {
                             successfulEntries += batchSize
                             batchNumber++
-                            notifyProgress(listener, ImportPhase.IMPORTING_ENTRIES, totalEntries, processedCount, successfulEntries, failedEntries, batchNumber, totalBatches, "Importing entries: $successfulEntries/$totalEntries")
+                            notifyProgress(listener, ImportPhase.IMPORTING_ENTRIES, totalEntries, processedCount, successfulEntries, failedEntries, batchNumber, totalBatches, "Importing Eng→Deu: $successfulEntries/$totalEntries")
                         } else {
                             failedEntries += batchSize
                             errors.add("Batch $batchNumber insert failed")
@@ -190,12 +212,62 @@ class DictionaryImporter(
                     }
                     
                 } catch (e: Exception) {
-                    Log.w(TAG, "Error processing entry: ${indexEntry.headword}", e)
+                    Log.w(TAG, "Error processing eng-deu entry: ${indexEntry.headword}", e)
                     failedEntries++
                 }
             }
             
-            // Insert remaining entries
+            // Insert remaining eng-deu entries
+            if (entriesToInsert.isNotEmpty()) {
+                val batchSize = entriesToInsert.size
+                val inserted = insertBatch(entriesToInsert, batchNumber, totalBatches)
+                if (inserted) {
+                    successfulEntries += batchSize
+                    batchNumber++
+                } else {
+                    failedEntries += batchSize
+                }
+                entriesToInsert.clear()
+            }
+            
+            // Phase 7: Import German → English entries
+            notifyProgress(listener, ImportPhase.IMPORTING_ENTRIES, totalEntries, processedCount, successfulEntries, failedEntries, batchNumber, totalBatches, "Importing German → English entries...")
+            
+            // Import deu-eng entries
+            for ((_, indexEntry) in deuEngIndex) {
+                try {
+                    val result = processDeuEngEntry(indexEntry)
+                    if (result != null) {
+                        entriesToInsert.addAll(result)
+                    } else {
+                        failedEntries++
+                    }
+                    
+                    processedCount++
+                    
+                    // Insert batch when full
+                    if (entriesToInsert.size >= BATCH_SIZE) {
+                        val batchSize = entriesToInsert.size
+                        val inserted = insertBatch(entriesToInsert, batchNumber, totalBatches)
+                        if (inserted) {
+                            successfulEntries += batchSize
+                            batchNumber++
+                            notifyProgress(listener, ImportPhase.IMPORTING_ENTRIES, totalEntries, processedCount, successfulEntries, failedEntries, batchNumber, totalBatches, "Importing Deu→Eng: $successfulEntries/$totalEntries")
+                        } else {
+                            failedEntries += batchSize
+                            errors.add("Batch $batchNumber insert failed")
+                        }
+                        entriesToInsert.clear()
+                        yield()
+                    }
+                    
+                } catch (e: Exception) {
+                    Log.w(TAG, "Error processing deu-eng entry: ${indexEntry.headword}", e)
+                    failedEntries++
+                }
+            }
+            
+            // Insert remaining deu-eng entries
             if (entriesToInsert.isNotEmpty()) {
                 val batchSize = entriesToInsert.size
                 val inserted = insertBatch(entriesToInsert, batchNumber, totalBatches)
@@ -252,12 +324,11 @@ class DictionaryImporter(
     }
     
     /**
-     * Process a single index entry and create dictionary entries
-     * Enhanced version with advanced gender detection and example extraction
+     * Process English → German entry (English word → German translations)
      */
-    private fun processEntry(indexEntry: DictdIndexParser.IndexEntry): List<DictionaryEntry>? {
+    private fun processEngDeuEntry(indexEntry: DictdIndexParser.IndexEntry): List<DictionaryEntry>? {
         try {
-            val rawText = fileReader.readBlock(indexEntry.offset, indexEntry.length) ?: return null
+            val rawText = engDeuFileReader.readBlock(indexEntry.offset, indexEntry.length) ?: return null
             if (rawText.isBlank()) return null
             
             val parsedEntry = dataParser.parse(indexEntry.headword, rawText)
@@ -321,7 +392,8 @@ class DictionaryImporter(
                     rawEntry = rawText.take(500),
                     englishNormalized = TextNormalizer.normalizeEnglish(indexEntry.headword),
                     germanNormalized = TextNormalizer.normalizeGerman(cleanedTranslation),
-                    wordLength = cleanedTranslation.length
+                    wordLength = cleanedTranslation.length,
+                    source = "FreeDict-EngDeu"
                 )
                 
                 entries.add(entry)
@@ -329,237 +401,110 @@ class DictionaryImporter(
             
             return entries
         } catch (e: Exception) {
-            Log.w(TAG, "Error processing entry: ${indexEntry.headword}", e)
+            Log.w(TAG, "Error processing eng-deu entry: ${indexEntry.headword}", e)
             return null
         }
     }
     
     /**
-     * Insert batch of entries and their vector embeddings
-     * Enhanced with storage monitoring and graceful degradation
+     * Process German → English entry (German word → English translations)
+     * Note: headword is German, translations are English
+     */
+    private fun processDeuEngEntry(indexEntry: DictdIndexParser.IndexEntry): List<DictionaryEntry>? {
+        try {
+            val rawText = deuEngFileReader.readBlock(indexEntry.offset, indexEntry.length) ?: return null
+            if (rawText.isBlank()) return null
+            
+            val parsedEntry = dataParser.parse(indexEntry.headword, rawText)
+            if (parsedEntry.translations.isEmpty()) return null
+            
+            val entries = mutableListOf<DictionaryEntry>()
+            
+            // For deu-eng: headword is German word, translations are English words
+            val germanWord = indexEntry.headword
+            
+            for (translation in parsedEntry.translations) {
+                val cleanedEnglishWord = TextNormalizer.extractCleanWord(translation)
+                if (cleanedEnglishWord.isEmpty()) continue
+                
+                // Get basic grammar info
+                val grammarInfo = grammarExtractor.extract(
+                    germanWord = germanWord,
+                    englishWord = cleanedEnglishWord,
+                    rawContext = rawText,
+                    partOfSpeechTags = parsedEntry.partOfSpeechTags
+                )
+                
+                // Use advanced gender detection
+                val genderResult = advancedGenderDetector.detectGender(
+                    germanWord = germanWord,
+                    rawContext = rawText,
+                    partOfSpeechTags = parsedEntry.partOfSpeechTags
+                )
+                
+                val finalGender = if (genderResult.confidence >= 0.7f) {
+                    genderResult.gender
+                } else {
+                    grammarInfo.gender
+                }
+                
+                // Extract examples
+                val enhancedExamples = exampleExtractor.extractExamples(
+                    rawText = rawText,
+                    germanWord = germanWord,
+                    englishWord = cleanedEnglishWord
+                )
+                
+                val allExamples = (enhancedExamples + parsedEntry.examples).distinctBy { it.german }
+                
+                val entry = DictionaryEntry(
+                    englishWord = cleanedEnglishWord,
+                    germanWord = germanWord,
+                    wordType = grammarInfo.wordType,
+                    gender = finalGender,
+                    pluralForm = grammarInfo.pluralForm,
+                    pastTense = grammarInfo.pastTense,
+                    pastParticiple = grammarInfo.pastParticiple,
+                    auxiliaryVerb = grammarInfo.auxiliaryVerb,
+                    isIrregular = grammarInfo.isIrregular,
+                    isSeparable = grammarInfo.isSeparable,
+                    comparative = grammarInfo.comparative,
+                    superlative = grammarInfo.superlative,
+                    additionalTranslations = parsedEntry.translations.filter { it != translation },
+                    examples = allExamples.take(5),
+                    pronunciationIpa = parsedEntry.pronunciationIpa,
+                    domain = parsedEntry.domainLabels.firstOrNull(),
+                    rawEntry = rawText.take(500),
+                    englishNormalized = TextNormalizer.normalizeEnglish(cleanedEnglishWord),
+                    germanNormalized = TextNormalizer.normalizeGerman(germanWord),
+                    wordLength = germanWord.length,
+                    source = "FreeDict-DeuEng"
+                )
+                
+                entries.add(entry)
+            }
+            
+            return entries
+        } catch (e: Exception) {
+            Log.w(TAG, "Error processing deu-eng entry: ${indexEntry.headword}", e)
+            return null
+        }
+    }
+    
+    /**
+     * Insert batch of dictionary entries
      */
     private suspend fun insertBatch(entries: List<DictionaryEntry>, batchNumber: Int, totalBatches: Int): Boolean {
         return try {
-            // Check storage space before inserting
-            if (!checkStorageSpace()) {
-                Log.w(TAG, "Insufficient storage space, skipping vector generation for batch $batchNumber")
-                // Insert text-only entries (no vectors)
-                val insertedIds = dictionaryDao.insertEntries(entries)
-                Log.d(TAG, "Inserted text-only batch $batchNumber/$totalBatches (${entries.size} entries)")
-                return true
-            }
-            
-            // Insert dictionary entries first (to get IDs)
-            val insertedIds = dictionaryDao.insertEntries(entries)
+            // Insert dictionary entries
+            dictionaryDao.insertEntries(entries)
             Log.d(TAG, "Inserted batch $batchNumber/$totalBatches (${entries.size} entries)")
-            
-            // Generate and insert vectors for the entries (with optimization)
-            if (insertedIds.isNotEmpty()) {
-                try {
-                    val vectors = generateOptimizedVectors(entries, insertedIds)
-                    if (vectors.isNotEmpty()) {
-                        vectorDao.insertVectorsBatch(vectors)
-                        Log.d(TAG, "Inserted vectors for batch $batchNumber (${vectors.size} vectors)")
-                    }
-                } catch (vectorError: Exception) {
-                    Log.w(TAG, "Vector generation failed for batch $batchNumber, continuing with text-only", vectorError)
-                    // Continue without vectors - text search will still work
-                }
-            }
-            
             true
         } catch (e: Exception) {
-            if (e.message?.contains("SQLITE_FULL") == true || e.message?.contains("database or disk is full") == true) {
-                Log.e(TAG, "Storage full error in batch $batchNumber, switching to text-only mode", e)
-                // Try to insert text-only entries
-                try {
-                    val insertedIds = dictionaryDao.insertEntries(entries)
-                    Log.d(TAG, "Recovered: Inserted text-only batch $batchNumber (${entries.size} entries)")
-                    return true
-                } catch (textError: Exception) {
-                    Log.e(TAG, "Even text-only insertion failed for batch $batchNumber", textError)
-                    return false
-                }
-            } else {
-                Log.e(TAG, "Error inserting batch $batchNumber", e)
-                return false
-            }
+            Log.e(TAG, "Error inserting batch $batchNumber", e)
+            false
         }
     }
-    
-    /**
-     * Check available storage space
-     */
-    private fun checkStorageSpace(): Boolean {
-        try {
-            val dataDir = context.filesDir
-            val freeSpace = dataDir.freeSpace
-            val totalSpace = dataDir.totalSpace
-            val usedSpace = totalSpace - freeSpace
-            
-            Log.d(TAG, "Storage check - Free: ${freeSpace/(1024*1024)}MB, Used: ${usedSpace/(1024*1024)}MB")
-            
-            // Require at least 100MB free space for vectors
-            return freeSpace > 100 * 1024 * 1024
-        } catch (e: Exception) {
-            Log.w(TAG, "Could not check storage space", e)
-            return true // Assume we have space if we can't check
-        }
-    }
-    
-    /**
-     * Generate optimized vector embeddings (smaller, more efficient)
-     */
-    private suspend fun generateOptimizedVectors(
-        entries: List<DictionaryEntry>,
-        entryIds: List<Long>
-    ): List<DictionaryVectorEntry> {
-        if (!embeddingGenerator.initialize()) {
-            Log.w(TAG, "Embedding generator not initialized, using simplified embeddings")
-            return generateSimplifiedVectors(entries, entryIds)
-        }
-        
-        // Only generate vectors for common words to save space
-        val commonWordEntries = entries.filterIndexed { index, entry ->
-            index < 1000 || isCommonWord(entry.englishWord) || isCommonWord(entry.germanWord)
-        }
-        
-        val vectors = mutableListOf<DictionaryVectorEntry>()
-        
-        commonWordEntries.forEachIndexed { index, entry ->
-            try {
-                val originalIndex = entries.indexOf(entry)
-                val entryId = entryIds.getOrNull(originalIndex) ?: return@forEachIndexed
-                
-                // Generate smaller embeddings (128 dimensions instead of 384)
-                val combinedText = "${entry.germanWord} ${entry.englishWord}"
-                val combinedEmbedding = embeddingGenerator.generateEmbedding(combinedText)?.let { embedding ->
-                    // Reduce dimensions to 128
-                    embedding.take(128).toFloatArray()
-                }
-                
-                val germanEmbedding = embeddingGenerator.generateEmbedding(entry.germanWord)?.let { embedding ->
-                    embedding.take(128).toFloatArray()
-                }
-                
-                val englishEmbedding = embeddingGenerator.generateEmbedding(entry.englishWord)?.let { embedding ->
-                    embedding.take(128).toFloatArray()
-                }
-                
-                if (combinedEmbedding != null && germanEmbedding != null && englishEmbedding != null) {
-                    val vectorEntry = DictionaryVectorEntry(
-                        entryId = entryId,
-                        combinedEmbedding = floatArrayToByteArray(combinedEmbedding),
-                        germanEmbedding = floatArrayToByteArray(germanEmbedding),
-                        englishEmbedding = floatArrayToByteArray(englishEmbedding),
-                        hasExamples = entry.examples.isNotEmpty(),
-                        hasGender = entry.gender != null,
-                        wordType = entry.wordType?.name,
-                        gender = entry.gender?.name
-                    )
-                    vectors.add(vectorEntry)
-                }
-            } catch (e: Exception) {
-                Log.w(TAG, "Error generating vector for entry: ${entry.englishWord}", e)
-            }
-        }
-        
-        Log.d(TAG, "Generated ${vectors.size} optimized vectors out of ${entries.size} entries")
-        return vectors
-    }
-    
-    /**
-     * Generate simplified vectors using character n-grams (fallback)
-     */
-    private suspend fun generateSimplifiedVectors(
-        entries: List<DictionaryEntry>,
-        entryIds: List<Long>
-    ): List<DictionaryVectorEntry> {
-        val vectors = mutableListOf<DictionaryVectorEntry>()
-        
-        entries.take(10000).forEachIndexed { index, entry -> // Limit to 10k entries for simplified vectors
-            try {
-                val entryId = entryIds.getOrNull(index) ?: return@forEachIndexed
-                
-                // Generate simplified embeddings using character n-grams
-                val combinedEmbedding = generateSimplifiedEmbedding("${entry.germanWord} ${entry.englishWord}")
-                val germanEmbedding = generateSimplifiedEmbedding(entry.germanWord)
-                val englishEmbedding = generateSimplifiedEmbedding(entry.englishWord)
-                
-                val vectorEntry = DictionaryVectorEntry(
-                    entryId = entryId,
-                    combinedEmbedding = combinedEmbedding,
-                    germanEmbedding = germanEmbedding,
-                    englishEmbedding = englishEmbedding,
-                    hasExamples = entry.examples.isNotEmpty(),
-                    hasGender = entry.gender != null,
-                    wordType = entry.wordType?.name,
-                    gender = entry.gender?.name
-                )
-                vectors.add(vectorEntry)
-            } catch (e: Exception) {
-                Log.w(TAG, "Error generating simplified vector for entry: ${entry.englishWord}", e)
-            }
-        }
-        
-        Log.d(TAG, "Generated ${vectors.size} simplified vectors")
-        return vectors
-    }
-    
-    /**
-     * Check if a word is common (for selective vector generation)
-     */
-    private fun isCommonWord(word: String): Boolean {
-        val commonWords = setOf(
-            "apple", "house", "water", "food", "book", "tree", "car", "dog", "cat", "bird",
-            "Apfel", "Haus", "Wasser", "Essen", "Buch", "Baum", "Auto", "Hund", "Katze", "Vogel",
-            "mother", "father", "child", "man", "woman", "person", "family", "friend",
-            "Mutter", "Vater", "Kind", "Mann", "Frau", "Person", "Familie", "Freund"
-        )
-        return commonWords.contains(word.lowercase())
-    }
-    
-    /**
-     * Generate simplified embedding using character n-grams
-     */
-    private fun generateSimplifiedEmbedding(text: String): ByteArray {
-        val ngrams = mutableSetOf<String>()
-        val normalizedText = text.lowercase().replace(Regex("[^a-zäöüß]"), "")
-        
-        // Generate 2-grams and 3-grams
-        for (i in 0 until normalizedText.length - 1) {
-            ngrams.add(normalizedText.substring(i, i + 2))
-        }
-        for (i in 0 until normalizedText.length - 2) {
-            ngrams.add(normalizedText.substring(i, i + 3))
-        }
-        
-        // Convert to 64-dimensional vector (simplified)
-        val vector = FloatArray(64)
-        ngrams.forEachIndexed { index, ngram ->
-            val hash = ngram.hashCode()
-            val vectorIndex = Math.abs(hash) % 64
-            vector[vectorIndex] += 1.0f
-        }
-        
-        return floatArrayToByteArray(vector)
-    }
-    
-    /**
-     * Convert float array to byte array for storage
-     */
-    private fun floatArrayToByteArray(floatArray: FloatArray): ByteArray {
-        val byteArray = ByteArray(floatArray.size * 4)
-        for (i in floatArray.indices) {
-            val bits = java.lang.Float.floatToIntBits(floatArray[i])
-            byteArray[i * 4] = (bits shr 24).toByte()
-            byteArray[i * 4 + 1] = (bits shr 16).toByte()
-            byteArray[i * 4 + 2] = (bits shr 8).toByte()
-            byteArray[i * 4 + 3] = bits.toByte()
-        }
-        return byteArray
-    }
-    
     
     /**
      * Helper to notify progress
@@ -611,12 +556,13 @@ class DictionaryImporter(
     }
     
     /**
-     * Clear all dictionary data
+     * Clear all dictionary data and cached files
      */
     suspend fun clearDictionary() = withContext(Dispatchers.IO) {
         try {
             dictionaryDao.deleteAllEntries()
-            fileReader.clearCache()
+            engDeuFileReader.clearCache()
+            deuEngFileReader.clearCache()
             Log.d(TAG, "Dictionary data cleared")
         } catch (e: Exception) {
             Log.e(TAG, "Error clearing dictionary", e)

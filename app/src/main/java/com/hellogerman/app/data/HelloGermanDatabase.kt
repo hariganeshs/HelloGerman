@@ -18,10 +18,9 @@ import com.hellogerman.app.data.entities.*
         Achievement::class,
         UserVocabulary::class,
         DictionaryCache::class,
-        DictionaryEntry::class,
-        DictionaryVectorEntry::class
+        DictionaryEntry::class
     ],
-    version = 18,
+    version = 19,
     exportSchema = false
 )
 abstract class HelloGermanDatabase : RoomDatabase() {
@@ -34,7 +33,6 @@ abstract class HelloGermanDatabase : RoomDatabase() {
     abstract fun dictionaryCacheDao(): DictionaryCacheDao
     abstract fun userVocabularyDao(): UserVocabularyDao
     abstract fun dictionaryDao(): DictionaryDao
-    abstract fun dictionaryVectorDao(): DictionaryVectorDao
     
     companion object {
         @Volatile
@@ -47,7 +45,7 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                     HelloGermanDatabase::class.java,
                     "hello_german_database"
                 )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_8_9, MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
@@ -317,6 +315,16 @@ abstract class HelloGermanDatabase : RoomDatabase() {
                 
                 // Create unique index on entry_id (Room's default naming: index_{table}_{column})
                 database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_dictionary_vectors_entry_id` ON `dictionary_vectors` (`entry_id`)")
+            }
+        }
+        
+        private val MIGRATION_18_19 = object : Migration(18, 19) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Drop vector search table as it's no longer needed
+                database.execSQL("DROP TABLE IF EXISTS `dictionary_vectors`")
+                
+                // Add additional indexes for better search performance
+                database.execSQL("CREATE INDEX IF NOT EXISTS `idx_word_length` ON `dictionary_entries` (`word_length`)")
             }
         }
     }

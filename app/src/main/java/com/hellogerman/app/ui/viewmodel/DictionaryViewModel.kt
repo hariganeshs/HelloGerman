@@ -72,19 +72,6 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
     
-    // Semantic search state
-    private val _useSemanticSearch = MutableStateFlow(false)
-    val useSemanticSearch: StateFlow<Boolean> = _useSemanticSearch.asStateFlow()
-    
-    private val _isSemanticSearchAvailable = MutableStateFlow(false)
-    val isSemanticSearchAvailable: StateFlow<Boolean> = _isSemanticSearchAvailable.asStateFlow()
-    
-    private val _synonyms = MutableStateFlow<List<Pair<DictionaryEntry, Float>>>(emptyList())
-    val synonyms: StateFlow<List<Pair<DictionaryEntry, Float>>> = _synonyms.asStateFlow()
-    
-    private val _relatedWords = MutableStateFlow<List<Pair<DictionaryEntry, Float>>>(emptyList())
-    val relatedWords: StateFlow<List<Pair<DictionaryEntry, Float>>> = _relatedWords.asStateFlow()
-    
     // Audio playback state
     private val _isPlayingAudio = MutableStateFlow(false)
     val isPlayingAudio: StateFlow<Boolean> = _isPlayingAudio.asStateFlow()
@@ -98,7 +85,6 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     
     init {
         checkDictionaryStatus()
-        initializeSemanticSearch()
         initializeTTS()
     }
     
@@ -151,8 +137,7 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     }
     
     /**
-     * Internal search execution - uses hybrid search when semantic search is enabled
-     * Enhanced with automatic language detection
+     * Internal search execution with automatic language detection
      */
     private suspend fun performSearch(query: String) {
         try {
@@ -163,32 +148,17 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
             val detectedLanguage = repository.detectLanguage(query)
             Log.d("DictionaryViewModel", "Query: '$query', Detected language: $detectedLanguage")
             
-            val results = if (_useSemanticSearch.value && _isSemanticSearchAvailable.value) {
-                // Use hybrid search (exact + semantic)
-                val hybridResults = repository.searchHybrid(
-                    query = query,
-                    language = detectedLanguage,
-                    useSemanticSearch = true
-                )
-                hybridResults.map { it.first } // Extract entries, discard scores for now
-            } else {
-                // Use regular exact/prefix search
-                repository.search(
-                    query = query,
-                    language = detectedLanguage,
-                    exactMatch = false
-                )
-            }
+            // Use regular exact/prefix search
+            val results = repository.search(
+                query = query,
+                language = detectedLanguage,
+                exactMatch = false
+            )
             
             _searchResults.value = results
             
             // Update search language to match detected language
             _searchLanguage.value = detectedLanguage
-            
-            // If we have results, find synonyms/related words
-            if (results.isNotEmpty() && _useSemanticSearch.value) {
-                findSynonymsFor(query)
-            }
             
         } catch (e: Exception) {
             _errorMessage.value = "Search error: ${e.message}"
@@ -424,83 +394,6 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
      */
     fun clearError() {
         _errorMessage.value = null
-    }
-    
-    // ==================== Semantic Search Functions ====================
-    
-    /**
-     * Initialize semantic search system
-     */
-    private fun initializeSemanticSearch() {
-        viewModelScope.launch {
-            try {
-                val available = repository.isSemanticSearchAvailable()
-                _isSemanticSearchAvailable.value = available
-                
-                // Initialize vector search if available
-                if (available) {
-                    repository.initializeVectorSearch()
-                }
-            } catch (e: Exception) {
-                _isSemanticSearchAvailable.value = false
-            }
-        }
-    }
-    
-    /**
-     * Toggle semantic search on/off
-     */
-    fun toggleSemanticSearch() {
-        _useSemanticSearch.value = !_useSemanticSearch.value
-        
-        // Re-search with new setting if we have a query
-        val currentQuery = _searchQuery.value
-        if (currentQuery.isNotBlank()) {
-            searchImmediately(currentQuery)
-        }
-    }
-    
-    /**
-     * Set semantic search explicitly
-     */
-    fun setSemanticSearch(enabled: Boolean) {
-        _useSemanticSearch.value = enabled
-    }
-    
-    /**
-     * Find synonyms for a word
-     */
-    private fun findSynonymsFor(word: String) {
-        viewModelScope.launch {
-            try {
-                val synonymResults = repository.findSynonyms(
-                    word = word,
-                    language = _searchLanguage.value,
-                    limit = 10
-                )
-                _synonyms.value = synonymResults
-                
-                // Also get related words
-                val relatedResults = repository.findRelatedWords(
-                    word = word,
-                    language = _searchLanguage.value,
-                    limit = 15
-                )
-                _relatedWords.value = relatedResults
-                
-            } catch (e: Exception) {
-                _synonyms.value = emptyList()
-                _relatedWords.value = emptyList()
-            }
-        }
-    }
-    
-    /**
-     * Clear synonyms and related words
-     */
-    fun clearSynonyms() {
-        _synonyms.value = emptyList()
-        _relatedWords.value = emptyList()
     }
     
     // ==================== Audio Pronunciation Functions ====================
