@@ -105,10 +105,56 @@ object TextNormalizer {
     }
     
     /**
-     * Check if text appears to be German (contains umlauts or ß)
+     * Check if text appears to be German
+     * 
+     * German indicators:
+     * 1. Contains umlauts (äöüß)
+     * 2. Starts with capital letter (German nouns)
+     * 3. Contains German-specific word patterns
      */
     fun looksGerman(text: String): Boolean {
-        return text.contains(Regex("[äöüßÄÖÜ]"))
+        if (text.isBlank()) return false
+        
+        // Definitive German indicators
+        if (text.contains(Regex("[äöüßÄÖÜ]"))) {
+            return true
+        }
+        
+        // German nouns start with capital letter
+        val firstWord = text.trim().split(" ")[0]
+        if (firstWord.isNotEmpty() && firstWord[0].isUpperCase()) {
+            // Check if it's not an all-caps word (like acronyms) or English proper noun
+            val isGermanCapitalization = !firstWord.all { it.isUpperCase() || !it.isLetter() }
+            
+            // Additional German patterns
+            val hasGermanEnding = text.matches(Regex(".*?(ung|heit|keit|schaft|chen|lein|tion|tät|ieren)$", RegexOption.IGNORE_CASE))
+            
+            // Common German words (without umlauts)
+            val commonGermanWords = setOf(
+                "mutter", "vater", "kind", "frau", "mann", "haus", "apfel", "tisch", 
+                "stuhl", "wasser", "brot", "kaffee", "tee", "schule", "lehrer", 
+                "student", "arbeit", "geld", "zeit", "tag", "nacht", "morgen", "abend",
+                "woche", "jahr", "stadt", "land", "freund", "familie", "bruder", "schwester",
+                "sohn", "tochter", "opa", "oma", "liebe", "problem", "frage", "antwort"
+            )
+            
+            if (firstWord.lowercase() in commonGermanWords) {
+                return true
+            }
+            
+            // If capitalized and has German ending, likely German
+            if (isGermanCapitalization && hasGermanEnding) {
+                return true
+            }
+            
+            // If capitalized and word length > 2, likely German noun
+            if (isGermanCapitalization && firstWord.length > 2) {
+                return true
+            }
+        }
+        
+        // Default to English if no German indicators
+        return false
     }
     
     /**

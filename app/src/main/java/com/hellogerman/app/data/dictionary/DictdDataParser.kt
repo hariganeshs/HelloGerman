@@ -25,7 +25,10 @@ class DictdDataParser {
         private val BRACKET_LABEL_PATTERN = Regex("\\[([^\\]]+)\\]")
         private val PARENTHESES_PATTERN = Regex("\\(([^)]+)\\)")
         private val IPA_PATTERN = Regex("/([^/]+)/")
-        private val EXAMPLE_PATTERN = Regex("\"([^\"]+)\"\\s*-\\s*(.+)")
+        // Multiple example patterns for better coverage
+        private val EXAMPLE_PATTERN_QUOTED = Regex("\"([^\"]+)\"\\s*[-–—]\\s*(.+)")  // "German" - English
+        private val EXAMPLE_PATTERN_COLON = Regex("([A-ZÄÖÜ][^:]+):\\s*([^\\n]+)")    // German: English
+        private val EXAMPLE_PATTERN_PIPE = Regex("([^|]+)\\|\\s*([^\\n]+)")           // German | English
         private val SEE_ALSO_PATTERN = Regex("see:|synonym:|antonym:", RegexOption.IGNORE_CASE)
         
         // Debug words to track
@@ -271,8 +274,32 @@ class DictdDataParser {
             return false
         }
         
-        // Must have German indicators OR be a capitalized word
-        if (!hasGermanChars && !startsWithUpper) {
+        // Reject words that look like English technical terms
+        val englishPatterns = listOf(
+            "ton",   // Appleton, newton
+            "let",   // Applet, booklet  
+            "layer", // layer (English word)
+            "net",   // internet-related
+            "web",   // web-related
+            "soft",  // software-related
+            "hard"   // hardware-related
+        )
+        
+        val wordLower = word.lowercase()
+        if (englishPatterns.any { wordLower.contains(it) } && !hasGermanChars) {
+            if (isDebug) Log.d(TAG, "  - Contains English technical pattern")
+            return false
+        }
+        
+        // Reject words that are just English with capital first letter
+        // like "Internet", "Computer" (unless they have umlauts or common German words)
+        val commonGermanWords = setOf(
+            "mutter", "vater", "kind", "apfel", "haus", "wasser", "brot",
+            "tisch", "stuhl", "schule", "arbeit", "stadt", "land"
+        )
+        
+        // Must have German indicators OR be a known common word OR be a capitalized German-style word
+        if (!hasGermanChars && wordLower !in commonGermanWords && !startsWithUpper) {
             if (isDebug) Log.d(TAG, "  - No German indicators")
             return false
         }
@@ -396,24 +423,65 @@ class DictdDataParser {
             val trimmed = line.trim()
             if (trimmed.isEmpty()) continue
             
-            // Look for FreeDict example pattern: "German sentence" - English translation
-            val match = EXAMPLE_PATTERN.find(trimmed)
-            if (match != null) {
-                val german = match.groupValues[1].trim()
-                val english = match.groupValues[2].trim()
-                
+            // Skip metadata lines
+            if (trimmed.startsWith("[") || trimmed.startsWith("<") || 
+                SEE_ALSO_PATTERN.containsMatchIn(trimmed)) {
+                continue
+            }
+            
+            var matched = false
+            var german: String? = null
+            var english: String? = null
+            
+            // Try different example patterns
+            // Pattern 1: "German sentence" - English translation (most common in FreeDict)
+            EXAMPLE_PATTERN_QUOTED.find(trimmed)?.let { match ->
+                german = match.groupValues[1].trim()
+                english = match.groupValues[2].trim()
+                matched = true
+            }
+            
+            // Pattern 2: German sentence: English translation
+            if (!matched) {
+                EXAMPLE_PATTERN_COLON.find(trimmed)?.let { match ->
+                    val possibleGerman = match.groupValues[1].trim()
+                    val possibleEnglish = match.groupValues[2].trim()
+                    // Only accept if German part looks German
+                    if (possibleGerman.length >= 10 && !SEE_ALSO_PATTERN.containsMatchIn(possibleGerman)) {
+                        german = possibleGerman
+                        english = possibleEnglish
+                        matched = true
+                    }
+                }
+            }
+            
+            // Pattern 3: German sentence | English translation
+            if (!matched) {
+                EXAMPLE_PATTERN_PIPE.find(trimmed)?.let { match ->
+                    val possibleGerman = match.groupValues[1].trim()
+                    val possibleEnglish = match.groupValues[2].trim()
+                    if (possibleGerman.length >= 10) {
+                        german = possibleGerman
+                        english = possibleEnglish
+                        matched = true
+                    }
+                }
+            }
+            
+            // If we found an example, validate and add it
+            if (matched && german != null && english != null) {
                 // Validate it's a quality German example
-                if (isValidGermanExample(german)) {
+                if (isValidGermanExample(german!!)) {
                     examples.add(DictionaryExample(
-                        german = german,
-                        english = english
+                        german = german!!,
+                        english = english!!
                     ))
                     
                     if (isDebugWord) {
                         Log.d(TAG, "✓ Example: \"$german\" - $english")
                     }
                 } else if (isDebugWord) {
-                    Log.d(TAG, "✗ Bad example: $german")
+                    Log.d(TAG, "✗ Bad example: $german (validation failed)")
                 }
             }
         }

@@ -157,6 +157,36 @@ fun DictionaryScreen(
             } else if (isImporting) {
                 DictionaryImportProgressView(importProgress = importProgress)
             } else {
+                // Language selector chip row
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Search:",
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    FilterChip(
+                        selected = searchLanguage == SearchLanguage.ENGLISH,
+                        onClick = { viewModel.setSearchLanguage(SearchLanguage.ENGLISH) },
+                        label = { Text("English → German") },
+                        leadingIcon = if (searchLanguage == SearchLanguage.ENGLISH) {
+                            { Icon(Icons.Default.Check, contentDescription = null, Modifier.size(18.dp)) }
+                        } else null
+                    )
+                    FilterChip(
+                        selected = searchLanguage == SearchLanguage.GERMAN,
+                        onClick = { viewModel.setSearchLanguage(SearchLanguage.GERMAN) },
+                        label = { Text("German → English") },
+                        leadingIcon = if (searchLanguage == SearchLanguage.GERMAN) {
+                            { Icon(Icons.Default.Check, contentDescription = null, Modifier.size(18.dp)) }
+                        } else null
+                    )
+                }
+                
                 // Search bar
                 SearchBar(
                     query = searchQuery,
