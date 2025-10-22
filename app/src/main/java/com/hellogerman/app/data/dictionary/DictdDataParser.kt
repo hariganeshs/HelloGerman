@@ -2,14 +2,15 @@ package com.hellogerman.app.data.dictionary
 
 import android.util.Log
 import com.hellogerman.app.data.entities.DictionaryExample
+import com.hellogerman.app.data.entities.GermanGender
 import com.hellogerman.app.utils.TextNormalizer
 
 /**
  * Parser for individual dictd dictionary entry text
  * 
  * Extracts structured information from raw dictionary entry text including:
- * - Translations
- * - Examples
+ * - Translations with gender information
+ * - Examples (German sentences with English translations)
  * - Pronunciations
  * - Domain markers
  * - Part of speech tags
@@ -19,20 +20,34 @@ class DictdDataParser {
     companion object {
         private const val TAG = "DictdDataParser"
         
-        // Regex patterns for parsing
+        // Regex patterns for parsing FreeDict format
         private val MARKUP_TAG_PATTERN = Regex("<([^>]+)>")
         private val BRACKET_LABEL_PATTERN = Regex("\\[([^\\]]+)\\]")
         private val PARENTHESES_PATTERN = Regex("\\(([^)]+)\\)")
         private val IPA_PATTERN = Regex("/([^/]+)/")
-        private val EXAMPLE_PREFIX_PATTERN = Regex("^(e\\.g\\.|ex\\.|Example:|Ex:)\\s*", RegexOption.IGNORE_CASE)
+        private val EXAMPLE_PATTERN = Regex("\"([^\"]+)\"\\s*-\\s*(.+)")
+        private val SEE_ALSO_PATTERN = Regex("see:|synonym:|antonym:", RegexOption.IGNORE_CASE)
+        
+        // Debug words to track
+        private val DEBUG_WORDS = setOf("mother", "father", "apple", "Mutter", "Vater", "Apfel")
     }
+    
+    /**
+     * Translation with extracted gender information
+     */
+    data class Translation(
+        val word: String,               // "Mutter" (clean word)
+        val gender: GermanGender?,      // DIE (from <fem> tag or "die Mutter")
+        val withArticle: String?,       // "die Mutter" (if article present)
+        val domain: String? = null      // Domain label if present
+    )
     
     /**
      * Parsed dictionary entry containing all extracted information
      */
     data class ParsedEntry(
         val headword: String,
-        val translations: List<String>,
+        val translations: List<Translation>,
         val examples: List<DictionaryExample>,
         val pronunciationIpa: String?,
         val partOfSpeechTags: List<String>,
@@ -43,19 +58,30 @@ class DictdDataParser {
     /**
      * Parse raw dictionary entry text into structured data
      * 
-     * @param headword The English word being defined
+     * @param headword The word being defined (English or German)
      * @param rawText The raw text from the dictionary file
      * @return Parsed entry with extracted information
      */
     fun parse(headword: String, rawText: String): ParsedEntry {
         val cleanedText = TextNormalizer.cleanRawEntry(rawText)
         
+        val isDebugWord = DEBUG_WORDS.contains(headword.lowercase())
+        if (isDebugWord) {
+            Log.d(TAG, "═══ Parsing: $headword ═══")
+            Log.d(TAG, "Raw text: ${rawText.take(200)}...")
+        }
+        
         // Extract different components
         val pronunciationIpa = extractPronunciation(cleanedText)
         val partOfSpeechTags = extractPartOfSpeechTags(cleanedText)
         val domainLabels = extractDomainLabels(cleanedText)
-        val examples = extractExamples(cleanedText)
-        val translations = extractTranslations(cleanedText, headword)
+        val examples = extractExamples(cleanedText, isDebugWord)
+        val translations = extractTranslations(cleanedText, headword, domainLabels, isDebugWord)
+        
+        if (isDebugWord) {
+            Log.d(TAG, "Found ${translations.size} translations: ${translations.map { "${it.word} (${it.gender})" }}")
+            Log.d(TAG, "Found ${examples.size} examples")
+        }
         
         return ParsedEntry(
             headword = headword,
@@ -69,79 +95,246 @@ class DictdDataParser {
     }
     
     /**
-     * Extract German translations from entry text
+     * Extract translations with gender information from FreeDict format
      */
-    private fun extractTranslations(text: String, headword: String): List<String> {
-        val translations = mutableListOf<String>()
+    private fun extractTranslations(
+        text: String, 
+        headword: String, 
+        domainLabels: List<String>,
+        isDebugWord: Boolean
+    ): List<Translation> {
+        val translations = mutableListOf<Translation>()
         val lines = text.split('\n')
         
         for (line in lines) {
             var cleaned = line.trim()
             if (cleaned.isEmpty()) continue
             
-            // Remove markup and labels
-            cleaned = removeMarkup(cleaned)
-            
-            // Skip lines that are clearly not translations
+            // Skip metadata lines (see:, synonym:, etc.)
             if (isMetadataLine(cleaned)) continue
             
-            // Split by common separators
-            val parts = cleaned.split(Regex("[;|/]"))
+            // Extract domain from line if present
+            val lineDomain = extractLineDomain(cleaned)
+            
+            // Split by semicolon or comma (but NOT slash - that's for OR)
+            val parts = cleaned.split(Regex("[;,]"))
             
             for (part in parts) {
-                val translation = cleanTranslation(part, headword)
-                if (translation.isNotEmpty() && translation.length >= 2) {
-                    translations.add(translation)
+                val trimmed = part.trim()
+                if (trimmed.isEmpty()) continue
+                
+                // Extract gender from FreeDict tags: <fem>, <masc>, <neut>
+                val gender = extractGenderFromTags(trimmed)
+                
+                // Extract gender from article if present: "die Mutter", "der Vater"
+                val (wordWithArticle, articleGender) = extractWordAndArticle(trimmed)
+                
+                // Use tag gender first, then article gender
+                val finalGender = gender ?: articleGender
+                
+                // Clean the word (remove tags, brackets, but keep the actual word)
+                val cleanWord = cleanTranslationWord(trimmed)
+                
+                // Validate it's a real word (not phrase, not English)
+                if (isValidGermanWord(cleanWord, isDebugWord)) {
+                    // Check if it's common vocabulary (not too technical)
+                    val domain = lineDomain ?: domainLabels.firstOrNull()
+                    val isCommon = isCommonVocabulary(cleanWord, domain)
+                    
+                    if (isCommon || domainLabels.isEmpty()) {
+                        translations.add(Translation(
+                            word = cleanWord,
+                            gender = finalGender,
+                            withArticle = wordWithArticle,
+                            domain = domain
+                        ))
+                        
+                        if (isDebugWord) {
+                            Log.d(TAG, "✓ ACCEPTED: '$cleanWord' (gender: $finalGender, domain: $domain)")
+                        }
+                    } else if (isDebugWord) {
+                        Log.d(TAG, "✗ REJECTED: '$cleanWord' (too technical: $domain)")
+                    }
+                } else if (isDebugWord) {
+                    Log.d(TAG, "✗ REJECTED: '$cleanWord' (invalid German word)")
                 }
             }
         }
         
         // Remove duplicates while preserving order
         val seen = mutableSetOf<String>()
-        val unique = translations.filter { seen.add(it.lowercase()) }
+        val unique = translations.filter { seen.add(it.word.lowercase()) }
         
-        return unique.take(10) // Limit to top 10 translations
+        // Return top 5 quality translations
+        return unique.take(5)
     }
     
     /**
-     * Remove markup tags and labels from text
+     * Extract gender from FreeDict markup tags: <fem>, <masc>, <neut>
      */
-    private fun removeMarkup(text: String): String {
-        return text
-            .replace(MARKUP_TAG_PATTERN, "") // Remove <tags>
-            .replace(BRACKET_LABEL_PATTERN, "") // Remove [labels]
-            .replace(IPA_PATTERN, "") // Remove /pronunciation/
-            .replace(Regex("\\{[^}]+\\}"), "") // Remove {forms}
-            .replace(Regex("\\s+"), " ") // Normalize whitespace
-            .trim()
+    private fun extractGenderFromTags(text: String): GermanGender? {
+        return when {
+            text.contains("<fem>", ignoreCase = true) -> GermanGender.DIE
+            text.contains("<masc>", ignoreCase = true) -> GermanGender.DER
+            text.contains("<neut>", ignoreCase = true) -> GermanGender.DAS
+            else -> null
+        }
     }
     
     /**
-     * Clean and normalize a translation string
+     * Extract word with article and determine gender from article
+     * Returns: Pair(word with article, gender from article)
      */
-    private fun cleanTranslation(text: String, headword: String): String {
-        var cleaned = text.trim()
+    private fun extractWordAndArticle(text: String): Pair<String?, GermanGender?> {
+        val articlePattern = Regex("\\b(der|die|das)\\s+([A-ZÄÖÜ][a-zäöüß]+)", RegexOption.IGNORE_CASE)
+        val match = articlePattern.find(text)
         
-        // Remove special characters from beginning/end
-        cleaned = cleaned.trim('"', '\'', ',', ';', '.', '–', '—', '•', ' ')
-        
-        // Remove leading articles (der, die, das, ein, eine)
-        cleaned = cleaned.replace(Regex("^(der|die|das|ein|eine)\\s+", RegexOption.IGNORE_CASE), "")
-        
-        // Skip if it's the same as headword
-        if (cleaned.equals(headword, ignoreCase = true)) return ""
-        
-        // Skip very short or very long
-        if (cleaned.length < 2 || cleaned.length > 100) return ""
-        
-        // Skip if it looks like metadata
-        if (cleaned.contains("see:", ignoreCase = true) ||
-            cleaned.contains("synonym:", ignoreCase = true) ||
-            cleaned.contains("antonym:", ignoreCase = true)) {
-            return ""
+        if (match != null) {
+            val article = match.groupValues[1].lowercase()
+            val word = match.groupValues[2]
+            val gender = when(article) {
+                "der" -> GermanGender.DER
+                "die" -> GermanGender.DIE
+                "das" -> GermanGender.DAS
+                else -> null
+            }
+            return Pair("$article $word", gender)
         }
         
+        return Pair(null, null)
+    }
+    
+    /**
+     * Clean translation word by removing markup tags and extra characters
+     * BUT preserve the actual German word
+     */
+    private fun cleanTranslationWord(text: String): String {
+        var cleaned = text
+        
+        // Remove markup tags <...>
+        cleaned = cleaned.replace(MARKUP_TAG_PATTERN, "")
+        
+        // Remove bracket labels [...]
+        cleaned = cleaned.replace(BRACKET_LABEL_PATTERN, "")
+        
+        // Remove IPA pronunciation /.../ 
+        cleaned = cleaned.replace(IPA_PATTERN, "")
+        
+        // Remove curly braces {...}
+        cleaned = cleaned.replace(Regex("\\{[^}]+\\}"), "")
+        
+        // Remove leading articles (der, die, das, ein, eine)
+        // This is OK now because we already extracted gender above
+        cleaned = cleaned.replace(Regex("^(der|die|das|ein|eine)\\s+", RegexOption.IGNORE_CASE), "")
+        
+        // Remove special characters from beginning/end
+        cleaned = cleaned.trim('"', '\'', ',', ';', '.', '–', '—', '•', ' ', '(', ')')
+        
+        // Normalize whitespace
+        cleaned = cleaned.replace(Regex("\\s+"), " ").trim()
+        
         return cleaned
+    }
+    
+    /**
+     * Check if text is a valid German word (not English, not phrase)
+     */
+    private fun isValidGermanWord(word: String, isDebug: Boolean = false): Boolean {
+        // Must be 2-50 characters
+        if (word.length !in 2..50) {
+            if (isDebug) Log.d(TAG, "  - Too short/long: ${word.length}")
+            return false
+        }
+        
+        // Must start with uppercase for nouns (German convention)
+        val startsWithUpper = word[0].isUpperCase()
+        
+        // Check for German-specific characters
+        val hasGermanChars = word.contains(Regex("[äöüßÄÖÜ]"))
+        
+        // Reject all-lowercase (likely English)
+        if (word.all { it.isLowerCase() || !it.isLetter() }) {
+            if (isDebug) Log.d(TAG, "  - All lowercase: $word")
+            return false
+        }
+        
+        // Reject multi-word phrases (>2 words)
+        val wordCount = word.split(" ").size
+        if (wordCount > 2) {
+            if (isDebug) Log.d(TAG, "  - Too many words: $wordCount")
+            return false
+        }
+        
+        // Reject English verb patterns
+        if (word.endsWith("ing") || word.endsWith("ed")) {
+            if (isDebug) Log.d(TAG, "  - English verb pattern")
+            return false
+        }
+        
+        // Must have German indicators OR be a capitalized word
+        if (!hasGermanChars && !startsWithUpper) {
+            if (isDebug) Log.d(TAG, "  - No German indicators")
+            return false
+        }
+        
+        return true
+    }
+    
+    /**
+     * Check if text looks like a phrase (not a simple word)
+     */
+    private fun looksLikePhrase(text: String): Boolean {
+        val words = text.split(" ")
+        
+        // More than 3 words = definitely a phrase
+        if (words.size > 3) return true
+        
+        // Contains question words
+        if (text.matches(Regex(".*\\b(wer|was|wann|wo|wie|warum)\\b.*", RegexOption.IGNORE_CASE))) {
+            return true
+        }
+        
+        // Contains verbs in conjugated form
+        if (text.contains(Regex("\\b(ist|sind|hat|haben|wird|werden|macht|machen|kann|können)\\b"))) {
+            return true
+        }
+        
+        return false
+    }
+    
+    /**
+     * Check if word is common vocabulary (not too technical)
+     */
+    private fun isCommonVocabulary(word: String, domain: String?): Boolean {
+        // If no domain, assume common
+        if (domain == null) return true
+        
+        // Highly technical domains
+        val technicalDomains = setOf(
+            "chem", "biochem", "phys", "math", "med", "anat", "bot", "zool", 
+            "myc", "ornith", "min", "geol", "astron", "tech", "electr"
+        )
+        
+        // Common domains
+        val commonDomains = setOf(
+            "soc", "fam", "gen", "food", "cook", "cloth", "home"
+        )
+        
+        val domainLower = domain.lowercase().removeSuffix(".")
+        
+        return when {
+            commonDomains.any { domainLower.contains(it) } -> true
+            technicalDomains.any { domainLower.contains(it) } -> false
+            else -> true // Unknown domain = likely common
+        }
+    }
+    
+    /**
+     * Extract domain label from a line
+     */
+    private fun extractLineDomain(text: String): String? {
+        val match = BRACKET_LABEL_PATTERN.find(text)
+        return match?.groupValues?.getOrNull(1)?.trim()?.removeSuffix(".")
     }
     
     /**
@@ -193,9 +386,9 @@ class DictdDataParser {
     }
     
     /**
-     * Extract example sentences from entry text
+     * Extract example sentences from FreeDict format: "German" - English
      */
-    private fun extractExamples(text: String): List<DictionaryExample> {
+    private fun extractExamples(text: String, isDebugWord: Boolean = false): List<DictionaryExample> {
         val examples = mutableListOf<DictionaryExample>()
         val lines = text.split('\n')
         
@@ -203,25 +396,52 @@ class DictdDataParser {
             val trimmed = line.trim()
             if (trimmed.isEmpty()) continue
             
-            // Check if line starts with example prefix
-            if (EXAMPLE_PREFIX_PATTERN.containsMatchIn(trimmed)) {
-                val example = trimmed.replace(EXAMPLE_PREFIX_PATTERN, "").trim()
-                if (example.length > 10) {
-                    examples.add(DictionaryExample(german = example, english = null))
-                }
-            }
-            
-            // Check for parenthetical examples
-            PARENTHESES_PATTERN.findAll(trimmed).forEach { match ->
-                val content = match.groupValues[1]
-                // Only if it looks like a sentence (has spaces and reasonable length)
-                if (content.split(" ").size >= 3 && content.length in 10..200) {
-                    examples.add(DictionaryExample(german = content, english = null))
+            // Look for FreeDict example pattern: "German sentence" - English translation
+            val match = EXAMPLE_PATTERN.find(trimmed)
+            if (match != null) {
+                val german = match.groupValues[1].trim()
+                val english = match.groupValues[2].trim()
+                
+                // Validate it's a quality German example
+                if (isValidGermanExample(german)) {
+                    examples.add(DictionaryExample(
+                        german = german,
+                        english = english
+                    ))
+                    
+                    if (isDebugWord) {
+                        Log.d(TAG, "✓ Example: \"$german\" - $english")
+                    }
+                } else if (isDebugWord) {
+                    Log.d(TAG, "✗ Bad example: $german")
                 }
             }
         }
         
-        return examples.distinct().take(5)
+        // Return top 3 quality examples
+        return examples.distinct().take(3)
+    }
+    
+    /**
+     * Validate that example is quality German text
+     */
+    private fun isValidGermanExample(text: String): Boolean {
+        // Must be 10-200 characters
+        if (text.length !in 10..200) return false
+        
+        // Must contain German characters OR capitalized nouns
+        val hasGermanChars = text.contains(Regex("[äöüßÄÖÜ]"))
+        val hasCapitalizedWords = text.split(" ").any { 
+            it.isNotEmpty() && it[0].isUpperCase() && it.length > 1 
+        }
+        
+        // Should not be all lowercase (likely English)
+        if (text == text.lowercase()) return false
+        
+        // Must have German indicators
+        if (!hasGermanChars && !hasCapitalizedWords) return false
+        
+        return true
     }
     
     /**

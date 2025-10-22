@@ -45,7 +45,8 @@ interface DictionaryDao {
     // ==================== ENGLISH SEARCH ====================
     
     /**
-     * Search for exact English word match with improved ranking
+     * Search for exact English word match with intelligent ranking
+     * Priority: 1) Exact match 2) Has gender 3) DeuEng source 4) Short words 5) Has examples
      */
     @Query("""
         SELECT * FROM dictionary_entries 
@@ -53,6 +54,9 @@ interface DictionaryDao {
         ORDER BY 
             CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
             CASE WHEN gender IS NOT NULL THEN 0 ELSE 1 END,
+            CASE WHEN source = 'FreeDict-DeuEng' THEN 0 ELSE 1 END,
+            CASE WHEN word_length <= 15 THEN 0 ELSE 1 END,
+            CASE WHEN examples IS NOT NULL AND examples != '[]' THEN 0 ELSE 1 END,
             word_length ASC,
             english_word ASC
         LIMIT :limit
@@ -69,6 +73,7 @@ interface DictionaryDao {
             CASE WHEN english_normalized = :prefix THEN 0 ELSE 1 END,
             CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
             CASE WHEN gender IS NOT NULL THEN 0 ELSE 1 END,
+            CASE WHEN source = 'FreeDict-DeuEng' THEN 0 ELSE 1 END,
             word_length ASC, 
             english_word ASC
         LIMIT :limit
@@ -113,6 +118,8 @@ interface DictionaryDao {
         ORDER BY 
             CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
             CASE WHEN gender IS NOT NULL THEN 0 ELSE 1 END,
+            CASE WHEN source = 'FreeDict-DeuEng' THEN 0 ELSE 1 END,
+            CASE WHEN word_length <= 15 THEN 0 ELSE 1 END,
             word_length ASC,
             german_word ASC
         LIMIT :limit
@@ -120,7 +127,8 @@ interface DictionaryDao {
     suspend fun searchGermanExact(word: String, limit: Int = 50): List<DictionaryEntry>
     
     /**
-     * Search for German words starting with prefix with improved ranking
+     * Search for German words starting with prefix with intelligent ranking
+     * Priority: 1) Exact match 2) Noun 3) Has gender 4) DeuEng source 5) Short words
      */
     @Query("""
         SELECT * FROM dictionary_entries 
@@ -129,6 +137,9 @@ interface DictionaryDao {
             CASE WHEN german_normalized = :prefix THEN 0 ELSE 1 END,
             CASE WHEN word_type = 'NOUN' THEN 0 ELSE 1 END,
             CASE WHEN gender IS NOT NULL THEN 0 ELSE 1 END,
+            CASE WHEN source = 'FreeDict-DeuEng' THEN 0 ELSE 1 END,
+            CASE WHEN word_length <= 15 THEN 0 ELSE 1 END,
+            CASE WHEN examples IS NOT NULL AND examples != '[]' THEN 0 ELSE 1 END,
             word_length ASC, 
             german_word ASC
         LIMIT :limit

@@ -336,8 +336,9 @@ class DictionaryImporter(
             
             val entries = mutableListOf<DictionaryEntry>()
             
+            // parsedEntry.translations is now List<Translation> with gender info
             for (translation in parsedEntry.translations) {
-                val cleanedTranslation = TextNormalizer.extractCleanWord(translation)
+                val cleanedTranslation = translation.word
                 if (cleanedTranslation.isEmpty()) continue
                 
                 // Get basic grammar info (verbs, adjectives, etc.)
@@ -348,29 +349,31 @@ class DictionaryImporter(
                     partOfSpeechTags = parsedEntry.partOfSpeechTags
                 )
                 
-                // Use advanced gender detection (95%+ accuracy)
-                val genderResult = advancedGenderDetector.detectGender(
-                    germanWord = cleanedTranslation,
-                    rawContext = rawText,
-                    partOfSpeechTags = parsedEntry.partOfSpeechTags
-                )
+                // PRIORITY 1: Use gender from FreeDict tags/articles (most reliable!)
+                // PRIORITY 2: Use common words dictionary (100% accurate for covered words)
+                // PRIORITY 3: Use gender detector as fallback
+                val finalGender = translation.gender 
+                    ?: CommonGermanWords.getGender(cleanedTranslation)
+                    ?: run {
+                        val genderResult = advancedGenderDetector.detectGender(
+                            germanWord = cleanedTranslation,
+                            rawContext = rawText,
+                            partOfSpeechTags = parsedEntry.partOfSpeechTags
+                        )
+                        if (genderResult.confidence >= 0.7f) {
+                            genderResult.gender
+                        } else {
+                            grammarInfo.gender
+                        }
+                    }
                 
-                // Use gender from advanced detector if confidence is high, otherwise fallback
-                val finalGender = if (genderResult.confidence >= 0.7f) {
-                    genderResult.gender
-                } else {
-                    grammarInfo.gender
-                }
+                // Examples are already extracted by parser with English translations
+                val allExamples = parsedEntry.examples
                 
-                // Extract examples using enhanced extractor (50%+ coverage)
-                val enhancedExamples = exampleExtractor.extractExamples(
-                    rawText = rawText,
-                    germanWord = cleanedTranslation,
-                    englishWord = indexEntry.headword
-                )
-                
-                // Combine with parsed examples
-                val allExamples = (enhancedExamples + parsedEntry.examples).distinctBy { it.german }
+                // Additional translations (just the words, not the full Translation objects)
+                val additionalTranslations = parsedEntry.translations
+                    .filter { it.word != cleanedTranslation }
+                    .map { it.word }
                 
                 val entry = DictionaryEntry(
                     englishWord = indexEntry.headword,
@@ -385,10 +388,10 @@ class DictionaryImporter(
                     isSeparable = grammarInfo.isSeparable,
                     comparative = grammarInfo.comparative,
                     superlative = grammarInfo.superlative,
-                    additionalTranslations = parsedEntry.translations.filter { it != translation },
-                    examples = allExamples.take(5), // Limit to 5 best examples
+                    additionalTranslations = additionalTranslations,
+                    examples = allExamples.take(3), // Limit to 3 best examples
                     pronunciationIpa = parsedEntry.pronunciationIpa,
-                    domain = parsedEntry.domainLabels.firstOrNull(),
+                    domain = translation.domain ?: parsedEntry.domainLabels.firstOrNull(),
                     rawEntry = rawText.take(500),
                     englishNormalized = TextNormalizer.normalizeEnglish(indexEntry.headword),
                     germanNormalized = TextNormalizer.normalizeGerman(cleanedTranslation),
@@ -408,7 +411,8 @@ class DictionaryImporter(
     
     /**
      * Process German → English entry (German word → English translations)
-     * Note: headword is German, translations are English
+     * Note: headword is German, translations are English words
+     * This is the PRIMARY source for gender information!
      */
     private fun processDeuEngEntry(indexEntry: DictdIndexParser.IndexEntry): List<DictionaryEntry>? {
         try {
@@ -423,8 +427,13 @@ class DictionaryImporter(
             // For deu-eng: headword is German word, translations are English words
             val germanWord = indexEntry.headword
             
+            // Extract gender from German headword in the raw text
+            // FreeDict deu-eng has: "Mutter <fem, n, sg>" format
+            val headwordGender = extractGenderFromDeuEngHeadword(rawText)
+            
+            // parsedEntry.translations are English words (no gender)
             for (translation in parsedEntry.translations) {
-                val cleanedEnglishWord = TextNormalizer.extractCleanWord(translation)
+                val cleanedEnglishWord = translation.word
                 if (cleanedEnglishWord.isEmpty()) continue
                 
                 // Get basic grammar info
@@ -435,27 +444,29 @@ class DictionaryImporter(
                     partOfSpeechTags = parsedEntry.partOfSpeechTags
                 )
                 
-                // Use advanced gender detection
-                val genderResult = advancedGenderDetector.detectGender(
-                    germanWord = germanWord,
-                    rawContext = rawText,
-                    partOfSpeechTags = parsedEntry.partOfSpeechTags
-                )
+                // PRIORITY 1: Use gender from FreeDict headword tags (BEST!)
+                // PRIORITY 2: Use common words dictionary (100% accurate for covered words)
+                // PRIORITY 3: Use grammar info
+                // PRIORITY 4: Use detector as last resort
+                val finalGender = headwordGender 
+                    ?: CommonGermanWords.getGender(germanWord)
+                    ?: grammarInfo.gender 
+                    ?: run {
+                        val genderResult = advancedGenderDetector.detectGender(
+                            germanWord = germanWord,
+                            rawContext = rawText,
+                            partOfSpeechTags = parsedEntry.partOfSpeechTags
+                        )
+                        if (genderResult.confidence >= 0.7f) genderResult.gender else null
+                    }
                 
-                val finalGender = if (genderResult.confidence >= 0.7f) {
-                    genderResult.gender
-                } else {
-                    grammarInfo.gender
-                }
+                // Examples are already extracted by parser
+                val allExamples = parsedEntry.examples
                 
-                // Extract examples
-                val enhancedExamples = exampleExtractor.extractExamples(
-                    rawText = rawText,
-                    germanWord = germanWord,
-                    englishWord = cleanedEnglishWord
-                )
-                
-                val allExamples = (enhancedExamples + parsedEntry.examples).distinctBy { it.german }
+                // Additional translations (English words)
+                val additionalTranslations = parsedEntry.translations
+                    .filter { it.word != cleanedEnglishWord }
+                    .map { it.word }
                 
                 val entry = DictionaryEntry(
                     englishWord = cleanedEnglishWord,
@@ -470,10 +481,10 @@ class DictionaryImporter(
                     isSeparable = grammarInfo.isSeparable,
                     comparative = grammarInfo.comparative,
                     superlative = grammarInfo.superlative,
-                    additionalTranslations = parsedEntry.translations.filter { it != translation },
-                    examples = allExamples.take(5),
+                    additionalTranslations = additionalTranslations,
+                    examples = allExamples.take(3),
                     pronunciationIpa = parsedEntry.pronunciationIpa,
-                    domain = parsedEntry.domainLabels.firstOrNull(),
+                    domain = translation.domain ?: parsedEntry.domainLabels.firstOrNull(),
                     rawEntry = rawText.take(500),
                     englishNormalized = TextNormalizer.normalizeEnglish(cleanedEnglishWord),
                     germanNormalized = TextNormalizer.normalizeGerman(germanWord),
@@ -488,6 +499,18 @@ class DictionaryImporter(
         } catch (e: Exception) {
             Log.w(TAG, "Error processing deu-eng entry: ${indexEntry.headword}", e)
             return null
+        }
+    }
+    
+    /**
+     * Extract gender from German headword in deu-eng format: "Mutter <fem, n, sg>"
+     */
+    private fun extractGenderFromDeuEngHeadword(rawText: String): com.hellogerman.app.data.entities.GermanGender? {
+        return when {
+            rawText.contains("<fem>", ignoreCase = true) -> com.hellogerman.app.data.entities.GermanGender.DIE
+            rawText.contains("<masc>", ignoreCase = true) -> com.hellogerman.app.data.entities.GermanGender.DER
+            rawText.contains("<neut>", ignoreCase = true) -> com.hellogerman.app.data.entities.GermanGender.DAS
+            else -> null
         }
     }
     
