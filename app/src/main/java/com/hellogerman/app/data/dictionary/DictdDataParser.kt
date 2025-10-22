@@ -139,7 +139,7 @@ class DictdDataParser {
                 val cleanWord = cleanTranslationWord(trimmed)
                 
                 // Validate it's a real word (not phrase, not English)
-                if (isValidGermanWord(cleanWord, isDebugWord)) {
+                if (isValidGermanWord(cleanWord, isDebugWord) && !looksLikePhrase(trimmed)) {
                     // Check if it's common vocabulary (not too technical)
                     val domain = lineDomain ?: domainLabels.firstOrNull()
                     val isCommon = isCommonVocabulary(cleanWord, domain)
@@ -159,7 +159,11 @@ class DictdDataParser {
                         Log.d(TAG, "✗ REJECTED: '$cleanWord' (too technical: $domain)")
                     }
                 } else if (isDebugWord) {
-                    Log.d(TAG, "✗ REJECTED: '$cleanWord' (invalid German word)")
+                    if (looksLikePhrase(trimmed)) {
+                        Log.d(TAG, "✗ REJECTED: '$cleanWord' (looks like phrase)")
+                    } else {
+                        Log.d(TAG, "✗ REJECTED: '$cleanWord' (invalid German word)")
+                    }
                 }
             }
         }

@@ -137,28 +137,27 @@ class DictionaryViewModel(application: Application) : AndroidViewModel(applicati
     }
     
     /**
-     * Internal search execution with automatic language detection
+     * Internal search execution with manual language override
      */
     private suspend fun performSearch(query: String) {
         try {
             _isSearching.value = true
             _errorMessage.value = null
             
-            // Auto-detect language from query
-            val detectedLanguage = repository.detectLanguage(query)
-            Log.d("DictionaryViewModel", "Query: '$query', Detected language: $detectedLanguage")
+            // Always use manual language selection (user has explicitly chosen)
+            val searchLanguage = _searchLanguage.value
+            Log.d("DictionaryViewModel", "Query: '$query', Manual language: $searchLanguage")
+            
+            Log.d("DictionaryViewModel", "Query: '$query', Using language: $searchLanguage")
             
             // Use regular exact/prefix search
             val results = repository.search(
                 query = query,
-                language = detectedLanguage,
+                language = searchLanguage,
                 exactMatch = false
             )
             
             _searchResults.value = results
-            
-            // Update search language to match detected language
-            _searchLanguage.value = detectedLanguage
             
         } catch (e: Exception) {
             _errorMessage.value = "Search error: ${e.message}"

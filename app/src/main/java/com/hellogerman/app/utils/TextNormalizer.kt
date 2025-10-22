@@ -115,40 +115,46 @@ object TextNormalizer {
     fun looksGerman(text: String): Boolean {
         if (text.isBlank()) return false
         
-        // Definitive German indicators
+        val firstWord = text.trim().split(" ")[0].lowercase()
+        if (firstWord.isEmpty()) return false
+        
+        // TIER 1: Has umlauts → 100% German
         if (text.contains(Regex("[äöüßÄÖÜ]"))) {
             return true
         }
         
-        // German nouns start with capital letter
-        val firstWord = text.trim().split(" ")[0]
-        if (firstWord.isNotEmpty() && firstWord[0].isUpperCase()) {
-            // Check if it's not an all-caps word (like acronyms) or English proper noun
-            val isGermanCapitalization = !firstWord.all { it.isUpperCase() || !it.isLetter() }
-            
-            // Additional German patterns
-            val hasGermanEnding = text.matches(Regex(".*?(ung|heit|keit|schaft|chen|lein|tion|tät|ieren)$", RegexOption.IGNORE_CASE))
-            
-            // Common German words (without umlauts)
-            val commonGermanWords = setOf(
-                "mutter", "vater", "kind", "frau", "mann", "haus", "apfel", "tisch", 
-                "stuhl", "wasser", "brot", "kaffee", "tee", "schule", "lehrer", 
-                "student", "arbeit", "geld", "zeit", "tag", "nacht", "morgen", "abend",
-                "woche", "jahr", "stadt", "land", "freund", "familie", "bruder", "schwester",
-                "sohn", "tochter", "opa", "oma", "liebe", "problem", "frage", "antwort"
-            )
-            
-            if (firstWord.lowercase() in commonGermanWords) {
-                return true
-            }
-            
-            // If capitalized and has German ending, likely German
-            if (isGermanCapitalization && hasGermanEnding) {
-                return true
-            }
+        // TIER 2: Common German words (hardcoded list) - CASE INSENSITIVE
+        val commonGermanWords = setOf(
+            "mutter", "vater", "kind", "frau", "mann", "haus", "apfel", "tisch", 
+            "stuhl", "wasser", "brot", "kaffee", "tee", "schule", "lehrer", 
+            "student", "arbeit", "geld", "zeit", "tag", "nacht", "morgen", "abend",
+            "woche", "jahr", "stadt", "land", "freund", "familie", "bruder", "schwester",
+            "sohn", "tochter", "opa", "oma", "liebe", "problem", "frage", "antwort",
+            "hund", "katze", "auto", "buch", "fenster", "tür", "baum", "blume",
+            "essen", "trinken", "gehen", "kommen", "sehen", "hören", "sprechen",
+            "lernen", "arbeiten", "spielen", "schlafen", "wachen", "denken",
+            "rot", "blau", "grün", "gelb", "schwarz", "weiß", "groß", "klein",
+            "alt", "neu", "jung", "schön", "gut", "schlecht", "warm", "kalt",
+            "schnell", "langsam", "hoch", "niedrig", "teuer", "billig", "leicht", "schwer"
+        )
+        
+        if (firstWord in commonGermanWords) {
+            return true
+        }
+        
+        // TIER 3: German word patterns (case insensitive)
+        val hasGermanEnding = firstWord.matches(Regex(".*?(ung|heit|keit|schaft|chen|lein|tion|tät|ieren)$"))
+        if (hasGermanEnding) {
+            return true
+        }
+        
+        // TIER 4: Capitalized words (original case)
+        val originalFirstWord = text.trim().split(" ")[0]
+        if (originalFirstWord.isNotEmpty() && originalFirstWord[0].isUpperCase()) {
+            val isGermanCapitalization = !originalFirstWord.all { it.isUpperCase() || !it.isLetter() }
             
             // If capitalized and word length > 2, likely German noun
-            if (isGermanCapitalization && firstWord.length > 2) {
+            if (isGermanCapitalization && originalFirstWord.length > 2) {
                 return true
             }
         }

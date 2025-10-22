@@ -295,7 +295,84 @@ private val EXAMPLE_PATTERN_PIPE = Regex("([^|]+)\\|\\s*([^\\n]+)")
 - ✅ Examples extracted and displayed
 - ✅ Manual language override available
 
-**Status**: 🚧 IMPLEMENTED - Ready for testing
+**Status**: ❌ FAILED - Issues persist after implementation
+
+**User Feedback** (with new screenshots and logs):
+- Language detection STILL broken: "apfel", "mutter", "vater" detected as ENGLISH
+- Manual language toggle not working (always defaults to English→German)
+- Phrase filtering not working: "Mutter die ihr baby getötet hat" still appears
+- Examples still not displayed
+
+**Root Cause Analysis**:
+1. **Language Detection Logic Error**: Only checked capitalized words, but users type lowercase
+2. **Manual Toggle Ignored**: ViewModel always used auto-detection, ignored manual selection
+3. **Phrase Filtering Not Called**: `looksLikePhrase()` function existed but wasn't used in validation
+4. **Examples Issue**: Need to investigate if examples are being extracted and stored
+
+**Status**: 🚧 FIXING - Critical bugs identified and being fixed
+
+---
+
+### Iteration 5: Critical Bug Fixes 🎯 CURRENT
+
+**Date**: 2025-10-22 (evening)
+
+**Issues Found**:
+1. ❌ **Language detection logic error** - Only checked capitalized words
+2. ❌ **Manual toggle ignored** - ViewModel used auto-detection always
+3. ❌ **Phrase filtering not called** - Function existed but unused
+4. ❌ **Examples still missing** - Need investigation
+
+**Fixes Applied**:
+
+#### Fix 1: Language Detection Case-Insensitive
+**File**: `TextNormalizer.kt`
+```kotlin
+// OLD (BROKEN):
+val firstWord = text.trim().split(" ")[0]
+if (firstWord.isNotEmpty() && firstWord[0].isUpperCase()) {
+    // Only checked capitalized words!
+}
+
+// NEW (FIXED):
+val firstWord = text.trim().split(" ")[0].lowercase()  // Convert to lowercase first
+if (firstWord in commonGermanWords) {
+    return true  // Now works for "apfel", "mutter", "vater"
+}
+```
+
+#### Fix 2: Manual Language Toggle
+**File**: `DictionaryViewModel.kt`
+```kotlin
+// OLD (BROKEN):
+val detectedLanguage = repository.detectLanguage(query)  // Always auto-detect
+val results = repository.search(query, detectedLanguage, false)
+
+// NEW (FIXED):
+val searchLanguage = _searchLanguage.value  // Use manual selection
+val results = repository.search(query, searchLanguage, false)
+```
+
+#### Fix 3: Phrase Filtering Actually Called
+**File**: `DictdDataParser.kt`
+```kotlin
+// OLD (BROKEN):
+if (isValidGermanWord(cleanWord, isDebugWord)) {
+    // Only checked word validation, not phrases
+
+// NEW (FIXED):
+if (isValidGermanWord(cleanWord, isDebugWord) && !looksLikePhrase(trimmed)) {
+    // Now actually calls phrase filtering
+```
+
+**Expected Results**:
+- ✅ "apfel" → detected as GERMAN
+- ✅ "mutter" → detected as GERMAN
+- ✅ Manual toggle works (overrides auto-detection)
+- ✅ "Mutter die ihr baby getötet hat" → filtered out as phrase
+- ✅ Examples investigation continues
+
+**Status**: 🚧 TESTING - Fixes implemented, ready for user testing
 
 ---
 
@@ -507,7 +584,8 @@ Before declaring iteration successful:
 | 1.0 | 2025-01-21 AM | ❌ Failed | Vector/semantic search | Unrelated results, slow |
 | 2.0 | 2025-01-21 PM | ⚠️ Partial | Dual import + ranking | Better but still wrong data |
 | 3.0 | 2025-10-22 AM | ✅ Success | Parser validation + gender | Fixed data quality, revealed new bugs |
-| 4.0 | 2025-10-22 PM | 🚧 Testing | Language detection + examples + UX | All critical bugs fixed |
+| 4.0 | 2025-10-22 PM | ❌ Failed | Language detection + examples + UX | Issues persist |
+| 5.0 | 2025-10-22 Eve | 🚧 Testing | Critical bug fixes | Logic errors fixed |
 
 ---
 
